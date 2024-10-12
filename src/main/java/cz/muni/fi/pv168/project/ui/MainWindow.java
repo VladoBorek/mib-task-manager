@@ -29,6 +29,9 @@ public class MainWindow {
         frame.setVisible(true);
     }
 
+    /**
+     * @return menuBar for the application
+     */
     private JMenuBar createMenuBar(){
 
         JMenuBar menuBar = new JMenuBar();
@@ -43,19 +46,29 @@ public class MainWindow {
         return  menuBar;
 
     }
+
+    /**
+     * @param name Name of the item for the JMenuBar
+     * @param actionList Actions for the JMenu
+     * @return JMenu with the name and actions
+     */
     private JMenu createJMenu(String name, Action ... actionList)
     {
         JMenu menu = new JMenu(name);
         menu.add("PLACEHOLDER_ACTION");
         for (Action a: actionList) {
-            menu.add(a.toString());
+            menu.add(a);
         }
 
         return menu;
     }
+
+    /**
+     * @return Bar with filters for the application
+     */
     private JToolBar createFilterBar(){
         JToolBar filterBar = new JToolBar();
-
+        //Refactor for Checkbox Actions
         var filterToDo = new JCheckBox();
         filterToDo.setText("Show To-Do");
         filterToDo.setSelected(true);
@@ -77,7 +90,7 @@ public class MainWindow {
 
         var filterOverBudget = new JCheckBox();
         filterOverBudget.setText("Filter Tasks Over Budget");
-        //TODO Create external function for setting up filter checkboxes
+
         filterBar.add(filterToDo);
         filterBar.add(filterInProgress);
         filterBar.add(filterComplete);
