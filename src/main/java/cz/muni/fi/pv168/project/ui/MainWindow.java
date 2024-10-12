@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.project.ui;
 
 import javax.swing.*;
-import java.awt.Color;
+import java.awt.*;
 
 /**
  * @author Maroš Pavlík
@@ -19,7 +19,9 @@ public class MainWindow {
         frame.setSize(1000, 600);
         frame.getContentPane().setBackground(new Color(180, 180, 180));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         frame.setJMenuBar(createMenuBar());
+        frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
         return frame;
     }
 
@@ -51,5 +53,38 @@ public class MainWindow {
 
         return menu;
     }
-    Priva
+    private JToolBar createFilterBar(){
+        JToolBar filterBar = new JToolBar();
+
+        var filterToDo = new JCheckBox();
+        filterToDo.setText("Show To-Do");
+
+        var filterInProgress = new JCheckBox();
+        filterInProgress.setText("Show In-Progress");
+
+        var filterComplete = new JCheckBox();
+        filterComplete.setText("Show Complete");
+
+        var filterOnHold = new JCheckBox();
+        filterOnHold.setText("Show On-Hold");
+
+        var filterOverdue = new JCheckBox();
+        filterOverdue.setText("Filter Tasks Overdue");
+
+        var filterOverBudget = new JCheckBox();
+        filterOverBudget.setText("Filter Tasks Over Budget");
+
+        filterBar.add(filterToDo);
+        filterBar.add(filterInProgress);
+        filterBar.add(filterComplete);
+        filterBar.add(filterOnHold);
+
+        filterBar.addSeparator();
+
+        filterBar.add(filterOverdue);
+        filterBar.add(filterOverBudget);
+
+        filterBar.addSeparator();
+        return  filterBar;
+    }
 }
