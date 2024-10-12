@@ -28,6 +28,7 @@ public class MainWindow {
     }
 
     private JMenuBar createMenuBar(){
+
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(new Color(240, 240, 240));
 
@@ -47,6 +48,8 @@ public class MainWindow {
         for (Action a: actionList) {
             menu.add(a.toString());
         }
+
         return menu;
     }
+    Priva
 }
