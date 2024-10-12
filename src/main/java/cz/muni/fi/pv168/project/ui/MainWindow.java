@@ -1,5 +1,7 @@
 package cz.muni.fi.pv168.project.ui;
 
+import cz.muni.fi.pv168.project.ui.actions.menu.*;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -37,10 +39,10 @@ public class MainWindow {
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(new Color(240, 240, 240));
 
-        menuBar.add(createJMenu("File"));
-        menuBar.add(createJMenu("Template"));
-        menuBar.add((createJMenu("Categories")));
-        menuBar.add((createJMenu("Time Units")));
+        menuBar.add(createJMenu("File", new ImportAction(), new ExportAction()));
+        menuBar.add(createJMenu("Template", new AddAction(Type.TEMPLATE), new ManageAction(Type.TEMPLATE)));
+        menuBar.add((createJMenu("Categories",new AddAction(Type.CATEGORY) , new ManageAction(Type.CATEGORY))));
+        menuBar.add((createJMenu("Time Units", new AddAction(Type.TIME_UNIT), new ManageAction(Type.TIME_UNIT))));
         menuBar.add(createJMenu("Help"));
 
         return  menuBar;
@@ -55,7 +57,9 @@ public class MainWindow {
     private JMenu createJMenu(String name, Action ... actionList)
     {
         JMenu menu = new JMenu(name);
-        menu.add("PLACEHOLDER_ACTION");
+        if (actionList.length == 0) {
+            menu.add("PLACEHOLDER_ACTION");
+        }
         for (Action a: actionList) {
             menu.add(a);
         }
