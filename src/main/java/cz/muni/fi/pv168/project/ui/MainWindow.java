@@ -108,7 +108,7 @@ public class MainWindow {
 
         JButton addNewTaskButton = createButton("Add New Task ", Icons.ADD_ICON, new AddAction(Type.TASK));
         //TODO create new reset filter action, will probably happen after creation of the table
-        JButton resetFiltersButton = createButton("Reset Filters ", Icons.DELETE_ICON, new AddAction(Type.TASK));
+        JButton resetFiltersButton = createButton("Reset Filters ", Icons.DELETE_ICON, new ResetFilterAction(Type.FILTER));
 
         JComboBox<Object> categoryComboBox = createFilterComboBox(DEMO_DATA.getCategories().toArray(), "--Filter by category--");
         JComboBox<Object> assigneeComboBox = createFilterComboBox(DEMO_DATA.getEmployees().toArray(), "--Filter by assignee--");
