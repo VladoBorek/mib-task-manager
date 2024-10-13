@@ -2,11 +2,13 @@ package cz.muni.fi.pv168.project.ui;
 
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
+import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
-
+import cz.muni.fi.pv168.project.model.Task;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * @author Maroš Pavlík
@@ -23,6 +25,8 @@ public class MainWindow {
         frame.setSize(1500, 800);
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
+        var taskTable = createTaskTable(DEMO_DATA.getTasks());
+        frame.add(new JScrollPane(taskTable), BorderLayout.CENTER);
 
     }
 
@@ -135,6 +139,20 @@ public class MainWindow {
         checkBox.setFocusPainted(false);
         //TODO add Action? somehow make the filters work
         return checkBox;
+    }
+
+    /**
+     *
+     * @param tasks Tasks for the table
+     * @return Table with tasks
+     */
+    private JTable createTaskTable(List<Task> tasks)
+    {
+        var model = new TaskTableModel(tasks);
+        var table = new JTable(model);
+        table.setAutoCreateRowSorter(true);
+
+        return table;
     }
 
     /**
