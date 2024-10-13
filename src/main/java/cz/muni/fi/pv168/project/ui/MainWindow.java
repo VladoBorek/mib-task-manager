@@ -2,14 +2,11 @@ package cz.muni.fi.pv168.project.ui;
 
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
-import cz.muni.fi.pv168.project.ui.model.CategoryModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Maroš Pavlík
@@ -19,13 +16,14 @@ public class MainWindow {
     private final JFrame frame;
     private final Color BUTTON_COLOR = new Color(190, 190, 190);
     private final Color BG_COLOR = new Color(180, 180, 180);
+    private final DemoDataGenerator DEMO_DATA = new DemoDataGenerator();
     public MainWindow() {
         frame = createFrame();
-
         frame.getContentPane().setBackground(BG_COLOR);
         frame.setSize(1500, 800);
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
+
     }
 
     private JFrame createFrame() {
@@ -108,32 +106,17 @@ public class MainWindow {
 
         filterBar.addSeparator();
 
-        var demoData = new DemoDataGenerator();
-        var categoryComboBox = new JComboBox<>(demoData.getCategories().toArray());
-        categoryComboBox.setEditable(true);
-        categoryComboBox.setSelectedItem("--Filter by category--");
-        categoryComboBox.setEditable(false);
-        categoryComboBox.setMaximumSize(new Dimension(150, 100));
+        var categoryComboBox = createFilterComboBox(DEMO_DATA.getCategories().toArray(), "--Filter by category--");
+        var assigneeComboBox = createFilterComboBox(DEMO_DATA.getEmployees().toArray(), "--Filter by assignee--");
+        var customerComboBox = createFilterComboBox(DEMO_DATA.getCustomers().toArray(), "--Filter by customer--");
 
         filterBar.add(categoryComboBox);
-
-        var assigneeComboBox = new JComboBox<>(demoData.getEmployees().toArray());
-        assigneeComboBox.setEditable(true);
-        assigneeComboBox.setSelectedItem("--Filter by assignee--");
-        assigneeComboBox.setEditable(false);
-        assigneeComboBox.setMaximumSize(new Dimension(150, 100));
-
         filterBar.add(assigneeComboBox);
-
-        var customerComboBox = new JComboBox<>(demoData.getCustomers().toArray());
-        customerComboBox.setEditable(true);
-        customerComboBox.setSelectedItem("--Filter by customer--");
-        customerComboBox.setEditable(false);
-        customerComboBox.setMaximumSize(new Dimension(150, 100));
-
         filterBar.add(customerComboBox);
 
+        //TODO Date picker to filter by due date
         //var filterByDate = new DatePicker();
+        filterBar.addSeparator();
         filterBar.add(resetFiltersButton);
         return  filterBar;
     }
@@ -153,6 +136,13 @@ public class MainWindow {
         return checkBox;
     }
 
+    /**
+     *
+     * @param buttonText Text to be shown on button
+     * @param icon Icon for the button
+     * @param a Action to be performed
+     * @return Button with input characteristics
+     */
     private JButton createButton(String buttonText, Icon icon, Action a)
     {
         var button = new JButton(buttonText, icon);
@@ -160,5 +150,22 @@ public class MainWindow {
         button.setBackground(BUTTON_COLOR);
         button.setFocusPainted(false);
         return button;
+    }
+
+    /**
+     *
+     * @param items Items for the comboBox
+     * @param placeholderText Placeholder text to be shown
+     * @return comboBox with input parameters
+     */
+    private JComboBox<Object> createFilterComboBox(Object [] items, String placeholderText)
+    {
+        JComboBox<Object> comboBox = new JComboBox<>(items);
+        comboBox.setEditable(true);
+        comboBox.setSelectedItem(placeholderText);
+        comboBox.setEditable(false);
+        comboBox.setMinimumSize(new Dimension(150, 400));
+        comboBox.setMaximumSize(new Dimension(150, 100));
+        return comboBox;
     }
 }
