@@ -75,47 +75,21 @@ public class MainWindow {
      */
     private JToolBar createFilterBar(){
         JToolBar filterBar = new JToolBar();
+        filterBar.setFloatable(false);
 
-        //TODO Refactor for better looking code
-        var filterToDo = new JCheckBox();
-        filterToDo.setText("Show To-Do");
-        filterToDo.setSelected(true);
-        filterToDo.setFocusPainted(false);
+        JCheckBox filterToDo = createFilterCheckbox("Show To-Do", true);
+        JCheckBox filterInProgress = createFilterCheckbox("Show In-Progress", true);
+        JCheckBox filterComplete = createFilterCheckbox("Show Completed", true);
+        JCheckBox filterOnHold = createFilterCheckbox("Show On-Hold", true);;
 
-        var filterInProgress = new JCheckBox();
-        filterInProgress.setText("Show In-Progress");
-        filterInProgress.setSelected(true);
-        filterInProgress.setFocusPainted(false);
+        JCheckBox filterOverdue = createFilterCheckbox("Filter Overdue", false);
+        JCheckBox filterOverBudget = createFilterCheckbox("Filter Over budget", false);
 
-        var filterComplete = new JCheckBox();
-        filterComplete.setText("Show Complete");
-        filterComplete.setSelected(true);
-        filterComplete.setFocusPainted(false);
+        JButton addNewTaskButton = createButton("Add New Task ", Icons.ADD_ICON, new AddAction(Type.TASK));
+        JButton resetFiltersButton = createButton("Reset Filters ", Icons.DELETE_ICON, new AddAction(Type.TASK));
+        //TODO create new reset filter action, will probably happen after creation of the table
 
-        var filterOnHold = new JCheckBox();
-        filterOnHold.setText("Show On-Hold");
-        filterOnHold.setSelected(true);
-        filterOnHold.setFocusPainted(false);
-
-        var filterOverdue = new JCheckBox();
-        filterOverdue.setText("Filter Tasks Overdue");
-        filterOverdue.setFocusPainted(false);
-
-        var filterOverBudget = new JCheckBox();
-        filterOverBudget.setText("Filter Tasks Over Budget");
-        filterOverBudget.setFocusPainted(false);
-
-        var addNewTaskButton = new JButton("Add New Task  ", Icons.ADD_ICON);
-        addNewTaskButton.addActionListener(new AddAction(Type.TASK));
-        addNewTaskButton.setBackground(BUTTON_COLOR);
-        addNewTaskButton.setFocusPainted(false);
-
-        var resetFIlterButton = new JButton("Reset Filters", Icons.DELETE_ICON);
-        //resetFIlterButton.addActionListener(somehowResetFilters);
-        resetFIlterButton.setBackground(BUTTON_COLOR);
-        resetFIlterButton.setFocusPainted(false);
-
-        filterBar.add(addNewTaskButton);
+        filterBar.add(addNewTaskButton, BorderLayout.WEST);
         filterBar.addSeparator();
 
         filterBar.add(filterToDo);
@@ -130,7 +104,31 @@ public class MainWindow {
 
         filterBar.addSeparator();
 
-        filterBar.add(resetFIlterButton);
+        filterBar.add(resetFiltersButton);
         return  filterBar;
+    }
+
+    /**
+     *
+     * @param checkBoxText Text of the checkbox
+     * @param setSelected Default state of the checkbox
+     * @return checkBox
+     */
+    private JCheckBox createFilterCheckbox(String checkBoxText, Boolean setSelected){
+        JCheckBox checkBox = new JCheckBox();
+        checkBox.setText(checkBoxText);
+        checkBox.setSelected(setSelected);
+        checkBox.setFocusPainted(false);
+        //TODO add Action? somehow make the filters work
+        return checkBox;
+    }
+
+    private JButton createButton(String buttonText, Icon icon, Action a)
+    {
+        var button = new JButton(buttonText, icon);
+        button.addActionListener(a);
+        button.setBackground(BUTTON_COLOR);
+        button.setFocusPainted(false);
+        return button;
     }
 }
