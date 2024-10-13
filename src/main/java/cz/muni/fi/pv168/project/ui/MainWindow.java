@@ -74,31 +74,45 @@ public class MainWindow {
     private JToolBar createFilterBar(){
         JToolBar filterBar = new JToolBar();
 
-        //Refactor for Checkbox Actions
+        //TODO Refactor for better looking code
         var filterToDo = new JCheckBox();
         filterToDo.setText("Show To-Do");
         filterToDo.setSelected(true);
+        filterToDo.setFocusPainted(false);
 
         var filterInProgress = new JCheckBox();
         filterInProgress.setText("Show In-Progress");
         filterInProgress.setSelected(true);
+        filterInProgress.setFocusPainted(false);
 
         var filterComplete = new JCheckBox();
         filterComplete.setText("Show Complete");
         filterComplete.setSelected(true);
+        filterComplete.setFocusPainted(false);
 
         var filterOnHold = new JCheckBox();
         filterOnHold.setText("Show On-Hold");
         filterOnHold.setSelected(true);
+        filterOnHold.setFocusPainted(false);
 
         var filterOverdue = new JCheckBox();
         filterOverdue.setText("Filter Tasks Overdue");
+        filterOverdue.setFocusPainted(false);
 
         var filterOverBudget = new JCheckBox();
         filterOverBudget.setText("Filter Tasks Over Budget");
+        filterOverBudget.setFocusPainted(false);
 
-        var addNewTaskButton = new JButton("Add New Task", Icons.ADD_ICON);
+        var addNewTaskButton = new JButton("Add New Task  ", Icons.ADD_ICON);
         addNewTaskButton.addActionListener(new AddAction(Type.TASK));
+        addNewTaskButton.setBackground(new Color(190, 190, 190));
+        addNewTaskButton.setFocusPainted(false);
+
+        var resetFIlterButton = new JButton("Reset Filters", Icons.DELETE_ICON);
+        //resetFIlterButton.addActionListener(somehowResetFilters);
+        resetFIlterButton.setBackground(new Color(190, 190, 190));
+        resetFIlterButton.setFocusPainted(false);
+
         filterBar.add(addNewTaskButton);
         filterBar.addSeparator();
 
@@ -113,6 +127,8 @@ public class MainWindow {
         filterBar.add(filterOverBudget);
 
         filterBar.addSeparator();
+
+        filterBar.add(resetFIlterButton);
         return  filterBar;
     }
 }
