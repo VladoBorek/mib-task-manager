@@ -12,10 +12,12 @@ import java.awt.*;
 public class MainWindow {
 
     private final JFrame frame;
+    private final Color BUTTON_COLOR = new Color(190, 190, 190);
+    private final Color BG_COLOR = new Color(180, 180, 180);
     public MainWindow() {
         frame = createFrame();
 
-        frame.getContentPane().setBackground(new Color(180, 180, 180));
+        frame.getContentPane().setBackground(BG_COLOR);
 
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
@@ -105,12 +107,12 @@ public class MainWindow {
 
         var addNewTaskButton = new JButton("Add New Task  ", Icons.ADD_ICON);
         addNewTaskButton.addActionListener(new AddAction(Type.TASK));
-        addNewTaskButton.setBackground(new Color(190, 190, 190));
+        addNewTaskButton.setBackground(BUTTON_COLOR);
         addNewTaskButton.setFocusPainted(false);
 
         var resetFIlterButton = new JButton("Reset Filters", Icons.DELETE_ICON);
         //resetFIlterButton.addActionListener(somehowResetFilters);
-        resetFIlterButton.setBackground(new Color(190, 190, 190));
+        resetFIlterButton.setBackground(BUTTON_COLOR);
         resetFIlterButton.setFocusPainted(false);
 
         filterBar.add(addNewTaskButton);
