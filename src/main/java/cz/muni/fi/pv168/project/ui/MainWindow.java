@@ -128,8 +128,8 @@ public class MainWindow {
         filterBar.add(filterOverdue);
         //TODO filterOverdue will filter overdue tasks date picked by datepicker
         JPanel datePickerPanel = new JPanel(new BorderLayout());
-        datePickerPanel.setMaximumSize(new Dimension(140, 25));
-        datePickerPanel.setPreferredSize(new Dimension(140, 25));
+        datePickerPanel.setMaximumSize(new Dimension(150, 25));
+        datePickerPanel.setPreferredSize(new Dimension(150, 25));
         datePickerPanel.add(datePicker, BorderLayout.CENTER);
         filterBar.add(datePickerPanel);
 
