@@ -150,6 +150,7 @@ public class MainWindow {
     {
         var model = new TaskTableModel(tasks);
         var table = new JTable(model);
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         table.setAutoCreateRowSorter(true);
 
         return table;
