@@ -11,6 +11,8 @@ public final class Icons {
     public static final Icon MANAGE_ICON = createIcon("Crystal_Clear_action_edit.png");
     public static final Icon ADD_ICON = createIcon("Crystal_Clear_action_edit_add.png");
     public static final Icon QUIT_ICON = createIcon("Crystal_Clear_action_exit.png");
+    public static  final Icon IMPORT_ICON = createIcon("Crystal_Clear_action_down.png");
+    public static final Icon EXPORT_ICON = createIcon("Crystal_Clear_action_up.png");
 
     private Icons() {
         throw new AssertionError("This class is not instantiable");
