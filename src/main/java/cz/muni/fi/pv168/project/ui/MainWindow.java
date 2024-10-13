@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.ui;
 
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
+import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
 import java.awt.*;
@@ -73,7 +74,6 @@ public class MainWindow {
     private JToolBar createFilterBar(){
         JToolBar filterBar = new JToolBar();
 
-
         //Refactor for Checkbox Actions
         var filterToDo = new JCheckBox();
         filterToDo.setText("Show To-Do");
@@ -96,6 +96,11 @@ public class MainWindow {
 
         var filterOverBudget = new JCheckBox();
         filterOverBudget.setText("Filter Tasks Over Budget");
+
+        var addNewTaskButton = new JButton("Add New Task", Icons.ADD_ICON);
+        addNewTaskButton.addActionListener(new AddAction(Type.TASK));
+        filterBar.add(addNewTaskButton);
+        filterBar.addSeparator();
 
         filterBar.add(filterToDo);
         filterBar.add(filterInProgress);
