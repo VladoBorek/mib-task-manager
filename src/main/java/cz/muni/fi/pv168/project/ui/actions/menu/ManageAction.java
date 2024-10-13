@@ -10,7 +10,7 @@ public class ManageAction extends AbstractAction {
         super("Manage " + type.toString().toLowerCase().replace('_', ' ') + "s");
         this.type = type;
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         //TODO to open the actual dialogue window
