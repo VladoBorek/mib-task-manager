@@ -17,6 +17,7 @@ public class ManageAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         //TODO to open the actual dialogue window
         switch (type){
+            case TASK -> System.out.println("User clicked on Manage Task Button");
             case TEMPLATE -> System.out.println("User clicked on Manage Template button");
             case CATEGORY -> System.out.println("User clicked on Manage Category button");
             case TIME_UNIT -> System.out.println("User clicked on Manage Time Units button");
