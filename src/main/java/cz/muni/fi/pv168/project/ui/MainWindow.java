@@ -23,10 +23,9 @@ public class MainWindow {
         frame = createFrame();
 
         frame.getContentPane().setBackground(BG_COLOR);
-
+        frame.setSize(1500, 800);
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
-        frame.pack();
     }
 
     private JFrame createFrame() {
@@ -110,9 +109,12 @@ public class MainWindow {
         filterBar.addSeparator();
 
         var demoData = new DemoDataGenerator();
-
         var categoryComboBox = new JComboBox<>(demoData.getCategories().toArray());
+        categoryComboBox.setEditable(true);
+        categoryComboBox.setSelectedItem("--Filter by category--");
+        categoryComboBox.setEditable(false);
         categoryComboBox.setMaximumSize(new Dimension(150, 100));
+
         filterBar.add(categoryComboBox);
 
         //var filterByDate = new DatePicker();
