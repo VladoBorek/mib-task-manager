@@ -88,10 +88,16 @@ public class MainWindow {
         JCheckBox filterOverBudget = createFilterCheckbox("Filter Over budget", false);
 
         JButton addNewTaskButton = createButton("Add New Task ", Icons.ADD_ICON, new AddAction(Type.TASK));
-        JButton resetFiltersButton = createButton("Reset Filters ", Icons.DELETE_ICON, new AddAction(Type.TASK));
         //TODO create new reset filter action, will probably happen after creation of the table
+        JButton resetFiltersButton = createButton("Reset Filters ", Icons.DELETE_ICON, new AddAction(Type.TASK));
+
+        JComboBox<Object> categoryComboBox = createFilterComboBox(DEMO_DATA.getCategories().toArray(), "--Filter by category--");
+        JComboBox<Object> assigneeComboBox = createFilterComboBox(DEMO_DATA.getEmployees().toArray(), "--Filter by assignee--");
+        JComboBox<Object> customerComboBox = createFilterComboBox(DEMO_DATA.getCustomers().toArray(), "--Filter by customer--");
+
 
         filterBar.add(addNewTaskButton);
+
         filterBar.addSeparator();
 
         filterBar.add(filterToDo);
@@ -106,16 +112,11 @@ public class MainWindow {
 
         filterBar.addSeparator();
 
-        var categoryComboBox = createFilterComboBox(DEMO_DATA.getCategories().toArray(), "--Filter by category--");
-        var assigneeComboBox = createFilterComboBox(DEMO_DATA.getEmployees().toArray(), "--Filter by assignee--");
-        var customerComboBox = createFilterComboBox(DEMO_DATA.getCustomers().toArray(), "--Filter by customer--");
-
         filterBar.add(categoryComboBox);
         filterBar.add(assigneeComboBox);
         filterBar.add(customerComboBox);
 
         //TODO Date picker to filter by due date
-        //var filterByDate = new DatePicker();
         filterBar.addSeparator();
         filterBar.add(resetFiltersButton);
         return  filterBar;
