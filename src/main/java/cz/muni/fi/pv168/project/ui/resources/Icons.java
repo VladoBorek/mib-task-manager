@@ -4,7 +4,10 @@ import javax.swing.*;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
-
+/**
+ * Icons class that loads icon images for the application from the resources.
+ * This class is not instantiable and only provides static access to icons.
+ */
 public final class Icons {
 
     public static final Icon DELETE_ICON = createIcon("Crystal_Clear_action_button_cancel.png");
@@ -14,6 +17,9 @@ public final class Icons {
     public static  final Icon IMPORT_ICON = createIcon("Crystal_Clear_action_down.png");
     public static final Icon EXPORT_ICON = createIcon("Crystal_Clear_action_up.png");
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private Icons() {
         throw new AssertionError("This class is not instantiable");
     }
