@@ -89,7 +89,7 @@ public class MainWindow {
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.DELETE_ICON, new AddAction(Type.TASK));
         //TODO create new reset filter action, will probably happen after creation of the table
 
-        filterBar.add(addNewTaskButton, BorderLayout.WEST);
+        filterBar.add(addNewTaskButton);
         filterBar.addSeparator();
 
         filterBar.add(filterToDo);

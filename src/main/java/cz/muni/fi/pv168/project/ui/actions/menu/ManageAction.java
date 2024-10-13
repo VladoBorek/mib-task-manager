@@ -9,8 +9,15 @@ public class ManageAction extends AbstractAction {
 
     private final Type type;
     public ManageAction(Type type){
-        super("Manage " + type.toString().toLowerCase().replace('_', ' ') + "s", Icons.MANAGE_ICON);
+        super(getText(type), Icons.MANAGE_ICON);
         this.type = type;
+    }
+
+    private static String getText(Type type){
+        if (type == Type.CATEGORY) {
+            return "Manage categories";
+        }
+        return  "Manage " + type.toString().toLowerCase().replace('_', ' ') + "s";
     }
 
     @Override
