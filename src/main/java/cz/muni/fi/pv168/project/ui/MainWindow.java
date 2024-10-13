@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.project.ui;
 
+import com.github.lgooddatepicker.components.DatePicker;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -18,6 +19,7 @@ public class MainWindow {
     private final Color BUTTON_COLOR = new Color(190, 190, 190);
     private final Color BG_COLOR = new Color(180, 180, 180);
     private final DemoDataGenerator DEMO_DATA = new DemoDataGenerator();
+    private final DatePicker datePicker = createDatePicker();
 
     /**
      * Constructor for MainWindow.
@@ -26,9 +28,10 @@ public class MainWindow {
     public MainWindow() {
         frame = createFrame();
         frame.getContentPane().setBackground(BG_COLOR);
-        frame.setSize(1500, 800);
+        frame.setSize(1600, 800);
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
+
 
     }
 
@@ -111,7 +114,6 @@ public class MainWindow {
         JComboBox<Object> assigneeComboBox = createFilterComboBox(DEMO_DATA.getEmployees().toArray(), "--Filter by assignee--");
         JComboBox<Object> customerComboBox = createFilterComboBox(DEMO_DATA.getCustomers().toArray(), "--Filter by customer--");
 
-
         filterBar.add(addNewTaskButton);
 
         filterBar.addSeparator();
@@ -124,6 +126,13 @@ public class MainWindow {
         filterBar.addSeparator();
 
         filterBar.add(filterOverdue);
+        //TODO filterOverdue will filter overdue tasks date picked by datepicker
+        JPanel datePickerPanel = new JPanel(new BorderLayout());
+        datePickerPanel.setMaximumSize(new Dimension(140, 25));
+        datePickerPanel.setPreferredSize(new Dimension(140, 25));
+        datePickerPanel.add(datePicker, BorderLayout.CENTER);
+        filterBar.add(datePickerPanel);
+
         filterBar.add(filterOverBudget);
 
         filterBar.addSeparator();
@@ -132,7 +141,6 @@ public class MainWindow {
         filterBar.add(assigneeComboBox);
         filterBar.add(customerComboBox);
 
-        //TODO Date picker to filter by due date
         filterBar.addSeparator();
         filterBar.add(resetFiltersButton);
         return  filterBar;
@@ -185,4 +193,19 @@ public class MainWindow {
         comboBox.setMaximumSize(new Dimension(150, 100));
         return comboBox;
     }
+
+    /**
+     * Creates a new DatePicker for filtering overdue tasks
+     * @return new {@link DatePicker}
+     */
+    private DatePicker createDatePicker() {
+        DatePicker datePicker = new DatePicker();
+        datePicker.setPreferredSize(new Dimension(100, 30));
+        datePicker.getComponentToggleCalendarButton().setPreferredSize(new Dimension(15, 15));
+        datePicker.getComponentDateTextField().setPreferredSize(new Dimension(100, 25));
+        datePicker.setDateToToday();
+        return datePicker;
+    }
+
+
 }
