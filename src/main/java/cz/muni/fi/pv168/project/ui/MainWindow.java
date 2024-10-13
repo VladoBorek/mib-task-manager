@@ -72,6 +72,8 @@ public class MainWindow {
      */
     private JToolBar createFilterBar(){
         JToolBar filterBar = new JToolBar();
+
+
         //Refactor for Checkbox Actions
         var filterToDo = new JCheckBox();
         filterToDo.setText("Show To-Do");

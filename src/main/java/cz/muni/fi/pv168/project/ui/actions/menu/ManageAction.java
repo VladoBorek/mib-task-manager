@@ -1,5 +1,7 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
+import cz.muni.fi.pv168.project.ui.resources.Icons;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
@@ -7,7 +9,7 @@ public class ManageAction extends AbstractAction {
 
     private final Type type;
     public ManageAction(Type type){
-        super("Manage " + type.toString().toLowerCase().replace('_', ' ') + "s");
+        super("Manage " + type.toString().toLowerCase().replace('_', ' ') + "s", Icons.MANAGE_ICON);
         this.type = type;
     }
 
