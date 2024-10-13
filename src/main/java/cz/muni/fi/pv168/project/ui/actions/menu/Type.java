@@ -8,4 +8,5 @@ public enum Type {
     CATEGORY,
     TEMPLATE,
     TIME_UNIT,
+    FILTER,
 }
