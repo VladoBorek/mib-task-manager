@@ -117,6 +117,22 @@ public class MainWindow {
 
         filterBar.add(categoryComboBox);
 
+        var assigneeComboBox = new JComboBox<>(demoData.getEmployees().toArray());
+        assigneeComboBox.setEditable(true);
+        assigneeComboBox.setSelectedItem("--Filter by assignee--");
+        assigneeComboBox.setEditable(false);
+        assigneeComboBox.setMaximumSize(new Dimension(150, 100));
+
+        filterBar.add(assigneeComboBox);
+
+        var customerComboBox = new JComboBox<>(demoData.getCustomers().toArray());
+        customerComboBox.setEditable(true);
+        customerComboBox.setSelectedItem("--Filter by customer--");
+        customerComboBox.setEditable(false);
+        customerComboBox.setMaximumSize(new Dimension(150, 100));
+
+        filterBar.add(customerComboBox);
+
         //var filterByDate = new DatePicker();
         filterBar.add(resetFiltersButton);
         return  filterBar;

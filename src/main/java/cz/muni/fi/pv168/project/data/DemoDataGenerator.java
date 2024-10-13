@@ -12,5 +12,20 @@ public class DemoDataGenerator {
             new Category("Systems update", new Color(3,3,3))
             );
 
+    private static final List<String> CUSTOMERS = List.of(
+            "Rats in white",
+            "Dogs in blue",
+            "Upper management"
+    );
+
+    private static final List<String> EMPLOYEES = List.of(
+            "Remy",
+            "Spot",
+            "Goofy",
+            "Mickey"
+    );
+
     public List<Category> getCategories(){ return CATEGORIES;}
+    public List<String> getCustomers(){ return CUSTOMERS;}
+    public List<String> getEmployees(){ return EMPLOYEES;}
 }
