@@ -13,6 +13,7 @@ public class CategoryModel extends AbstractListModel<Category> {
         this.categoryList = categoryList;
     }
 
+
     @Override
     public int getSize() {
         return categoryList.size();

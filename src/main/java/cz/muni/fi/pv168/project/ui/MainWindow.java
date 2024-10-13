@@ -1,10 +1,15 @@
 package cz.muni.fi.pv168.project.ui;
 
+import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
+import cz.muni.fi.pv168.project.ui.model.CategoryModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Maroš Pavlík
@@ -104,6 +109,13 @@ public class MainWindow {
 
         filterBar.addSeparator();
 
+        var demoData = new DemoDataGenerator();
+
+        var categoryComboBox = new JComboBox<>(demoData.getCategories().toArray());
+        categoryComboBox.setMaximumSize(new Dimension(150, 100));
+        filterBar.add(categoryComboBox);
+
+        //var filterByDate = new DatePicker();
         filterBar.add(resetFiltersButton);
         return  filterBar;
     }
