@@ -3,11 +3,13 @@ package cz.muni.fi.pv168.project.ui;
 import com.github.lgooddatepicker.components.DatePicker;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
+import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
-
+import cz.muni.fi.pv168.project.model.Task;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * Main application window for the MIB Task Manager.
@@ -31,6 +33,8 @@ public class MainWindow {
         frame.setSize(1600, 800);
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
+        var taskTable = createTaskTable(DEMO_DATA.getTasks());
+        frame.add(new JScrollPane(taskTable), BorderLayout.CENTER);
 
 
     }
@@ -162,7 +166,22 @@ public class MainWindow {
     }
 
     /**
-     * Creates a custom JButton
+     *
+     * @param tasks Tasks for the table
+     * @return Table with tasks
+     */
+    private JTable createTaskTable(List<Task> tasks)
+    {
+        var model = new TaskTableModel(tasks);
+        var table = new JTable(model);
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        table.setAutoCreateRowSorter(true);
+
+        return table;
+    }
+
+    /**
+     *
      * @param buttonText Text to be shown on button
      * @param icon Icon for the button
      * @param a Action to be performed
