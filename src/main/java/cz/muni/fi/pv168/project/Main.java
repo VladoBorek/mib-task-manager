@@ -7,12 +7,14 @@ import cz.muni.fi.pv168.project.ui.MainWindow;
  */
 public class Main {
 
+    /**
+     * Preventing the instantiation of the Main class
+     */
     private Main() {
         throw new AssertionError("This class is not intended for instantiation.");
     }
 
     public static void main(String[] args) {
-        // TODO: Replace with your code
         new MainWindow().show();
     }
 }

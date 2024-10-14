@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.project.ui;
 
+import com.github.lgooddatepicker.components.DatePicker;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
@@ -11,7 +12,8 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * @author Maroš Pavlík
+ * Main application window for the MIB Task Manager.
+ * Handles the creation and layout of the main frame.
  */
 public class MainWindow {
 
@@ -19,23 +21,38 @@ public class MainWindow {
     private final Color BUTTON_COLOR = new Color(190, 190, 190);
     private final Color BG_COLOR = new Color(180, 180, 180);
     private final DemoDataGenerator DEMO_DATA = new DemoDataGenerator();
+    private final DatePicker datePicker = createDatePicker();
+
+    /**
+     * Constructor for MainWindow.
+     * Initializes the main frame, sets the background color, size, and adds the menu bar and filter bar.
+     */
     public MainWindow() {
         frame = createFrame();
         frame.getContentPane().setBackground(BG_COLOR);
-        frame.setSize(1500, 800);
+        frame.setSize(1600, 800);
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
         var taskTable = createTaskTable(DEMO_DATA.getTasks());
         frame.add(new JScrollPane(taskTable), BorderLayout.CENTER);
 
+
     }
 
+    /**
+     * Creates and configures the main JFrame.
+     *
+     * @return Configured JFrame instance.
+     */
     private JFrame createFrame() {
         JFrame frame = new JFrame("MIB Task Manager");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         return frame;
     }
 
+    /**
+     * Makes the frame visible to the user.
+     */
     public void show() {
         frame.setVisible(true);
     }
@@ -59,6 +76,7 @@ public class MainWindow {
     }
 
     /**
+     * Fills the JMenu with the provided Actions
      * @param name Name of the item for the JMenuBar
      * @param actionList Actions for the JMenu
      * @return JMenu with the name and actions
@@ -77,7 +95,8 @@ public class MainWindow {
     }
 
     /**
-     * @return Bar with filters for the application
+     * Creates application Toolbar
+     * @return Toolbar with AddNewTask button and filters for the tasks
      */
     private JToolBar createFilterBar(){
         JToolBar filterBar = new JToolBar();
@@ -93,12 +112,11 @@ public class MainWindow {
 
         JButton addNewTaskButton = createButton("Add New Task ", Icons.ADD_ICON, new AddAction(Type.TASK));
         //TODO create new reset filter action, will probably happen after creation of the table
-        JButton resetFiltersButton = createButton("Reset Filters ", Icons.DELETE_ICON, new AddAction(Type.TASK));
+        JButton resetFiltersButton = createButton("Reset Filters ", Icons.DELETE_ICON, new ResetFilterAction(Type.FILTER));
 
         JComboBox<Object> categoryComboBox = createFilterComboBox(DEMO_DATA.getCategories().toArray(), "--Filter by category--");
         JComboBox<Object> assigneeComboBox = createFilterComboBox(DEMO_DATA.getEmployees().toArray(), "--Filter by assignee--");
         JComboBox<Object> customerComboBox = createFilterComboBox(DEMO_DATA.getCustomers().toArray(), "--Filter by customer--");
-
 
         filterBar.add(addNewTaskButton);
 
@@ -112,6 +130,13 @@ public class MainWindow {
         filterBar.addSeparator();
 
         filterBar.add(filterOverdue);
+        //TODO filterOverdue will filter overdue tasks date picked by datepicker
+        JPanel datePickerPanel = new JPanel(new BorderLayout());
+        datePickerPanel.setMaximumSize(new Dimension(150, 25));
+        datePickerPanel.setPreferredSize(new Dimension(150, 25));
+        datePickerPanel.add(datePicker, BorderLayout.CENTER);
+        filterBar.add(datePickerPanel);
+
         filterBar.add(filterOverBudget);
 
         filterBar.addSeparator();
@@ -120,14 +145,13 @@ public class MainWindow {
         filterBar.add(assigneeComboBox);
         filterBar.add(customerComboBox);
 
-        //TODO Date picker to filter by due date
         filterBar.addSeparator();
         filterBar.add(resetFiltersButton);
         return  filterBar;
     }
 
     /**
-     *
+     * Creates a custom JCheckBox
      * @param checkBoxText Text of the checkbox
      * @param setSelected Default state of the checkbox
      * @return checkBox
@@ -173,7 +197,7 @@ public class MainWindow {
     }
 
     /**
-     *
+     * Creates a custom JComboBox
      * @param items Items for the comboBox
      * @param placeholderText Placeholder text to be shown
      * @return comboBox with input parameters
@@ -188,4 +212,19 @@ public class MainWindow {
         comboBox.setMaximumSize(new Dimension(150, 100));
         return comboBox;
     }
+
+    /**
+     * Creates a new DatePicker for filtering overdue tasks
+     * @return new {@link DatePicker}
+     */
+    private DatePicker createDatePicker() {
+        DatePicker datePicker = new DatePicker();
+        datePicker.setPreferredSize(new Dimension(100, 30));
+        datePicker.getComponentToggleCalendarButton().setPreferredSize(new Dimension(15, 15));
+        datePicker.getComponentDateTextField().setPreferredSize(new Dimension(100, 25));
+        datePicker.setDateToToday();
+        return datePicker;
+    }
+
+
 }
