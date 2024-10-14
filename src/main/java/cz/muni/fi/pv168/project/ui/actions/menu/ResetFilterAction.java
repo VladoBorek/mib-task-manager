@@ -1,31 +1,45 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
+import com.github.lgooddatepicker.components.DatePicker;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Maroš Pavlík
  */
 public class ResetFilterAction extends AbstractAction {
+    Map<Boolean, List<JCheckBox>> resetValuesCheckboxes;
+    Map<JComboBox<Object>, String> resetValuesComboBoxes;
+    DatePicker datePicker;
 
-    private final Type type;
-    public ResetFilterAction(Type type){
-        super("Reset " + type.toString().toLowerCase().replace('_', ' ') + 's', Icons.DELETE_ICON);
-        this.type = type;
+    public ResetFilterAction(Map<Boolean,List<JCheckBox>> resetValuesCheckboxes,
+                             Map<JComboBox<Object>, String> resetValuesComboBoxes,
+                             DatePicker datePicker){
+        super("Reset filters", Icons.DELETE_ICON);
+        this.resetValuesCheckboxes = resetValuesCheckboxes;
+        this.resetValuesComboBoxes = resetValuesComboBoxes;
+        this.datePicker = datePicker;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //TODO to open the actual dialogue window
-        switch (type){
-            case TASK -> System.out.println("User clicked on Add Task button");
-            case TEMPLATE -> System.out.println("User clicked on Add Template button");
-            case CATEGORY -> System.out.println("User clicked on Add Category button");
-            case TIME_UNIT -> System.out.println("User clicked on Add Time Unit button");
-            case FILTER -> System.out.println("User clicked on Reset Filters button");
+        for (Boolean state: resetValuesCheckboxes.keySet()) {
+            for (JCheckBox box: resetValuesCheckboxes.get(state)) {
+                box.setSelected(state);
+            }
         }
+        for (JComboBox<Object> comboBox: resetValuesComboBoxes.keySet()) {
+            comboBox.setEditable(true);
+            comboBox.setSelectedItem(resetValuesComboBoxes.get(comboBox));
+            comboBox.setEditable(false);
+        }
+        datePicker.setDateToToday();
+        //TODO Implement filters
+        System.out.println("User clicked on Reset Filters button");
     }
 
 }
