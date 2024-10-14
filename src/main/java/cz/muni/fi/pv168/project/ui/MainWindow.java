@@ -10,6 +10,7 @@ import cz.muni.fi.pv168.project.model.Task;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Main application window for the MIB Task Manager.
@@ -110,13 +111,22 @@ public class MainWindow {
         JCheckBox filterOverdue = createFilterCheckbox("Filter Overdue", false);
         JCheckBox filterOverBudget = createFilterCheckbox("Filter Over budget", false);
 
-        JButton addNewTaskButton = createButton("Add New Task ", Icons.ADD_ICON, new AddAction(Type.TASK));
-        //TODO create new reset filter action, will probably happen after creation of the table
-        JButton resetFiltersButton = createButton("Reset Filters ", Icons.DELETE_ICON, new ResetFilterAction(Type.FILTER));
-
         JComboBox<Object> categoryComboBox = createFilterComboBox(DEMO_DATA.getCategories().toArray(), "--Filter by category--");
         JComboBox<Object> assigneeComboBox = createFilterComboBox(DEMO_DATA.getEmployees().toArray(), "--Filter by assignee--");
         JComboBox<Object> customerComboBox = createFilterComboBox(DEMO_DATA.getCustomers().toArray(), "--Filter by customer--");
+
+        Map<Boolean,List<JCheckBox>> resetValuesCheckboxes = Map.of(
+                true,List.of(filterToDo, filterInProgress, filterComplete, filterOnHold),
+                false, List.of(filterOverdue, filterOverBudget));
+
+        Map<JComboBox<Object>, String> resetValuesComboBoxes = Map.of(
+            categoryComboBox,"--Filter by category--",
+            assigneeComboBox, "--Filter by assignee--",
+            customerComboBox, "--Filter by customer--"
+        );
+        JButton addNewTaskButton = createButton("Add New Task ", Icons.ADD_ICON, new AddAction(Type.TASK));
+        JButton resetFiltersButton = createButton("Reset Filters ", Icons.DELETE_ICON,
+                new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, datePicker));
 
         filterBar.add(addNewTaskButton);
 
