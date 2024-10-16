@@ -2,6 +2,7 @@ package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
+import cz.muni.fi.pv168.project.model.Category;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
@@ -24,6 +25,8 @@ public class MainWindow {
     private final Color BG_COLOR = new Color(180, 180, 180);
     private final DemoDataGenerator DEMO_DATA = new DemoDataGenerator();
     private final DatePicker datePicker = createDatePicker();
+    private final List<Category> CATEGORIES = DEMO_DATA.getCategories();
+    private  final JTable taskTable;
 
     /**
      * Constructor for MainWindow.
@@ -33,9 +36,11 @@ public class MainWindow {
         frame = createFrame();
         frame.getContentPane().setBackground(BG_COLOR);
         frame.setSize(1600, 800);
+
+        taskTable = createTaskTable(DEMO_DATA.getTasks());
+        taskTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
-        var taskTable = createTaskTable(DEMO_DATA.getTasks());
         frame.add(new JScrollPane(taskTable), BorderLayout.CENTER);
 
 
@@ -68,9 +73,10 @@ public class MainWindow {
         menuBar.setBackground(new Color(240, 240, 240));
 
         menuBar.add(createJMenu("File", new ImportAction(), new ExportAction()));
-        menuBar.add(createJMenu("Template", new AddAction(Type.TEMPLATE), new ManageAction(Type.TEMPLATE)));
-        menuBar.add((createJMenu("Categories",new AddAction(Type.CATEGORY) , new ManageAction(Type.CATEGORY))));
-        menuBar.add((createJMenu("Time Units", new AddAction(Type.TIME_UNIT), new ManageAction(Type.TIME_UNIT))));
+        //TODO Create TemplateTableModel and TimeUnitTableModel
+        menuBar.add(createJMenu("Template", new AddAction(Type.TEMPLATE,taskTable,CATEGORIES), new ManageAction(Type.TEMPLATE)));
+        menuBar.add((createJMenu("Categories",new AddAction(Type.CATEGORY,taskTable,CATEGORIES) , new ManageAction(Type.CATEGORY))));
+        menuBar.add((createJMenu("Time Units", new AddAction(Type.TIME_UNIT,taskTable,CATEGORIES), new ManageAction(Type.TIME_UNIT))));
         menuBar.add(createJMenu("Help"));
 
         return  menuBar;
@@ -125,7 +131,7 @@ public class MainWindow {
             assigneeComboBox, "--Filter by assignee--",
             customerComboBox, "--Filter by customer--"
         );
-        JButton addNewTaskButton = createButton("Add New Task ", Icons.ADD_ICON, new AddAction(Type.TASK));
+        JButton addNewTaskButton = createButton("Add New Task ", Icons.ADD_ICON, new AddAction(Type.TASK,taskTable, CATEGORIES));
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.DELETE_ICON,
                 new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, datePicker));
 
@@ -238,6 +244,17 @@ public class MainWindow {
         datePicker.getComponentDateTextField().setPreferredSize(new Dimension(100, 25));
         datePicker.setDateToToday();
         return datePicker;
+    }
+
+    /**
+     * Creates pop up menu for the task table
+     * @param taskMenu JTable with content for edit
+     * @return created menu
+     */
+    private JPopupMenu createTaskTablePopupMenu(JTable taskMenu){
+        JPopupMenu menu = new JPopupMenu();
+        menu.add(new EditAction(taskMenu, DEMO_DATA.getCategories()));
+        return menu;
     }
 
 
