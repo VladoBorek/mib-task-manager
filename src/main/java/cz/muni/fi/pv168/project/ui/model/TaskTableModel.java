@@ -49,7 +49,16 @@ public class TaskTableModel extends AbstractTableModel {
     public Task getEntity(int rowIndex) {
         return tasks.get(rowIndex);
     }
+    public void updateRow(Task task) {
+        int rowIndex = tasks.indexOf(task);
+        fireTableRowsUpdated(rowIndex, rowIndex);
+    }
 
+    public void addRow(Task task){
+        int newRowIndex = tasks.size();
+        tasks.add(task);
+        fireTableRowsInserted(newRowIndex, newRowIndex);
+    }
     @Override
     public String getColumnName(int columnIndex) {
         return columns.get(columnIndex).getName();
