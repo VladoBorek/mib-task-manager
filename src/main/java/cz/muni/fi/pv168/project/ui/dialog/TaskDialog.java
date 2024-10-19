@@ -7,13 +7,8 @@ import cz.muni.fi.pv168.project.model.CustomTimeUnit;
 import cz.muni.fi.pv168.project.model.Status;
 import cz.muni.fi.pv168.project.model.Task;
 import cz.muni.fi.pv168.project.model.TimeUnit;
-import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
-import cz.muni.fi.pv168.project.ui.actions.menu.Type;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class TaskDialog extends EntityDialog<Task>{
 
