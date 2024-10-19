@@ -2,8 +2,10 @@ package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.model.Category;
+import cz.muni.fi.pv168.project.ui.dialog.NewCategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
+import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -15,9 +17,9 @@ import java.util.List;
 public class AddAction extends AbstractAction {
     private final ActionType type; // type of add action
     private final JTable contentTable; // table on which the operation will be performed on
-    private final List<Category> categories; // list of categories
+    private final CategoryListModel categories; // list of categories
     private final TimeUnitListModel timeUnits; // list of time units
-    public AddAction(ActionType type, JTable contentTable, List<Category> categories, TimeUnitListModel timeUnits){
+    public AddAction(ActionType type, JTable contentTable, CategoryListModel categories, TimeUnitListModel timeUnits) {
         super("Add new " + type.toString().toLowerCase().replace('_', ' '), Icons.ADD_ICON);
         this.type = type;
         this.contentTable = contentTable;
@@ -39,11 +41,14 @@ public class AddAction extends AbstractAction {
             addTask();
         }
 
-        if (type == ActionType.TIME_UNIT) {
-            addTimeUnit();
+        switch(type) {
+            case TIME_UNIT:
+                addTimeUnit();
+                return;
+            case CATEGORY:
+                addCategory();
+                return;
         }
-
-
     }
 
     /**
@@ -61,5 +66,10 @@ public class AddAction extends AbstractAction {
     private void addTimeUnit() {
         var dialog = new TimeUnitDialog();
         dialog.show(null, "Add new time unit").ifPresent(timeUnits::addUnit);
+    }
+
+    private void addCategory() {
+        var dialog = new NewCategoryDialog();
+        dialog.show(null, "Add a new Category").ifPresent(categories::addCategory);
     }
 }

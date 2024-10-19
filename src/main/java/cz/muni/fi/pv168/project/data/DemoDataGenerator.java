@@ -41,9 +41,9 @@ public class DemoDataGenerator {
             "Mickey"
     );
 
-    public List<Category> getCategories(){ return CATEGORIES;}
-    public List<String> getCustomers(){ return CUSTOMERS;}
-    public List<String> getEmployees(){ return EMPLOYEES;}
+    public List<Category> getCategories() { return CATEGORIES;}
+    public List<String> getCustomers() { return CUSTOMERS;}
+    public List<String> getEmployees() { return EMPLOYEES;}
 
-    public List<Task> getTasks(){ return TASKS;}
+    public List<Task> getTasks() { return TASKS;}
 }
