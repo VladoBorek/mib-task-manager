@@ -1,20 +1,33 @@
 package cz.muni.fi.pv168.project.model;
 
-public class TimeUnit {
-    private final Integer baseUnitValue = 1;
-    private  final String baseUnitName = "Hour";
+public abstract class TimeUnit {
+    private static final String baseUnitName = "Hour";
 
     private String name;
 
     private Integer rate;
 
 
+    /**
+     * Creates a new instance of base time unit
+     */
+    public TimeUnit() {
+        this("Hour", 1);
+    }
+
+    /**
+     * Creates a custom TimeUnit
+     * @param name name of the unit
+     * @param rate conversion rate to the base time unit
+     */
     public TimeUnit(String name, Integer rate) {
         this.name = name;
         this.rate = rate;
     }
 
-    public String getBaseUnit() {
+
+
+    public static String getBaseUnit() {
         return baseUnitName;
     }
 

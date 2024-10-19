@@ -3,16 +3,12 @@ package cz.muni.fi.pv168.project.ui.dialog;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.model.Category;
+import cz.muni.fi.pv168.project.model.CustomTimeUnit;
 import cz.muni.fi.pv168.project.model.Status;
 import cz.muni.fi.pv168.project.model.Task;
 import cz.muni.fi.pv168.project.model.TimeUnit;
-import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
-import cz.muni.fi.pv168.project.ui.actions.menu.Type;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class TaskDialog extends EntityDialog<Task>{
 
@@ -31,7 +27,7 @@ public class TaskDialog extends EntityDialog<Task>{
 
     private final DatePicker datePicker = new DatePicker();
     //TODO add combobox for time units
-    private final TimeUnit timeUnit = new TimeUnit("Hour", 1);
+    private final TimeUnit timeUnit = new CustomTimeUnit();
 
     public TaskDialog(Task task, Object[] categories) {
         this.task = task;

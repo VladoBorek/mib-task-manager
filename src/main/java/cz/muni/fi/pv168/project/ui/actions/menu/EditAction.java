@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.project.ui.actions.menu;
 import cz.muni.fi.pv168.project.model.Category;
 import cz.muni.fi.pv168.project.ui.dialog.TaskDialog;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
@@ -13,10 +14,14 @@ public class EditAction extends AbstractAction {
 
     private final JTable contentTable;
     private final List<Category> categories;
-    public EditAction (JTable contentTable, List<Category> categories){
+    private final TimeUnitListModel timeUnits;
+    private final ActionType type;
+    public EditAction (ActionType type, JTable contentTable, List<Category> categories, TimeUnitListModel timeUnits){
         super("Edit", Icons.MANAGE_ICON);
+        this.type = type;
         this.contentTable = contentTable;
         this.categories = categories;
+        this.timeUnits = timeUnits;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -35,7 +40,5 @@ public class EditAction extends AbstractAction {
             System.out.println(task.getNameOfTask());
             dialog.show(contentTable, "Edit Task").ifPresent(taskTableModel::updateRow);
         }
-
-
     }
 }
