@@ -1,9 +1,9 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
 /**
- * Type of the selected category for actions to be performed
+ * ActionType of the selected category for actions to be performed
  */
-public enum Type {
+public enum ActionType {
     TASK,
     CATEGORY,
     TEMPLATE,

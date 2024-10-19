@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.project.ui.model;
 import cz.muni.fi.pv168.project.model.TimeUnit;
 
 import javax.swing.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,5 +30,9 @@ public class TimeUnitListModel extends AbstractListModel<TimeUnit> {
     @Override
     public TimeUnit getElementAt(int index) {
         return timeUnits.get(index);
+    }
+
+    public TimeUnit[] toArray() {
+        return timeUnits.toArray(new TimeUnit[0]);
     }
 }

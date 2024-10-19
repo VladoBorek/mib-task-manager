@@ -2,7 +2,6 @@ package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.model.Category;
-import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.dialog.TaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
@@ -14,11 +13,11 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 public class AddAction extends AbstractAction {
-    private final Type type; // type of add action
+    private final ActionType type; // type of add action
     private final JTable contentTable; // table on which the operation will be performed on
     private final List<Category> categories; // list of categories
     private final TimeUnitListModel timeUnits; // list of time units
-    public AddAction(Type type, JTable contentTable, List<Category> categories, TimeUnitListModel timeUnits){
+    public AddAction(ActionType type, JTable contentTable, List<Category> categories, TimeUnitListModel timeUnits){
         super("Add new " + type.toString().toLowerCase().replace('_', ' '), Icons.ADD_ICON);
         this.type = type;
         this.contentTable = contentTable;
@@ -36,11 +35,11 @@ public class AddAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         //TODO dialog switch for different types
         var editClass = contentTable.getModel().getClass();
-        if (editClass == TaskTableModel.class && type == Type.TASK){
+        if (editClass == TaskTableModel.class && type == ActionType.TASK){
             addTask();
         }
 
-        if (type == Type.TIME_UNIT) {
+        if (type == ActionType.TIME_UNIT) {
             addTimeUnit();
         }
 
