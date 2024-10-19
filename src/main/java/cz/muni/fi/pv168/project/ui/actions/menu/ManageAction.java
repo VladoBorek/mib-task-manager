@@ -1,7 +1,9 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.model.CustomTimeUnit;
+import cz.muni.fi.pv168.project.ui.dialog.ManageCategoriesDialog;
 import cz.muni.fi.pv168.project.ui.dialog.ManageTimeUnitDialog;
+import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -11,12 +13,14 @@ import java.awt.event.ActionEvent;
 public class ManageAction extends AbstractAction {
 
     private final TimeUnitListModel timeUnits;
+    private final CategoryListModel categories;
 
     private final ActionType type;
-    public ManageAction(ActionType type, TimeUnitListModel timeUnits){
+    public ManageAction(ActionType type, TimeUnitListModel timeUnits, CategoryListModel categories){
         super(getText(type), Icons.MANAGE_ICON);
         this.type = type;
         this.timeUnits = timeUnits;
+        this.categories = categories;
     }
 
     private static String getText(ActionType type){
@@ -32,10 +36,11 @@ public class ManageAction extends AbstractAction {
         switch (type){
             case TASK -> System.out.println("User clicked on Manage Task Button");
             case TEMPLATE -> System.out.println("User clicked on Manage Template button");
-            case CATEGORY -> System.out.println("User clicked on Manage Category button");
+            case CATEGORY -> {
+                var yo = new ManageCategoriesDialog(null, categories);
+                yo.setVisible(true);
+            }
             case TIME_UNIT -> {
-                timeUnits.addUnit(new CustomTimeUnit());
-                timeUnits.addUnit(new CustomTimeUnit("1", 2));
                 var ej = new ManageTimeUnitDialog(null, timeUnits);
                 ej.setVisible(true);
             }

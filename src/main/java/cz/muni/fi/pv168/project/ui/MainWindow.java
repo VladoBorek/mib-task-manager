@@ -79,13 +79,13 @@ public class MainWindow {
         //TODO Create TemplateTableModel and TimeUnitTableModel
         menuBar.add(createJMenu("Template",
                 new AddAction(ActionType.TEMPLATE, taskTable, categories, timeUnits),
-                new ManageAction(ActionType.TEMPLATE, timeUnits)));
+                new ManageAction(ActionType.TEMPLATE, timeUnits, categories)));
         menuBar.add((createJMenu("Categories",
                 new AddAction(ActionType.CATEGORY, taskTable, categories, timeUnits),
-                new ManageAction(ActionType.CATEGORY, timeUnits))));
+                new ManageAction(ActionType.CATEGORY, timeUnits, categories))));
         menuBar.add((createJMenu("Time Units",
                 new AddAction(ActionType.TIME_UNIT, taskTable, categories, timeUnits),
-                new ManageAction(ActionType.TIME_UNIT, timeUnits))));
+                new ManageAction(ActionType.TIME_UNIT, timeUnits, categories))));
         menuBar.add(createJMenu("Help"));
 
         return  menuBar;
