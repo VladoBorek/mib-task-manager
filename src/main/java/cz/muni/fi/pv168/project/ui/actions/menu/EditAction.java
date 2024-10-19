@@ -40,9 +40,5 @@ public class EditAction extends AbstractAction {
             System.out.println(task.getNameOfTask());
             dialog.show(contentTable, "Edit Task").ifPresent(taskTableModel::updateRow);
         }
-
-        switch (type)
-
-
     }
 }
