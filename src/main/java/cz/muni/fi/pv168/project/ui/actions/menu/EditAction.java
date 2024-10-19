@@ -2,6 +2,7 @@ package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.model.Category;
 import cz.muni.fi.pv168.project.ui.dialog.TaskDialog;
+import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -13,10 +14,10 @@ import java.util.List;
 public class EditAction extends AbstractAction {
 
     private final JTable contentTable;
-    private final List<Category> categories;
+    private final CategoryListModel categories;
     private final TimeUnitListModel timeUnits;
     private final ActionType type;
-    public EditAction (ActionType type, JTable contentTable, List<Category> categories, TimeUnitListModel timeUnits){
+    public EditAction (ActionType type, JTable contentTable, CategoryListModel categories, TimeUnitListModel timeUnits){
         super("Edit", Icons.MANAGE_ICON);
         this.type = type;
         this.contentTable = contentTable;
