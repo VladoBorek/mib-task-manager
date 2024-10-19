@@ -7,7 +7,7 @@ import cz.muni.fi.pv168.project.model.TimeUnit;
 import javax.swing.*;
 
 /**
- * @author Maroš Pavlík
+ * Dialog windows that will open when creating or editing time units
  */
 public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
@@ -18,7 +18,8 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
         conversionRateField.setValue(1);
         add("Time unit name", timeUnitNameField);
         String baseUnitName = TimeUnit.getBaseUnit();
-        add("Conversion rate to base unit (" + baseUnitName + ")", conversionRateField);
+        add("Conversion rate to " + baseUnitName + " ", conversionRateField);
+        setPanel();
     }
 
 
