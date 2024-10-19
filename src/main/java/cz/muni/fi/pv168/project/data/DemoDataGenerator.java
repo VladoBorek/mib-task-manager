@@ -15,9 +15,9 @@ public class DemoDataGenerator {
 
     private static final List<Task> TASKS= List.of(
             new Task(Status.TO_DO, new Category("Online", new Color(1,1,1)),"Rats in White", "Application", "Remy", 2, 10, new CustomTimeUnit("Day", 8), LocalDate.now()),
-            new Task(Status.ON_HOLD, new Category("In-Person", new Color(1,1,1)),"Dgs in Blue", "On-site setup", "", 12, 10, new CustomTimeUnit("Hour", 1), LocalDate.now()),
-            new Task(Status.TO_DO, new Category("Online", new Color(1,1,1)),"Rats in White", "Application", "", 0, 10, new CustomTimeUnit("Hour", 1), LocalDate.now()),
-            new Task(Status.COMPLETED, new Category("Online", new Color(1,1,1)),"Cats in Blue", "Application", "", 10, 10, new CustomTimeUnit("Hour", 1), LocalDate.now())
+            new Task(Status.ON_HOLD, new Category("In-Person", new Color(1,1,1)),"Dgs in Blue", "On-site setup", "", 12, 10, new CustomTimeUnit(), LocalDate.now()),
+            new Task(Status.TO_DO, new Category("Online", new Color(1,1,1)),"Rats in White", "Application", "", 0, 10, new CustomTimeUnit(), LocalDate.now()),
+            new Task(Status.COMPLETED, new Category("Online", new Color(1,1,1)),"Cats in Blue", "Application", "", 10, 10, new CustomTimeUnit(), LocalDate.now())
 
 
             );

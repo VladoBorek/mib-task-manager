@@ -27,7 +27,7 @@ public class TaskDialog extends EntityDialog<Task>{
 
     private final DatePicker datePicker = new DatePicker();
     //TODO add combobox for time units
-    private final TimeUnit timeUnit = new CustomTimeUnit("Hour", 1);
+    private final TimeUnit timeUnit = new CustomTimeUnit();
 
     public TaskDialog(Task task, Object[] categories) {
         this.task = task;
