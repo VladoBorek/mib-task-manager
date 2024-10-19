@@ -1,6 +1,6 @@
 package cz.muni.fi.pv168.project.model;
 
-public class TimeUnit {
+public abstract class TimeUnit {
     private final Integer baseUnitValue = 1;
     private  final String baseUnitName = "Hour";
 
