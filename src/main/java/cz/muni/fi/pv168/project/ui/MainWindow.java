@@ -23,11 +23,12 @@ public class MainWindow {
 
     public static final Color BUTTON_COLOR = new Color(190, 190, 190);
     public static final Color BG_COLOR = new Color(180, 180, 180);
+    private final static DemoDataGenerator DEMO_DATA = new DemoDataGenerator();
+    private static final List<Category> CATEGORIES = DEMO_DATA.getCategories();
+
     private final JFrame frame;
-    private final DemoDataGenerator DEMO_DATA = new DemoDataGenerator();
     private final DatePicker datePicker = createDatePicker();
-    private final List<Category> CATEGORIES = DEMO_DATA.getCategories();
-    private  final JTable taskTable;
+    private final JTable taskTable;
     private final TimeUnitListModel timeUnits = new TimeUnitListModel();
 
     /**
@@ -73,9 +74,15 @@ public class MainWindow {
 
         menuBar.add(createJMenu("File", new ImportAction(), new ExportAction()));
         //TODO Create TemplateTableModel and TimeUnitTableModel
-        menuBar.add(createJMenu("Template", new AddAction(ActionType.TEMPLATE,taskTable,CATEGORIES, timeUnits), new ManageAction(ActionType.TEMPLATE, timeUnits)));
-        menuBar.add((createJMenu("Categories",new AddAction(ActionType.CATEGORY,taskTable,CATEGORIES, timeUnits) , new ManageAction(ActionType.CATEGORY, timeUnits))));
-        menuBar.add((createJMenu("Time Units", new AddAction(ActionType.TIME_UNIT,taskTable,CATEGORIES, timeUnits), new ManageAction(ActionType.TIME_UNIT, timeUnits))));
+        menuBar.add(createJMenu("Template",
+                new AddAction(ActionType.TEMPLATE,taskTable,CATEGORIES, timeUnits),
+                new ManageAction(ActionType.TEMPLATE, timeUnits)));
+        menuBar.add((createJMenu("Categories",
+                new AddAction(ActionType.CATEGORY,taskTable,CATEGORIES, timeUnits),
+                new ManageAction(ActionType.CATEGORY, timeUnits))));
+        menuBar.add((createJMenu("Time Units",
+                new AddAction(ActionType.TIME_UNIT,taskTable,CATEGORIES, timeUnits),
+                new ManageAction(ActionType.TIME_UNIT, timeUnits))));
         menuBar.add(createJMenu("Help"));
 
         return  menuBar;
@@ -110,25 +117,29 @@ public class MainWindow {
         JCheckBox filterToDo = createFilterCheckbox("To-Do", true);
         JCheckBox filterInProgress = createFilterCheckbox("In-Progress", true);
         JCheckBox filterComplete = createFilterCheckbox("Completed", true);
-        JCheckBox filterOnHold = createFilterCheckbox("On-Hold", true);;
+        JCheckBox filterOnHold = createFilterCheckbox("On-Hold", true);
 
         JCheckBox filterOverdue = createFilterCheckbox("Filter Overdue", false);
         JCheckBox filterOverBudget = createFilterCheckbox("Filter Over budget", false);
 
-        JComboBox<Object> categoryComboBox = createFilterComboBox(DEMO_DATA.getCategories().toArray(), "--Filter by category--");
-        JComboBox<Object> assigneeComboBox = createFilterComboBox(DEMO_DATA.getEmployees().toArray(), "--Filter by assignee--");
-        JComboBox<Object> customerComboBox = createFilterComboBox(DEMO_DATA.getCustomers().toArray(), "--Filter by customer--");
+        JComboBox<Object> categoryComboBox = createFilterComboBox(DEMO_DATA.getCategories().toArray(),
+                "--Category--");
+        JComboBox<Object> assigneeComboBox = createFilterComboBox(DEMO_DATA.getEmployees().toArray(),
+                "--Assignee--");
+        JComboBox<Object> customerComboBox = createFilterComboBox(DEMO_DATA.getCustomers().toArray(),
+                "--Customer--");
 
         Map<Boolean,List<JCheckBox>> resetValuesCheckboxes = Map.of(
                 true,List.of(filterToDo, filterInProgress, filterComplete, filterOnHold),
                 false, List.of(filterOverdue, filterOverBudget));
 
         Map<JComboBox<Object>, String> resetValuesComboBoxes = Map.of(
-            categoryComboBox,"--Filter by category--",
-            assigneeComboBox, "--Filter by assignee--",
-            customerComboBox, "--Filter by customer--"
+            categoryComboBox,"--Category--",
+            assigneeComboBox, "--Assignee--",
+            customerComboBox, "--Customer--"
         );
-        JButton addNewTaskButton = createButton("Add New Task ", Icons.ADD_ICON, new AddAction(ActionType.TASK,taskTable, CATEGORIES, timeUnits));
+        JButton addNewTaskButton = createButton("New Task ", Icons.ADD_ICON,
+                new AddAction(ActionType.TASK,taskTable, CATEGORIES, timeUnits));
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.DELETE_ICON,
                 new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, datePicker));
 
