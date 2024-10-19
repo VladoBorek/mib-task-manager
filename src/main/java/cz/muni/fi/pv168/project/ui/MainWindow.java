@@ -21,9 +21,9 @@ import java.util.Map;
  */
 public class MainWindow {
 
-    private final JFrame frame;
     public static final Color BUTTON_COLOR = new Color(190, 190, 190);
     public static final Color BG_COLOR = new Color(180, 180, 180);
+    private final JFrame frame;
     private final DemoDataGenerator DEMO_DATA = new DemoDataGenerator();
     private final DatePicker datePicker = createDatePicker();
     private final List<Category> CATEGORIES = DEMO_DATA.getCategories();
@@ -44,8 +44,6 @@ public class MainWindow {
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
         frame.add(new JScrollPane(taskTable), BorderLayout.CENTER);
-
-
     }
 
     /**
@@ -70,7 +68,6 @@ public class MainWindow {
      * @return menuBar for the application
      */
     private JMenuBar createMenuBar(){
-
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(new Color(240, 240, 240));
 
@@ -82,7 +79,6 @@ public class MainWindow {
         menuBar.add(createJMenu("Help"));
 
         return  menuBar;
-
     }
 
     /**
@@ -91,8 +87,7 @@ public class MainWindow {
      * @param actionList Actions for the JMenu
      * @return JMenu with the name and actions
      */
-    private JMenu createJMenu(String name, Action ... actionList)
-    {
+    private JMenu createJMenu(String name, Action ... actionList) {
         JMenu menu = new JMenu(name);
         if (actionList.length == 0) {
             menu.add("PLACEHOLDER_ACTION");
@@ -112,10 +107,10 @@ public class MainWindow {
         JToolBar filterBar = new JToolBar();
         filterBar.setFloatable(false);
 
-        JCheckBox filterToDo = createFilterCheckbox("Show To-Do", true);
-        JCheckBox filterInProgress = createFilterCheckbox("Show In-Progress", true);
-        JCheckBox filterComplete = createFilterCheckbox("Show Completed", true);
-        JCheckBox filterOnHold = createFilterCheckbox("Show On-Hold", true);;
+        JCheckBox filterToDo = createFilterCheckbox("To-Do", true);
+        JCheckBox filterInProgress = createFilterCheckbox("In-Progress", true);
+        JCheckBox filterComplete = createFilterCheckbox("Completed", true);
+        JCheckBox filterOnHold = createFilterCheckbox("On-Hold", true);;
 
         JCheckBox filterOverdue = createFilterCheckbox("Filter Overdue", false);
         JCheckBox filterOverBudget = createFilterCheckbox("Filter Over budget", false);
@@ -189,8 +184,7 @@ public class MainWindow {
      * @param tasks Tasks for the table
      * @return Table with tasks
      */
-    private JTable createTaskTable(List<Task> tasks)
-    {
+    private JTable createTaskTable(List<Task> tasks) {
         var model = new TaskTableModel(tasks);
         var table = new JTable(model);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
@@ -209,8 +203,7 @@ public class MainWindow {
      * @param a Action to be performed
      * @return Button with input characteristics
      */
-    private JButton createButton(String buttonText, Icon icon, Action a)
-    {
+    private JButton createButton(String buttonText, Icon icon, Action a) {
         var button = new JButton(buttonText, icon);
         button.addActionListener(a);
         button.setBackground(BUTTON_COLOR);
@@ -224,8 +217,7 @@ public class MainWindow {
      * @param placeholderText Placeholder text to be shown
      * @return comboBox with input parameters
      */
-    private JComboBox<Object> createFilterComboBox(Object [] items, String placeholderText)
-    {
+    private JComboBox<Object> createFilterComboBox(Object [] items, String placeholderText) {
         JComboBox<Object> comboBox = new JComboBox<>(items);
         comboBox.setEditable(true);
         comboBox.setSelectedItem(placeholderText);
@@ -253,11 +245,9 @@ public class MainWindow {
      * @param taskMenu JTable with content for edit
      * @return created menu
      */
-    private JPopupMenu createTaskTablePopupMenu(JTable taskMenu){
+    private JPopupMenu createTaskTablePopupMenu(JTable taskMenu) {
         JPopupMenu menu = new JPopupMenu();
         menu.add(new EditAction(ActionType.TASK, taskMenu, DEMO_DATA.getCategories(), null));
         return menu;
     }
-
-
 }
