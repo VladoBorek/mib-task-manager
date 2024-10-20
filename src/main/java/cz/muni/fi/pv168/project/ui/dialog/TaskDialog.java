@@ -4,6 +4,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.model.Category;
 import cz.muni.fi.pv168.project.model.CustomTimeUnit;
+import cz.muni.fi.pv168.project.model.Employee;
 import cz.muni.fi.pv168.project.model.Status;
 import cz.muni.fi.pv168.project.model.Task;
 import cz.muni.fi.pv168.project.model.TimeUnit;
@@ -113,14 +114,6 @@ public class TaskDialog extends EntityDialog<Task>{
 
     @Override
     Task getEntity() {
-//        task.setNameOfTask(taskNameField.getText());
-//        task.setDescription(descriptionArea.getText());
-//        task.setCustomer(customerField.getText());
-//        task.setCategory((Category) categoryComboBox.getSelectedItem());
-//        task.setStatus((Status) statusComboBox.getSelectedItem());
-//        task.setLoggedTime(loggedTimeField.getValue());
-//        task.setAllocatedTime(allocatedTimeField.getValue());
-//        task.setDueDate(datePicker.getDate());
         if (!validateFields()) {
             return null;
         }
