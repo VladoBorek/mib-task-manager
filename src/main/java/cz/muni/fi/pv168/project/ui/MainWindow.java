@@ -75,7 +75,7 @@ public class MainWindow {
         menuBar.setBackground(new Color(240, 240, 240));
 
         menuBar.add(createJMenu("File", new ImportAction(), new ExportAction()));
-        //TODO Create TemplateTableModel and TimeUnitTableModel
+        //TODO Create TemplateListModel
         menuBar.add(createJMenu("Template",
                 new AddAction(ActionType.TEMPLATE, taskTable, categories, timeUnits),
                 new ManageAction(ActionType.TEMPLATE, timeUnits, categories, frame)));

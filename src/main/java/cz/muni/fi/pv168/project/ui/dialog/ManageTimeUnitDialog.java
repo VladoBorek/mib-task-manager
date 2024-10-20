@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.project.ui.dialog;
 import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
+import cz.muni.fi.pv168.project.ui.actions.menu.DeleteAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.EditAction;
 import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 
@@ -11,10 +12,12 @@ import javax.swing.*;
 import java.awt.*;
 
 
+/**
+ * Dialog that will open when clicking on manage Time units button.
+ * It offers the user to select which time unit to edit or delete.
+ */
 public class ManageTimeUnitDialog extends JDialog {
 
-
-    private JComboBox<TimeUnit> timeUnitComboBox;
     private TimeUnit selectedTimeUnit;
     private final TimeUnitListModel timeUnits;
 
@@ -23,24 +26,19 @@ public class ManageTimeUnitDialog extends JDialog {
         setLayout(new BorderLayout());
 
         this.timeUnits = timeUnits;
-        timeUnitComboBox = new JComboBox<>(new DefaultComboBoxModel<>(timeUnits.toArray()));
+
+        var timeUnitComboBox = new JComboBox<>(new DefaultComboBoxModel<>(timeUnits.toArray()));
         JPanel comboPanel = new JPanel();
         comboPanel.add(new JLabel("Select time unit:"));
         comboPanel.add(timeUnitComboBox);
 
-        JButton editButton = createButton("Edit", new EditAction(ActionType.TIME_UNIT, null ,null, timeUnits, null));
-//        JButton deleteButton = new JButton("Delete");
-//
-//        editButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                selectedTimeUnit = (TimeUnit) timeUnitComboBox.getSelectedItem();
-//                dispose();
-//            }
-//        });
-
-        add(comboPanel, BorderLayout.CENTER);
-        add(editButton, BorderLayout.SOUTH);
+        JButton editButton = createButton("Edit", new EditAction(ActionType.TIME_UNIT,
+                null ,null, timeUnits, timeUnitComboBox));
+        JButton deleteButton = createButton("Delete", new DeleteAction(ActionType.TIME_UNIT,
+                null ,null, timeUnits, timeUnitComboBox));
+        add(comboPanel, BorderLayout.NORTH);
+        add(editButton, BorderLayout.CENTER);
+        add(deleteButton, BorderLayout.SOUTH);
 
         pack();
         setLocationRelativeTo(parent);

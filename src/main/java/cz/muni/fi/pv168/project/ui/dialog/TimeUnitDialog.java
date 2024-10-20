@@ -16,12 +16,20 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
     public TimeUnitDialog() {
         conversionRateField.setValue(1);
+
         add("Time unit name", timeUnitNameField);
-        String baseUnitName = TimeUnit.getBaseUnit();
-        add("Conversion rate to " + baseUnitName + " ", conversionRateField);
+        add("Conversion rate to " + TimeUnit.getBaseUnit() + "  ", conversionRateField);
         setPanel();
     }
 
+    public TimeUnitDialog(TimeUnit unit) {
+        timeUnitNameField.setText(unit.getName());
+        conversionRateField.setValue(unit.getRate());
+
+        add("Time unit name", timeUnitNameField);
+        add("Conversion rate to " + TimeUnit.getBaseUnit() + "  ", conversionRateField);
+        setPanel();
+    }
 
     @Override
     TimeUnit getEntity() {
