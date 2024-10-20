@@ -27,24 +27,19 @@ public class TaskDialog extends EntityDialog<Task>{
 
     private final JComboBox<Status> statusComboBox = new JComboBox<>(Status.values());
 
-    private final CategoryListModel categories;
     private final JComboBox<Object> categoryComboBox;
-    private final JComboBox<TimeUnit> timeUnitComboBox;
 
     private final JIntegerTextField loggedTimeField = new JIntegerTextField();
     private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
 
     private final DatePicker datePicker = new DatePicker();
 
-    private final JComboBox<Object> timeUnitsComboBox;
-    private final TimeUnitListModel  timeUnits;
+    private final JComboBox<TimeUnit> timeUnitsComboBox;
     private final TimeUnit timeUnit = new CustomTimeUnit();
 
     public TaskDialog(Task task, CategoryListModel categories, TimeUnitListModel  timeUnits) {
         super(500, 600);
         this.task = task;
-        this.categories = categories;
-        this.timeUnits = timeUnits;
 
         this.categoryComboBox = new JComboBox<>(categories.toArray());
         this.timeUnitsComboBox = new JComboBox<>(timeUnits.toArray());
@@ -73,7 +68,7 @@ public class TaskDialog extends EntityDialog<Task>{
         setPanel();
     }
 
-    private void setValues(Task task)
+    private void setValues()
     {
         taskNameField.setText(task.getNameOfTask());
         descriptionArea.setText(task.getDescription());
