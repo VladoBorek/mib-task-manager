@@ -87,13 +87,13 @@ public class MainWindow {
         menuBar.add(createJMenu("File", new ImportAction(), new ExportAction()));
         //TODO Create TemplateListModel
         menuBar.add(createJMenu("Template",
-                new AddAction(ActionType.TEMPLATE, taskTable, categories, timeUnits, templates),
+                new AddAction(ActionType.TEMPLATE, taskTable, categories, timeUnits, templates, null),
                 new ManageAction(ActionType.TEMPLATE, timeUnits, categories, templates, frame)));
         menuBar.add((createJMenu("Categories",
-                new AddAction(ActionType.CATEGORY, taskTable, categories, timeUnits, templates),
+                new AddAction(ActionType.CATEGORY, taskTable, categories, timeUnits, templates, null),
                 new ManageAction(ActionType.CATEGORY, timeUnits, categories, templates, frame))));
         menuBar.add((createJMenu("Time Units",
-                new AddAction(ActionType.TIME_UNIT, taskTable, categories, timeUnits, templates),
+                new AddAction(ActionType.TIME_UNIT, taskTable, categories, timeUnits, templates, null),
                 new ManageAction(ActionType.TIME_UNIT, timeUnits, categories, templates, frame))));
         menuBar.add(createJMenu("Help"));
 
@@ -150,8 +150,13 @@ public class MainWindow {
             assigneeComboBox, "--Assignee--",
             customerComboBox, "--Customer--"
         );
+//        JButton addNewTaskButton = createButton("New Task", Icons.ADD_ICON,
+//                new AddAction(ActionType.TASK, taskTable, categories, timeUnits, templates));
+
         JButton addNewTaskButton = createButton("New Task", Icons.ADD_ICON,
-                new AddAction(ActionType.TASK, taskTable, categories, timeUnits, templates));
+                new ChooseTemplateAction(taskTable, categories, timeUnits, templates, frame));
+
+
         JButton resetFiltersButton = createButton("Reset Filters", Icons.DELETE_ICON,
                 new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, datePicker));
 

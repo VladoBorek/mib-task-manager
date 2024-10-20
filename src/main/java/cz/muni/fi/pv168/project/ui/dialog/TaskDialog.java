@@ -95,13 +95,13 @@ public class TaskDialog extends EntityDialog<Task>{
     }
 
     private boolean validateFields() {
-        if ((taskNameField.getText().trim().isEmpty()) ||
-                        (customerField.getText().trim().isEmpty()) ||
-                        (categoryComboBox.getSelectedItem() == null) ||
-                        (statusComboBox.getSelectedItem() == null) ||
-                        (timeUnitsComboBox.getSelectedItem() == null) ||
-                        (allocatedTimeField.getText().trim().isEmpty()) ||
-                        (loggedTimeField.getText().trim().isEmpty())
+        if ((taskNameField.getText().trim().isEmpty())
+                || (customerField.getText().trim().isEmpty())
+                || (categoryComboBox.getSelectedItem() == null)
+                || (statusComboBox.getSelectedItem() == null)
+                || (timeUnitsComboBox.getSelectedItem() == null)
+                || (allocatedTimeField.getText().trim().isEmpty())
+                || (loggedTimeField.getText().trim().isEmpty())
         ) {
             JOptionPane.showMessageDialog(null, "Please fill all information", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -115,7 +115,6 @@ public class TaskDialog extends EntityDialog<Task>{
         if (!validateFields()) {
             return null;
         }
-
         var task = this.task;
 
         if (task != null) {
@@ -139,8 +138,6 @@ public class TaskDialog extends EntityDialog<Task>{
                     (TimeUnit) timeUnitsComboBox.getSelectedItem(),
                     datePicker.getDate());
         }
-
         return task;
-
     }
 }
