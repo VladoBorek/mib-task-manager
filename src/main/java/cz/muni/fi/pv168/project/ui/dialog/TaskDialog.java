@@ -95,6 +95,22 @@ public class TaskDialog extends EntityDialog<Task>{
         addCentered("Due date", datePicker);
     }
 
+    private boolean validateFields() {
+        if ((taskNameField.getText().trim().isEmpty()) ||
+                        (customerField.getText().trim().isEmpty()) ||
+                        (categoryComboBox.getSelectedItem() == null) ||
+                        (statusComboBox.getSelectedItem() == null) ||
+                        (timeUnitsComboBox.getSelectedItem() == null) ||
+                        (allocatedTimeField.getText().trim().isEmpty()) ||
+                        (loggedTimeField.getText().trim().isEmpty())
+        ) {
+            JOptionPane.showMessageDialog(null, "Please fill all information", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+
     @Override
     Task getEntity() {
 //        task.setNameOfTask(taskNameField.getText());
@@ -105,6 +121,10 @@ public class TaskDialog extends EntityDialog<Task>{
 //        task.setLoggedTime(loggedTimeField.getValue());
 //        task.setAllocatedTime(allocatedTimeField.getValue());
 //        task.setDueDate(datePicker.getDate());
+        if (!validateFields()) {
+            return null;
+        }
+
         var task = this.task;
 
         if (task != null) {
