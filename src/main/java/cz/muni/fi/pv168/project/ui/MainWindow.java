@@ -47,6 +47,9 @@ public class MainWindow {
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
         frame.add(new JScrollPane(taskTable), BorderLayout.CENTER);
+        frame.setLocationRelativeTo(null);
+        frame.pack();
+
     }
 
     /**
