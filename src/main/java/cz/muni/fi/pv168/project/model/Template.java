@@ -20,6 +20,10 @@ public class Template {
         this.templateName = templateName;
     }
 
+    public Template() {
+        this(null, null, null, null, "<Don't use a template>");
+    }
+
     public String getName() {
         return name;
     }

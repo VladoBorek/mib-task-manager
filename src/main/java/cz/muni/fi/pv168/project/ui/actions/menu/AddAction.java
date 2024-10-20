@@ -1,6 +1,8 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
+import cz.muni.fi.pv168.project.model.Task;
+import cz.muni.fi.pv168.project.model.Template;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
@@ -13,6 +15,7 @@ import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.util.Objects;
 
 public class AddAction extends AbstractAction {
     private final ActionType type;
@@ -20,18 +23,21 @@ public class AddAction extends AbstractAction {
     private final CategoryListModel categories;
     private final TimeUnitListModel timeUnits;
     private final TemplateListModel templates;
+    private final JComboBox<Template> chosenTemplate;
 
 
     public AddAction(ActionType type, JTable contentTable,
                      CategoryListModel categories,
                      TimeUnitListModel timeUnits,
-                     TemplateListModel templates) {
+                     TemplateListModel templates,
+                     JComboBox<Template> chosenTemplate) {
         super("Add new " + type.toString().toLowerCase().replace('_', ' '), Icons.ADD_ICON);
         this.type = type;
         this.contentTable = contentTable;
         this.categories = categories;
         this.timeUnits = timeUnits;
         this.templates = templates;
+        this.chosenTemplate = chosenTemplate;
     }
 
 
@@ -66,7 +72,14 @@ public class AddAction extends AbstractAction {
      */
     private void addTask() {
         var taskTableModel = (TaskTableModel) contentTable.getModel();
-        var dialog = new TaskDialog(null, categories, timeUnits);
+        TaskDialog dialog;
+        if (((Template) Objects.requireNonNull(chosenTemplate.getSelectedItem()))
+                .getTemplateName().compareTo("<Don't use a template>") == 0) {
+            dialog = new TaskDialog(null, categories, timeUnits);
+        } else {
+            dialog = new TaskDialog(new Task((Template) chosenTemplate.getSelectedItem()), categories, timeUnits);
+        }
+
         dialog.show(contentTable, "Add new Task").ifPresent(taskTableModel::addRow);
     }
 
