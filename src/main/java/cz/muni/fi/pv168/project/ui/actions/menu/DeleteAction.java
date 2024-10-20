@@ -16,6 +16,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Objects;
 
 public class DeleteAction extends AbstractAction {
 
@@ -64,7 +65,15 @@ public class DeleteAction extends AbstractAction {
                 return;
             case TIME_UNIT:
                 var timeUnit = (TimeUnit) comboBox.getSelectedItem();
-                data.getTimeUnits().removeCategory(timeUnit);
+
+                assert timeUnit != null;
+                if (Objects.equals(timeUnit.getName(), "Hour")){
+                    JFrame frame = new JFrame();
+                    JOptionPane.showMessageDialog(frame, "You cannot delete \"Hour\" Time Unit!");
+                    return;
+                }
+                data.getTimeUnits.removeTimeUnit(timeUnit);
+
                 comboBox.removeItem(timeUnit);
                 return;
             case TEMPLATE:
