@@ -29,6 +29,7 @@ public class TaskDialog extends EntityDialog<Task>{
 
     private final CategoryListModel categories;
     private final JComboBox<Object> categoryComboBox;
+    private final JComboBox<TimeUnit> timeUnitComboBox;
 
     private final JIntegerTextField loggedTimeField = new JIntegerTextField();
     private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
@@ -72,7 +73,7 @@ public class TaskDialog extends EntityDialog<Task>{
         setPanel();
     }
 
-    private void setValues()
+    private void setValues(Task task)
     {
         taskNameField.setText(task.getNameOfTask());
         descriptionArea.setText(task.getDescription());

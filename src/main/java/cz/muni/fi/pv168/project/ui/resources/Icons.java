@@ -10,12 +10,20 @@ import javax.swing.ImageIcon;
  */
 public final class Icons {
 
+    private static final String RESOURCE_PATH = "src/main/resources/cz.muni.fi.pv168.project.ui.resources/";
     public static final Icon DELETE_ICON = createIcon("Crystal_Clear_action_button_cancel.png");
     public static final Icon MANAGE_ICON = createIcon("Crystal_Clear_action_edit.png");
     public static final Icon ADD_ICON = createIcon("Crystal_Clear_action_edit_add.png");
     public static final Icon QUIT_ICON = createIcon("Crystal_Clear_action_exit.png");
     public static  final Icon IMPORT_ICON = createIcon("Crystal_Clear_action_down.png");
     public static final Icon EXPORT_ICON = createIcon("Crystal_Clear_action_up.png");
+    public static final Icon MIB_ICON = createIcon("MIB_Icon.png");
+
+    public static final ImageIcon MIB_TM_IMAGE = new ImageIcon(RESOURCE_PATH + "MIB_TM.png");
+
+    public static final ImageIcon APP_ICON = new ImageIcon(RESOURCE_PATH + "AppIcon.png");
+
+
 
     /**
      * Private constructor to prevent instantiation.
@@ -30,6 +38,6 @@ public final class Icons {
      * @return Icon from the path
      */
     private static ImageIcon createIcon(String name) {
-        return  new ImageIcon("src/main/resources/cz.muni.fi.pv168.project.ui.resources/" + name);
+        return  new ImageIcon(RESOURCE_PATH + name);
     }
 }

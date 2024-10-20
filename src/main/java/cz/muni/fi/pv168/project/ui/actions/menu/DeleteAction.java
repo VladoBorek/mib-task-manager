@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.model.Category;
+import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TaskDialog;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
@@ -19,7 +20,7 @@ public class DeleteAction extends AbstractAction {
     private final TimeUnitListModel timeUnits;
     private final ActionType type;
     public DeleteAction(ActionType type, JTable contentTable, CategoryListModel categories,
-                        TimeUnitListModel timeUnits, JComboBox<Category> comboBox) {
+                        TimeUnitListModel timeUnits, JComboBox comboBox) {
         super("Edit", Icons.MANAGE_ICON);
         this.type = type;
         this.contentTable = contentTable;
@@ -49,6 +50,12 @@ public class DeleteAction extends AbstractAction {
             case CATEGORY:
                 var category = (Category) comboBox.getSelectedItem();
                 categories.removeCategory(category);
+                comboBox.removeItem(category);
+                return;
+            case TIME_UNIT:
+                var timeUnit = (TimeUnit) comboBox.getSelectedItem();
+                timeUnits.removeCategory(timeUnit);
+                comboBox.removeItem(timeUnit);
                 return;
         }
     }

@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.project.ui.model;
 
+import cz.muni.fi.pv168.project.model.Category;
 import cz.muni.fi.pv168.project.model.TimeUnit;
 
 import javax.swing.*;
@@ -22,6 +23,14 @@ public class TimeUnitListModel extends AbstractListModel<TimeUnit> {
         timeUnits.add(unit);
     }
 
+    public TimeUnit[] toArray() {
+        return timeUnits.toArray(new TimeUnit[0]);
+    }
+
+    public void removeCategory(TimeUnit unit) {
+        timeUnits.remove(unit);
+    }
+
     @Override
     public int getSize() {
         return timeUnits.size();
@@ -30,9 +39,5 @@ public class TimeUnitListModel extends AbstractListModel<TimeUnit> {
     @Override
     public TimeUnit getElementAt(int index) {
         return timeUnits.get(index);
-    }
-
-    public TimeUnit[] toArray() {
-        return timeUnits.toArray(new TimeUnit[0]);
     }
 }
