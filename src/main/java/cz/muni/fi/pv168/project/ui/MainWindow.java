@@ -5,10 +5,13 @@ import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.model.CustomTimeUnit;
 import cz.muni.fi.pv168.project.model.DataManager;
 import cz.muni.fi.pv168.project.model.TimeUnit;
+import cz.muni.fi.pv168.project.model.*;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.model.CategoryCellRenderer;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
-import cz.muni.fi.pv168.project.ui.model.EmployeeListModel;
+
+import cz.muni.fi.pv168.project.ui.model.StatisticsTableModel;
+
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.model.TemplateListModel;
@@ -36,6 +39,11 @@ public class MainWindow {
     private final JFrame frame;
     private final DatePicker datePicker = createDatePicker();
     private final JTable taskTable;
+    private final JTable statisticsTable;
+    private final TimeUnitListModel timeUnits = new TimeUnitListModel(new ArrayList<>());
+    private final CategoryListModel categories = new CategoryListModel(new ArrayList<>(DEMO_DATA.getCategories()));
+    private final TemplateListModel templates = new TemplateListModel(new ArrayList<>());
+
     private final DataManager data;
 
     /**
@@ -50,11 +58,14 @@ public class MainWindow {
 
         taskTable = createTaskTable(DEMO_DATA.getTasks());
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
+
+        statisticsTable = createStatisticsTable();
         data = new DataManager();
 
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
         frame.add(new JScrollPane(taskTable), BorderLayout.CENTER);
+        frame.add(new JScrollPane(statisticsTable), BorderLayout.SOUTH);
         frame.setLocationRelativeTo(null);
         frame.pack();
     }
@@ -226,6 +237,14 @@ public class MainWindow {
         categoryColumn.setCellRenderer(new CategoryCellRenderer());
 
 
+        return table;
+    }
+
+    private JTable createStatisticsTable(){
+        var model = new StatisticsTableModel();
+        var table = new JTable(model);
+
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         return table;
     }
 
