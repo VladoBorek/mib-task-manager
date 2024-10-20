@@ -20,10 +20,10 @@ public class DemoDataGenerator {
     );
 
     private static final List<Task> TASKS= List.of(
-            new Task(Status.TO_DO, CATEGORIES.get(0),"Rats in White", "Application", "Remy", 2, 10, new CustomTimeUnit("Day", 8), LocalDate.now()),
-            new Task(Status.ON_HOLD, CATEGORIES.get(1),"Dgs in Blue", "On-site setup", "", 12, 10, new CustomTimeUnit(), LocalDate.now()),
-            new Task(Status.TO_DO, CATEGORIES.get(2),"Rats in White", "Application", "", 0, 10, new CustomTimeUnit(), LocalDate.now()),
-            new Task(Status.COMPLETED, CATEGORIES.get(0),"Cats in Blue", "Application", "", 10, 10, new CustomTimeUnit(), LocalDate.now())
+            new Task(Status.TO_DO, "Develop the core application functionality for the 'Rats in White' project, focused on user interface improvements.", CATEGORIES.get(0),"Rats in White", "Application", "Remy", 2, 10, new CustomTimeUnit("Day", 8), LocalDate.now()),
+            new Task(Status.ON_HOLD,"Set up equipment and configure software on-site for the 'Dgs in Blue' project, pending further client instructions.", CATEGORIES.get(1),"Dgs in Blue", "On-site setup", "", 12, 10, new CustomTimeUnit(), LocalDate.now()),
+            new Task(Status.TO_DO, "Continue building additional features for the 'Rats in White' project, ensuring integration with backend services.", CATEGORIES.get(2),"Rats in White", "Application", "", 0, 10, new CustomTimeUnit(), LocalDate.now()),
+            new Task(Status.COMPLETED, "Finalize the application development for the 'Cats in Blue' project, including testing and deployment.", CATEGORIES.get(0),"Cats in Blue", "Application", "", 10, 10, new CustomTimeUnit(), LocalDate.now())
 
 
             );
