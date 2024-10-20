@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
+import cz.muni.fi.pv168.project.model.DataManager;
 import cz.muni.fi.pv168.project.model.Task;
 import cz.muni.fi.pv168.project.model.Template;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
@@ -20,23 +21,17 @@ import java.util.Objects;
 public class AddAction extends AbstractAction {
     private final ActionType type;
     private final JTable contentTable;
-    private final CategoryListModel categories;
-    private final TimeUnitListModel timeUnits;
-    private final TemplateListModel templates;
+    private final DataManager data;
     private final JComboBox<Template> chosenTemplate;
 
 
     public AddAction(ActionType type, JTable contentTable,
-                     CategoryListModel categories,
-                     TimeUnitListModel timeUnits,
-                     TemplateListModel templates,
+                     DataManager data,
                      JComboBox<Template> chosenTemplate) {
         super("Add new " + type.toString().toLowerCase().replace('_', ' '), Icons.ADD_ICON);
         this.type = type;
         this.contentTable = contentTable;
-        this.categories = categories;
-        this.timeUnits = timeUnits;
-        this.templates = templates;
+        this.data = data;
         this.chosenTemplate = chosenTemplate;
     }
 
@@ -75,9 +70,9 @@ public class AddAction extends AbstractAction {
         TaskDialog dialog;
         if (((Template) Objects.requireNonNull(chosenTemplate.getSelectedItem()))
                 .getTemplateName().compareTo("<Don't use a template>") == 0) {
-            dialog = new TaskDialog(null, categories, timeUnits);
+            dialog = new TaskDialog(null, data);
         } else {
-            dialog = new TaskDialog(new Task((Template) chosenTemplate.getSelectedItem()), categories, timeUnits);
+            dialog = new TaskDialog(new Task((Template) chosenTemplate.getSelectedItem()), data);
         }
 
         dialog.show(contentTable, "Add new Task").ifPresent(taskTableModel::addRow);
@@ -88,7 +83,7 @@ public class AddAction extends AbstractAction {
      */
     private void addTimeUnit() {
         var dialog = new TimeUnitDialog();
-        dialog.show(null, "Add new time unit").ifPresent(timeUnits::addUnit);
+        dialog.show(null, "Add new time unit").ifPresent(data.getTimeUnits()::addUnit);
     }
 
     /**
@@ -96,11 +91,11 @@ public class AddAction extends AbstractAction {
      */
     private void addCategory() {
         var dialog = new CategoryDialog();
-        dialog.show(null, "Add a new Category").ifPresent(categories::addCategory);
+        dialog.show(null, "Add a new Category").ifPresent(data.getCategories()::addCategory);
     }
 
     private void addTemplate() {
-        var dialog = new TemplateDialog(categories, timeUnits, null);
-        dialog.show(null, "Add a new Template").ifPresent(templates::addTemplate);
+        var dialog = new TemplateDialog(data, null);
+        dialog.show(null, "Add a new Template").ifPresent(data.getTemplates()::addTemplate);
     }
 }

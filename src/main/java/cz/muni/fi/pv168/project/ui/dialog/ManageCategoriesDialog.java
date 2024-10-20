@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.ui.dialog;
 
 import cz.muni.fi.pv168.project.model.Category;
+import cz.muni.fi.pv168.project.model.DataManager;
 import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
@@ -16,20 +17,20 @@ import java.awt.event.ActionListener;
 
 public class ManageCategoriesDialog extends JDialog {
 
-    public ManageCategoriesDialog(JFrame parent, CategoryListModel categories) {
+    public ManageCategoriesDialog(JFrame parent, DataManager data) {
         super(parent, "Manage categories", true);
         setLayout(new BorderLayout());
 
 
-        var comboBox = new JComboBox<>(new DefaultComboBoxModel<>(categories.toArray()));
+        var comboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getCategories().toArray()));
         var comboPanel = new JPanel();
         comboPanel.add(new JLabel("Select a category:"));
         comboPanel.add(comboBox);
 
         JButton editButton = createButton("Edit", new EditAction(ActionType.CATEGORY,
-                null ,categories, null, comboBox));
+                null , comboBox, data));
         JButton deleteButton = createButton("Delete", new DeleteAction(ActionType.CATEGORY,
-                null ,categories, null, null, comboBox));
+                null ,comboBox , data));
 
         add(comboPanel, BorderLayout.NORTH);
         add(editButton, BorderLayout.CENTER);

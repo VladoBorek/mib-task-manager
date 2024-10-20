@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.model.Category;
+import cz.muni.fi.pv168.project.model.DataManager;
 import cz.muni.fi.pv168.project.model.Template;
 import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
@@ -15,26 +16,22 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Objects;
 
 public class DeleteAction extends AbstractAction {
 
     private final JTable contentTable;
     private final JComboBox comboBox;
-    private final CategoryListModel categories;
-    private final TimeUnitListModel timeUnits;
+    private final DataManager data;
     private final ActionType type;
-    private final TemplateListModel templates;
 
     // TODO: SOMEHOW FIX RAW USE OF JComboBox
-    public DeleteAction(ActionType type, JTable contentTable, CategoryListModel categories,
-                        TimeUnitListModel timeUnits, TemplateListModel templates, JComboBox comboBox) {
+    public DeleteAction(ActionType type, JTable contentTable, JComboBox comboBox, DataManager data) {
         super("Delete", Icons.DELETE_ICON);
         this.type = type;
         this.contentTable = contentTable;
-        this.categories = categories;
-        this.timeUnits = timeUnits;
+        this.data = data;
         this.comboBox = comboBox;
-        this.templates = templates;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -63,17 +60,25 @@ public class DeleteAction extends AbstractAction {
                 return;
             case CATEGORY:
                 var category = (Category) comboBox.getSelectedItem();
-                categories.removeCategory(category);
+                data.getCategories().removeCategory(category);
                 comboBox.removeItem(category);
                 return;
             case TIME_UNIT:
                 var timeUnit = (TimeUnit) comboBox.getSelectedItem();
-                timeUnits.removeCategory(timeUnit);
+
+                assert timeUnit != null;
+                if (Objects.equals(timeUnit.getName(), "Hour")){
+                    JFrame frame = new JFrame();
+                    JOptionPane.showMessageDialog(frame, "You cannot delete \"Hour\" Time Unit!");
+                    return;
+                }
+                data.getTimeUnits().removeTimeUnit(timeUnit);
+
                 comboBox.removeItem(timeUnit);
                 return;
             case TEMPLATE:
                 var template = (Template) comboBox.getSelectedItem();
-                templates.removeTemplate(template);
+                data.getTemplates().removeTemplate(template);
                 comboBox.removeItem(template);
                 return;
         }

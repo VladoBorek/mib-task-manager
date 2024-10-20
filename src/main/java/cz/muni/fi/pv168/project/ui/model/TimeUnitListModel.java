@@ -28,7 +28,7 @@ public class TimeUnitListModel extends AbstractListModel<TimeUnit> {
         return timeUnits.toArray(new TimeUnit[0]);
     }
 
-    public void removeCategory(TimeUnit unit) {
+    public void removeTimeUnit(TimeUnit unit) {
         timeUnits.remove(unit);
     }
 
