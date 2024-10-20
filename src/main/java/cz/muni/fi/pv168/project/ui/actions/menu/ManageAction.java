@@ -1,6 +1,5 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
-import cz.muni.fi.pv168.project.model.CustomTimeUnit;
 import cz.muni.fi.pv168.project.ui.dialog.ManageCategoriesDialog;
 import cz.muni.fi.pv168.project.ui.dialog.ManageTimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
@@ -16,11 +15,15 @@ public class ManageAction extends AbstractAction {
     private final CategoryListModel categories;
 
     private final ActionType type;
-    public ManageAction(ActionType type, TimeUnitListModel timeUnits, CategoryListModel categories){
+
+    private final JFrame frame;
+
+    public ManageAction(ActionType type, TimeUnitListModel timeUnits, CategoryListModel categories, JFrame frame){
         super(getText(type), Icons.MANAGE_ICON);
         this.type = type;
         this.timeUnits = timeUnits;
         this.categories = categories;
+        this.frame = frame;
     }
 
     private static String getText(ActionType type){
@@ -37,11 +40,11 @@ public class ManageAction extends AbstractAction {
             case TASK -> System.out.println("User clicked on Manage Task Button");
             case TEMPLATE -> System.out.println("User clicked on Manage Template button");
             case CATEGORY -> {
-                var yo = new ManageCategoriesDialog(null, categories);
+                var yo = new ManageCategoriesDialog(frame, categories);
                 yo.setVisible(true);
             }
             case TIME_UNIT -> {
-                var ej = new ManageTimeUnitDialog(null, timeUnits);
+                var ej = new ManageTimeUnitDialog(frame, timeUnits);
                 ej.setVisible(true);
             }
         }

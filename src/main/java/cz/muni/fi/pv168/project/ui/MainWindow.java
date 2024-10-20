@@ -2,7 +2,6 @@ package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
-import cz.muni.fi.pv168.project.model.Category;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
@@ -79,13 +78,13 @@ public class MainWindow {
         //TODO Create TemplateTableModel and TimeUnitTableModel
         menuBar.add(createJMenu("Template",
                 new AddAction(ActionType.TEMPLATE, taskTable, categories, timeUnits),
-                new ManageAction(ActionType.TEMPLATE, timeUnits, categories)));
+                new ManageAction(ActionType.TEMPLATE, timeUnits, categories, frame)));
         menuBar.add((createJMenu("Categories",
                 new AddAction(ActionType.CATEGORY, taskTable, categories, timeUnits),
-                new ManageAction(ActionType.CATEGORY, timeUnits, categories))));
+                new ManageAction(ActionType.CATEGORY, timeUnits, categories, frame))));
         menuBar.add((createJMenu("Time Units",
                 new AddAction(ActionType.TIME_UNIT, taskTable, categories, timeUnits),
-                new ManageAction(ActionType.TIME_UNIT, timeUnits, categories))));
+                new ManageAction(ActionType.TIME_UNIT, timeUnits, categories, frame))));
         menuBar.add(createJMenu("Help"));
 
         return  menuBar;
@@ -125,7 +124,7 @@ public class MainWindow {
         JCheckBox filterOverdue = createFilterCheckbox("Filter Overdue", false);
         JCheckBox filterOverBudget = createFilterCheckbox("Filter Over budget", false);
 
-        JComboBox<Object> categoryComboBox = createFilterComboBox(DEMO_DATA.getCategories().toArray(),
+        JComboBox<Object> categoryComboBox = createFilterComboBox(categories.toArray(),
                 "--Category--");
         JComboBox<Object> assigneeComboBox = createFilterComboBox(DEMO_DATA.getEmployees().toArray(),
                 "--Assignee--");
@@ -261,7 +260,7 @@ public class MainWindow {
      */
     private JPopupMenu createTaskTablePopupMenu(JTable taskMenu) {
         JPopupMenu menu = new JPopupMenu();
-        menu.add(new EditAction(ActionType.TASK, taskMenu, categories, null));
+        menu.add(new EditAction(ActionType.TASK, taskMenu, categories, null, null));
         return menu;
     }
 }

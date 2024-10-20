@@ -11,15 +11,15 @@ import cz.muni.fi.pv168.project.ui.resources.Icons;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class EditAction extends AbstractAction {
+public class DeleteAction extends AbstractAction {
 
     private final JTable contentTable;
     private final JComboBox comboBox;
     private final CategoryListModel categories;
     private final TimeUnitListModel timeUnits;
     private final ActionType type;
-    public EditAction (ActionType type, JTable contentTable, CategoryListModel categories,
-                       TimeUnitListModel timeUnits, JComboBox<Category> comboBox) {
+    public DeleteAction(ActionType type, JTable contentTable, CategoryListModel categories,
+                        TimeUnitListModel timeUnits, JComboBox<Category> comboBox) {
         super("Edit", Icons.MANAGE_ICON);
         this.type = type;
         this.contentTable = contentTable;
@@ -33,24 +33,22 @@ public class EditAction extends AbstractAction {
 
         switch(type) {
             case TASK:
-                var selectedRows = contentTable.getSelectedRows();
-                if (selectedRows.length != 1) {
-                    throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
-                }
-                var taskTableModel = (TaskTableModel) contentTable.getModel();
-                int modelRow = contentTable.convertRowIndexToModel(selectedRows[0]);
-                var task = taskTableModel.getEntity(modelRow);
-
-                var tDialog = new TaskDialog(task, categories.toArray());
-                System.out.println(task.getNameOfTask());
-                tDialog.show(contentTable, "Edit Task").ifPresent(taskTableModel::updateRow);
+//                TODO
+//                var selectedRows = contentTable.getSelectedRows();
+//                if (selectedRows.length != 1) {
+//                    throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
+//                }
+//                var taskTableModel = (TaskTableModel) contentTable.getModel();
+//                int modelRow = contentTable.convertRowIndexToModel(selectedRows[0]);
+//                var task = taskTableModel.getEntity(modelRow);
+//
+//                var tDialog = new TaskDialog(task, categories.toArray());
+//                System.out.println(task.getNameOfTask());
+//                tDialog.show(contentTable, "Edit Task").ifPresent(taskTableModel::updateRow);
                 return;
             case CATEGORY:
                 var category = (Category) comboBox.getSelectedItem();
-                var cDialog = new CategoryDialog(category);
-                var newCat = (Category) cDialog.show(comboBox, "Edit Category").get();
-                category.setName(newCat.getName());
-                category.setColor(newCat.getColor());
+                categories.removeCategory(category);
                 return;
         }
     }

@@ -31,4 +31,8 @@ public class CategoryListModel extends AbstractListModel<Category> {
     public void addCategory(Category category) {
         categoryList.add(category);
     }
+
+    public void removeCategory(Category category) {
+        categoryList.remove(category);
+    }
 }
