@@ -54,7 +54,7 @@ public class AddAction extends AbstractAction {
      */
     private void addTask() {
         var taskTableModel = (TaskTableModel) contentTable.getModel();
-        var dialog = new TaskDialog(new DemoDataGenerator().getTasks().get(0), categories.toArray());
+        var dialog = new TaskDialog(new DemoDataGenerator().getTasks().get(0), categories.toArray(), timeUnits.toArray());
         dialog.show(contentTable, "Add new Task").ifPresent(taskTableModel::addRow);
     }
 

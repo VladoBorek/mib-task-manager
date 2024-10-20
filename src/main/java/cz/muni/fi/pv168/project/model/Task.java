@@ -6,6 +6,7 @@ import java.util.Optional;
 public class Task {
 
     private Status status;
+    private String description;
     private Category category;
     private String customer;
     private String nameOfTask;
@@ -15,8 +16,9 @@ public class Task {
     private TimeUnit timeUnit;
     private LocalDate dueDate;
 
-    public Task(Status status, Category category, String customer,String nameOfTask, String assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
+    public Task(Status status,String description, Category category, String customer,String nameOfTask, String assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
         this.status = status;
+        this.description = description;
         this.category = category;
         this.customer = customer;
         this.nameOfTask = nameOfTask;
@@ -33,6 +35,14 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Category getCategory() {

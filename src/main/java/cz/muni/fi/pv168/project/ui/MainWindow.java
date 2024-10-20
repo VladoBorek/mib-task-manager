@@ -263,4 +263,8 @@ public class MainWindow {
         menu.add(new EditAction(ActionType.TASK, taskMenu, categories, null, null));
         return menu;
     }
+
+    public TimeUnitListModel getTimeUnits(){
+        return this.timeUnits;
+    }
 }
