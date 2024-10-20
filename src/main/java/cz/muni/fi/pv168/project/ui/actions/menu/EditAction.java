@@ -1,12 +1,15 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.model.Category;
+import cz.muni.fi.pv168.project.model.Template;
 import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TaskDialog;
+import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.TemplateListModel;
 import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -20,6 +23,7 @@ public class EditAction extends AbstractAction {
     private final CategoryListModel categories;
     private final TimeUnitListModel timeUnits;
     private final ActionType type;
+
     public EditAction (ActionType type, JTable contentTable, CategoryListModel categories,
                        TimeUnitListModel timeUnits, JComboBox comboBox) {
         super("Edit", Icons.MANAGE_ICON);
@@ -68,6 +72,20 @@ public class EditAction extends AbstractAction {
                 timeUnitDialog.show(comboBox, "Edit Time Unit").ifPresent(newTimeUnit -> {
                     timeunit.setName(newTimeUnit.getName());
                     timeunit.setRate(newTimeUnit.getRate());
+                });
+                comboBox.setSelectedIndex(0);
+                return;
+            case TEMPLATE:
+                var template = (Template) comboBox.getSelectedItem();
+                if (template == null) {
+                    return;
+                }
+                var templateDialog = new TemplateDialog(categories, timeUnits, template);
+                templateDialog.show(comboBox, "Edit Template").ifPresent(newTemplate -> {
+                    template.setName(newTemplate.getName());
+                    template.setCategory(newTemplate.getCategory());
+                    template.setAllocatedTime(newTemplate.getAllocatedTime());
+                    template.setTimeUnit(newTemplate.getTimeUnit());
                 });
                 comboBox.setSelectedIndex(0);
                 return;

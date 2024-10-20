@@ -1,11 +1,13 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.model.Category;
+import cz.muni.fi.pv168.project.model.Template;
 import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TaskDialog;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.TemplateListModel;
 import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -21,14 +23,18 @@ public class DeleteAction extends AbstractAction {
     private final CategoryListModel categories;
     private final TimeUnitListModel timeUnits;
     private final ActionType type;
+    private final TemplateListModel templates;
+
+    // TODO: SOMEHOW FIX RAW USE OF JComboBox
     public DeleteAction(ActionType type, JTable contentTable, CategoryListModel categories,
-                        TimeUnitListModel timeUnits, JComboBox comboBox) {
+                        TimeUnitListModel timeUnits, TemplateListModel templates, JComboBox comboBox) {
         super("Delete", Icons.DELETE_ICON);
         this.type = type;
         this.contentTable = contentTable;
         this.categories = categories;
         this.timeUnits = timeUnits;
         this.comboBox = comboBox;
+        this.templates = templates;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -64,6 +70,11 @@ public class DeleteAction extends AbstractAction {
                 var timeUnit = (TimeUnit) comboBox.getSelectedItem();
                 timeUnits.removeCategory(timeUnit);
                 comboBox.removeItem(timeUnit);
+                return;
+            case TEMPLATE:
+                var template = (Template) comboBox.getSelectedItem();
+                templates.removeTemplate(template);
+                comboBox.removeItem(template);
                 return;
         }
     }

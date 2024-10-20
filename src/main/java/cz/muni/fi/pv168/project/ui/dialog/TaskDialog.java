@@ -63,8 +63,6 @@ public class TaskDialog extends EntityDialog<Task>{
         if (task != null) {
             setValues();
         }
-
-
         addFields();
         setPanel();
     }
