@@ -1,9 +1,6 @@
 package cz.muni.fi.pv168.project.ui.dialog;
 
-import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.model.Category;
-import cz.muni.fi.pv168.project.model.CustomTimeUnit;
-import cz.muni.fi.pv168.project.model.TimeUnit;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,13 +8,22 @@ import java.awt.*;
 /**
  * Dialog windows that will open when creating or editing time units
  */
-public class NewCategoryDialog extends EntityDialog<Category> {
+public class CategoryDialog extends EntityDialog<Category> {
 
     private final JTextField nameField = new JTextField();
     private final JColorChooser colorChooser = new JColorChooser();
 
-    public NewCategoryDialog() {
-        nameField.setMaximumSize(new Dimension(100, 50));
+    public CategoryDialog() {
+        nameField.setMaximumSize(new Dimension(10, 10));
+        add("Name", nameField);
+        add("colour", colorChooser);
+        setPanel();
+    }
+
+    public CategoryDialog(Category category) {
+        nameField.setMaximumSize(new Dimension(50, 10));
+        nameField.setText(category.getName());
+        colorChooser.setColor(category.getColor());
         add("Name", nameField);
         add("colour", colorChooser);
         setPanel();

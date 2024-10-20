@@ -1,8 +1,7 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
-import cz.muni.fi.pv168.project.model.Category;
-import cz.muni.fi.pv168.project.ui.dialog.NewCategoryDialog;
+import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
@@ -12,7 +11,6 @@ import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.List;
 
 public class AddAction extends AbstractAction {
     private final ActionType type; // type of add action
@@ -69,7 +67,7 @@ public class AddAction extends AbstractAction {
     }
 
     private void addCategory() {
-        var dialog = new NewCategoryDialog();
+        var dialog = new CategoryDialog();
         dialog.show(null, "Add a new Category").ifPresent(categories::addCategory);
     }
 }
