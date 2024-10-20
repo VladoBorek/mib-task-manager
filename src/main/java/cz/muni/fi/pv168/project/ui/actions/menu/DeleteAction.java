@@ -26,7 +26,7 @@ public class DeleteAction extends AbstractAction {
     // TODO: SOMEHOW FIX RAW USE OF JComboBox
     public DeleteAction(ActionType type, JTable contentTable, CategoryListModel categories,
                         TimeUnitListModel timeUnits, TemplateListModel templates, JComboBox comboBox) {
-        super("Edit", Icons.MANAGE_ICON);
+        super("Delete", Icons.DELETE_ICON);
         this.type = type;
         this.contentTable = contentTable;
         this.categories = categories;
