@@ -54,13 +54,13 @@ public class MainWindow {
         frame = createFrame();
         frame.getContentPane().setBackground(BG_COLOR);
         frame.setSize(1024, 768);
-
+        data = new DataManager();
 
         taskTable = createTaskTable(DEMO_DATA.getTasks());
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
 
         statisticsTable = createStatisticsTable();
-        data = new DataManager();
+
 
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
