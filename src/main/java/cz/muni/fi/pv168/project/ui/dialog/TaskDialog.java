@@ -4,6 +4,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.model.Category;
 import cz.muni.fi.pv168.project.model.CustomTimeUnit;
+import cz.muni.fi.pv168.project.model.DataManager;
 import cz.muni.fi.pv168.project.model.Employee;
 import cz.muni.fi.pv168.project.model.Status;
 import cz.muni.fi.pv168.project.model.Task;
@@ -38,12 +39,12 @@ public class TaskDialog extends EntityDialog<Task>{
     private final JComboBox<TimeUnit> timeUnitsComboBox;
     private final TimeUnit timeUnit = new CustomTimeUnit();
 
-    public TaskDialog(Task task, CategoryListModel categories, TimeUnitListModel  timeUnits) {
+    public TaskDialog(Task task, DataManager data) {
         super(500, 600);
         this.task = task;
 
-        this.categoryComboBox = new JComboBox<>(categories.toArray());
-        this.timeUnitsComboBox = new JComboBox<>(timeUnits.toArray());
+        this.categoryComboBox = new JComboBox<>(data.getCategories().toArray());
+        this.timeUnitsComboBox = new JComboBox<>(data.getTimeUnits().toArray());
 
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);

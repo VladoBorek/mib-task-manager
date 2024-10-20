@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.project.ui;
 import com.github.lgooddatepicker.components.DatePicker;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.model.CustomTimeUnit;
+import cz.muni.fi.pv168.project.model.DataManager;
 import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.model.CategoryCellRenderer;
@@ -30,16 +31,12 @@ public class MainWindow {
 
     public static final Color BUTTON_COLOR = new Color(190, 190, 190);
     public static final Color BG_COLOR = new Color(180, 180, 180);
-
-    private static final DemoDataGenerator DEMO_DATA = new DemoDataGenerator();
+    public static final DemoDataGenerator DEMO_DATA = new DemoDataGenerator();
 
     private final JFrame frame;
     private final DatePicker datePicker = createDatePicker();
     private final JTable taskTable;
-    private final TimeUnitListModel timeUnits = new TimeUnitListModel(new ArrayList<>());
-    private final CategoryListModel categories = new CategoryListModel(new ArrayList<>(DEMO_DATA.getCategories()));
-    private final TemplateListModel templates = new TemplateListModel(new ArrayList<>());
-    private final EmployeeListModel employees = new EmployeeListModel(new ArrayList<>(DEMO_DATA.getEmployees()));
+    private final DataManager data;
 
     /**
      * Constructor for MainWindow.
@@ -53,13 +50,13 @@ public class MainWindow {
 
         taskTable = createTaskTable(DEMO_DATA.getTasks());
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
+        data = new DataManager();
+
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
         frame.add(new JScrollPane(taskTable), BorderLayout.CENTER);
         frame.setLocationRelativeTo(null);
         frame.pack();
-
-        timeUnits.addUnit(new CustomTimeUnit());
     }
 
     /**
@@ -90,31 +87,32 @@ public class MainWindow {
         menuBar.add(createJMenu("File", new ImportAction(), new ExportAction()));
         //TODO Create TemplateListModel
         menuBar.add(createJMenu("Template",
-                new AddAction(ActionType.TEMPLATE, taskTable, categories, timeUnits, templates, null),
-                new ManageAction(ActionType.TEMPLATE, timeUnits, categories, templates, frame)));
+                new AddAction(ActionType.TEMPLATE, taskTable, data, null),
+                new ManageAction(ActionType.TEMPLATE, data, frame)));
         menuBar.add((createJMenu("Categories",
-                new AddAction(ActionType.CATEGORY, taskTable, categories, timeUnits, templates, null),
-                new ManageAction(ActionType.CATEGORY, timeUnits, categories, templates, frame))));
+                new AddAction(ActionType.CATEGORY, taskTable, data, null),
+                new ManageAction(ActionType.CATEGORY, data, frame))));
         menuBar.add((createJMenu("Time Units",
-                new AddAction(ActionType.TIME_UNIT, taskTable, categories, timeUnits, templates, null),
-                new ManageAction(ActionType.TIME_UNIT, timeUnits, categories, templates, frame))));
+                new AddAction(ActionType.TIME_UNIT, taskTable, data, null),
+                new ManageAction(ActionType.TIME_UNIT, data, frame))));
         menuBar.add(createJMenu("Help"));
 
-        return  menuBar;
+        return menuBar;
     }
 
     /**
      * Fills the JMenu with the provided Actions
-     * @param name Name of the item for the JMenuBar
+     *
+     * @param name       Name of the item for the JMenuBar
      * @param actionList Actions for the JMenu
      * @return JMenu with the name and actions
      */
-    private JMenu createJMenu(String name, Action ... actionList) {
+    private JMenu createJMenu(String name, Action... actionList) {
         JMenu menu = new JMenu(name);
         if (actionList.length == 0) {
             menu.add("PLACEHOLDER_ACTION");
         }
-        for (Action a: actionList) {
+        for (Action a : actionList) {
             menu.add(a);
         }
 
@@ -123,6 +121,7 @@ public class MainWindow {
 
     /**
      * Creates application Toolbar
+     *
      * @return Toolbar with AddNewTask button and filters for the tasks
      */
     private JToolBar createFilterBar() {
@@ -137,27 +136,27 @@ public class MainWindow {
         JCheckBox filterOverdue = createFilterCheckbox("Filter Overdue", false);
         JCheckBox filterOverBudget = createFilterCheckbox("Filter Over budget", false);
 
-        JComboBox<Object> categoryComboBox = createFilterComboBox(categories.toArray(),
+        JComboBox<Object> categoryComboBox = createFilterComboBox(data.getCategories().toArray(),
                 "--Category--");
-        JComboBox<Object> assigneeComboBox = createFilterComboBox(DEMO_DATA.getEmployees().toArray(),
+        JComboBox<Object> assigneeComboBox = createFilterComboBox(data.getEmployees().toArray(),
                 "--Assignee--");
         JComboBox<Object> customerComboBox = createFilterComboBox(DEMO_DATA.getCustomers().toArray(),
                 "--Customer--");
 
-        Map<Boolean,List<JCheckBox>> resetValuesCheckboxes = Map.of(
-                true,List.of(filterToDo, filterInProgress, filterComplete, filterOnHold),
+        Map<Boolean, List<JCheckBox>> resetValuesCheckboxes = Map.of(
+                true, List.of(filterToDo, filterInProgress, filterComplete, filterOnHold),
                 false, List.of(filterOverdue, filterOverBudget));
 
         Map<JComboBox<Object>, String> resetValuesComboBoxes = Map.of(
-            categoryComboBox,"--Category--",
-            assigneeComboBox, "--Assignee--",
-            customerComboBox, "--Customer--"
+                categoryComboBox, "--Category--",
+                assigneeComboBox, "--Assignee--",
+                customerComboBox, "--Customer--"
         );
 //        JButton addNewTaskButton = createButton("New Task", Icons.ADD_ICON,
 //                new AddAction(ActionType.TASK, taskTable, categories, timeUnits, templates));
 
         JButton addNewTaskButton = createButton("New Task", Icons.ADD_ICON,
-                new ChooseTemplateAction(taskTable, categories, timeUnits, templates, frame));
+                new ChooseTemplateAction(taskTable, data, frame));
 
 
         JButton resetFiltersButton = createButton("Reset Filters", Icons.DELETE_ICON,
@@ -192,13 +191,14 @@ public class MainWindow {
 
         filterBar.addSeparator();
         filterBar.add(resetFiltersButton);
-        return  filterBar;
+        return filterBar;
     }
 
     /**
      * Creates a custom JCheckBox
+     *
      * @param checkBoxText Text of the checkbox
-     * @param setSelected Default state of the checkbox
+     * @param setSelected  Default state of the checkbox
      * @return checkBox
      */
     private JCheckBox createFilterCheckbox(String checkBoxText, Boolean setSelected) {
@@ -211,7 +211,6 @@ public class MainWindow {
     }
 
     /**
-     *
      * @param tasks Tasks for the table
      * @return Table with tasks
      */
@@ -231,10 +230,9 @@ public class MainWindow {
     }
 
     /**
-     *
      * @param buttonText Text to be shown on button
-     * @param icon Icon for the button
-     * @param a Action to be performed
+     * @param icon       Icon for the button
+     * @param a          Action to be performed
      * @return Button with input characteristics
      */
     private JButton createButton(String buttonText, Icon icon, Action a) {
@@ -247,11 +245,12 @@ public class MainWindow {
 
     /**
      * Creates a custom JComboBox
-     * @param items Items for the comboBox
+     *
+     * @param items           Items for the comboBox
      * @param placeholderText Placeholder text to be shown
      * @return comboBox with input parameters
      */
-    private JComboBox<Object> createFilterComboBox(Object [] items, String placeholderText) {
+    private JComboBox<Object> createFilterComboBox(Object[] items, String placeholderText) {
         JComboBox<Object> comboBox = new JComboBox<>(items);
         comboBox.setEditable(true);
         comboBox.setSelectedItem(placeholderText);
@@ -263,6 +262,7 @@ public class MainWindow {
 
     /**
      * Creates a new DatePicker for filtering overdue tasks
+     *
      * @return new {@link DatePicker}
      */
     private DatePicker createDatePicker() {
@@ -276,17 +276,14 @@ public class MainWindow {
 
     /**
      * Creates pop up menu for the task table
+     *
      * @param taskMenu JTable with content for edit
      * @return created menu
      */
     private JPopupMenu createTaskTablePopupMenu(JTable taskMenu) {
         JPopupMenu menu = new JPopupMenu();
-        menu.add(new EditAction(ActionType.TASK, taskMenu, categories, timeUnits, null));
-        menu.add(new DeleteAction(ActionType.TASK, taskMenu, categories, timeUnits, templates, null));
+        menu.add(new EditAction(ActionType.TASK, taskMenu, null, data));
+        menu.add(new DeleteAction(ActionType.TASK, taskMenu, null, data));
         return menu;
-    }
-
-    public TimeUnitListModel getTimeUnits(){
-        return this.timeUnits;
     }
 }

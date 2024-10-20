@@ -10,7 +10,7 @@ public class Task {
     private Category category;
     private String customer;
     private String nameOfTask;
-    private Employee assignedTo;
+    private String assignedTo;
     private Integer loggedTime;
     private Integer allocatedTime;
     private TimeUnit timeUnit;
@@ -67,11 +67,11 @@ public class Task {
         this.nameOfTask = nameOfTask;
     }
 
-    public Employee getAssignedTo() {
+    public String getAssignedTo() {
         return assignedTo;
     }
 
-    public void setAssignedTo(Employee assignedTo) {
+    public void setAssignedTo(String assignedTo) {
         this.assignedTo = assignedTo;
     }
 
