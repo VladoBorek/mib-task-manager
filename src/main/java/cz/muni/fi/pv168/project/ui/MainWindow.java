@@ -49,6 +49,7 @@ public class MainWindow {
         frame.add(new JScrollPane(taskTable), BorderLayout.CENTER);
         frame.setLocationRelativeTo(null);
         frame.pack();
+
     }
 
     /**
