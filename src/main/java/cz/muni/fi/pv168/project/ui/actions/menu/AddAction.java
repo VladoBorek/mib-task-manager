@@ -87,7 +87,7 @@ public class AddAction extends AbstractAction {
     }
 
     private void addTemplate() {
-        var dialog = new TemplateDialog(categories, timeUnits);
+        var dialog = new TemplateDialog(categories, timeUnits, null);
         dialog.show(null, "Add a new Template").ifPresent(templates::addTemplate);
     }
 }
