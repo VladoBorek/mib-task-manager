@@ -59,6 +59,11 @@ public class TaskTableModel extends AbstractTableModel {
         tasks.add(task);
         fireTableRowsInserted(newRowIndex, newRowIndex);
     }
+
+    public void deleteRow(int rowIndex) {
+        tasks.remove(rowIndex);
+        fireTableRowsDeleted(rowIndex, rowIndex);
+    }
     @Override
     public String getColumnName(int columnIndex) {
         return columns.get(columnIndex).getName();

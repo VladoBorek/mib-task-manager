@@ -5,6 +5,7 @@ import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.model.CustomTimeUnit;
 import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
+import cz.muni.fi.pv168.project.ui.model.CategoryCellRenderer;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
@@ -214,6 +215,9 @@ public class MainWindow {
 
         var progressColumn = table.getColumnModel().getColumn(8);
         progressColumn.setCellRenderer(new TaskProgressBar());
+        var categoryColumn = table.getColumnModel().getColumn(1);
+        categoryColumn.setCellRenderer(new CategoryCellRenderer());
+
 
         return table;
     }
@@ -270,6 +274,7 @@ public class MainWindow {
     private JPopupMenu createTaskTablePopupMenu(JTable taskMenu) {
         JPopupMenu menu = new JPopupMenu();
         menu.add(new EditAction(ActionType.TASK, taskMenu, categories, timeUnits, null));
+        menu.add(new DeleteAction(ActionType.TASK, taskMenu, categories, timeUnits, null));
         return menu;
     }
 
