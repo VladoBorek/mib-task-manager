@@ -274,7 +274,7 @@ public class MainWindow {
     private JPopupMenu createTaskTablePopupMenu(JTable taskMenu) {
         JPopupMenu menu = new JPopupMenu();
         menu.add(new EditAction(ActionType.TASK, taskMenu, categories, timeUnits, null));
-        menu.add(new DeleteAction(ActionType.TASK, taskMenu, categories, timeUnits, null));
+        menu.add(new DeleteAction(ActionType.TASK, taskMenu, categories, timeUnits, templates, null));
         return menu;
     }
 
