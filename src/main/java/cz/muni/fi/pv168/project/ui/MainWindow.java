@@ -146,9 +146,9 @@ public class MainWindow {
                 false, List.of(filterOverdue, filterOverBudget));
 
         Map<JComboBox<Object>, String> resetValuesComboBoxes = Map.of(
-            categoryComboBox,"--Category--",
-            assigneeComboBox, "--Assignee--",
-            customerComboBox, "--Customer--"
+                categoryComboBox,"--Category--",
+                assigneeComboBox, "--Assignee--",
+                customerComboBox, "--Customer--"
         );
 //        JButton addNewTaskButton = createButton("New Task", Icons.ADD_ICON,
 //                new AddAction(ActionType.TASK, taskTable, categories, timeUnits, templates));
