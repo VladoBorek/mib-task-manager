@@ -3,9 +3,11 @@ package cz.muni.fi.pv168.project.ui.actions.menu;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TaskDialog;
+import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.TemplateListModel;
 import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -13,16 +15,23 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class AddAction extends AbstractAction {
-    private final ActionType type; // type of add action
-    private final JTable contentTable; // table on which the operation will be performed on
-    private final CategoryListModel categories; // list of categories
-    private final TimeUnitListModel timeUnits; // list of time units
-    public AddAction(ActionType type, JTable contentTable, CategoryListModel categories, TimeUnitListModel timeUnits) {
+    private final ActionType type;
+    private final JTable contentTable;
+    private final CategoryListModel categories;
+    private final TimeUnitListModel timeUnits;
+    private final TemplateListModel templates;
+
+
+    public AddAction(ActionType type, JTable contentTable,
+                     CategoryListModel categories,
+                     TimeUnitListModel timeUnits,
+                     TemplateListModel templates) {
         super("Add new " + type.toString().toLowerCase().replace('_', ' '), Icons.ADD_ICON);
         this.type = type;
         this.contentTable = contentTable;
         this.categories = categories;
         this.timeUnits = timeUnits;
+        this.templates = templates;
     }
 
 
@@ -46,6 +55,9 @@ public class AddAction extends AbstractAction {
             case CATEGORY:
                 addCategory();
                 break;
+            case TEMPLATE:
+                addTemplate();
+                break;
         }
     }
 
@@ -54,7 +66,7 @@ public class AddAction extends AbstractAction {
      */
     private void addTask() {
         var taskTableModel = (TaskTableModel) contentTable.getModel();
-        var dialog = new TaskDialog(new DemoDataGenerator().getTasks().get(0), categories.toArray());
+        var dialog = new TaskDialog(null, categories, timeUnits);
         dialog.show(contentTable, "Add new Task").ifPresent(taskTableModel::addRow);
     }
 
@@ -72,5 +84,10 @@ public class AddAction extends AbstractAction {
     private void addCategory() {
         var dialog = new CategoryDialog();
         dialog.show(null, "Add a new Category").ifPresent(categories::addCategory);
+    }
+
+    private void addTemplate() {
+        var dialog = new TemplateDialog(categories, timeUnits);
+        dialog.show(null, "Add a new Template").ifPresent(templates::addTemplate);
     }
 }

@@ -31,8 +31,6 @@ public class EditAction extends AbstractAction {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-
-
         switch(type) {
             case TASK:
                 var selectedRows = contentTable.getSelectedRows();
@@ -43,7 +41,7 @@ public class EditAction extends AbstractAction {
                 int modelRow = contentTable.convertRowIndexToModel(selectedRows[0]);
                 var task = taskTableModel.getEntity(modelRow);
 
-                var tDialog = new TaskDialog(task, categories.toArray());
+                var tDialog = new TaskDialog(task, categories, timeUnits);
                 System.out.println(task.getNameOfTask());
                 tDialog.show(contentTable, "Edit Task").ifPresent(taskTableModel::updateRow);
                 return;

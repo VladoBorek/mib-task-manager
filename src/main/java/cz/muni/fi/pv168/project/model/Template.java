@@ -4,7 +4,6 @@ public class Template {
     private String name;
     private Category category;
     private Integer allocatedTime;
-
     private TimeUnit timeUnit;
 
 
