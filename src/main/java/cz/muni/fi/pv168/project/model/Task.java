@@ -16,7 +16,7 @@ public class Task {
     private TimeUnit timeUnit;
     private LocalDate dueDate;
 
-    public Task(Status status,String description, Category category, String customer,String nameOfTask, String assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
+    public Task(Status status, String description, Category category, String customer,String nameOfTask, String assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
         this.status = status;
         this.description = description;
         this.category = category;

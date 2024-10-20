@@ -41,7 +41,7 @@ public class EditAction extends AbstractAction {
                 int modelRow = contentTable.convertRowIndexToModel(selectedRows[0]);
                 var task = taskTableModel.getEntity(modelRow);
 
-                var tDialog = new TaskDialog(task, categories.toArray(), timeUnits.toArray());
+                var tDialog = new TaskDialog(task, categories, timeUnits);
                 System.out.println(task.getNameOfTask());
                 tDialog.show(contentTable, "Edit Task").ifPresent(taskTableModel::updateRow);
                 return;

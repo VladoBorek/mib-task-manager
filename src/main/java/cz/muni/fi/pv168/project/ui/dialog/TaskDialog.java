@@ -8,6 +8,7 @@ import cz.muni.fi.pv168.project.model.Status;
 import cz.muni.fi.pv168.project.model.Task;
 import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.MainWindow;
+import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 
 import javax.swing.*;
@@ -26,7 +27,7 @@ public class TaskDialog extends EntityDialog<Task>{
 
     private final JComboBox<Status> statusComboBox = new JComboBox<>(Status.values());
 
-    private final Object[] categories;
+    private final CategoryListModel categories;
     private final JComboBox<Object> categoryComboBox;
 
     private final JIntegerTextField loggedTimeField = new JIntegerTextField();
@@ -34,17 +35,18 @@ public class TaskDialog extends EntityDialog<Task>{
 
     private final DatePicker datePicker = new DatePicker();
 
-    private final JComboBox<Object> timeUnitsCombobox;
-    private final Object[] timeUnits;
+    private final JComboBox<Object> timeUnitsComboBox;
+    private final TimeUnitListModel  timeUnits;
     private final TimeUnit timeUnit = new CustomTimeUnit();
 
-    public TaskDialog(Task task, Object[] categories, Object[] timeUnits) {
+    public TaskDialog(Task task, CategoryListModel categories, TimeUnitListModel  timeUnits) {
         super(500, 600);
         this.task = task;
         this.categories = categories;
         this.timeUnits = timeUnits;
-        this.categoryComboBox = new JComboBox<>(this.categories);
-        this.timeUnitsCombobox = new JComboBox<>(this.timeUnits);
+
+        this.categoryComboBox = new JComboBox<>(categories.toArray());
+        this.timeUnitsComboBox = new JComboBox<>(timeUnits.toArray());
 
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
@@ -54,15 +56,18 @@ public class TaskDialog extends EntityDialog<Task>{
         listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
         statusComboBox.setRenderer(listRenderer);
         categoryComboBox.setRenderer(listRenderer);
-        timeUnitsCombobox.setRenderer(listRenderer);
+        timeUnitsComboBox.setRenderer(listRenderer);
 
         taskNameField.setHorizontalAlignment(SwingConstants.CENTER);
         customerField.setHorizontalAlignment(SwingConstants.CENTER);
         loggedTimeField.setHorizontalAlignment(SwingConstants.CENTER);
         allocatedTimeField.setHorizontalAlignment(SwingConstants.CENTER);
 
+        if (task != null) {
+            setValues();
+        }
 
-        setValues();
+
         addFields();
         setPanel();
     }
@@ -90,27 +95,45 @@ public class TaskDialog extends EntityDialog<Task>{
         addCentered("Status", statusComboBox);
         addCentered("Logged time", loggedTimeField);
         addCentered("Allocated time", allocatedTimeField);
-
-//        var timeUnitField = new JLabel(task.getTimeUnit().getName());
-//        timeUnitField.setHorizontalAlignment(SwingConstants.CENTER);
-
-        //addCentered("Time unit", timeUnitField);
-        addCentered("Time unit", timeUnitsCombobox);
-
-        datePicker.setAlignmentX(SwingConstants.CENTER);
+        addCentered("Time unit", timeUnitsComboBox);
         addCentered("Due date", datePicker);
     }
 
     @Override
     Task getEntity() {
-        task.setNameOfTask(taskNameField.getText());
-        task.setDescription(descriptionArea.getText());
-        task.setCustomer(customerField.getText());
-        task.setCategory((Category) categoryComboBox.getSelectedItem());
-        task.setStatus((Status) statusComboBox.getSelectedItem());
-        task.setLoggedTime(loggedTimeField.getValue());
-        task.setAllocatedTime(allocatedTimeField.getValue());
-        task.setDueDate(datePicker.getDate());
+//        task.setNameOfTask(taskNameField.getText());
+//        task.setDescription(descriptionArea.getText());
+//        task.setCustomer(customerField.getText());
+//        task.setCategory((Category) categoryComboBox.getSelectedItem());
+//        task.setStatus((Status) statusComboBox.getSelectedItem());
+//        task.setLoggedTime(loggedTimeField.getValue());
+//        task.setAllocatedTime(allocatedTimeField.getValue());
+//        task.setDueDate(datePicker.getDate());
+        var task = this.task;
+
+        if (task != null) {
+            task.setNameOfTask(taskNameField.getText());
+            task.setCustomer(customerField.getText());
+            task.setCategory((Category) categoryComboBox.getSelectedItem());
+            task.setStatus((Status) statusComboBox.getSelectedItem());
+            task.setLoggedTime(loggedTimeField.getValue());
+            task.setAllocatedTime(allocatedTimeField.getValue());
+            task.setDueDate(datePicker.getDate());
+            task.setTimeUnit((TimeUnit) timeUnitsComboBox.getSelectedItem());
+        } else {
+            task = new Task((Status) statusComboBox.getSelectedItem(),
+                    this.descriptionArea.getText(),
+                    (Category) categoryComboBox.getSelectedItem(),
+                    customerField.getText(),
+                    taskNameField.getText(),
+                    "TODO",
+                    loggedTimeField.getValue(),
+                    allocatedTimeField.getValue(),
+                    (TimeUnit) timeUnitsComboBox.getSelectedItem(),
+                    datePicker.getDate());
+        }
+
         return task;
+
     }
 }
