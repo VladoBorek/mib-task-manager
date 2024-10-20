@@ -19,6 +19,15 @@ abstract class EntityDialog<E> {
         labelPanel.setLayout(new GridLayout(0, 1));
         componentPanel.setLayout(new GridLayout(0, 1));
     }
+    EntityDialog(int width, int height) {
+        var layout = new BoxLayout(panel, BoxLayout.X_AXIS);
+        panel.setLayout(layout);
+
+        labelPanel.setLayout(new GridLayout(0, 1));
+        componentPanel.setLayout(new GridLayout(0, 1));
+
+        panel.setPreferredSize(new Dimension(width, height));
+    }
 
     void add(String labelText, JComponent component) {
         var label = new JLabel(labelText);
@@ -27,6 +36,22 @@ abstract class EntityDialog<E> {
         componentPanel.add(component, "wmin 250lp, grow");
 
     }
+
+    void addCentered(String labelText, JComponent component) {
+        var label = new JLabel(labelText);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        labelPanel.add(label);
+
+        JPanel componentWrapper = new JPanel();
+        componentWrapper.setLayout(new FlowLayout(FlowLayout.CENTER)); // Center alignment
+        componentWrapper.add(component);
+        componentPanel.add(component, "wmin 250lp, grow");
+
+    }
+    protected JPanel getPanel() {
+        return panel;
+    }
+
     void setPanel(){
         panel.add(labelPanel);
         panel.add(componentPanel);
