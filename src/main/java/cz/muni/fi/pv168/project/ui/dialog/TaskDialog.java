@@ -60,7 +60,7 @@ public class TaskDialog extends EntityDialog<Task>{
         allocatedTimeField.setHorizontalAlignment(SwingConstants.CENTER);
 
         if (task != null) {
-            setValues();
+            setValues(task);
         }
 
 
