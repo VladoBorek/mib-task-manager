@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
+import cz.muni.fi.pv168.project.model.DataManager;
 import cz.muni.fi.pv168.project.ui.dialog.ManageCategoriesDialog;
 import cz.muni.fi.pv168.project.ui.dialog.ManageTemplatesDialog;
 import cz.muni.fi.pv168.project.ui.dialog.ManageTimeUnitDialog;
@@ -13,24 +14,18 @@ import java.awt.event.ActionEvent;
 
 public class ManageAction extends AbstractAction {
 
-    private final TimeUnitListModel timeUnits;
-    private final CategoryListModel categories;
-    private final TemplateListModel templates;
+    private final DataManager data;
 
     private final ActionType type;
 
     private final JFrame frame;
 
-    public ManageAction(ActionType type, TimeUnitListModel timeUnits,
-                        CategoryListModel categories,
-                        TemplateListModel templates,
+    public ManageAction(ActionType type, DataManager data,
                         JFrame frame) {
         super(getText(type), Icons.MANAGE_ICON);
         this.type = type;
-        this.timeUnits = timeUnits;
-        this.categories = categories;
+        this.data = data;
         this.frame = frame;
-        this.templates = templates;
     }
 
     private static String getText(ActionType type){
@@ -46,15 +41,15 @@ public class ManageAction extends AbstractAction {
         switch (type){
             case TASK -> System.out.println("User clicked on Manage Task Button");
             case CATEGORY -> {
-                var yo = new ManageCategoriesDialog(frame, categories);
+                var yo = new ManageCategoriesDialog(frame, data);
                 yo.setVisible(true);
             }
             case TIME_UNIT -> {
-                var ej = new ManageTimeUnitDialog(frame, timeUnits);
+                var ej = new ManageTimeUnitDialog(frame, data);
                 ej.setVisible(true);
             }
             case TEMPLATE -> {
-                var sup = new ManageTemplatesDialog(frame, templates, categories, timeUnits);
+                var sup = new ManageTemplatesDialog(frame, data);
                 sup.setVisible(true);
             }
         }

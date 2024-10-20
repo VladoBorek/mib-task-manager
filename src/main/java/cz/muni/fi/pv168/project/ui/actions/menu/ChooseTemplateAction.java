@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
+import cz.muni.fi.pv168.project.model.DataManager;
 import cz.muni.fi.pv168.project.ui.dialog.ChooseTemplateDialog;
 import cz.muni.fi.pv168.project.ui.dialog.ManageCategoriesDialog;
 import cz.muni.fi.pv168.project.ui.dialog.ManageTemplatesDialog;
@@ -15,30 +16,23 @@ import java.awt.event.ActionEvent;
 
 public class ChooseTemplateAction extends AbstractAction {
 
-    private final TimeUnitListModel timeUnits;
-    private final CategoryListModel categories;
-    private final TemplateListModel templates;
+    private final DataManager data;
 
     private final JTable contentTable;
 
     private final JFrame frame;
 
-    public ChooseTemplateAction(JTable contentTable,
-                                CategoryListModel categories,
-                                TimeUnitListModel timeUnits,
-                                TemplateListModel templates,
+    public ChooseTemplateAction(JTable contentTable, DataManager data,
                                 JFrame frame) {
         super("Choose a template", Icons.ADD_ICON);
-        this.timeUnits = timeUnits;
-        this.categories = categories;
+        this.data = data;
         this.frame = frame;
-        this.templates = templates;
         this.contentTable = contentTable;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var wha = new ChooseTemplateDialog(frame, categories, timeUnits, templates, contentTable);
+        var wha = new ChooseTemplateDialog(frame, data, contentTable);
         wha.setVisible(true);
     }
 }

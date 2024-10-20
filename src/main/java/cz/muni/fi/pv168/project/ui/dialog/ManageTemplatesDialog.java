@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.project.ui.dialog;
 
+import cz.muni.fi.pv168.project.model.DataManager;
 import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
@@ -14,21 +15,19 @@ import java.awt.*;
 
 
 public class ManageTemplatesDialog extends JDialog {
-    public ManageTemplatesDialog(JFrame parent, TemplateListModel templates,
-                                 CategoryListModel categories,
-                                 TimeUnitListModel timeUnits) {
+    public ManageTemplatesDialog(JFrame parent, DataManager data) {
         super(parent, "Manage templates", true);
         setLayout(new BorderLayout());
 
-        var comboBox = new JComboBox<>(new DefaultComboBoxModel<>(templates.toArray()));
+        var comboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getTemplates().toArray()));
         var comboPanel = new JPanel();
         comboPanel.add(new JLabel("Select a template:"));
         comboPanel.add(comboBox);
 
         JButton editButton = createButton("Edit", new EditAction(ActionType.TEMPLATE,
-                null, categories, timeUnits, comboBox));
+                null, comboBox, data));
         JButton deleteButton = createButton("Delete", new DeleteAction(ActionType.TEMPLATE,
-                null, categories, timeUnits, templates, comboBox));
+                null, comboBox, data));
 
         add(comboPanel, BorderLayout.NORTH);
         add(editButton, BorderLayout.CENTER);

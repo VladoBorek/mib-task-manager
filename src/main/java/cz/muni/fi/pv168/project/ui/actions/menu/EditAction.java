@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.model.Category;
+import cz.muni.fi.pv168.project.model.DataManager;
 import cz.muni.fi.pv168.project.model.Template;
 import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
@@ -20,17 +21,14 @@ public class EditAction extends AbstractAction {
 
     private final JTable contentTable;
     private final JComboBox comboBox;
-    private final CategoryListModel categories;
-    private final TimeUnitListModel timeUnits;
+    private final DataManager data;
     private final ActionType type;
 
-    public EditAction (ActionType type, JTable contentTable, CategoryListModel categories,
-                       TimeUnitListModel timeUnits, JComboBox comboBox) {
+    public EditAction (ActionType type, JTable contentTable, JComboBox comboBox, DataManager data) {
         super("Edit", Icons.MANAGE_ICON);
         this.type = type;
         this.contentTable = contentTable;
-        this.categories = categories;
-        this.timeUnits = timeUnits;
+        this.data = data;
         this.comboBox = comboBox;
     }
     @Override
@@ -45,7 +43,7 @@ public class EditAction extends AbstractAction {
                 int modelRow = contentTable.convertRowIndexToModel(selectedRows[0]);
                 var task = taskTableModel.getEntity(modelRow);
 
-                var tDialog = new TaskDialog(task, categories, timeUnits);
+                var tDialog = new TaskDialog(task, data);
                 System.out.println(task.getNameOfTask());
                 tDialog.show(contentTable, "Edit Task").ifPresent(taskTableModel::updateRow);
                 return;
@@ -80,7 +78,7 @@ public class EditAction extends AbstractAction {
                 if (template == null) {
                     return;
                 }
-                var templateDialog = new TemplateDialog(categories, timeUnits, template);
+                var templateDialog = new TemplateDialog(data, template);
                 templateDialog.show(comboBox, "Edit Template").ifPresent(newTemplate -> {
                     template.setName(newTemplate.getName());
                     template.setCategory(newTemplate.getCategory());
