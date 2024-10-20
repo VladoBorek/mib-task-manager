@@ -39,6 +39,21 @@ public class TaskDialog extends EntityDialog<Task>{
     private final JComboBox<TimeUnit> timeUnitsComboBox;
     private final TimeUnit timeUnit = new CustomTimeUnit();
 
+
+    public TaskDialog(Task task, DataManager data, boolean toInspect){
+        this(task, data);
+
+        taskNameField.setEditable(false);
+        descriptionArea.setEditable(false);
+        customerField.setEditable(false);
+        // loggedTimeField.setEditable(false);
+        allocatedTimeField.setEditable(false);
+        categoryComboBox.setEnabled(false); // Disable the combo box
+        statusComboBox.setEnabled(false);   // Disable the combo box
+        timeUnitsComboBox.setEnabled(false); // Disable the combo box
+        datePicker.setEnabled(false);
+    }
+
     public TaskDialog(Task task, DataManager data) {
         super(500, 600);
         this.task = task;

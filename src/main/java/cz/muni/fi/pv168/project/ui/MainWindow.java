@@ -20,9 +20,12 @@ import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.model.Task;
 
 import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -68,6 +71,8 @@ public class MainWindow {
         frame.add(new JScrollPane(statisticsTable), BorderLayout.SOUTH);
         frame.setLocationRelativeTo(null);
         frame.pack();
+        setUpTaskInspect(taskTable);
+
     }
 
     /**
@@ -303,6 +308,26 @@ public class MainWindow {
         JPopupMenu menu = new JPopupMenu();
         menu.add(new EditAction(ActionType.TASK, taskMenu, null, data));
         menu.add(new DeleteAction(ActionType.TASK, taskMenu, null, data));
+
         return menu;
+    }
+
+    /**
+     * Sets up mouse listener to open task inspect window when double-clicking on task
+     * @param taskMenu Table with content for inspect
+     */
+
+    private void setUpTaskInspect(JTable taskMenu){
+        taskTable.addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println(e.getClickCount());
+                if (e.getClickCount() == 2 && Arrays.stream(taskTable.getSelectedRows()).count() == 1) {
+                    InspectAction inspectAction = new InspectAction(ActionType.TASK, taskMenu, null, data);
+                    inspectAction.actionPerformed(null);
+                }
+            }
+        });
+
     }
 }
