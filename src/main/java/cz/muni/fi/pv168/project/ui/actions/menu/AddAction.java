@@ -42,10 +42,10 @@ public class AddAction extends AbstractAction {
         switch(type) {
             case TIME_UNIT:
                 addTimeUnit();
-                return;
+                break;
             case CATEGORY:
                 addCategory();
-                return;
+                break;
         }
     }
 
@@ -66,6 +66,9 @@ public class AddAction extends AbstractAction {
         dialog.show(null, "Add new time unit").ifPresent(timeUnits::addUnit);
     }
 
+    /**
+     * Opens a {@link CategoryDialog} window, creates a category and adds it to {@link CategoryListModel}
+     */
     private void addCategory() {
         var dialog = new CategoryDialog();
         dialog.show(null, "Add a new Category").ifPresent(categories::addCategory);

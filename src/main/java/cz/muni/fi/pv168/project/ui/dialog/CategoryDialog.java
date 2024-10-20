@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Dialog windows that will open when creating or editing time units
+ * Dialog windows that will open when creating or editing categories
  */
 public class CategoryDialog extends EntityDialog<Category> {
 

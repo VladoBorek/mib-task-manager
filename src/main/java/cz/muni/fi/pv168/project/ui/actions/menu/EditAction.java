@@ -1,8 +1,10 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.model.Category;
+import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TaskDialog;
+import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
@@ -19,7 +21,7 @@ public class EditAction extends AbstractAction {
     private final TimeUnitListModel timeUnits;
     private final ActionType type;
     public EditAction (ActionType type, JTable contentTable, CategoryListModel categories,
-                       TimeUnitListModel timeUnits, JComboBox<Category> comboBox) {
+                       TimeUnitListModel timeUnits, JComboBox comboBox) {
         super("Edit", Icons.MANAGE_ICON);
         this.type = type;
         this.contentTable = contentTable;
@@ -45,12 +47,31 @@ public class EditAction extends AbstractAction {
                 System.out.println(task.getNameOfTask());
                 tDialog.show(contentTable, "Edit Task").ifPresent(taskTableModel::updateRow);
                 return;
+
             case CATEGORY:
                 var category = (Category) comboBox.getSelectedItem();
+                if (category == null) {
+                    return;
+                }
                 var cDialog = new CategoryDialog(category);
-                var newCat = (Category) cDialog.show(comboBox, "Edit Category").get();
-                category.setName(newCat.getName());
-                category.setColor(newCat.getColor());
+                cDialog.show(comboBox, "Edit Category").ifPresent(newCat -> {
+                    category.setName(newCat.getName());
+                    category.setColor(newCat.getColor());
+                });
+                comboBox.setSelectedIndex(0);
+                return;
+
+            case TIME_UNIT:
+                var timeunit = (TimeUnit) comboBox.getSelectedItem();
+                if (timeunit == null) {
+                    return;
+                }
+                var timeUnitDialog = new TimeUnitDialog(timeunit);
+                timeUnitDialog.show(comboBox, "Edit Time Unit").ifPresent(newTimeUnit -> {
+                    timeunit.setName(newTimeUnit.getName());
+                    timeunit.setRate(newTimeUnit.getRate());
+                });
+                comboBox.setSelectedIndex(0);
                 return;
         }
     }
