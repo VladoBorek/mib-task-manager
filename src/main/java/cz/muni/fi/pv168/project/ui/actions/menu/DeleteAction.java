@@ -72,7 +72,7 @@ public class DeleteAction extends AbstractAction {
                     JOptionPane.showMessageDialog(frame, "You cannot delete \"Hour\" Time Unit!");
                     return;
                 }
-                data.getTimeUnits.removeTimeUnit(timeUnit);
+                data.getTimeUnits().removeTimeUnit(timeUnit);
 
                 comboBox.removeItem(timeUnit);
                 return;
