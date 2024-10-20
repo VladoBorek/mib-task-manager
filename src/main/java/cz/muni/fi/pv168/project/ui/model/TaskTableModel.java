@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.ui.model;
 
 import cz.muni.fi.pv168.project.model.Category;
+import cz.muni.fi.pv168.project.model.Employee;
 import cz.muni.fi.pv168.project.model.Status;
 import cz.muni.fi.pv168.project.model.Task;
 import cz.muni.fi.pv168.project.model.TimeUnit;
@@ -19,7 +20,7 @@ public class TaskTableModel extends AbstractTableModel {
             Column.readonly("CATEGORY", Category.class, Task::getCategory),
             Column.readonly("CUSTOMER", String.class, Task::getCustomer),
             Column.readonly("TASK NAME", String.class, Task::getNameOfTask),
-            Column.readonly("ASSIGNED TO", String.class, Task::getAssignedTo),
+            Column.readonly("ASSIGNED TO", Employee.class, Task::getAssignedTo),
             Column.readonly("LOGGED TIME", Integer.class, Task::getLoggedTime),
             Column.readonly("ALLOCATED TIME", Integer.class, Task::getAllocatedTime),
             Column.readonly("TIME UNIT", TimeUnit.class, Task::getTimeUnit),

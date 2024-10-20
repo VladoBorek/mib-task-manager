@@ -5,6 +5,7 @@ import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.model.CategoryCellRenderer;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
+import cz.muni.fi.pv168.project.ui.model.EmployeeListModel;
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.model.TemplateListModel;
@@ -35,6 +36,7 @@ public class MainWindow {
     private final TimeUnitListModel timeUnits = new TimeUnitListModel();
     private final CategoryListModel categories = new CategoryListModel(new ArrayList<>(DEMO_DATA.getCategories()));
     private final TemplateListModel templates = new TemplateListModel(new ArrayList<>());
+    private final EmployeeListModel employees = new EmployeeListModel(new ArrayList<>(DEMO_DATA.getEmployees()));
 
     /**
      * Constructor for MainWindow.
