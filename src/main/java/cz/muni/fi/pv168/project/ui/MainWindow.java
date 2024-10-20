@@ -45,6 +45,7 @@ public class MainWindow {
         frame.getContentPane().setBackground(BG_COLOR);
         frame.setSize(1024, 768);
 
+
         taskTable = createTaskTable(DEMO_DATA.getTasks());
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
         frame.setJMenuBar(createMenuBar());

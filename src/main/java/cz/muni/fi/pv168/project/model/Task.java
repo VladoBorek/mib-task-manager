@@ -10,13 +10,13 @@ public class Task {
     private Category category;
     private String customer;
     private String nameOfTask;
-    private String assignedTo;
+    private Employee assignedTo;
     private Integer loggedTime;
     private Integer allocatedTime;
     private TimeUnit timeUnit;
     private LocalDate dueDate;
 
-    public Task(Status status, String description, Category category, String customer,String nameOfTask, String assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
+    public Task(Status status, String description, Category category, String customer,String nameOfTask, Employee assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
         this.status = status;
         this.description = description;
         this.category = category;
@@ -61,11 +61,11 @@ public class Task {
         this.nameOfTask = nameOfTask;
     }
 
-    public String getAssignedTo() {
+    public Employee getAssignedTo() {
         return assignedTo;
     }
 
-    public void setAssignedTo(String assignedTo) {
+    public void setAssignedTo(Employee assignedTo) {
         this.assignedTo = assignedTo;
     }
 
