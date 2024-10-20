@@ -35,7 +35,7 @@ public class ManageTimeUnitDialog extends JDialog {
         JButton editButton = createButton("Edit", new EditAction(ActionType.TIME_UNIT,
                 null ,null, timeUnits, timeUnitComboBox));
         JButton deleteButton = createButton("Delete", new DeleteAction(ActionType.TIME_UNIT,
-                null ,null, timeUnits, timeUnitComboBox));
+                null ,null, timeUnits, null, timeUnitComboBox));
         add(comboPanel, BorderLayout.NORTH);
         add(editButton, BorderLayout.CENTER);
         add(deleteButton, BorderLayout.SOUTH);

@@ -2,6 +2,8 @@ package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
+import cz.muni.fi.pv168.project.model.CustomTimeUnit;
+import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.model.CategoryCellRenderer;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
@@ -15,6 +17,7 @@ import cz.muni.fi.pv168.project.model.Task;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +36,7 @@ public class MainWindow {
     private final JFrame frame;
     private final DatePicker datePicker = createDatePicker();
     private final JTable taskTable;
-    private final TimeUnitListModel timeUnits = new TimeUnitListModel();
+    private final TimeUnitListModel timeUnits = new TimeUnitListModel(new ArrayList<>());
     private final CategoryListModel categories = new CategoryListModel(new ArrayList<>(DEMO_DATA.getCategories()));
     private final TemplateListModel templates = new TemplateListModel(new ArrayList<>());
     private final EmployeeListModel employees = new EmployeeListModel(new ArrayList<>(DEMO_DATA.getEmployees()));
@@ -56,6 +59,7 @@ public class MainWindow {
         frame.setLocationRelativeTo(null);
         frame.pack();
 
+        timeUnits.addUnit(new CustomTimeUnit());
     }
 
     /**
@@ -86,14 +90,14 @@ public class MainWindow {
         menuBar.add(createJMenu("File", new ImportAction(), new ExportAction()));
         //TODO Create TemplateListModel
         menuBar.add(createJMenu("Template",
-                new AddAction(ActionType.TEMPLATE, taskTable, categories, timeUnits, templates),
-                new ManageAction(ActionType.TEMPLATE, timeUnits, categories, frame)));
+                new AddAction(ActionType.TEMPLATE, taskTable, categories, timeUnits, templates, null),
+                new ManageAction(ActionType.TEMPLATE, timeUnits, categories, templates, frame)));
         menuBar.add((createJMenu("Categories",
-                new AddAction(ActionType.CATEGORY, taskTable, categories, timeUnits, templates),
-                new ManageAction(ActionType.CATEGORY, timeUnits, categories, frame))));
+                new AddAction(ActionType.CATEGORY, taskTable, categories, timeUnits, templates, null),
+                new ManageAction(ActionType.CATEGORY, timeUnits, categories, templates, frame))));
         menuBar.add((createJMenu("Time Units",
-                new AddAction(ActionType.TIME_UNIT, taskTable, categories, timeUnits, templates),
-                new ManageAction(ActionType.TIME_UNIT, timeUnits, categories, frame))));
+                new AddAction(ActionType.TIME_UNIT, taskTable, categories, timeUnits, templates, null),
+                new ManageAction(ActionType.TIME_UNIT, timeUnits, categories, templates, frame))));
         menuBar.add(createJMenu("Help"));
 
         return  menuBar;
@@ -149,8 +153,13 @@ public class MainWindow {
             assigneeComboBox, "--Assignee--",
             customerComboBox, "--Customer--"
         );
+//        JButton addNewTaskButton = createButton("New Task", Icons.ADD_ICON,
+//                new AddAction(ActionType.TASK, taskTable, categories, timeUnits, templates));
+
         JButton addNewTaskButton = createButton("New Task", Icons.ADD_ICON,
-                new AddAction(ActionType.TASK, taskTable, categories, timeUnits, templates));
+                new ChooseTemplateAction(taskTable, categories, timeUnits, templates, frame));
+
+
         JButton resetFiltersButton = createButton("Reset Filters", Icons.DELETE_ICON,
                 new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, datePicker));
 
@@ -273,7 +282,7 @@ public class MainWindow {
     private JPopupMenu createTaskTablePopupMenu(JTable taskMenu) {
         JPopupMenu menu = new JPopupMenu();
         menu.add(new EditAction(ActionType.TASK, taskMenu, categories, timeUnits, null));
-        menu.add(new DeleteAction(ActionType.TASK, taskMenu, categories, timeUnits, null));
+        menu.add(new DeleteAction(ActionType.TASK, taskMenu, categories, timeUnits, templates, null));
         return menu;
     }
 

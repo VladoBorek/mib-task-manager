@@ -5,6 +5,7 @@ import cz.muni.fi.pv168.project.model.TimeUnit;
 
 import javax.swing.*;
 import java.lang.reflect.Array;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +16,8 @@ public class TimeUnitListModel extends AbstractListModel<TimeUnit> {
 
     private final List<TimeUnit> timeUnits;
 
-    public TimeUnitListModel() {
-        this.timeUnits = new ArrayList<>();
+    public TimeUnitListModel(ArrayList<TimeUnit> timeUnits) {
+        this.timeUnits = timeUnits;
     }
 
     public void addUnit(TimeUnit unit) {

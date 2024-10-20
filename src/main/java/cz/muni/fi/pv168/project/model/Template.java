@@ -1,17 +1,27 @@
 package cz.muni.fi.pv168.project.model;
 
 public class Template {
+
+
     private String name;
     private Category category;
     private Integer allocatedTime;
     private TimeUnit timeUnit;
 
+    private String templateName;
 
-    public Template(String name, Category category, Integer allocatedTime, TimeUnit timeUnit) {
+
+    public Template(String name, Category category,
+                    Integer allocatedTime, TimeUnit timeUnit, String templateName) {
         this.name = name;
         this.category = category;
         this.allocatedTime = allocatedTime;
         this.timeUnit = timeUnit;
+        this.templateName = templateName;
+    }
+
+    public Template() {
+        this(null, null, null, null, "<Don't use a template>");
     }
 
     public String getName() {
@@ -44,5 +54,18 @@ public class Template {
 
     public void setTimeUnit(TimeUnit timeUnit) {
         this.timeUnit = timeUnit;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+
+    @Override
+    public String toString() {
+        return templateName;
     }
 }

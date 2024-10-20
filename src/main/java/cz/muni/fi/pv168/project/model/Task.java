@@ -16,7 +16,8 @@ public class Task {
     private TimeUnit timeUnit;
     private LocalDate dueDate;
 
-    public Task(Status status, String description, Category category, String customer,String nameOfTask, Employee assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
+    public Task(Status status, String description, Category category, String customer,String nameOfTask,
+                String assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
         this.status = status;
         this.description = description;
         this.category = category;
@@ -27,6 +28,11 @@ public class Task {
         this.allocatedTime = allocatedTime;
         this.timeUnit = timeUnit;
         this.dueDate = dueDate;
+    }
+
+    public Task(Template template) {
+        this(Status.TO_DO, "", template.getCategory(), "", template.getName(), "",
+                0, template.getAllocatedTime(), template.getTimeUnit(), null);
     }
 
     public Status getStatus() {

@@ -1,35 +1,34 @@
 package cz.muni.fi.pv168.project.ui.dialog;
 
-import cz.muni.fi.pv168.project.model.Category;
 import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.DeleteAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.EditAction;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
+import cz.muni.fi.pv168.project.ui.model.TemplateListModel;
 import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 
-public class ManageCategoriesDialog extends JDialog {
-
-    public ManageCategoriesDialog(JFrame parent, CategoryListModel categories) {
-        super(parent, "Manage categories", true);
+public class ManageTemplatesDialog extends JDialog {
+    public ManageTemplatesDialog(JFrame parent, TemplateListModel templates,
+                                 CategoryListModel categories,
+                                 TimeUnitListModel timeUnits) {
+        super(parent, "Manage templates", true);
         setLayout(new BorderLayout());
 
-
-        var comboBox = new JComboBox<>(new DefaultComboBoxModel<>(categories.toArray()));
+        var comboBox = new JComboBox<>(new DefaultComboBoxModel<>(templates.toArray()));
         var comboPanel = new JPanel();
-        comboPanel.add(new JLabel("Select a category:"));
+        comboPanel.add(new JLabel("Select a template:"));
         comboPanel.add(comboBox);
 
-        JButton editButton = createButton("Edit", new EditAction(ActionType.CATEGORY,
-                null ,categories, null, comboBox));
-        JButton deleteButton = createButton("Delete", new DeleteAction(ActionType.CATEGORY,
-                null ,categories, null, null, comboBox));
+        JButton editButton = createButton("Edit", new EditAction(ActionType.TEMPLATE,
+                null, categories, timeUnits, comboBox));
+        JButton deleteButton = createButton("Delete", new DeleteAction(ActionType.TEMPLATE,
+                null, categories, timeUnits, templates, comboBox));
 
         add(comboPanel, BorderLayout.NORTH);
         add(editButton, BorderLayout.CENTER);
