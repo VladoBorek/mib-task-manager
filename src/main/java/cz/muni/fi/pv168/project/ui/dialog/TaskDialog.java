@@ -4,6 +4,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.model.Category;
 import cz.muni.fi.pv168.project.model.CustomTimeUnit;
+import cz.muni.fi.pv168.project.model.Employee;
 import cz.muni.fi.pv168.project.model.Status;
 import cz.muni.fi.pv168.project.model.Task;
 import cz.muni.fi.pv168.project.model.TimeUnit;
@@ -95,16 +96,28 @@ public class TaskDialog extends EntityDialog<Task>{
         addCentered("Due date", datePicker);
     }
 
+    private boolean validateFields() {
+        if ((taskNameField.getText().trim().isEmpty()) ||
+                        (customerField.getText().trim().isEmpty()) ||
+                        (categoryComboBox.getSelectedItem() == null) ||
+                        (statusComboBox.getSelectedItem() == null) ||
+                        (timeUnitsComboBox.getSelectedItem() == null) ||
+                        (allocatedTimeField.getText().trim().isEmpty()) ||
+                        (loggedTimeField.getText().trim().isEmpty())
+        ) {
+            JOptionPane.showMessageDialog(null, "Please fill all information", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+
     @Override
     Task getEntity() {
-//        task.setNameOfTask(taskNameField.getText());
-//        task.setDescription(descriptionArea.getText());
-//        task.setCustomer(customerField.getText());
-//        task.setCategory((Category) categoryComboBox.getSelectedItem());
-//        task.setStatus((Status) statusComboBox.getSelectedItem());
-//        task.setLoggedTime(loggedTimeField.getValue());
-//        task.setAllocatedTime(allocatedTimeField.getValue());
-//        task.setDueDate(datePicker.getDate());
+        if (!validateFields()) {
+            return null;
+        }
+
         var task = this.task;
 
         if (task != null) {

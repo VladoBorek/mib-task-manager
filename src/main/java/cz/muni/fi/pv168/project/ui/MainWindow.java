@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.project.ui;
 import com.github.lgooddatepicker.components.DatePicker;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
+import cz.muni.fi.pv168.project.ui.model.CategoryCellRenderer;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
@@ -210,6 +211,9 @@ public class MainWindow {
 
         var progressColumn = table.getColumnModel().getColumn(8);
         progressColumn.setCellRenderer(new TaskProgressBar());
+        var categoryColumn = table.getColumnModel().getColumn(1);
+        categoryColumn.setCellRenderer(new CategoryCellRenderer());
+
 
         return table;
     }
