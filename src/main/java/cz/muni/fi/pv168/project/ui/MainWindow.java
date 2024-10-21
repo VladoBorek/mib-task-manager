@@ -63,6 +63,10 @@ public class MainWindow {
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
 
         statisticsTable = createStatisticsTable();
+        data.setTaskTable(taskTable);
+
+         //new DataManager(taskTable);
+
 
 
         frame.setJMenuBar(createMenuBar());
@@ -259,7 +263,7 @@ public class MainWindow {
      * @param a          Action to be performed
      * @return Button with input characteristics
      */
-    private JButton createButton(String buttonText, Icon icon, Action a) {
+    public static JButton createButton(String buttonText, Icon icon, Action a) {
         var button = new JButton(buttonText, icon);
         button.addActionListener(a);
         button.setBackground(BUTTON_COLOR);

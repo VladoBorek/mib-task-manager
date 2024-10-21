@@ -5,6 +5,7 @@ import cz.muni.fi.pv168.project.ui.model.EmployeeListModel;
 import cz.muni.fi.pv168.project.ui.model.TemplateListModel;
 import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 import static cz.muni.fi.pv168.project.ui.MainWindow.DEMO_DATA;
@@ -20,6 +21,12 @@ public class DataManager {
 //    private final EmployeeListModel employees = new EmployeeListModel(new ArrayList<>(DEMO_DATA.getEmployees()));
     private final EmployeeListModel employees = new EmployeeListModel(new ArrayList<>());
 
+    private JTable taskTable;
+
+    //public DataManager(JTable taskTable){
+        //this.taskTable = taskTable;
+    //}
+
 
     public TimeUnitListModel getTimeUnits() {
         return timeUnits;
@@ -33,5 +40,13 @@ public class DataManager {
     }
     public EmployeeListModel getEmployees() {
         return employees;
+    }
+
+    public JTable getTaskTable(){
+        return taskTable;
+    }
+
+    public void setTaskTable(JTable taskTable){
+        this.taskTable = taskTable;
     }
 }
