@@ -36,8 +36,9 @@ import java.util.Map;
  */
 public class MainWindow {
 
-    public static final Color BUTTON_COLOR = new Color(190, 190, 190);
-    public static final Color BG_COLOR = new Color(180, 180, 180);
+    public static final Color BUTTON_COLOR = new Color(220, 220, 220);
+
+//    public static final Color BG_COLOR = new Color(0, 0, 0);
     public static final DemoDataGenerator DEMO_DATA = new DemoDataGenerator();
 
     private final JFrame frame;
@@ -52,7 +53,10 @@ public class MainWindow {
      */
     public MainWindow() {
         frame = createFrame();
-        frame.getContentPane().setBackground(BG_COLOR);
+
+        // This didn't do anything
+//        frame.getContentPane().setBackground(BG_COLOR);
+
         frame.setSize(1024, 768);
         data = new DataManager();
 
@@ -144,13 +148,12 @@ public class MainWindow {
     private JToolBar createFilterBar() {
         JToolBar filterBar = new JToolBar();
         filterBar.setFloatable(false);
-
         JCheckBox filterToDo = createFilterCheckbox("To-Do", true);
         JCheckBox filterInProgress = createFilterCheckbox("In-Progress", true);
         JCheckBox filterComplete = createFilterCheckbox("Completed", true);
         JCheckBox filterOnHold = createFilterCheckbox("On-Hold", true);
 
-        JCheckBox filterOverdue = createFilterCheckbox("Filter Overdue", false);
+        JCheckBox filterOverdue = createFilterCheckbox("Filter Overdue ", false);
         JCheckBox filterOverBudget = createFilterCheckbox("Filter Over budget", false);
 
         JComboBox<Object> categoryComboBox = createFilterComboBox(data.getCategories().toArray(),
@@ -173,11 +176,11 @@ public class MainWindow {
 //        JButton addNewTaskButton = createButton("New Task", Icons.ADD_ICON,
 //                new AddAction(ActionType.TASK, taskTable, categories, timeUnits, templates));
 
-        JButton addNewTaskButton = createButton("New Task", Icons.ADD_ICON,
+        JButton addNewTaskButton = createButton("New Task ", Icons.ADD_ICON,
                 new ChooseTemplateAction(taskTable, data, frame));
 
 
-        JButton resetFiltersButton = createButton("Reset Filters", Icons.DELETE_ICON,
+        JButton resetFiltersButton = createButton("Reset Filters ", Icons.RESET_ICON,
                 new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, datePicker));
 
         filterBar.add(addNewTaskButton);
@@ -198,6 +201,8 @@ public class MainWindow {
         datePickerPanel.setPreferredSize(new Dimension(150, 25));
         datePickerPanel.add(datePicker, BorderLayout.CENTER);
         filterBar.add(datePickerPanel);
+
+        filterBar.addSeparator();
 
         filterBar.add(filterOverBudget);
 
