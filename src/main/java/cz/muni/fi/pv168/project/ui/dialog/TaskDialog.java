@@ -69,31 +69,37 @@ public class TaskDialog extends EntityDialog<Task>{
         descriptionArea.setMinimumSize(new Dimension(200, 100));
         descriptionArea.setMaximumSize(new Dimension(200, 100));
 
-        DefaultListCellRenderer listRenderer = new DefaultListCellRenderer();
-        EmployeeComboboxRenderer employeeComboboxRenderer = new EmployeeComboboxRenderer();
-        listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
-
-        statusComboBox.setRenderer(listRenderer);
-        assignedToComboBox.setRenderer(employeeComboboxRenderer);
-        categoryComboBox.setRenderer(listRenderer);
-        timeUnitsComboBox.setRenderer(listRenderer);
-
-        taskNameField.setHorizontalAlignment(SwingConstants.CENTER);
-        customerField.setHorizontalAlignment(SwingConstants.CENTER);
-        loggedTimeField.setHorizontalAlignment(SwingConstants.CENTER);
-        allocatedTimeField.setHorizontalAlignment(SwingConstants.CENTER);
-
         if (task != null) {
             setValues();
         }
         addFields();
         setPanel();
 
+        centerOutText();
         if (toInspect){
             setInspect();
         }
     }
 
+    private void centerOutText(){
+        DefaultListCellRenderer listRenderer = new DefaultListCellRenderer();
+        EmployeeComboboxRenderer employeeComboboxRenderer = new EmployeeComboboxRenderer();
+
+        employeeComboboxRenderer.setHorizontalAlignment(EmployeeComboboxRenderer.CENTER);
+        listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
+
+        statusComboBox.setRenderer(listRenderer);
+        assignedToComboBox.setRenderer(employeeComboboxRenderer);
+        categoryComboBox.setRenderer(listRenderer);
+        timeUnitsComboBox.setRenderer(listRenderer);
+        //assignedToComboBox.setRenderer(listRenderer);
+
+        taskNameField.setHorizontalAlignment(SwingConstants.CENTER);
+        customerField.setHorizontalAlignment(SwingConstants.CENTER);
+        loggedTimeField.setHorizontalAlignment(SwingConstants.CENTER);
+        allocatedTimeField.setHorizontalAlignment(SwingConstants.CENTER);
+
+    }
     private void setInspect(){
         taskNameField.setEditable(false);
         descriptionArea.setEditable(false);
@@ -104,6 +110,7 @@ public class TaskDialog extends EntityDialog<Task>{
         statusComboBox.setEnabled(false);
         timeUnitsComboBox.setEnabled(false);
         datePicker.setEnabled(false);
+        assignedToComboBox.setEnabled(false);
     }
     public TaskDialog(Task task, DataManager data) {
         this(task, data, false);
