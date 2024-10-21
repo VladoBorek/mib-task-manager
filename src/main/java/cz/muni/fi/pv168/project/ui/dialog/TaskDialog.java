@@ -11,6 +11,7 @@ import cz.muni.fi.pv168.project.model.Task;
 import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
+import cz.muni.fi.pv168.project.ui.model.EmployeeComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 
 import javax.swing.*;
@@ -27,6 +28,7 @@ public class TaskDialog extends EntityDialog<Task>{
 
     private final Task task;
 
+    private final JComboBox<Employee> assignedToComboBox;
     private final JComboBox<Status> statusComboBox = new JComboBox<>(Status.values());
 
     private final JComboBox<Object> categoryComboBox;
@@ -48,6 +50,7 @@ public class TaskDialog extends EntityDialog<Task>{
         customerField.setEditable(false);
         // loggedTimeField.setEditable(false);
         allocatedTimeField.setEditable(false);
+        assignedToComboBox.setEnabled(false);
         categoryComboBox.setEnabled(false); // Disable the combo box
         statusComboBox.setEnabled(false);   // Disable the combo box
         timeUnitsComboBox.setEnabled(false); // Disable the combo box
@@ -58,6 +61,7 @@ public class TaskDialog extends EntityDialog<Task>{
         super(500, 600);
         this.task = task;
 
+        this.assignedToComboBox = new JComboBox<>(data.getEmployees().toArray());
         this.categoryComboBox = new JComboBox<>(data.getCategories().toArray());
         this.timeUnitsComboBox = new JComboBox<>(data.getTimeUnits().toArray());
 
@@ -66,8 +70,10 @@ public class TaskDialog extends EntityDialog<Task>{
         descriptionArea.setPreferredSize(new Dimension(200, 100));
 
         DefaultListCellRenderer listRenderer = new DefaultListCellRenderer();
+        EmployeeComboboxRenderer employeeComboboxRenderer = new EmployeeComboboxRenderer();
         listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
         statusComboBox.setRenderer(listRenderer);
+        assignedToComboBox.setRenderer(employeeComboboxRenderer);
         categoryComboBox.setRenderer(listRenderer);
         timeUnitsComboBox.setRenderer(listRenderer);
 
@@ -88,6 +94,7 @@ public class TaskDialog extends EntityDialog<Task>{
         taskNameField.setText(task.getNameOfTask());
         descriptionArea.setText(task.getDescription());
         customerField.setText(task.getCustomer());
+        assignedToComboBox.setSelectedItem(task.getAssignedTo());
         categoryComboBox.setSelectedItem(task.getCategory());
         statusComboBox.setSelectedItem(task.getCategory());
         loggedTimeField.setValue(task.getLoggedTime());
@@ -102,6 +109,7 @@ public class TaskDialog extends EntityDialog<Task>{
         addCentered("Task name", taskNameField);
         addCentered("Description", new JScrollPane(descriptionArea));
         addCentered("Customer", customerField);
+        addCentered("Assigned to", assignedToComboBox);
         addCentered("Category", categoryComboBox);
         addCentered("Status", statusComboBox);
         addCentered("Logged time", loggedTimeField);
@@ -113,6 +121,7 @@ public class TaskDialog extends EntityDialog<Task>{
     private boolean validateFields() {
         if ((taskNameField.getText().trim().isEmpty())
                 || (customerField.getText().trim().isEmpty())
+                || (assignedToComboBox.getSelectedItem() == null)
                 || (categoryComboBox.getSelectedItem() == null)
                 || (statusComboBox.getSelectedItem() == null)
                 || (timeUnitsComboBox.getSelectedItem() == null)
@@ -136,6 +145,7 @@ public class TaskDialog extends EntityDialog<Task>{
         if (task != null) {
             task.setNameOfTask(taskNameField.getText());
             task.setCustomer(customerField.getText());
+            task.setAssignedTo((Employee) assignedToComboBox.getSelectedItem());
             task.setCategory((Category) categoryComboBox.getSelectedItem());
             task.setStatus((Status) statusComboBox.getSelectedItem());
             task.setLoggedTime(loggedTimeField.getValue());
@@ -148,7 +158,7 @@ public class TaskDialog extends EntityDialog<Task>{
                     (Category) categoryComboBox.getSelectedItem(),
                     customerField.getText(),
                     taskNameField.getText(),
-                    "TODO",
+                    (Employee) assignedToComboBox.getSelectedItem(),
                     loggedTimeField.getValue(),
                     allocatedTimeField.getValue(),
                     (TimeUnit) timeUnitsComboBox.getSelectedItem(),
