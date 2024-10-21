@@ -29,6 +29,9 @@ public class Employee {
     }
 
     public String getCode() {
+        if (id == 0) {
+            return "Not assigned";
+        }
         return id + " - " + name;
     }
 }

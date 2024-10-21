@@ -19,12 +19,12 @@ public class DemoDataGenerator {
             new Category("In-Person", new Color(2,200,2)),
             new Category("Systems update", new Color(3,3,200))
     );
-    private static final List<String> EMPLOYEES = List.of(
-            "Remy", "Ramy", "Rumy", "Romy"
-//            new Employee("Remy", 1),
-//            new Employee("Ramy", 2),
-//            new Employee("Rumy", 3),
-//            new Employee("Romy", 4)
+    private static final List<Employee> EMPLOYEES = List.of(
+            new Employee("Not assigned", 0),
+            new Employee("Remy", 1),
+            new Employee("Ramy", 2),
+            new Employee("Rumy", 3),
+            new Employee("Romy", 4)
     );
 
     private static final List<Task> TASKS= List.of(
@@ -50,7 +50,7 @@ public class DemoDataGenerator {
 
     public List<Category> getCategories() { return CATEGORIES;}
     public List<String> getCustomers() { return CUSTOMERS;}
-    public List<String> getEmployees() { return EMPLOYEES;}
+    public List<Employee> getEmployees() { return EMPLOYEES;}
     public List<Task> getTasks() { return TASKS;}
 
     public List<TimeUnit> getTimeUnits() {return TIME_UNITS;}

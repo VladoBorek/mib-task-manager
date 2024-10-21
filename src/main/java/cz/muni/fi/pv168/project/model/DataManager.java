@@ -17,8 +17,7 @@ public class DataManager {
     private final TimeUnitListModel timeUnits = new TimeUnitListModel(new ArrayList<>(DEMO_DATA.getTimeUnits()));
     private final CategoryListModel categories = new CategoryListModel(new ArrayList<>(DEMO_DATA.getCategories()));
     private final TemplateListModel templates = new TemplateListModel(new ArrayList<>());
-//    private final EmployeeListModel employees = new EmployeeListModel(new ArrayList<>(DEMO_DATA.getEmployees()));
-    private final EmployeeListModel employees = new EmployeeListModel(new ArrayList<>());
+    private final EmployeeListModel employees = new EmployeeListModel(new ArrayList<>(DEMO_DATA.getEmployees()));
 
 
     public TimeUnitListModel getTimeUnits() {

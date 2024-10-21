@@ -10,14 +10,14 @@ public class Task {
     private Category category;
     private String customer;
     private String nameOfTask;
-    private String assignedTo;
+    private Employee assignedTo;
     private Integer loggedTime;
     private Integer allocatedTime;
     private TimeUnit timeUnit;
     private LocalDate dueDate;
 
     public Task(Status status, String description, Category category, String customer,String nameOfTask,
-                String assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
+                Employee assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
         this.status = status;
         this.description = description;
         this.category = category;
@@ -31,7 +31,7 @@ public class Task {
     }
 
     public Task(Template template) {
-        this(Status.TO_DO, "", template.getCategory(), "", template.getName(), "",
+        this(Status.TO_DO, "", template.getCategory(), "", template.getName(), new Employee("-", 0),
                 0, template.getAllocatedTime(), template.getTimeUnit(), null);
     }
 
@@ -67,11 +67,16 @@ public class Task {
         this.nameOfTask = nameOfTask;
     }
 
-    public String getAssignedTo() {
+    public Employee getAssignedTo() {
         return assignedTo;
     }
 
-    public void setAssignedTo(String assignedTo) {
+    public String getAssignedToCode() {
+        return assignedTo.getCode();
+    }
+
+
+    public void setAssignedTo(Employee assignedTo) {
         this.assignedTo = assignedTo;
     }
 

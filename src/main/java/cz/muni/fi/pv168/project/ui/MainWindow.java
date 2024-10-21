@@ -10,6 +10,7 @@ import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.model.CategoryCellRenderer;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 
+import cz.muni.fi.pv168.project.ui.model.EmployeeComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.model.StatisticsTableModel;
 
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
@@ -43,10 +44,6 @@ public class MainWindow {
     private final DatePicker datePicker = createDatePicker();
     private final JTable taskTable;
     private final JTable statisticsTable;
-    private final TimeUnitListModel timeUnits = new TimeUnitListModel(new ArrayList<>());
-    private final CategoryListModel categories = new CategoryListModel(new ArrayList<>(DEMO_DATA.getCategories()));
-    private final TemplateListModel templates = new TemplateListModel(new ArrayList<>());
-
     private final DataManager data;
 
     /**
@@ -158,6 +155,7 @@ public class MainWindow {
                 "--Assignee--");
         JComboBox<Object> customerComboBox = createFilterComboBox(DEMO_DATA.getCustomers().toArray(),
                 "--Customer--");
+        assigneeComboBox.setRenderer(new EmployeeComboboxRenderer());
 
         Map<Boolean, List<JCheckBox>> resetValuesCheckboxes = Map.of(
                 true, List.of(filterToDo, filterInProgress, filterComplete, filterOnHold),
