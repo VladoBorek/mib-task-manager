@@ -15,8 +15,8 @@ public class Task {
     private Employee assignedTo;
 
     // In the base time unit
-    private Float loggedTime;
-    private Float allocatedTime;
+    private Integer loggedTime;
+    private Integer allocatedTime;
 
     private TimeUnit timeUnit;
     private LocalDate dueDate;
@@ -29,8 +29,8 @@ public class Task {
         this.customer = customer;
         this.nameOfTask = nameOfTask;
         this.assignedTo = assignedTo;
-        this.loggedTime = loggedTime.floatValue();
-        this.allocatedTime = allocatedTime.floatValue();
+        this.loggedTime = loggedTime * timeUnit.getRate();
+        this.allocatedTime = allocatedTime * timeUnit.getRate();
         this.timeUnit = timeUnit;
         this.dueDate = dueDate;
     }
@@ -94,19 +94,19 @@ public class Task {
 //    }
 
     public Integer getConvertedLoggedTime() {
-        return round(loggedTime * timeUnit.getRate());
+        return loggedTime / timeUnit.getRate();
     }
 
     public void setConvertedLoggedTime(Integer loggedTime) {
-        this.loggedTime = loggedTime.floatValue() / timeUnit.getRate();
+        this.loggedTime = loggedTime * timeUnit.getRate();
     }
 
     public Integer getConvertedAllocatedTime() {
-        return round(allocatedTime * timeUnit.getRate());
+        return allocatedTime / timeUnit.getRate();
     }
 
     public void setConvertedAllocatedTime(Integer allocatedTime) {
-        this.allocatedTime = allocatedTime.floatValue() / timeUnit.getRate();
+        this.allocatedTime = allocatedTime * timeUnit.getRate();
     }
 
 //    public Integer getAllocatedTime() {

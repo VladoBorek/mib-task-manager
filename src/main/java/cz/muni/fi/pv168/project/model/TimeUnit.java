@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.project.model;
 
 public abstract class TimeUnit {
-    private static final String baseUnitName = "Hour";
+    private static final String BASE_UNIT = "Minute";
 
     private String name;
 
@@ -12,7 +12,7 @@ public abstract class TimeUnit {
      * Creates a new instance of base time unit
      */
     public TimeUnit() {
-        this("Hour", 1);
+        this(BASE_UNIT, 1);
     }
 
     /**
@@ -28,7 +28,7 @@ public abstract class TimeUnit {
 
 
     public static String getBaseUnit() {
-        return baseUnitName;
+        return BASE_UNIT;
     }
 
     public String getName() {
