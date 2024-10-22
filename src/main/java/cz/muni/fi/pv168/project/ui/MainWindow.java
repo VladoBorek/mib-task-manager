@@ -53,6 +53,7 @@ public class MainWindow {
      */
     public MainWindow() {
         frame = createFrame();
+        frame.setIconImage(Icons.APP_ICON.getImage());
 
         // This didn't do anything
 //        frame.getContentPane().setBackground(BG_COLOR);
@@ -67,8 +68,6 @@ public class MainWindow {
         data.setTaskTable(taskTable);
 
          //new DataManager(taskTable);
-
-
 
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
@@ -106,7 +105,7 @@ public class MainWindow {
         menuBar.setBackground(new Color(240, 240, 240));
 
         menuBar.add(createJMenu("File", new ImportAction(), new ExportAction()));
-        //TODO Create TemplateListModel
+
         menuBar.add(createJMenu("Template",
                 new AddAction(ActionType.TEMPLATE, taskTable, data, null),
                 new ManageAction(ActionType.TEMPLATE, data, frame)));

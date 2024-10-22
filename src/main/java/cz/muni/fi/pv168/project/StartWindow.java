@@ -23,55 +23,68 @@ public class StartWindow {
         frame.setIconImage(Icons.APP_ICON.getImage());
         frame.setResizable(false);
 
+        frame.add(createTitlePanel(), BorderLayout.NORTH);
+        frame.add(createMainPanel(), BorderLayout.CENTER);
+        frame.add(createExitPanel(), BorderLayout.SOUTH);
+
+        frame.setLocationRelativeTo(null);
+    }
+
+    private JPanel createTitlePanel() {
         JPanel titlePanel = new JPanel();
         JLabel titleLabel = new JLabel("MIB Task Manager");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setIcon(Icons.MIB_ICON);
         titlePanel.add(titleLabel);
+        return titlePanel;
+    }
 
+    private JPanel createMainPanel() {
         JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(createImagePanel(), BorderLayout.NORTH);
+        mainPanel.add(createButtonPanel(), BorderLayout.SOUTH);
+        return mainPanel;
+    }
 
+    private JPanel createImagePanel() {
         JPanel imagePanel = new JPanel();
         JLabel imageLabel = new JLabel(Icons.MIB_TM_IMAGE);
         imagePanel.add(imageLabel);
+        return imagePanel;
+    }
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout());
-
-        mainPanel.add(imagePanel, BorderLayout.NORTH);
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-
-
-        JPanel exitPanel = new JPanel(new BorderLayout());
-
+    private JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel(new FlowLayout());
 
         JButton loginButton = new JButton("Login");
         JButton registerButton = new JButton("Register");
-        JButton exitButton = new JButton("Exit");
         loginButton.setPreferredSize(new Dimension(90, 30));
         registerButton.setPreferredSize(new Dimension(90, 30));
-        exitButton.setPreferredSize(new Dimension(60, 25));
 
         loginButton.addActionListener(e -> {
             new MainWindow().show();
             frame.dispose();
         });
         registerButton.addActionListener(e -> System.out.println("Register button clicked"));
-        exitButton.addActionListener(e -> System.exit(0));
 
         buttonPanel.add(loginButton);
         buttonPanel.add(registerButton);
-        exitPanel.add(exitButton, BorderLayout.EAST);
+
+        return buttonPanel;
+    }
+
+    private JPanel createExitPanel() {
+        JPanel exitPanel = new JPanel(new BorderLayout());
+
+        JButton exitButton = new JButton("Exit");
+        exitButton.setPreferredSize(new Dimension(60, 25));
+        exitButton.addActionListener(e -> System.exit(0));
 
         JLabel versionLabel = new JLabel("  Version " + VERSION);
         exitPanel.add(versionLabel, BorderLayout.WEST);
+        exitPanel.add(exitButton, BorderLayout.EAST);
 
-        frame.add(titlePanel, BorderLayout.NORTH);
-        frame.add(mainPanel, BorderLayout.CENTER);
-        frame.add(exitPanel, BorderLayout.SOUTH);
-
-
-        frame.setLocationRelativeTo(null);
+        return exitPanel;
     }
 
     public void show(){
