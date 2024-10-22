@@ -47,9 +47,11 @@ public class TaskTableModel extends AbstractTableModel {
         var task = getEntity(rowIndex);
         return columns.get(columnIndex).getValue(task);
     }
+
     public Task getEntity(int rowIndex) {
         return tasks.get(rowIndex);
     }
+
     public void updateRow(Task task) {
         int rowIndex = tasks.indexOf(task);
         fireTableRowsUpdated(rowIndex, rowIndex);
@@ -69,7 +71,4 @@ public class TaskTableModel extends AbstractTableModel {
     public String getColumnName(int columnIndex) {
         return columns.get(columnIndex).getName();
     }
-
-
-
 }
