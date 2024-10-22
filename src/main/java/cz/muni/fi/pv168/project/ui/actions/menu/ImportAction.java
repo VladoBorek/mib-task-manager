@@ -1,6 +1,5 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
-import com.github.lgooddatepicker.components.DatePicker;
 import cz.muni.fi.pv168.project.model.*;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import org.json.JSONArray;
@@ -13,9 +12,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -34,8 +30,6 @@ public class ImportAction extends AbstractAction {
         importTableFromJson(dataManager);
     }
     private static void importTableFromJson(DataManager data){
-        List<Task> tasks = new ArrayList<>();
-
         // Create a file chooser
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select JSON file with tasks to import");
@@ -64,7 +58,7 @@ public class ImportAction extends AbstractAction {
                     Integer loggedTIme = jsonObject.getInt("LOGGED TIME");
                     Integer allocatedTime = jsonObject.getInt("ALLOCATED TIME");
                     TimeUnit timeUnit = null;
-                    LocalDate dueDate = null;
+                    LocalDate dueDate = LocalDate.parse(jsonObject.getString("DUE DATE"));
 
                     //Get category
                     boolean foundCategory = false;
@@ -80,6 +74,7 @@ public class ImportAction extends AbstractAction {
                     }
                     if (!foundCategory){
                         category = new Category(categoryName, categoryColor);
+                        data.getCategories().addCategory(category);
                     }
                     // Get status
                     for (Status s:Status.values()) {
@@ -102,6 +97,7 @@ public class ImportAction extends AbstractAction {
                     }
                     if(!foundEmployee){
                         assignedTo = new Employee(employeeName, employeeId);
+                        data.getEmployees().addEmployee(assignedTo);
                     }
                     //Get Time Unit
                     var timeUnitName = jsonObject.getString("TIME UNIT");
@@ -117,13 +113,11 @@ public class ImportAction extends AbstractAction {
                     }
                     if(!foundTimeUnit){
                         timeUnit = new CustomTimeUnit(timeUnitName, timeUnitRate);
+                        data.getTimeUnits().addUnit(timeUnit);
                     }
-                    //Get Due Date
-                    var dueDateString = jsonObject.getString("DUE DATE");
-                    dueDate = LocalDate.parse(dueDateString);
+
 
                     Task task = new Task(taskStatus, description, category, customer, nameOfTask, assignedTo, loggedTIme, allocatedTime, timeUnit, dueDate);
-                    tasks.add(task);
                     data.getTaskTableModel().addRow(task);
                 }
 
