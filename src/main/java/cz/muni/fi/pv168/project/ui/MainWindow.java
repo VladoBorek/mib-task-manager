@@ -67,8 +67,6 @@ public class MainWindow {
         statisticsTable = createStatisticsTable();
         data.setTaskTable(taskTable);
 
-         //new DataManager(taskTable);
-
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
         frame.add(new JScrollPane(taskTable), BorderLayout.CENTER);
@@ -172,8 +170,6 @@ public class MainWindow {
                 assigneeComboBox, "--Assignee--",
                 customerComboBox, "--Customer--"
         );
-//        JButton addNewTaskButton = createButton("New Task", Icons.ADD_ICON,
-//                new AddAction(ActionType.TASK, taskTable, categories, timeUnits, templates));
 
         JButton addNewTaskButton = createButton("New Task ", Icons.ADD_ICON,
                 new ChooseTemplateAction(taskTable, data, frame));
