@@ -12,11 +12,11 @@ import java.awt.event.ActionListener;
  * @author Maroš Pavlík
  */
 public class StartWindow {
-    private final static String VERSION = "0.9 Beta";
+    private final static String VERSION = "0.000009 Alpha";
     private final JFrame frame;
 
     public StartWindow() {
-        this.frame = new JFrame("MIB Task Manager");
+        this.frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 430);
         frame.setLayout(new BorderLayout(10, 10));
@@ -27,6 +27,8 @@ public class StartWindow {
         frame.add(createMainPanel(), BorderLayout.CENTER);
         frame.add(createExitPanel(), BorderLayout.SOUTH);
 
+        frame.getContentPane().setBackground(Color.WHITE);
+
         frame.setLocationRelativeTo(null);
     }
 
@@ -36,6 +38,7 @@ public class StartWindow {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setIcon(Icons.MIB_ICON);
         titlePanel.add(titleLabel);
+        titlePanel.setBackground(Color.WHITE);
         return titlePanel;
     }
 
@@ -43,6 +46,7 @@ public class StartWindow {
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(createImagePanel(), BorderLayout.NORTH);
         mainPanel.add(createButtonPanel(), BorderLayout.SOUTH);
+        mainPanel.setBackground(Color.WHITE);
         return mainPanel;
     }
 
@@ -50,6 +54,7 @@ public class StartWindow {
         JPanel imagePanel = new JPanel();
         JLabel imageLabel = new JLabel(Icons.MIB_TM_IMAGE);
         imagePanel.add(imageLabel);
+        imagePanel.setBackground(Color.WHITE);
         return imagePanel;
     }
 
@@ -69,6 +74,7 @@ public class StartWindow {
 
         buttonPanel.add(loginButton);
         buttonPanel.add(registerButton);
+        buttonPanel.setBackground(Color.WHITE);
 
         return buttonPanel;
     }
@@ -83,6 +89,7 @@ public class StartWindow {
         JLabel versionLabel = new JLabel("  Version " + VERSION);
         exitPanel.add(versionLabel, BorderLayout.WEST);
         exitPanel.add(exitButton, BorderLayout.EAST);
+        exitPanel.setBackground(Color.WHITE);
 
         return exitPanel;
     }
