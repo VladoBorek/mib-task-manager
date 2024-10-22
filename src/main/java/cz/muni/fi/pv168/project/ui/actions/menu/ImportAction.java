@@ -120,11 +120,7 @@ public class ImportAction extends AbstractAction {
                     }
                     //Get Due Date
                     var dueDateString = jsonObject.getString("DUE DATE");
-                    //dueDate = Date;
-                    //TODO fix
-                    DatePicker datePicker = new DatePicker();
-                    datePicker.setDateToToday();
-                    dueDate = datePicker.getDate();
+                    dueDate = LocalDate.parse(dueDateString);
 
                     Task task = new Task(taskStatus, description, category, customer, nameOfTask, assignedTo, loggedTIme, allocatedTime, timeUnit, dueDate);
                     tasks.add(task);
