@@ -102,8 +102,8 @@ public class MainWindow {
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(new Color(240, 240, 240));
 
-        menuBar.add(createJMenu("File", new ImportAction(), new ExportAction()));
-
+        menuBar.add(createJMenu("File", new ImportAction(data), new ExportAction(data)));
+        //TODO Create TemplateListModel
         menuBar.add(createJMenu("Template",
                 new AddAction(ActionType.TEMPLATE, taskTable, data, null),
                 new ManageAction(ActionType.TEMPLATE, data, frame)));
@@ -242,7 +242,7 @@ public class MainWindow {
         progressColumn.setCellRenderer(new TaskProgressBar());
         var categoryColumn = table.getColumnModel().getColumn(1);
         categoryColumn.setCellRenderer(new CategoryCellRenderer());
-
+        data.setTaskTableModel(model);
 
         return table;
     }
