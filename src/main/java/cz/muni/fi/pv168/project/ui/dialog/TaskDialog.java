@@ -124,8 +124,8 @@ public class TaskDialog extends EntityDialog<Task>{
         assignedToComboBox.setSelectedItem(task.getAssignedTo());
         categoryComboBox.setSelectedItem(task.getCategory());
         statusComboBox.setSelectedItem(task.getStatus());
-        loggedTimeField.setValue(task.getLoggedTime());
-        allocatedTimeField.setValue(task.getAllocatedTime());
+        loggedTimeField.setValue(task.getConvertedLoggedTime());
+        allocatedTimeField.setValue(task.getConvertedAllocatedTime());
         datePicker.setDate(task.getDueDate());
 
         timeUnit.setName(task.getTimeUnit().getName());
@@ -196,8 +196,8 @@ public class TaskDialog extends EntityDialog<Task>{
             task.setAssignedTo((Employee) assignedToComboBox.getSelectedItem());
             task.setCategory((Category) categoryComboBox.getSelectedItem());
             task.setStatus((Status) statusComboBox.getSelectedItem());
-            task.setLoggedTime(loggedTimeField.getValue());
-            task.setAllocatedTime(allocatedTimeField.getValue());
+            task.setConvertedLoggedTime(loggedTimeField.getValue());
+            task.setConvertedAllocatedTime(allocatedTimeField.getValue());
             task.setDueDate(datePicker.getDate());
             task.setTimeUnit((TimeUnit) timeUnitsComboBox.getSelectedItem());
         } else {

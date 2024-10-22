@@ -69,12 +69,16 @@ public class MainWindow {
 
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
-        frame.add(new JScrollPane(taskTable), BorderLayout.CENTER);
-        frame.add(new JScrollPane(statisticsTable), BorderLayout.SOUTH);
+
+        var splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        splitPane.setDividerSize(10);
+        splitPane.setTopComponent(new JScrollPane(taskTable));
+        splitPane.setBottomComponent(new JScrollPane(statisticsTable));
+        frame.add(splitPane, BorderLayout.CENTER);
+
         frame.setLocationRelativeTo(null);
         frame.pack();
         setUpTaskInspect(taskTable);
-
     }
 
     /**
@@ -145,6 +149,8 @@ public class MainWindow {
     private JToolBar createFilterBar() {
         JToolBar filterBar = new JToolBar();
         filterBar.setFloatable(false);
+        filterBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+
         JCheckBox filterToDo = createFilterCheckbox("To-Do", true);
         JCheckBox filterInProgress = createFilterCheckbox("In-Progress", true);
         JCheckBox filterComplete = createFilterCheckbox("Completed", true);

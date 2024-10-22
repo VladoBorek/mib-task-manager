@@ -3,6 +3,8 @@ package cz.muni.fi.pv168.project.model;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static java.lang.Math.round;
+
 public class Task {
 
     private Status status;
@@ -11,8 +13,11 @@ public class Task {
     private String customer;
     private String nameOfTask;
     private Employee assignedTo;
+
+    // In the base time unit
     private Integer loggedTime;
     private Integer allocatedTime;
+
     private TimeUnit timeUnit;
     private LocalDate dueDate;
 
@@ -24,8 +29,8 @@ public class Task {
         this.customer = customer;
         this.nameOfTask = nameOfTask;
         this.assignedTo = assignedTo;
-        this.loggedTime = loggedTime;
-        this.allocatedTime = allocatedTime;
+        this.loggedTime = loggedTime * timeUnit.getRate();
+        this.allocatedTime = allocatedTime * timeUnit.getRate();
         this.timeUnit = timeUnit;
         this.dueDate = dueDate;
     }
@@ -80,21 +85,37 @@ public class Task {
         this.assignedTo = assignedTo;
     }
 
-    public Integer getLoggedTime() {
-        return loggedTime;
+//    public Integer getLoggedTime() {
+//        return loggedTime;
+//    }
+//
+//    public void setLoggedTime(Integer loggedTime) {
+//        this.loggedTime = loggedTime;
+//    }
+
+    public Integer getConvertedLoggedTime() {
+        return loggedTime / timeUnit.getRate();
     }
 
-    public void setLoggedTime(Integer loggedTime) {
-        this.loggedTime = loggedTime;
+    public void setConvertedLoggedTime(Integer loggedTime) {
+        this.loggedTime = loggedTime * timeUnit.getRate();
     }
 
-    public Integer getAllocatedTime() {
-        return allocatedTime;
+    public Integer getConvertedAllocatedTime() {
+        return allocatedTime / timeUnit.getRate();
     }
 
-    public void setAllocatedTime(Integer allocatedTime) {
-        this.allocatedTime = allocatedTime;
+    public void setConvertedAllocatedTime(Integer allocatedTime) {
+        this.allocatedTime = allocatedTime * timeUnit.getRate();
     }
+
+//    public Integer getAllocatedTime() {
+//        return allocatedTime;
+//    }
+//
+//    public void setAllocatedTime(Integer allocatedTime) {
+//        this.allocatedTime = allocatedTime;
+//    }
 
     public TimeUnit getTimeUnit() {
         return timeUnit;

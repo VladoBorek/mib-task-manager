@@ -12,6 +12,7 @@ public class TaskProgressBar extends JProgressBar implements TableCellRenderer {
 
     public TaskProgressBar() {
         setStringPainted(true);
+        setFont(getFont().deriveFont(Font.BOLD));
     }
 
     @Override
@@ -27,6 +28,7 @@ public class TaskProgressBar extends JProgressBar implements TableCellRenderer {
 
         setBackground(table.getBackground());
         setForeground(table.getForeground());
+
         return this;
     }
 }

@@ -27,13 +27,18 @@ public class DemoDataGenerator {
             new Employee("Romy", 4)
     );
 
+    private static final List<TimeUnit> TIME_UNITS = List.of(
+            new CustomTimeUnit(),
+            new CustomTimeUnit("Hour", 60),
+            new CustomTimeUnit("15 Minutes", 15),
+            new CustomTimeUnit("Day", 1440)
+    );
+
     private static final List<Task> TASKS= List.of(
-            new Task(Status.TO_DO, "Develop the core application functionality for the 'Rats in White' project, focused on user interface improvements.", CATEGORIES.get(0),"Rats in White", "Application", EMPLOYEES.get(0), 2, 10, new CustomTimeUnit("Day", 8), LocalDate.now()),
-            new Task(Status.ON_HOLD,"Set up equipment and configure software on-site for the 'Dgs in Blue' project, pending further client instructions.", CATEGORIES.get(1),"Dgs in Blue", "On-site setup", EMPLOYEES.get(1), 12, 10, new CustomTimeUnit(), LocalDate.now()),
-            new Task(Status.TO_DO, "Continue building additional features for the 'Rats in White' project, ensuring integration with backend services.", CATEGORIES.get(2),"Rats in White", "Application", EMPLOYEES.get(2), 0, 10, new CustomTimeUnit(), LocalDate.now()),
-            new Task(Status.COMPLETED, "Finalize the application development for the 'Cats in Blue' project, including testing and deployment.", CATEGORIES.get(0),"Cats in Blue", "Application", EMPLOYEES.get(3), 10, 10, new CustomTimeUnit(), LocalDate.now())
-
-
+            new Task(Status.TO_DO, "Develop the core application functionality for the 'Rats in White' project, focused on user interface improvements.", CATEGORIES.get(0),"Rats in White", "Application", EMPLOYEES.get(0), 2, 10, TIME_UNITS.get(3), LocalDate.now()),
+            new Task(Status.ON_HOLD,"Set up equipment and configure software on-site for the 'Dgs in Blue' project, pending further client instructions.", CATEGORIES.get(1),"Dgs in Blue", "On-site setup", EMPLOYEES.get(1), 12, 10, TIME_UNITS.get(1), LocalDate.now()),
+            new Task(Status.TO_DO, "Continue building additional features for the 'Rats in White' project, ensuring integration with backend services.", CATEGORIES.get(2),"Rats in White", "Application", EMPLOYEES.get(2), 0, 10, TIME_UNITS.get(2), LocalDate.now()),
+            new Task(Status.COMPLETED, "Finalize the application development for the 'Cats in Blue' project, including testing and deployment.", CATEGORIES.get(0),"Cats in Blue", "Application", EMPLOYEES.get(3), 10, 10, TIME_UNITS.get(0), LocalDate.now())
             );
 
     private static final List<String> CUSTOMERS = List.of(
@@ -41,17 +46,10 @@ public class DemoDataGenerator {
             "Dogs in blue",
             "Upper management"
     );
-    private static final List<TimeUnit> TIME_UNITS = List.of(
-            new CustomTimeUnit(),
-            new CustomTimeUnit("Minute", 60),
-            new CustomTimeUnit("15 Minutes", 4)
-    );
-
 
     public List<Category> getCategories() { return CATEGORIES;}
     public List<String> getCustomers() { return CUSTOMERS;}
     public List<Employee> getEmployees() { return EMPLOYEES;}
     public List<Task> getTasks() { return TASKS;}
-
     public List<TimeUnit> getTimeUnits() {return TIME_UNITS;}
 }

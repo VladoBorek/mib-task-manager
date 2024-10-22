@@ -18,7 +18,7 @@ public class StartWindow {
     public StartWindow() {
         this.frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 430);
+        frame.setSize(400, 450);
         frame.setLayout(new BorderLayout(10, 10));
         frame.setIconImage(Icons.APP_ICON.getImage());
         frame.setResizable(false);
@@ -81,6 +81,7 @@ public class StartWindow {
 
     private JPanel createExitPanel() {
         JPanel exitPanel = new JPanel(new BorderLayout());
+        exitPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 
         JButton exitButton = new JButton("Exit");
         exitButton.setPreferredSize(new Dimension(60, 25));
