@@ -21,8 +21,8 @@ public class TaskTableModel extends AbstractTableModel {
             Column.readonly("CUSTOMER", String.class, Task::getCustomer),
             Column.readonly("TASK NAME", String.class, Task::getNameOfTask),
             Column.readonly("ASSIGNED TO", String.class, Task::getAssignedToCode),
-            Column.readonly("LOGGED TIME", Integer.class, Task::getLoggedTime),
-            Column.readonly("ALLOCATED TIME", Integer.class, Task::getAllocatedTime),
+            Column.readonly("LOGGED TIME", Integer.class, Task::getConvertedLoggedTime),
+            Column.readonly("ALLOCATED TIME", Integer.class, Task::getConvertedAllocatedTime),
             Column.readonly("TIME UNIT", TimeUnit.class, Task::getTimeUnit),
             Column.readonly("% DONE", Float.class, Task::getPercentage),
             Column.readonly("DUE DATE", LocalDate.class, Task::getDueDate)

@@ -149,6 +149,8 @@ public class MainWindow {
     private JToolBar createFilterBar() {
         JToolBar filterBar = new JToolBar();
         filterBar.setFloatable(false);
+        filterBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+
         JCheckBox filterToDo = createFilterCheckbox("To-Do", true);
         JCheckBox filterInProgress = createFilterCheckbox("In-Progress", true);
         JCheckBox filterComplete = createFilterCheckbox("Completed", true);
