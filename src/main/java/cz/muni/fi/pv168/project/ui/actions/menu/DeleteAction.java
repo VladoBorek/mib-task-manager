@@ -4,12 +4,7 @@ import cz.muni.fi.pv168.project.model.Category;
 import cz.muni.fi.pv168.project.model.DataManager;
 import cz.muni.fi.pv168.project.model.Template;
 import cz.muni.fi.pv168.project.model.TimeUnit;
-import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
-import cz.muni.fi.pv168.project.ui.dialog.TaskDialog;
-import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
-import cz.muni.fi.pv168.project.ui.model.TemplateListModel;
-import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
@@ -67,9 +62,9 @@ public class DeleteAction extends AbstractAction {
                 var timeUnit = (TimeUnit) comboBox.getSelectedItem();
 
                 assert timeUnit != null;
-                if (Objects.equals(timeUnit.getName(), "Hour")){
+                if (Objects.equals(timeUnit.getName(), TimeUnit.getBaseUnit())){
                     JFrame frame = new JFrame();
-                    JOptionPane.showMessageDialog(frame, "You cannot delete \"Hour\" Time Unit!");
+                    JOptionPane.showMessageDialog(frame, "You cannot delete " + TimeUnit.getBaseUnit() + " Time Unit!");
                     return;
                 }
                 data.getTimeUnits().removeTimeUnit(timeUnit);
