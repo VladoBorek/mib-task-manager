@@ -1,10 +1,8 @@
-package cz.muni.fi.pv168.project.model;
+package cz.muni.fi.pv168.project.business.model;
 
-import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
-import cz.muni.fi.pv168.project.ui.model.EmployeeListModel;
-import cz.muni.fi.pv168.project.ui.model.TemplateListModel;
-import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
+import cz.muni.fi.pv168.project.ui.model.*;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 import static cz.muni.fi.pv168.project.ui.MainWindow.DEMO_DATA;
@@ -18,6 +16,13 @@ public class DataManager {
     private final CategoryListModel categories = new CategoryListModel(new ArrayList<>(DEMO_DATA.getCategories()));
     private final TemplateListModel templates = new TemplateListModel(new ArrayList<>());
     private final EmployeeListModel employees = new EmployeeListModel(new ArrayList<>(DEMO_DATA.getEmployees()));
+
+    private JTable taskTable;
+    private TaskTableModel taskTableModel;
+
+    //public DataManager(JTable taskTable){
+        //this.taskTable = taskTable;
+    //}
 
 
     public TimeUnitListModel getTimeUnits() {
@@ -33,4 +38,15 @@ public class DataManager {
     public EmployeeListModel getEmployees() {
         return employees;
     }
+
+    public JTable getTaskTable(){
+        return taskTable;
+    }
+
+    public void setTaskTable(JTable taskTable){
+        this.taskTable = taskTable;
+    }
+
+    public void setTaskTableModel(TaskTableModel taskTableModel){this.taskTableModel = taskTableModel;}
+    public  TaskTableModel getTaskTableModel(){return this.taskTableModel;}
 }

@@ -12,6 +12,7 @@ public final class Icons {
 
     private static final String RESOURCE_PATH = "src/main/resources/cz.muni.fi.pv168.project.ui.resources/";
     public static final Icon DELETE_ICON = createIcon("Crystal_Clear_action_button_cancel.png");
+    public static final Icon RESET_ICON = createIcon("Reset_Icon.png");
     public static final Icon MANAGE_ICON = createIcon("Crystal_Clear_action_edit.png");
     public static final Icon ADD_ICON = createIcon("Crystal_Clear_action_edit_add.png");
     public static final Icon QUIT_ICON = createIcon("Crystal_Clear_action_exit.png");

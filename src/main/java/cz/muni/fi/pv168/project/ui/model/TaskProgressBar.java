@@ -12,6 +12,7 @@ public class TaskProgressBar extends JProgressBar implements TableCellRenderer {
 
     public TaskProgressBar() {
         setStringPainted(true);
+        setFont(getFont().deriveFont(Font.BOLD));
     }
 
     @Override
@@ -25,13 +26,8 @@ public class TaskProgressBar extends JProgressBar implements TableCellRenderer {
             setValue(0);
         }
 
-        if (isSelected) { // handling progress bar color when task is selected
-            setBackground(table.getSelectionBackground());
-            setForeground(table.getSelectionForeground());
-        } else {
-            setBackground(table.getBackground());
-            setForeground(table.getForeground());
-        }
+        setBackground(table.getBackground());
+        setForeground(table.getForeground());
 
         return this;
     }

@@ -19,7 +19,7 @@ public class ResetFilterAction extends AbstractAction {
     public ResetFilterAction(Map<Boolean,List<JCheckBox>> resetValuesCheckboxes,
                              Map<JComboBox<Object>, String> resetValuesComboBoxes,
                              DatePicker datePicker){
-        super("Reset filters", Icons.DELETE_ICON);
+        super("Reset filters", Icons.RESET_ICON);
         this.resetValuesCheckboxes = resetValuesCheckboxes;
         this.resetValuesComboBoxes = resetValuesComboBoxes;
         this.datePicker = datePicker;

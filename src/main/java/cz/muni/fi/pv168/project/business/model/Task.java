@@ -1,9 +1,10 @@
-package cz.muni.fi.pv168.project.model;
+package cz.muni.fi.pv168.project.business.model;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
-public class Task {
+import static java.lang.Math.round;
+
+public class Task extends Entity{
 
     private Status status;
     private String description;
@@ -11,27 +12,31 @@ public class Task {
     private String customer;
     private String nameOfTask;
     private Employee assignedTo;
+
+    // In the base time unit
     private Integer loggedTime;
     private Integer allocatedTime;
+
     private TimeUnit timeUnit;
     private LocalDate dueDate;
 
-    public Task(Status status, String description, Category category, String customer,String nameOfTask,
+    public Task(Long id, Status status, String description, Category category, String customer,String nameOfTask,
                 Employee assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
+        super(id);
         this.status = status;
         this.description = description;
         this.category = category;
         this.customer = customer;
         this.nameOfTask = nameOfTask;
         this.assignedTo = assignedTo;
-        this.loggedTime = loggedTime;
-        this.allocatedTime = allocatedTime;
+        this.loggedTime = loggedTime * timeUnit.getRate();
+        this.allocatedTime = allocatedTime * timeUnit.getRate();
         this.timeUnit = timeUnit;
         this.dueDate = dueDate;
     }
 
     public Task(Template template) {
-        this(Status.TO_DO, "", template.getCategory(), "", template.getName(), new Employee("-", 0),
+        this(null, Status.TO_DO, "", template.getCategory(), "", template.getName(), new Employee("-", 0),
                 0, template.getAllocatedTime(), template.getTimeUnit(), null);
     }
 
@@ -80,21 +85,37 @@ public class Task {
         this.assignedTo = assignedTo;
     }
 
-    public Integer getLoggedTime() {
-        return loggedTime;
+//    public Integer getLoggedTime() {
+//        return loggedTime;
+//    }
+//
+//    public void setLoggedTime(Integer loggedTime) {
+//        this.loggedTime = loggedTime;
+//    }
+
+    public Integer getConvertedLoggedTime() {
+        return loggedTime / timeUnit.getRate();
     }
 
-    public void setLoggedTime(Integer loggedTime) {
-        this.loggedTime = loggedTime;
+    public void setConvertedLoggedTime(Integer loggedTime) {
+        this.loggedTime = loggedTime * timeUnit.getRate();
     }
 
-    public Integer getAllocatedTime() {
-        return allocatedTime;
+    public Integer getConvertedAllocatedTime() {
+        return allocatedTime / timeUnit.getRate();
     }
 
-    public void setAllocatedTime(Integer allocatedTime) {
-        this.allocatedTime = allocatedTime;
+    public void setConvertedAllocatedTime(Integer allocatedTime) {
+        this.allocatedTime = allocatedTime * timeUnit.getRate();
     }
+
+//    public Integer getAllocatedTime() {
+//        return allocatedTime;
+//    }
+//
+//    public void setAllocatedTime(Integer allocatedTime) {
+//        this.allocatedTime = allocatedTime;
+//    }
 
     public TimeUnit getTimeUnit() {
         return timeUnit;

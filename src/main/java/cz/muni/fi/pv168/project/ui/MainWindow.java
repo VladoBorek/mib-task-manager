@@ -1,31 +1,27 @@
 package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import cz.muni.fi.pv168.project.business.repository.Repository;
+import cz.muni.fi.pv168.project.business.service.crud.CrudService;
+import cz.muni.fi.pv168.project.business.service.crud.TaskCrudService;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
-import cz.muni.fi.pv168.project.model.CustomTimeUnit;
-import cz.muni.fi.pv168.project.model.DataManager;
-import cz.muni.fi.pv168.project.model.TimeUnit;
-import cz.muni.fi.pv168.project.model.*;
+import cz.muni.fi.pv168.project.business.model.DataManager;
+import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.model.CategoryCellRenderer;
-import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 
 import cz.muni.fi.pv168.project.ui.model.EmployeeComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.model.StatisticsTableModel;
 
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
-import cz.muni.fi.pv168.project.ui.model.TemplateListModel;
-import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
-import cz.muni.fi.pv168.project.model.Task;
+import cz.muni.fi.pv168.project.business.model.Task;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.sql.Time;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +32,9 @@ import java.util.Map;
  */
 public class MainWindow {
 
-    public static final Color BUTTON_COLOR = new Color(190, 190, 190);
-    public static final Color BG_COLOR = new Color(180, 180, 180);
+    public static final Color BUTTON_COLOR = new Color(220, 220, 220);
+
+//    public static final Color BG_COLOR = new Color(0, 0, 0);
     public static final DemoDataGenerator DEMO_DATA = new DemoDataGenerator();
 
     private final JFrame frame;
@@ -52,24 +49,35 @@ public class MainWindow {
      */
     public MainWindow() {
         frame = createFrame();
-        frame.getContentPane().setBackground(BG_COLOR);
+        frame.setIconImage(Icons.APP_ICON.getImage());
+
+        // This didn't do anything
+//        frame.getContentPane().setBackground(BG_COLOR);
+
         frame.setSize(1024, 768);
         data = new DataManager();
 
-        taskTable = createTaskTable(DEMO_DATA.getTasks());
+        Repository<Task> taskRepository = new InMemoryRepository<Task>(DEMO_DATA.getTasks());
+        CrudService<Task> taskCrudService = new TaskCrudService(taskRepository);
+
+        taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
 
         statisticsTable = createStatisticsTable();
-
+        data.setTaskTable(taskTable);
 
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
-        frame.add(new JScrollPane(taskTable), BorderLayout.CENTER);
-        frame.add(new JScrollPane(statisticsTable), BorderLayout.SOUTH);
+
+        var splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        splitPane.setDividerSize(10);
+        splitPane.setTopComponent(new JScrollPane(taskTable));
+        splitPane.setBottomComponent(new JScrollPane(statisticsTable));
+        frame.add(splitPane, BorderLayout.CENTER);
+
         frame.setLocationRelativeTo(null);
         frame.pack();
         setUpTaskInspect(taskTable);
-
     }
 
     /**
@@ -97,7 +105,7 @@ public class MainWindow {
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(new Color(240, 240, 240));
 
-        menuBar.add(createJMenu("File", new ImportAction(), new ExportAction()));
+        menuBar.add(createJMenu("File", new ImportAction(data), new ExportAction(data)));
         //TODO Create TemplateListModel
         menuBar.add(createJMenu("Template",
                 new AddAction(ActionType.TEMPLATE, taskTable, data, null),
@@ -140,13 +148,14 @@ public class MainWindow {
     private JToolBar createFilterBar() {
         JToolBar filterBar = new JToolBar();
         filterBar.setFloatable(false);
+        filterBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
         JCheckBox filterToDo = createFilterCheckbox("To-Do", true);
         JCheckBox filterInProgress = createFilterCheckbox("In-Progress", true);
         JCheckBox filterComplete = createFilterCheckbox("Completed", true);
         JCheckBox filterOnHold = createFilterCheckbox("On-Hold", true);
 
-        JCheckBox filterOverdue = createFilterCheckbox("Filter Overdue", false);
+        JCheckBox filterOverdue = createFilterCheckbox("Filter Overdue ", false);
         JCheckBox filterOverBudget = createFilterCheckbox("Filter Over budget", false);
 
         JComboBox<Object> categoryComboBox = createFilterComboBox(data.getCategories().toArray(),
@@ -166,14 +175,12 @@ public class MainWindow {
                 assigneeComboBox, "--Assignee--",
                 customerComboBox, "--Customer--"
         );
-//        JButton addNewTaskButton = createButton("New Task", Icons.ADD_ICON,
-//                new AddAction(ActionType.TASK, taskTable, categories, timeUnits, templates));
 
-        JButton addNewTaskButton = createButton("New Task", Icons.ADD_ICON,
+        JButton addNewTaskButton = createButton("New Task ", Icons.ADD_ICON,
                 new ChooseTemplateAction(taskTable, data, frame));
 
 
-        JButton resetFiltersButton = createButton("Reset Filters", Icons.DELETE_ICON,
+        JButton resetFiltersButton = createButton("Reset Filters ", Icons.RESET_ICON,
                 new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, datePicker));
 
         filterBar.add(addNewTaskButton);
@@ -194,6 +201,8 @@ public class MainWindow {
         datePickerPanel.setPreferredSize(new Dimension(150, 25));
         datePickerPanel.add(datePicker, BorderLayout.CENTER);
         filterBar.add(datePickerPanel);
+
+        filterBar.addSeparator();
 
         filterBar.add(filterOverBudget);
 
@@ -228,8 +237,8 @@ public class MainWindow {
      * @param tasks Tasks for the table
      * @return Table with tasks
      */
-    private JTable createTaskTable(List<Task> tasks) {
-        var model = new TaskTableModel(tasks);
+    private JTable createTaskTable(CrudService<Task> taskCrudService) {
+        var model = new TaskTableModel(taskCrudService);
         var table = new JTable(model);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         table.setAutoCreateRowSorter(true);
@@ -238,7 +247,7 @@ public class MainWindow {
         progressColumn.setCellRenderer(new TaskProgressBar());
         var categoryColumn = table.getColumnModel().getColumn(1);
         categoryColumn.setCellRenderer(new CategoryCellRenderer());
-
+        data.setTaskTableModel(model);
 
         return table;
     }
@@ -257,7 +266,7 @@ public class MainWindow {
      * @param a          Action to be performed
      * @return Button with input characteristics
      */
-    private JButton createButton(String buttonText, Icon icon, Action a) {
+    public static JButton createButton(String buttonText, Icon icon, Action a) {
         var button = new JButton(buttonText, icon);
         button.addActionListener(a);
         button.setBackground(BUTTON_COLOR);
