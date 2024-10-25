@@ -194,7 +194,7 @@ public class TaskDialog extends EntityDialog<Task>{
             task.setDueDate(datePicker.getDate());
             task.setTimeUnit((TimeUnit) timeUnitsComboBox.getSelectedItem());
         } else {
-            task = new Task((Status) statusComboBox.getSelectedItem(),
+            task = new Task(null, (Status) statusComboBox.getSelectedItem(),
                     this.descriptionArea.getText(),
                     (Category) categoryComboBox.getSelectedItem(),
                     customerField.getText(),

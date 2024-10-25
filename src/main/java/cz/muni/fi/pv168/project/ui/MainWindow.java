@@ -1,9 +1,12 @@
 package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import cz.muni.fi.pv168.project.business.repository.Repository;
+import cz.muni.fi.pv168.project.business.service.crud.CrudService;
+import cz.muni.fi.pv168.project.business.service.crud.TaskCrudService;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.business.model.DataManager;
-import cz.muni.fi.pv168.project.model.*;
+import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.model.CategoryCellRenderer;
 
@@ -54,7 +57,10 @@ public class MainWindow {
         frame.setSize(1024, 768);
         data = new DataManager();
 
-        taskTable = createTaskTable(DEMO_DATA.getTasks());
+        Repository<Task> taskRepository = new InMemoryRepository<Task>(DEMO_DATA.getTasks());
+        CrudService<Task> taskCrudService = new TaskCrudService(taskRepository);
+
+        taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
 
         statisticsTable = createStatisticsTable();
@@ -231,8 +237,8 @@ public class MainWindow {
      * @param tasks Tasks for the table
      * @return Table with tasks
      */
-    private JTable createTaskTable(List<Task> tasks) {
-        var model = new TaskTableModel(tasks);
+    private JTable createTaskTable(CrudService<Task> taskCrudService) {
+        var model = new TaskTableModel(taskCrudService);
         var table = new JTable(model);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         table.setAutoCreateRowSorter(true);

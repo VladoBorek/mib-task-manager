@@ -47,7 +47,7 @@ public class InMemoryRepository<T extends Entity> implements Repository<T> {
         }
         data.put(newEntity.getId(), newEntity);
 
-        System.out.println("[InMemoryStorage] Created entity: " + newEntity);
+//        System.out.println("[InMemoryStorage] Created entity: " + newEntity);
 
         return newEntity;
     }
@@ -60,7 +60,7 @@ public class InMemoryRepository<T extends Entity> implements Repository<T> {
         }
         data.put(entity.getId(), entity);
 
-        System.out.println("[InMemoryStorage] Updated entity: " + entity);
+//        System.out.println("[InMemoryStorage] Updated entity: " + entity);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class InMemoryRepository<T extends Entity> implements Repository<T> {
         }
         data.remove(id);
 
-        System.out.println("[InMemoryStorage] Deleted entity with id: " + id);
+//        System.out.println("[InMemoryStorage] Deleted entity with id: " + id);
     }
 
     @Override
