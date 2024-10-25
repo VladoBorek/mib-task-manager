@@ -1,15 +1,14 @@
 package cz.muni.fi.pv168.project.data;
 
-import cz.muni.fi.pv168.project.model.Category;
-import cz.muni.fi.pv168.project.model.CustomTimeUnit;
-import cz.muni.fi.pv168.project.model.Employee;
-import cz.muni.fi.pv168.project.model.Status;
-import cz.muni.fi.pv168.project.model.Task;
-import cz.muni.fi.pv168.project.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.business.model.CustomTimeUnit;
+import cz.muni.fi.pv168.project.business.model.Employee;
+import cz.muni.fi.pv168.project.business.model.Status;
+import cz.muni.fi.pv168.project.business.model.Task;
+import cz.muni.fi.pv168.project.business.model.TimeUnit;
 
 import java.awt.*;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public class DemoDataGenerator {

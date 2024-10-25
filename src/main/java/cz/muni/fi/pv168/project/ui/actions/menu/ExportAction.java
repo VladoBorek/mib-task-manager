@@ -1,13 +1,12 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
-import cz.muni.fi.pv168.project.model.DataManager;
+import cz.muni.fi.pv168.project.business.model.DataManager;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
-import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.io.FileWriter;
 import java.io.IOException;

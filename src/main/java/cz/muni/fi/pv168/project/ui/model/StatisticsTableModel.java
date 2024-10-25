@@ -1,13 +1,8 @@
 package cz.muni.fi.pv168.project.ui.model;
 
-import cz.muni.fi.pv168.project.model.Category;
-import cz.muni.fi.pv168.project.model.Statistic;
-import cz.muni.fi.pv168.project.model.Status;
-import cz.muni.fi.pv168.project.model.Task;
-import cz.muni.fi.pv168.project.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.model.Statistic;
 
 import javax.swing.table.AbstractTableModel;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
