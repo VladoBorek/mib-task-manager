@@ -1,6 +1,6 @@
 package cz.muni.fi.pv168.project.ui.model;
 
-import cz.muni.fi.pv168.project.model.Employee;
+import cz.muni.fi.pv168.project.business.model.Employee;
 
 import javax.swing.*;
 import java.awt.*;

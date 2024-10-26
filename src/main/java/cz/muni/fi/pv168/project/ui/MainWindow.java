@@ -1,31 +1,27 @@
 package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import cz.muni.fi.pv168.project.business.repository.Repository;
+import cz.muni.fi.pv168.project.business.service.crud.CrudService;
+import cz.muni.fi.pv168.project.business.service.crud.TaskCrudService;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
-import cz.muni.fi.pv168.project.model.CustomTimeUnit;
-import cz.muni.fi.pv168.project.model.DataManager;
-import cz.muni.fi.pv168.project.model.TimeUnit;
-import cz.muni.fi.pv168.project.model.*;
+import cz.muni.fi.pv168.project.business.model.DataManager;
+import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.model.CategoryCellRenderer;
-import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 
 import cz.muni.fi.pv168.project.ui.model.EmployeeComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.model.StatisticsTableModel;
 
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
-import cz.muni.fi.pv168.project.ui.model.TemplateListModel;
-import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
-import cz.muni.fi.pv168.project.model.Task;
+import cz.muni.fi.pv168.project.business.model.Task;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.sql.Time;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +57,10 @@ public class MainWindow {
         frame.setSize(1024, 768);
         data = new DataManager();
 
-        taskTable = createTaskTable(DEMO_DATA.getTasks());
+        Repository<Task> taskRepository = new InMemoryRepository<Task>(DEMO_DATA.getTasks());
+        CrudService<Task> taskCrudService = new TaskCrudService(taskRepository);
+
+        taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
 
         statisticsTable = createStatisticsTable();
@@ -238,8 +237,8 @@ public class MainWindow {
      * @param tasks Tasks for the table
      * @return Table with tasks
      */
-    private JTable createTaskTable(List<Task> tasks) {
-        var model = new TaskTableModel(tasks);
+    private JTable createTaskTable(CrudService<Task> taskCrudService) {
+        var model = new TaskTableModel(taskCrudService);
         var table = new JTable(model);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         table.setAutoCreateRowSorter(true);

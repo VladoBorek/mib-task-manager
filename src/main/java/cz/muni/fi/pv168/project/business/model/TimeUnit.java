@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project.model;
+package cz.muni.fi.pv168.project.business.model;
 
 public abstract class TimeUnit {
     private static final String BASE_UNIT = "Minute";

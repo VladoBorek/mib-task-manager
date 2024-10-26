@@ -1,11 +1,10 @@
-package cz.muni.fi.pv168.project.model;
+package cz.muni.fi.pv168.project.business.model;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import static java.lang.Math.round;
 
-public class Task {
+public class Task extends Entity{
 
     private Status status;
     private String description;
@@ -21,8 +20,9 @@ public class Task {
     private TimeUnit timeUnit;
     private LocalDate dueDate;
 
-    public Task(Status status, String description, Category category, String customer,String nameOfTask,
+    public Task(Long id, Status status, String description, Category category, String customer,String nameOfTask,
                 Employee assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
+        super(id);
         this.status = status;
         this.description = description;
         this.category = category;
@@ -36,7 +36,7 @@ public class Task {
     }
 
     public Task(Template template) {
-        this(Status.TO_DO, "", template.getCategory(), "", template.getName(), new Employee("-", 0),
+        this(null, Status.TO_DO, "", template.getCategory(), "", template.getName(), new Employee("-", 0),
                 0, template.getAllocatedTime(), template.getTimeUnit(), null);
     }
 

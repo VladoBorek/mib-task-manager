@@ -1,6 +1,12 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
-import cz.muni.fi.pv168.project.model.*;
+import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.business.model.CustomTimeUnit;
+import cz.muni.fi.pv168.project.business.model.DataManager;
+import cz.muni.fi.pv168.project.business.model.Employee;
+import cz.muni.fi.pv168.project.business.model.Status;
+import cz.muni.fi.pv168.project.business.model.Task;
+import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -116,8 +122,7 @@ public class ImportAction extends AbstractAction {
                         data.getTimeUnits().addUnit(timeUnit);
                     }
 
-
-                    Task task = new Task(taskStatus, description, category, customer, nameOfTask, assignedTo, loggedTIme, allocatedTime, timeUnit, dueDate);
+                    Task task = new Task(null, taskStatus, description, category, customer, nameOfTask, assignedTo, loggedTIme, allocatedTime, timeUnit, dueDate);
                     data.getTaskTableModel().addRow(task);
                 }
 

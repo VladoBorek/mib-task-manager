@@ -1,20 +1,21 @@
 package cz.muni.fi.pv168.project.ui.model;
 
-import cz.muni.fi.pv168.project.model.Category;
-import cz.muni.fi.pv168.project.model.Employee;
-import cz.muni.fi.pv168.project.model.Status;
-import cz.muni.fi.pv168.project.model.Task;
-import cz.muni.fi.pv168.project.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.business.model.Status;
+import cz.muni.fi.pv168.project.business.model.Task;
+import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 
 import javax.swing.table.AbstractTableModel;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class TaskTableModel extends AbstractTableModel {
 
     private final List<Task> tasks;
+    private final CrudService<Task> taskCrudService;
+
     private final List<Column<Task, ?>> columns = List.of(
             Column.readonly("STATUS", Status.class, Task::getStatus),
             Column.readonly("CATEGORY", Category.class, Task::getCategory),
@@ -28,8 +29,9 @@ public class TaskTableModel extends AbstractTableModel {
             Column.readonly("DUE DATE", LocalDate.class, Task::getDueDate)
             );
 
-    public TaskTableModel(List<Task> tasks) {
-        this.tasks = new ArrayList<>(tasks);
+    public TaskTableModel(CrudService<Task> taskCrudService) {
+        this.taskCrudService = taskCrudService;
+        this.tasks = new ArrayList<>(taskCrudService.findAll());
     }
 
     @Override
@@ -53,17 +55,23 @@ public class TaskTableModel extends AbstractTableModel {
     }
 
     public void updateRow(Task task) {
+        taskCrudService.update(task); //TODO validation
+//                .intoException();
         int rowIndex = tasks.indexOf(task);
         fireTableRowsUpdated(rowIndex, rowIndex);
     }
 
     public void addRow(Task task){
         int newRowIndex = tasks.size();
+        taskCrudService.create(task); //TODO validation
+//                        .intoException();
         tasks.add(task);
         fireTableRowsInserted(newRowIndex, newRowIndex);
     }
 
     public void deleteRow(int rowIndex) {
+        var taskToBeDeleted = getEntity(rowIndex);
+        taskCrudService.deleteById(taskToBeDeleted.getId());
         tasks.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
