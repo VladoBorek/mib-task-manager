@@ -162,8 +162,6 @@ public class MainWindow {
                 "--Category--");
         JComboBox<Object> assigneeComboBox = createFilterComboBox(data.getEmployees().toArray(),
                 "--Assignee--");
-        JComboBox<Object> customerComboBox = createFilterComboBox(DEMO_DATA.getCustomers().toArray(),
-                "--Customer--");
         assigneeComboBox.setRenderer(new EmployeeComboboxRenderer());
 
         Map<Boolean, List<JCheckBox>> resetValuesCheckboxes = Map.of(
@@ -172,14 +170,11 @@ public class MainWindow {
 
         Map<JComboBox<Object>, String> resetValuesComboBoxes = Map.of(
                 categoryComboBox, "--Category--",
-                assigneeComboBox, "--Assignee--",
-                customerComboBox, "--Customer--"
+                assigneeComboBox, "--Assignee--"
         );
 
         JButton addNewTaskButton = createButton("New Task ", Icons.ADD_ICON,
                 new ChooseTemplateAction(taskTable, data, frame));
-
-
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.RESET_ICON,
                 new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, datePicker));
 
@@ -187,33 +182,32 @@ public class MainWindow {
 
         filterBar.addSeparator();
 
-        filterBar.add(filterToDo);
-        filterBar.add(filterInProgress);
-        filterBar.add(filterComplete);
-        filterBar.add(filterOnHold);
+        JPanel statusPanel = new JPanel(new GridLayout(2, 2));
+        statusPanel.add(filterToDo);
+        statusPanel.add(filterInProgress);
+        statusPanel.add(filterComplete);
+        statusPanel.add(filterOnHold);
+        filterBar.add(statusPanel);
 
         filterBar.addSeparator();
 
-        filterBar.add(filterOverdue);
-        //TODO filterOverdue will filter overdue tasks date picked by datepicker
-        JPanel datePickerPanel = new JPanel(new BorderLayout());
-        datePickerPanel.setMaximumSize(new Dimension(150, 25));
-        datePickerPanel.setPreferredSize(new Dimension(150, 25));
-        datePickerPanel.add(datePicker, BorderLayout.CENTER);
-        filterBar.add(datePickerPanel);
+        JPanel filterDatePanel = new JPanel(new GridLayout(2, 2));
+        filterDatePanel.add(filterOverdue);
+        filterDatePanel.add(datePicker);
+        filterDatePanel.add(filterOverBudget);
+        filterBar.add(filterDatePanel);
 
         filterBar.addSeparator();
 
-        filterBar.add(filterOverBudget);
+        JPanel categoryAssigneePanel = new JPanel(new GridLayout(2, 1));
+        categoryAssigneePanel.add(categoryComboBox);
+        categoryAssigneePanel.add(assigneeComboBox);
+        filterBar.add(categoryAssigneePanel);
 
         filterBar.addSeparator();
 
-        filterBar.add(categoryComboBox);
-        filterBar.add(assigneeComboBox);
-        filterBar.add(customerComboBox);
-
-        filterBar.addSeparator();
         filterBar.add(resetFiltersButton);
+
         return filterBar;
     }
 
@@ -234,7 +228,7 @@ public class MainWindow {
     }
 
     /**
-     * @param tasks Tasks for the table
+     * @param taskCrudService Tasks for the table
      * @return Table with tasks
      */
     private JTable createTaskTable(CrudService<Task> taskCrudService) {
