@@ -17,10 +17,10 @@ public class TaskTableModel extends AbstractTableModel {
     private final CrudService<Task> taskCrudService;
 
     private final List<Column<Task, ?>> columns = List.of(
+            Column.readonly("TASK NAME", String.class, Task::getNameOfTask),
             Column.readonly("STATUS", Status.class, Task::getStatus),
             Column.readonly("CATEGORY", Category.class, Task::getCategory),
             Column.readonly("CUSTOMER", String.class, Task::getCustomer),
-            Column.readonly("TASK NAME", String.class, Task::getNameOfTask),
             Column.readonly("ASSIGNED TO", String.class, Task::getAssignedToCode),
             Column.readonly("LOGGED TIME", Integer.class, Task::getConvertedLoggedTime),
             Column.readonly("ALLOCATED TIME", Integer.class, Task::getConvertedAllocatedTime),
