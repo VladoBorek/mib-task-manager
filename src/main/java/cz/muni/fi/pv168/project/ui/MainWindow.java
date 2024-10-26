@@ -50,11 +50,11 @@ public class MainWindow {
     public MainWindow() {
         frame = createFrame();
         frame.setIconImage(Icons.APP_ICON.getImage());
+        frame.setSize(1024, 768);
 
         // This didn't do anything
 //        frame.getContentPane().setBackground(BG_COLOR);
 
-        frame.setSize(1024, 768);
         data = new DataManager();
 
         Repository<Task> taskRepository = new InMemoryRepository<Task>(DEMO_DATA.getTasks());
@@ -73,11 +73,13 @@ public class MainWindow {
         splitPane.setDividerSize(10);
         splitPane.setTopComponent(new JScrollPane(taskTable));
         splitPane.setBottomComponent(new JScrollPane(statisticsTable));
+        splitPane.setResizeWeight(0.8);
         frame.add(splitPane, BorderLayout.CENTER);
 
         frame.setLocationRelativeTo(null);
         frame.pack();
         setUpTaskInspect(taskTable);
+        frame.setSize(1024, 768);
     }
 
     /**
