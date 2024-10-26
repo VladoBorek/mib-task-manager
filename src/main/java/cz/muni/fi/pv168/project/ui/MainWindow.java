@@ -15,6 +15,7 @@ import cz.muni.fi.pv168.project.ui.model.StatisticsTableModel;
 
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.business.model.Task;
 
@@ -40,7 +41,6 @@ public class MainWindow {
     private final JFrame frame;
     private final DatePicker datePicker = createDatePicker();
     private final JTable taskTable;
-    private final JTable statisticsTable;
     private final DataManager data;
 
     /**
@@ -52,9 +52,6 @@ public class MainWindow {
         frame.setIconImage(Icons.APP_ICON.getImage());
         frame.setSize(1024, 768);
 
-        // This didn't do anything
-//        frame.getContentPane().setBackground(BG_COLOR);
-
         data = new DataManager();
 
         Repository<Task> taskRepository = new InMemoryRepository<Task>(DEMO_DATA.getTasks());
@@ -63,7 +60,7 @@ public class MainWindow {
         taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
 
-        statisticsTable = createStatisticsTable();
+        var statisticsTable = createStatisticsTable();
         data.setTaskTable(taskTable);
 
         frame.setJMenuBar(createMenuBar());
@@ -74,7 +71,14 @@ public class MainWindow {
         splitPane.setTopComponent(new JScrollPane(taskTable));
         splitPane.setBottomComponent(new JScrollPane(statisticsTable));
         splitPane.setResizeWeight(0.8);
-        frame.add(splitPane, BorderLayout.CENTER);
+
+        var templateTable = createTemplateTable();
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("Tasks", splitPane);
+        tabbedPane.addTab("Templates", new JScrollPane(templateTable));
+
+        frame.add(tabbedPane, BorderLayout.CENTER);
 
         frame.setLocationRelativeTo(null);
         frame.pack();
@@ -250,6 +254,14 @@ public class MainWindow {
 
     private JTable createStatisticsTable(){
         var model = new StatisticsTableModel();
+        var table = new JTable(model);
+
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        return table;
+    }
+
+    private JTable createTemplateTable() {
+        var model = new TemplateTableModel();
         var table = new JTable(model);
 
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
