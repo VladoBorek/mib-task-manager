@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.repository.Repository;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.business.service.crud.TaskCrudService;
@@ -15,6 +16,7 @@ import cz.muni.fi.pv168.project.ui.model.StatisticsTableModel;
 
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.business.model.Task;
 
@@ -40,8 +42,8 @@ public class MainWindow {
     private final JFrame frame;
     private final DatePicker datePicker = createDatePicker();
     private final JTable taskTable;
-    private final JTable statisticsTable;
     private final DataManager data;
+    private User loggedUser;
 
     /**
      * Constructor for MainWindow.
@@ -50,11 +52,8 @@ public class MainWindow {
     public MainWindow() {
         frame = createFrame();
         frame.setIconImage(Icons.APP_ICON.getImage());
-
-        // This didn't do anything
-//        frame.getContentPane().setBackground(BG_COLOR);
-
         frame.setSize(1024, 768);
+
         data = new DataManager();
 
         Repository<Task> taskRepository = new InMemoryRepository<Task>(DEMO_DATA.getTasks());
@@ -63,7 +62,7 @@ public class MainWindow {
         taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
 
-        statisticsTable = createStatisticsTable();
+        var statisticsTable = createStatisticsTable();
         data.setTaskTable(taskTable);
 
         frame.setJMenuBar(createMenuBar());
@@ -73,11 +72,20 @@ public class MainWindow {
         splitPane.setDividerSize(10);
         splitPane.setTopComponent(new JScrollPane(taskTable));
         splitPane.setBottomComponent(new JScrollPane(statisticsTable));
-        frame.add(splitPane, BorderLayout.CENTER);
+        splitPane.setResizeWeight(0.8);
+
+        var templateTable = createTemplateTable();
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("Tasks", splitPane);
+        tabbedPane.addTab("Templates", new JScrollPane(templateTable));
+
+        frame.add(tabbedPane, BorderLayout.CENTER);
 
         frame.setLocationRelativeTo(null);
         frame.pack();
         setUpTaskInspect(taskTable);
+        frame.setSize(1024, 768);
     }
 
     /**
@@ -162,8 +170,6 @@ public class MainWindow {
                 "--Category--");
         JComboBox<Object> assigneeComboBox = createFilterComboBox(data.getEmployees().toArray(),
                 "--Assignee--");
-        JComboBox<Object> customerComboBox = createFilterComboBox(DEMO_DATA.getCustomers().toArray(),
-                "--Customer--");
         assigneeComboBox.setRenderer(new EmployeeComboboxRenderer());
 
         Map<Boolean, List<JCheckBox>> resetValuesCheckboxes = Map.of(
@@ -172,14 +178,11 @@ public class MainWindow {
 
         Map<JComboBox<Object>, String> resetValuesComboBoxes = Map.of(
                 categoryComboBox, "--Category--",
-                assigneeComboBox, "--Assignee--",
-                customerComboBox, "--Customer--"
+                assigneeComboBox, "--Assignee--"
         );
 
         JButton addNewTaskButton = createButton("New Task ", Icons.ADD_ICON,
                 new ChooseTemplateAction(taskTable, data, frame));
-
-
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.RESET_ICON,
                 new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, datePicker));
 
@@ -187,33 +190,32 @@ public class MainWindow {
 
         filterBar.addSeparator();
 
-        filterBar.add(filterToDo);
-        filterBar.add(filterInProgress);
-        filterBar.add(filterComplete);
-        filterBar.add(filterOnHold);
+        JPanel statusPanel = new JPanel(new GridLayout(2, 2));
+        statusPanel.add(filterToDo);
+        statusPanel.add(filterInProgress);
+        statusPanel.add(filterComplete);
+        statusPanel.add(filterOnHold);
+        filterBar.add(statusPanel);
 
         filterBar.addSeparator();
 
-        filterBar.add(filterOverdue);
-        //TODO filterOverdue will filter overdue tasks date picked by datepicker
-        JPanel datePickerPanel = new JPanel(new BorderLayout());
-        datePickerPanel.setMaximumSize(new Dimension(150, 25));
-        datePickerPanel.setPreferredSize(new Dimension(150, 25));
-        datePickerPanel.add(datePicker, BorderLayout.CENTER);
-        filterBar.add(datePickerPanel);
+        JPanel filterDatePanel = new JPanel(new GridLayout(2, 2));
+        filterDatePanel.add(filterOverdue);
+        filterDatePanel.add(datePicker);
+        filterDatePanel.add(filterOverBudget);
+        filterBar.add(filterDatePanel);
 
         filterBar.addSeparator();
 
-        filterBar.add(filterOverBudget);
+        JPanel categoryAssigneePanel = new JPanel(new GridLayout(2, 1));
+        categoryAssigneePanel.add(categoryComboBox);
+        categoryAssigneePanel.add(assigneeComboBox);
+        filterBar.add(categoryAssigneePanel);
 
         filterBar.addSeparator();
 
-        filterBar.add(categoryComboBox);
-        filterBar.add(assigneeComboBox);
-        filterBar.add(customerComboBox);
-
-        filterBar.addSeparator();
         filterBar.add(resetFiltersButton);
+
         return filterBar;
     }
 
@@ -234,7 +236,7 @@ public class MainWindow {
     }
 
     /**
-     * @param tasks Tasks for the table
+     * @param taskCrudService Tasks for the table
      * @return Table with tasks
      */
     private JTable createTaskTable(CrudService<Task> taskCrudService) {
@@ -254,6 +256,14 @@ public class MainWindow {
 
     private JTable createStatisticsTable(){
         var model = new StatisticsTableModel();
+        var table = new JTable(model);
+
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        return table;
+    }
+
+    private JTable createTemplateTable() {
+        var model = new TemplateTableModel();
         var table = new JTable(model);
 
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
@@ -336,5 +346,9 @@ public class MainWindow {
             }
         });
 
+    }
+
+    public void setLoggedUser(User user) {
+        this.loggedUser = user;
     }
 }
