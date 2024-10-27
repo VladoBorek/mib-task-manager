@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.project;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import cz.muni.fi.pv168.project.ui.StartWindow;
+import cz.muni.fi.pv168.project.ui.LoginWindow;
 
 import javax.swing.UIManager;
 import java.awt.EventQueue;
@@ -22,7 +22,7 @@ public class Main {
 
     public static void main(String[] args) {
         initFlatLafLookAndFeel();
-        EventQueue.invokeLater(() -> new StartWindow().show());
+        EventQueue.invokeLater(() -> new LoginWindow().show());
     }
 
     private static void initFlatLafLookAndFeel() {
