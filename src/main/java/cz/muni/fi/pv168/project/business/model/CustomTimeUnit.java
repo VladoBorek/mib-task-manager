@@ -11,8 +11,8 @@ public class CustomTimeUnit extends TimeUnit{
      * @param name name of the unit
      * @param rate conversion rate to the base time unit
      */
-    public CustomTimeUnit(String name, Integer rate) {
-        super(name, rate);
+    public CustomTimeUnit(String name, String shortName, Integer rate) {
+        super(name, shortName, rate);
     }
 
     /**

@@ -15,7 +15,7 @@ public class EmployeeComboboxRenderer extends DefaultListCellRenderer {
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
         if (value instanceof Employee employee) {
-            label.setText(employee.getCode());
+            label.setText(employee.toString());
         }
 
         return label;

@@ -28,7 +28,8 @@ public class Employee {
         this.id = id;
     }
 
-    public String getCode() {
+    @Override
+    public String toString() {
         if (id == 0) {
             return "Not assigned";
         }

@@ -118,7 +118,7 @@ public class ImportAction extends AbstractAction {
                         }
                     }
                     if(!foundTimeUnit){
-                        timeUnit = new CustomTimeUnit(timeUnitName, timeUnitRate);
+                        timeUnit = new CustomTimeUnit(timeUnitName, "TODO", timeUnitRate);
                         data.getTimeUnits().addUnit(timeUnit);
                     }
 

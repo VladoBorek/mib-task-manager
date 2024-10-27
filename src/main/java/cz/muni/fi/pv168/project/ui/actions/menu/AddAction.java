@@ -5,7 +5,7 @@ import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
-import cz.muni.fi.pv168.project.ui.dialog.TaskDialog;
+import cz.muni.fi.pv168.project.ui.dialog.AddTaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
@@ -92,16 +92,16 @@ public class AddAction extends AbstractAction {
     }
 
     /**
-     * Opens a {@link TaskDialog} window, creates a task and adds it to table
+     * Opens a {@link AddTaskDialog} window, creates a task and adds it to table
      */
     private void addTask() {
         var taskTableModel = (TaskTableModel) contentTable.getModel();
-        TaskDialog dialog;
+        AddTaskDialog dialog;
         if (((Template) Objects.requireNonNull(chosenTemplate.getSelectedItem()))
                 .getTemplateName().compareTo("<Don't use a template>") == 0) {
-            dialog = new TaskDialog(null, data);
+            dialog = new AddTaskDialog(null, data);
         } else {
-            dialog = new TaskDialog(new Task((Template) chosenTemplate.getSelectedItem()), data);
+            dialog = new AddTaskDialog(new Task((Template) chosenTemplate.getSelectedItem()), data);
         }
 
         dialog.show(contentTable, "Add new Task").ifPresent(taskTableModel::addRow);

@@ -1,7 +1,8 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.business.model.DataManager;
-import cz.muni.fi.pv168.project.ui.dialog.TaskDialog;
+import cz.muni.fi.pv168.project.ui.dialog.AddTaskDialog;
+import cz.muni.fi.pv168.project.ui.dialog.InspectTaskDialog;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -36,7 +37,7 @@ public class InspectAction extends AbstractAction {
                 int modelRow = contentTable.convertRowIndexToModel(selectedRows[0]);
                 var task = taskTableModel.getEntity(modelRow);
 
-                var tDialog = new TaskDialog(task, data, true);
+                var tDialog = new InspectTaskDialog(task, data);
                 //System.out.println(task.getNameOfTask());
                 tDialog.show(contentTable, "Inspect Task").ifPresent(taskTableModel::updateRow);
                 return;
