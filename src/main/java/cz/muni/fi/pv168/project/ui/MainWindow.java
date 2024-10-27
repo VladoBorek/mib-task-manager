@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.repository.Repository;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.business.service.crud.TaskCrudService;
@@ -42,6 +43,7 @@ public class MainWindow {
     private final DatePicker datePicker = createDatePicker();
     private final JTable taskTable;
     private final DataManager data;
+    private User loggedUser;
 
     /**
      * Constructor for MainWindow.
@@ -344,5 +346,9 @@ public class MainWindow {
             }
         });
 
+    }
+
+    public void setLoggedUser(User user) {
+        this.loggedUser = user;
     }
 }

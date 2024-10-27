@@ -1,16 +1,10 @@
-package cz.muni.fi.pv168.project;
+package cz.muni.fi.pv168.project.ui;
 
-import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-/**
- * @author Maroš Pavlík
- */
 public class StartWindow {
     private final static String VERSION = "0.000009 Alpha";
     private final JFrame frame;
@@ -67,7 +61,7 @@ public class StartWindow {
         registerButton.setPreferredSize(new Dimension(90, 30));
 
         loginButton.addActionListener(e -> {
-            new MainWindow().show();
+            new LoginWindow().show();
             frame.dispose();
         });
         registerButton.addActionListener(e -> System.out.println("Register button clicked"));
