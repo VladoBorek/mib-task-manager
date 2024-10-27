@@ -12,6 +12,7 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.LogTimeAction;
 import cz.muni.fi.pv168.project.ui.model.EmployeeComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -26,7 +27,7 @@ public class InspectTaskDialog extends EntityDialog<Task>{
     private final Task task;
 
     private final JLabel taskName = new JLabel();
-    private final JLabel description = new JLabel();
+    private final JTextArea  description = new JTextArea();
     private final JLabel customer = new JLabel();
     private final JLabel assignedTo = new JLabel();
     private final JLabel status = new JLabel();
@@ -52,30 +53,21 @@ public class InspectTaskDialog extends EntityDialog<Task>{
         addFields();
         setPanel();
 
-//        centerOutText();
+        centerOutText();
     }
 
-//    private void centerOutText(){
-//        DefaultListCellRenderer listRenderer = new DefaultListCellRenderer();
-//        EmployeeComboboxRenderer employeeComboboxRenderer = new EmployeeComboboxRenderer();
-//
-//        employeeComboboxRenderer.setHorizontalAlignment(EmployeeComboboxRenderer.CENTER);
-//        listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
-//
-//        statusComboBox.setRenderer(listRenderer);
-//        assignedToComboBox.setRenderer(employeeComboboxRenderer);
-//        categoryComboBox.setRenderer(listRenderer);
-//        timeUnitsComboBox.setRenderer(listRenderer);
-//        //assignedToComboBox.setRenderer(listRenderer);
-//
-//        taskNameField.setHorizontalAlignment(SwingConstants.CENTER);
-//        customerField.setHorizontalAlignment(SwingConstants.CENTER);
-//        loggedTimeField.setHorizontalAlignment(SwingConstants.CENTER);
-//        allocatedTimeField.setHorizontalAlignment(SwingConstants.CENTER);
-//
+    private void centerOutText() {
+        customer.setHorizontalAlignment(SwingConstants.CENTER);
+        status.setHorizontalAlignment(SwingConstants.CENTER);
+        assignedTo.setHorizontalAlignment(SwingConstants.CENTER);
+        category.setHorizontalAlignment(SwingConstants.CENTER);
+        taskName.setHorizontalAlignment(SwingConstants.CENTER);
+        customer.setHorizontalAlignment(SwingConstants.CENTER);
+        loggedTime.setHorizontalAlignment(SwingConstants.CENTER);
+        allocatedTime.setHorizontalAlignment(SwingConstants.CENTER);
+    }
 
-    private void setValues()
-    {
+    private void setValues() {
         taskName.setText(task.getNameOfTask());
         taskName.setBorder(taskName.getBorder());
         description.setText(task.getDescription());
@@ -84,11 +76,10 @@ public class InspectTaskDialog extends EntityDialog<Task>{
         category.setText(task.getCategory().getName());
         status.setText(task.getStatus().toString());
         loggedTime.setText(task.getConvertedLoggedTimeString());
-        loggedTime.setText(task.getConvertedAllocatedTimeString());
+        allocatedTime.setText(task.getConvertedAllocatedTimeString());
         date.setText(task.getDueDate().toString());
 
         taskName.setBorder(labelBorder);
-        description.setBorder(labelBorder);
         customer.setBorder(labelBorder);
         assignedTo.setBorder(labelBorder);
         status.setBorder(labelBorder);
@@ -96,13 +87,17 @@ public class InspectTaskDialog extends EntityDialog<Task>{
         loggedTime.setBorder(labelBorder);
         allocatedTime.setBorder(labelBorder);
         date.setBorder(labelBorder);
+
+        description.setBorder(labelBorder);
+        description.setLineWrap(true);
+        description.setWrapStyleWord(true);
+        description.setEditable(false);
+        description.setOpaque(false);
     }
 
     private void addFields(){
-        JButton addLogTimeButton = null;
-
-        addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.TIME_UNIT, data.getTaskTable(), data, null));
+        JButton addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON,
+                new LogTimeAction(data, null, task));
 
         addCentered("Task name", taskName);
         addCentered("Description", description);

@@ -85,13 +85,13 @@ public class Task extends Entity{
         this.assignedTo = assignedTo;
     }
 
-//    public Integer getLoggedTime() {
-//        return loggedTime;
-//    }
-//
-//    public void setLoggedTime(Integer loggedTime) {
-//        this.loggedTime = loggedTime;
-//    }
+    public Integer getLoggedTime() {
+        return loggedTime;
+    }
+
+    public void setLoggedTime(Integer loggedTime) {
+        this.loggedTime = loggedTime;
+    }
 
     public Integer getConvertedLoggedTime() {
         return loggedTime / timeUnit.getRate();
