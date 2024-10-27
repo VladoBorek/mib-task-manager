@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project;
+package cz.muni.fi.pv168.project.ui;
 
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -70,6 +70,7 @@ public class LoginWindow {
 
         loginButton.addActionListener(e -> {
             login();
+            frame.dispose();
         });
         exitButton.addActionListener(e -> System.exit(0));
 
@@ -82,7 +83,6 @@ public class LoginWindow {
 
     private void login() {
         new MainWindow().show();
-        frame.dispose();
     }
     public void show(){
         this.frame.setVisible(true);
