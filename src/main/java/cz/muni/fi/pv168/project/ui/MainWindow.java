@@ -327,6 +327,7 @@ public class MainWindow {
         JPopupMenu menu = new JPopupMenu();
         menu.add(new EditAction(ActionType.TASK, taskMenu, null, data));
         menu.add(new DeleteAction(ActionType.TASK, taskMenu, null, data));
+        menu.add(new InspectAction(ActionType.TASK, taskMenu, null, data));
 
         return menu;
     }
