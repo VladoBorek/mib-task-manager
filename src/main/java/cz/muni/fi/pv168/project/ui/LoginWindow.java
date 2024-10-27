@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.project.ui;
 
+import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -14,15 +15,17 @@ import java.awt.*;
 public class LoginWindow {
     private final JFrame frame;
     private final JTextField usernameField;
+    private final JIntegerTextField idField;
     private final JTextField passwordField;
     public LoginWindow() {
         this.frame = new JFrame("Login");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 230);
+        frame.setSize(300, 250);
         frame.setLayout(new BorderLayout(10, 10));
         frame.setIconImage(Icons.APP_ICON.getImage());
 
         this.usernameField = new JTextField();
+        this.idField = new JIntegerTextField();
         this.passwordField = new JPasswordField();
 
         frame.add(createTitlePanel(), BorderLayout.NORTH);
@@ -54,6 +57,8 @@ public class LoginWindow {
 
         panel.add(new JLabel("Username:"), "align right");
         panel.add(usernameField, "growx, wrap");
+        panel.add(new JLabel("Id:"), "align right");
+        panel.add(idField, "growx, wrap");
         panel.add(new JLabel("Password:"), "align right");
         panel.add(passwordField, "growx, wrap");
         panel.setBackground(Color.WHITE);
@@ -83,7 +88,7 @@ public class LoginWindow {
 
     private void login() {
         MainWindow mainWindow = new MainWindow();
-        mainWindow.setLoggedUser(new User(usernameField.getText(), null));
+        mainWindow.setLoggedUser(new User(usernameField.getText(), (long) idField.getValue()));
         System.out.println("logged as: " + usernameField.getText());
         mainWindow.show();
     }
