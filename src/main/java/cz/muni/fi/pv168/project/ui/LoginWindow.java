@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.project.ui;
 
+import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import net.miginfocom.swing.MigLayout;
@@ -15,13 +16,11 @@ public class LoginWindow {
     private final JTextField usernameField;
     private final JTextField passwordField;
     public LoginWindow() {
-        this.frame = new JFrame();
+        this.frame = new JFrame("Login");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 230);
         frame.setLayout(new BorderLayout(10, 10));
-        frame.setTitle("Login");
         frame.setIconImage(Icons.APP_ICON.getImage());
-        frame.setResizable(false);
 
         this.usernameField = new JTextField();
         this.passwordField = new JPasswordField();
@@ -32,6 +31,7 @@ public class LoginWindow {
 
         frame.getContentPane().setBackground(Color.WHITE);
 
+        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
     }
 
@@ -82,7 +82,10 @@ public class LoginWindow {
     }
 
     private void login() {
-        new MainWindow().show();
+        MainWindow mainWindow = new MainWindow();
+        mainWindow.setLoggedUser(new User(usernameField.getText(), null));
+        System.out.println("logged as: " + usernameField.getText());
+        mainWindow.show();
     }
     public void show(){
         this.frame.setVisible(true);
