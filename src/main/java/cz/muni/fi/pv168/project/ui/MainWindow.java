@@ -60,10 +60,10 @@ public class MainWindow {
         CrudService<Template> templateCrudService = new BaseCrudService<>(templateRepository);
 
         var taskTable = createTaskTable(taskCrudService);
-        taskTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
+        taskTable.setComponentPopupMenu(createTaskTablePopupMenu());
 
         var templateTable = createTemplateTable(templateCrudService);
-        templateTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
+        templateTable.setComponentPopupMenu(createTaskTablePopupMenu());
 
         var statisticsTable = createStatisticsTable();
 
@@ -119,13 +119,13 @@ public class MainWindow {
         menuBar.add(createJMenu("File", new ImportAction(data), new ExportAction(data)));
         //TODO Create TemplateListModel
         menuBar.add(createJMenu("Template",
-                new AddAction(ActionType.TEMPLATE, data.getTaskTable(), data, null),
+                new AddAction(ActionType.TEMPLATE, data, null),
                 new ManageAction(ActionType.TEMPLATE, data, frame)));
         menuBar.add((createJMenu("Categories",
-                new AddAction(ActionType.CATEGORY, data.getTaskTable(), data, null),
+                new AddAction(ActionType.CATEGORY, data, null),
                 new ManageAction(ActionType.CATEGORY, data, frame))));
         menuBar.add((createJMenu("Time Units",
-                new AddAction(ActionType.TIME_UNIT, data.getTaskTable(), data, null),
+                new AddAction(ActionType.TIME_UNIT, data, null),
                 new ManageAction(ActionType.TIME_UNIT, data, frame))));
         menuBar.add(createJMenu("Help"));
 
@@ -187,7 +187,7 @@ public class MainWindow {
         var datePicker = new DatePicker();
 
         JButton addNewTaskButton = createButton("New Task ", Icons.ADD_ICON,
-                new ChooseTemplateAction(data.getTaskTable(), data, frame));
+                new ChooseTemplateAction(data, frame));
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.RESET_ICON,
                 new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, datePicker));
 
@@ -259,14 +259,6 @@ public class MainWindow {
         return table;
     }
 
-    private JTable createStatisticsTable(){
-        var model = new StatisticsTableModel();
-        var table = new JTable(model);
-
-        table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        return table;
-    }
-
     private JTable createTemplateTable(CrudService<Template> templateCrudService) {
         var model = new TemplateTableModel(templateCrudService);
         var table = new JTable(model);
@@ -276,8 +268,15 @@ public class MainWindow {
 
         var categoryColumn = table.getColumnModel().getColumn(1);
         categoryColumn.setCellRenderer(new CategoryCellRenderer());
-        data.setTemplateTableModel(model);
 
+        return table;
+    }
+
+    private JTable createStatisticsTable(){
+        var model = new StatisticsTableModel();
+        var table = new JTable(model);
+
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         return table;
     }
 
@@ -329,14 +328,13 @@ public class MainWindow {
     /**
      * Creates pop up menu for the task table
      *
-     * @param taskMenu JTable with content for edit
      * @return created menu
      */
-    private JPopupMenu createTaskTablePopupMenu(JTable taskMenu) {
+    private JPopupMenu createTaskTablePopupMenu() {
         JPopupMenu menu = new JPopupMenu();
-        menu.add(new EditAction(ActionType.TASK, taskMenu, null, data));
-        menu.add(new DeleteAction(ActionType.TASK, taskMenu, null, data));
-        menu.add(new InspectAction(ActionType.TASK, taskMenu, null, data));
+        menu.add(new EditAction(ActionType.TASK, null, data));
+        menu.add(new DeleteAction(ActionType.TASK, null, data));
+        menu.add(new InspectAction(ActionType.TASK, null, data));
 
         return menu;
     }
@@ -352,7 +350,7 @@ public class MainWindow {
             public void mouseClicked(MouseEvent e) {
                 System.out.println(e.getClickCount());
                 if (e.getClickCount() == 2 && Arrays.stream(data.getTaskTable().getSelectedRows()).count() == 1) {
-                    InspectAction inspectAction = new InspectAction(ActionType.TASK, taskMenu, null, data);
+                    InspectAction inspectAction = new InspectAction(ActionType.TASK, null, data);
                     inspectAction.actionPerformed(null);
                 }
             }

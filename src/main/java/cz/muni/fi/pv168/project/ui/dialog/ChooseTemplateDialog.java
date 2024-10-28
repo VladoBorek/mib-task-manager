@@ -12,8 +12,7 @@ import java.awt.*;
 
 public class ChooseTemplateDialog extends JDialog {
 
-    public ChooseTemplateDialog(JFrame parent, DataManager data,
-                                JTable contentTable) {
+    public ChooseTemplateDialog(JFrame parent, DataManager data) {
         super(parent, "Choose a template", true);
         setLayout(new BorderLayout());
 
@@ -24,7 +23,7 @@ public class ChooseTemplateDialog extends JDialog {
         comboPanel.add(comboBox);
 
         JButton okButton = createButton("OK",
-                new AddAction(ActionType.TASK, contentTable, data, comboBox));
+                new AddAction(ActionType.TASK, data, comboBox));
 
         add(comboPanel, BorderLayout.NORTH);
         add(okButton, BorderLayout.SOUTH);

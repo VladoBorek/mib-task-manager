@@ -11,21 +11,18 @@ public class ChooseTemplateAction extends AbstractAction {
 
     private final DataManager data;
 
-    private final JTable contentTable;
-
     private final JFrame frame;
 
-    public ChooseTemplateAction(JTable contentTable, DataManager data,
+    public ChooseTemplateAction(DataManager data,
                                 JFrame frame) {
         super("Choose a template", Icons.ADD_ICON);
         this.data = data;
         this.frame = frame;
-        this.contentTable = contentTable;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var wha = new ChooseTemplateDialog(frame, data, contentTable);
+        var wha = new ChooseTemplateDialog(frame, data);
         wha.setVisible(true);
     }
 }

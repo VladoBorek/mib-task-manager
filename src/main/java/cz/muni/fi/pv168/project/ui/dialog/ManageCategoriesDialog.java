@@ -22,10 +22,8 @@ public class ManageCategoriesDialog extends JDialog {
         comboPanel.add(new JLabel("Select a category:"));
         comboPanel.add(comboBox);
 
-        JButton editButton = createButton("Edit", new EditAction(ActionType.CATEGORY,
-                null , comboBox, data));
-        JButton deleteButton = createButton("Delete", new DeleteAction(ActionType.CATEGORY,
-                null ,comboBox , data));
+        JButton editButton = createButton("Edit", new EditAction(ActionType.CATEGORY, comboBox, data));
+        JButton deleteButton = createButton("Delete", new DeleteAction(ActionType.CATEGORY, comboBox , data));
 
         add(comboPanel, BorderLayout.NORTH);
         add(editButton, BorderLayout.CENTER);

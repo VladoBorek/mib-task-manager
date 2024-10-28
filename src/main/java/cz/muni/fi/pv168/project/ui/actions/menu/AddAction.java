@@ -10,6 +10,7 @@ import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -19,27 +20,23 @@ import java.util.Objects;
 
 public class AddAction extends AbstractAction {
     private final ActionType type;
-    private final JTable contentTable;
     private final DataManager data;
     private final JComboBox<Template> chosenTemplate;
     private JComboBox<TimeUnit> timeUnitsComboBox = null;
     private JComboBox<Object> categoryComboBox = null;
 
 
-
-
-    public AddAction(ActionType type, JTable contentTable,
+    public AddAction(ActionType type,
                      DataManager data,
                      JComboBox<Template> chosenTemplate) {
         super("Add new " + type.toString().toLowerCase().replace('_', ' '), Icons.ADD_ICON);
         this.type = type;
-        this.contentTable = contentTable;
         this.data = data;
         this.chosenTemplate = chosenTemplate;
     }
 
 
-    public AddAction(ActionType type, JTable contentTable,
+    public AddAction(ActionType type,
                      DataManager data,
                      JComboBox<Template> chosenTemplate,
                      JComboBox<TimeUnit> timeUnitsComboBox,
@@ -47,7 +44,6 @@ public class AddAction extends AbstractAction {
                      ) {
         super("Add new " + type.toString().toLowerCase().replace('_', ' '), Icons.ADD_ICON);
         this.type = type;
-        this.contentTable = contentTable;
         this.data = data;
         this.chosenTemplate = chosenTemplate;
         this.categoryComboBox = categoryComboBox;
@@ -63,12 +59,10 @@ public class AddAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         //TODO dialog switch for different types
-        var editClass = contentTable.getModel().getClass();
-        if (editClass == TaskTableModel.class && type == ActionType.TASK){
-            addTask();
-        }
-
         switch(type) {
+            case TASK:
+                addTask();
+                break;
             case TIME_UNIT:
                 if (this.timeUnitsComboBox == null){
                     addTimeUnit();
@@ -95,7 +89,7 @@ public class AddAction extends AbstractAction {
      * Opens a {@link AddTaskDialog} window, creates a task and adds it to table
      */
     private void addTask() {
-        var taskTableModel = (TaskTableModel) contentTable.getModel();
+        TaskTableModel taskTableModel = (TaskTableModel) data.getTaskTable().getModel();
         AddTaskDialog dialog;
         if (((Template) Objects.requireNonNull(chosenTemplate.getSelectedItem()))
                 .getTemplateName().compareTo("<Don't use a template>") == 0) {
@@ -104,7 +98,14 @@ public class AddAction extends AbstractAction {
             dialog = new AddTaskDialog(new Task((Template) chosenTemplate.getSelectedItem()), data);
         }
 
-        dialog.show(contentTable, "Add new Task").ifPresent(taskTableModel::addRow);
+        dialog.show(data.getTaskTable(), "Add new Task").ifPresent(taskTableModel::addRow);
+    }
+
+    private void addTemplate() {
+        TemplateTableModel templateTableModel = (TemplateTableModel) data.getTemplateTable().getModel();
+        TemplateDialog dialog;
+        dialog = new TemplateDialog(data, null);
+        dialog.show(data.getTaskTable(), "Add new Template").ifPresent(templateTableModel::addRow);
     }
 
     /**
@@ -147,10 +148,5 @@ public class AddAction extends AbstractAction {
             model.addElement(newCategory);
             categoryComboBox.setSelectedItem(newCategory);
         });
-    }
-
-    private void addTemplate() {
-        var dialog = new TemplateDialog(data, null);
-        dialog.show(null, "Add a new Template").ifPresent(data.getTemplates()::addTemplate);
     }
 }

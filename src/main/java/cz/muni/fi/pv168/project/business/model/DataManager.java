@@ -25,7 +25,6 @@ public class DataManager {
     private TaskTableModel taskTableModel;
 
     private JTable templateTable;
-    private TemplateTableModel templateTableModel;
 
     public DataManager(User loggedUser) {
         this.loggedUser = loggedUser;
@@ -64,15 +63,8 @@ public class DataManager {
     public void setTaskTableModel(TaskTableModel taskTableModel) {
         this.taskTableModel = taskTableModel;
     }
+
     public TaskTableModel getTaskTableModel(){return this.taskTableModel;}
-
-    public void setTemplateTableModel(TemplateTableModel model) {
-        this.templateTableModel = model;
-    }
-
-    public TemplateTableModel getTemplateTableModel() {
-        return this.templateTableModel;
-    }
 
     public User getLoggedUser() {
         return loggedUser;

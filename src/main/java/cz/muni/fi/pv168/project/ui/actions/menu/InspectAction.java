@@ -13,15 +13,13 @@ import java.awt.event.ActionEvent;
  * @author Vladimir Borek
  */
 public class InspectAction extends AbstractAction {
-    private final JTable contentTable;
     private final JComboBox comboBox;
     private final DataManager data;
     private final ActionType type;
 
-    public InspectAction (ActionType type, JTable contentTable, JComboBox comboBox, DataManager data) {
+    public InspectAction (ActionType type, JComboBox comboBox, DataManager data) {
         super("Inspect Task", Icons.INSPECT_ICON);
         this.type = type;
-        this.contentTable = contentTable;
         this.data = data;
         this.comboBox = comboBox;
     }
@@ -29,18 +27,16 @@ public class InspectAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         switch(type) {
             case TASK:
-                var selectedRows = contentTable.getSelectedRows();
+                var selectedRows = data.getTaskTable().getSelectedRows();
                 if (selectedRows.length != 1) {
                     throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
                 }
-                var taskTableModel = (TaskTableModel) contentTable.getModel();
-                int modelRow = contentTable.convertRowIndexToModel(selectedRows[0]);
+                var taskTableModel = (TaskTableModel) data.getTaskTable().getModel();
+                int modelRow = data.getTaskTable().convertRowIndexToModel(selectedRows[0]);
                 var task = taskTableModel.getEntity(modelRow);
 
                 var tDialog = new InspectTaskDialog(task, data);
-                //System.out.println(task.getNameOfTask());
-                tDialog.show(contentTable, "Inspect Task").ifPresent(taskTableModel::updateRow);
-                return;
+                tDialog.show(data.getTaskTable(), "Inspect Task").ifPresent(taskTableModel::updateRow);
     }
 }
 }

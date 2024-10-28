@@ -112,11 +112,11 @@ public class AddTaskDialog extends EntityDialog<Task>{
         JButton addCategoryButton = null;
 
         addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.TIME_UNIT, data.getTaskTable(), data, null,
+                new AddAction(ActionType.TIME_UNIT, data, null,
                         timeUnitsComboBox, categoryComboBox));
 
         addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.CATEGORY, data.getTaskTable(), data, null,
+                new AddAction(ActionType.CATEGORY, data, null,
                         timeUnitsComboBox, categoryComboBox));
 
         addCentered("Task name", taskNameField);

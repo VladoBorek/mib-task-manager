@@ -20,10 +20,8 @@ public class ManageTemplatesDialog extends JDialog {
         comboPanel.add(new JLabel("Select a template:"));
         comboPanel.add(comboBox);
 
-        JButton editButton = createButton("Edit", new EditAction(ActionType.TEMPLATE,
-                null, comboBox, data));
-        JButton deleteButton = createButton("Delete", new DeleteAction(ActionType.TEMPLATE,
-                null, comboBox, data));
+        JButton editButton = createButton("Edit", new EditAction(ActionType.TEMPLATE, comboBox, data));
+        JButton deleteButton = createButton("Delete", new DeleteAction(ActionType.TEMPLATE, comboBox, data));
 
         add(comboPanel, BorderLayout.NORTH);
         add(editButton, BorderLayout.CENTER);

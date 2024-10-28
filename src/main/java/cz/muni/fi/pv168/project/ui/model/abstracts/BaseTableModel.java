@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project.ui.model;
+package cz.muni.fi.pv168.project.ui.model.abstracts;
 
 import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.Entity;

@@ -14,17 +14,14 @@ import java.util.Comparator;
 import java.util.Objects;
 
 public class DeleteAction extends AbstractAction {
-
-    private final JTable contentTable;
     private final JComboBox comboBox;
     private final DataManager data;
     private final ActionType type;
 
     // TODO: SOMEHOW FIX RAW USE OF JComboBox
-    public DeleteAction(ActionType type, JTable contentTable, JComboBox comboBox, DataManager data) {
+    public DeleteAction(ActionType type, JComboBox comboBox, DataManager data) {
         super("Delete", Icons.DELETE_ICON);
         this.type = type;
-        this.contentTable = contentTable;
         this.data = data;
         this.comboBox = comboBox;
     }
@@ -34,9 +31,9 @@ public class DeleteAction extends AbstractAction {
 
         switch(type) {
             case TASK:
-                var taskTableModelTableModel = (TaskTableModel) contentTable.getModel();
-                Arrays.stream(contentTable.getSelectedRows())
-                        .map(contentTable::convertRowIndexToModel)
+                var taskTableModelTableModel = (TaskTableModel) data.getTaskTable().getModel();
+                Arrays.stream(data.getTaskTable().getSelectedRows())
+                        .map(data.getTaskTable()::convertRowIndexToModel)
                         .boxed()
                         .sorted(Comparator.reverseOrder())
                         .forEach(taskTableModelTableModel::deleteRow);
