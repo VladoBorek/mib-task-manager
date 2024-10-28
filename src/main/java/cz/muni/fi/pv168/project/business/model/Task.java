@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import static java.lang.Math.round;
 
-public class Task extends Entity{
+public class Task extends Entity {
 
     private Status status;
     private String description;

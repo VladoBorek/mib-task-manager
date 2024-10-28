@@ -11,26 +11,21 @@ import java.awt.event.ActionEvent;
 public class TemplateChosenAction extends AbstractAction {
 
     private final DataManager data;
-
-    private final JTable contentTable;
-
     private final JFrame frame;
     private final Template selectedItem;
 
-    public TemplateChosenAction(JTable contentTable,
-                                DataManager data,
+    public TemplateChosenAction(DataManager data,
                                 JFrame frame, Template selectedItem) {
         super("Choose a template", Icons.ADD_ICON);
         this.data = data;
         this.frame = frame;
-        this.contentTable = contentTable;
         this.selectedItem = selectedItem;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        var wha = new ChooseTemplateDialog(frame, data, contentTable);
+        var wha = new ChooseTemplateDialog(frame, data);
         wha.setVisible(true);
     }
 }

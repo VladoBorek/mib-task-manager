@@ -116,16 +116,13 @@ public class AddTaskDialog extends EntityDialog<Task>{
     }
 
     private void addFields(){
-        JButton addLogTimeButton = null;
-        JButton addTimeUnitButton = null;
-        JButton addCategoryButton = null;
 
-        addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.TIME_UNIT, data.getTaskTable(), data, null,
+        JButton addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
+                new AddAction(ActionType.TIME_UNIT, data, null,
                         timeUnitsComboBox, categoryComboBox));
 
-        addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.CATEGORY, data.getTaskTable(), data, null,
+        JButton addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
+                new AddAction(ActionType.CATEGORY, data, null,
                         timeUnitsComboBox, categoryComboBox));
 
         addCentered("Task name", taskNameField);
@@ -134,7 +131,7 @@ public class AddTaskDialog extends EntityDialog<Task>{
         addCentered("Category", categoryComboBox, addCategoryButton);
         addCentered("Assigned to", assignedToComboBox);
         addCentered("Status", statusComboBox);
-        addCentered("Logged time", loggedTimeField, addLogTimeButton);
+        addCentered("Logged time", loggedTimeField);
         addCentered("Allocated time", allocatedTimeField);
         addCentered("Time unit", timeUnitsComboBox, addTimeUnitButton);
         addCentered("Due date", datePicker);

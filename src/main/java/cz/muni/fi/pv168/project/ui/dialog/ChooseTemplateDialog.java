@@ -5,6 +5,7 @@ import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
+import cz.muni.fi.pv168.project.ui.model.TemplateTableModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,19 +13,18 @@ import java.awt.*;
 
 public class ChooseTemplateDialog extends JDialog {
 
-    public ChooseTemplateDialog(JFrame parent, DataManager data,
-                                JTable contentTable) {
+    public ChooseTemplateDialog(JFrame parent, DataManager data) {
         super(parent, "Choose a template", true);
         setLayout(new BorderLayout());
 
-        var comboBox = new JComboBox<Template>(new DefaultComboBoxModel<>(data.getTemplates().toArray()));
+        var comboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getTemplates().toArray(new Template[0])));
         comboBox.addItem(new Template());
         var comboPanel = new JPanel();
         comboPanel.add(new JLabel("Select a template:"));
         comboPanel.add(comboBox);
 
         JButton okButton = createButton("OK",
-                new AddAction(ActionType.TASK, contentTable, data, comboBox));
+                new AddAction(ActionType.TASK, data, comboBox));
 
         add(comboPanel, BorderLayout.NORTH);
         add(okButton, BorderLayout.SOUTH);
