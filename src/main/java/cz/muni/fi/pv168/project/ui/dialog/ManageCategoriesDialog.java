@@ -5,6 +5,7 @@ import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.DeleteAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.EditAction;
+import cz.muni.fi.pv168.project.ui.model.CategoryComboboxRenderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +19,12 @@ public class ManageCategoriesDialog extends JDialog {
 
 
         var comboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getCategories().toArray()));
+        comboBox.setRenderer(new CategoryComboboxRenderer());
+        CategoryComboboxRenderer.setCategoryComboboxColor(comboBox);
+        comboBox.addActionListener(e -> {
+            CategoryComboboxRenderer.setCategoryComboboxColor(comboBox);
+        });
+
         var comboPanel = new JPanel();
         comboPanel.add(new JLabel("Select a category:"));
         comboPanel.add(comboBox);

@@ -12,11 +12,14 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
+import cz.muni.fi.pv168.project.ui.model.CategoryComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.model.EmployeeComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Objects;
 
 public class AddTaskDialog extends EntityDialog<Task>{
@@ -77,7 +80,13 @@ public class AddTaskDialog extends EntityDialog<Task>{
 
         statusComboBox.setRenderer(listRenderer);
         assignedToComboBox.setRenderer(employeeComboboxRenderer);
-        categoryComboBox.setRenderer(listRenderer);
+        categoryComboBox.setRenderer(new CategoryComboboxRenderer());
+
+        CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
+        categoryComboBox.addActionListener(e -> {
+            CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
+        });
+
         timeUnitsComboBox.setRenderer(listRenderer);
         //assignedToComboBox.setRenderer(listRenderer);
 
@@ -179,4 +188,6 @@ public class AddTaskDialog extends EntityDialog<Task>{
         }
         return task;
     }
+
+
 }

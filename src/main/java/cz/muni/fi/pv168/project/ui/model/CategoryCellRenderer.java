@@ -16,17 +16,8 @@ public class CategoryCellRenderer extends DefaultTableCellRenderer {
         Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
         if (value instanceof Category category) {
-            Color backgroundColor = category.getColor();
-            cell.setBackground(backgroundColor);
-
-            if (backgroundColor.getRed() + backgroundColor.getGreen() + backgroundColor.getBlue() < 382) {
-                cell.setForeground(Color.WHITE);
-            } else {
-                cell.setForeground(Color.BLACK);
-            }
-        } else {
-            cell.setBackground(Color.WHITE);
-            cell.setForeground(Color.BLACK);
+            cell.setBackground(category.getColor());
+            cell.setForeground(CategoryComboboxRenderer.getRightTextColor(category.getColor()));
         }
         return cell;
     }

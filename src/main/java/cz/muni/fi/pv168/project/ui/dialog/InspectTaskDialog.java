@@ -13,6 +13,7 @@ import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.LogTimeAction;
+import cz.muni.fi.pv168.project.ui.model.CategoryComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.model.EmployeeComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -74,6 +75,11 @@ public class InspectTaskDialog extends EntityDialog<Task>{
         customer.setText(task.getCustomer());
         assignedTo.setText(task.getAssignedTo().toString());
         category.setText(task.getCategory().getName());
+
+//        category.setBackground(task.getCategory().getColor());  \\TODO does not work
+//        category.setForeground(CategoryComboboxRenderer.getRightTextColor(task.getCategory().getColor()));
+//        System.out.println(task.getCategory().getColor().toString());
+
         status.setText(task.getStatus().toString());
         loggedTime.setText(task.getConvertedLoggedTimeString());
         allocatedTime.setText(task.getConvertedAllocatedTimeString());
@@ -83,7 +89,7 @@ public class InspectTaskDialog extends EntityDialog<Task>{
         customer.setBorder(labelBorder);
         assignedTo.setBorder(labelBorder);
         status.setBorder(labelBorder);
-        category.setBorder(labelBorder);
+        category.setBorder(BorderFactory.createLineBorder(task.getCategory().getColor(), 5));
         loggedTime.setBorder(labelBorder);
         allocatedTime.setBorder(labelBorder);
         date.setBorder(labelBorder);
