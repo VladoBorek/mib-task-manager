@@ -18,6 +18,7 @@ public final class Icons {
     public static final Icon QUIT_ICON = createIcon("Crystal_Clear_action_exit.png");
     public static  final Icon IMPORT_ICON = createIcon("Crystal_Clear_action_down.png");
     public static final Icon EXPORT_ICON = createIcon("Crystal_Clear_action_up.png");
+    public static final Icon INSPECT_ICON = createIcon("Inspect_Icon.png");
     public static final Icon MIB_ICON = createIcon("MIB_Icon.png");
 
     public static final ImageIcon MIB_TM_IMAGE = new ImageIcon(RESOURCE_PATH + "MIB_TM.png");

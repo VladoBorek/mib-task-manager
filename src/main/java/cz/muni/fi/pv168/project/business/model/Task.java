@@ -76,8 +76,8 @@ public class Task extends Entity{
         return assignedTo;
     }
 
-    public String getAssignedToCode() {
-        return assignedTo.getCode();
+    public String getAssignedToString() {
+        return assignedTo.toString();
     }
 
 
@@ -85,16 +85,20 @@ public class Task extends Entity{
         this.assignedTo = assignedTo;
     }
 
-//    public Integer getLoggedTime() {
-//        return loggedTime;
-//    }
-//
-//    public void setLoggedTime(Integer loggedTime) {
-//        this.loggedTime = loggedTime;
-//    }
+    public Integer getLoggedTime() {
+        return loggedTime;
+    }
+
+    public void setLoggedTime(Integer loggedTime) {
+        this.loggedTime = loggedTime;
+    }
 
     public Integer getConvertedLoggedTime() {
         return loggedTime / timeUnit.getRate();
+    }
+
+    public String getConvertedLoggedTimeString() {
+        return getConvertedLoggedTime().toString() + " " + timeUnit.getShortName();
     }
 
     public void setConvertedLoggedTime(Integer loggedTime) {
@@ -103,6 +107,10 @@ public class Task extends Entity{
 
     public Integer getConvertedAllocatedTime() {
         return allocatedTime / timeUnit.getRate();
+    }
+
+    public String getConvertedAllocatedTimeString() {
+        return getConvertedAllocatedTime().toString() + " " + timeUnit.getShortName();
     }
 
     public void setConvertedAllocatedTime(Integer allocatedTime) {

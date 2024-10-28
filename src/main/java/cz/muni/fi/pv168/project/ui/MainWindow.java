@@ -49,7 +49,9 @@ public class MainWindow {
      * Constructor for MainWindow.
      * Initializes the main frame, sets the background color, size, and adds the menu bar and filter bar.
      */
-    public MainWindow() {
+    public MainWindow(User loggedUser) {
+        this.loggedUser = loggedUser;
+
         frame = createFrame();
         frame.setIconImage(Icons.APP_ICON.getImage());
         frame.setSize(1024, 768);
@@ -325,6 +327,7 @@ public class MainWindow {
         JPopupMenu menu = new JPopupMenu();
         menu.add(new EditAction(ActionType.TASK, taskMenu, null, data));
         menu.add(new DeleteAction(ActionType.TASK, taskMenu, null, data));
+        menu.add(new InspectAction(ActionType.TASK, taskMenu, null, data));
 
         return menu;
     }
@@ -346,9 +349,5 @@ public class MainWindow {
             }
         });
 
-    }
-
-    public void setLoggedUser(User user) {
-        this.loggedUser = user;
     }
 }

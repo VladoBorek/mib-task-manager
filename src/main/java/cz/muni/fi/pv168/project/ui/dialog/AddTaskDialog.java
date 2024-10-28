@@ -17,8 +17,9 @@ import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
-public class TaskDialog extends EntityDialog<Task>{
+public class AddTaskDialog extends EntityDialog<Task>{
 
     private final JTextField taskNameField = new JTextField();
     private final JTextArea descriptionArea = new JTextArea();
@@ -41,12 +42,8 @@ public class TaskDialog extends EntityDialog<Task>{
 
     private final DataManager data;
 
-    private boolean toInspect = false;
-
-
-    public TaskDialog(Task task, DataManager data, boolean toInspect){
+    public AddTaskDialog(Task task, DataManager data){
         super(500, 600);
-        this.toInspect = toInspect;
 
         this.data = data;
         this.task = task;
@@ -69,9 +66,6 @@ public class TaskDialog extends EntityDialog<Task>{
         setPanel();
 
         centerOutText();
-        if (toInspect){
-            setInspect();
-        }
     }
 
     private void centerOutText(){
@@ -92,21 +86,6 @@ public class TaskDialog extends EntityDialog<Task>{
         loggedTimeField.setHorizontalAlignment(SwingConstants.CENTER);
         allocatedTimeField.setHorizontalAlignment(SwingConstants.CENTER);
 
-    }
-    private void setInspect(){
-        taskNameField.setEditable(false);
-        descriptionArea.setEditable(false);
-        customerField.setEditable(false);
-        loggedTimeField.setEditable(false);
-        allocatedTimeField.setEditable(false);
-        categoryComboBox.setEnabled(false);
-        statusComboBox.setEnabled(false);
-        timeUnitsComboBox.setEnabled(false);
-        datePicker.setEnabled(false);
-        assignedToComboBox.setEnabled(false);
-    }
-    public TaskDialog(Task task, DataManager data) {
-        this(task, data, false);
     }
 
     private void setValues()
@@ -132,20 +111,13 @@ public class TaskDialog extends EntityDialog<Task>{
         JButton addTimeUnitButton = null;
         JButton addCategoryButton = null;
 
-        if (toInspect) {
-            //TODO: finish implementation
-            addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON,
-                    new AddAction(ActionType.TIME_UNIT, data.getTaskTable(), data, null));
-        }
-        else {
-            addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
-                    new AddAction(ActionType.TIME_UNIT, data.getTaskTable(), data, null,
-                            timeUnitsComboBox, categoryComboBox));
+        addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
+                new AddAction(ActionType.TIME_UNIT, data.getTaskTable(), data, null,
+                        timeUnitsComboBox, categoryComboBox));
 
-            addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
-                    new AddAction(ActionType.CATEGORY, data.getTaskTable(), data, null,
-                            timeUnitsComboBox, categoryComboBox));
-        }
+        addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
+                new AddAction(ActionType.CATEGORY, data.getTaskTable(), data, null,
+                        timeUnitsComboBox, categoryComboBox));
 
         addCentered("Task name", taskNameField);
         addCentered("Description", new JScrollPane(descriptionArea));
@@ -202,7 +174,7 @@ public class TaskDialog extends EntityDialog<Task>{
                     (Employee) assignedToComboBox.getSelectedItem(),
                     loggedTimeField.getValue(),
                     allocatedTimeField.getValue(),
-                    (TimeUnit) timeUnitsComboBox.getSelectedItem(),
+                    (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem()),
                     datePicker.getDate());
         }
         return task;

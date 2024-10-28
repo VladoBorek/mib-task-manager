@@ -5,7 +5,7 @@ import cz.muni.fi.pv168.project.business.model.DataManager;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
-import cz.muni.fi.pv168.project.ui.dialog.TaskDialog;
+import cz.muni.fi.pv168.project.ui.dialog.AddTaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
@@ -40,7 +40,7 @@ public class EditAction extends AbstractAction {
                 int modelRow = contentTable.convertRowIndexToModel(selectedRows[0]);
                 var task = taskTableModel.getEntity(modelRow);
 
-                var tDialog = new TaskDialog(task, data);
+                var tDialog = new AddTaskDialog(task, data);
                 System.out.println(task.getNameOfTask());
                 tDialog.show(contentTable, "Edit Task").ifPresent(taskTableModel::updateRow);
                 return;
