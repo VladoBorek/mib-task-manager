@@ -249,7 +249,7 @@ public class MainWindow {
 
         var progressColumn = table.getColumnModel().getColumn(8);
         progressColumn.setCellRenderer(new TaskProgressBar());
-        var categoryColumn = table.getColumnModel().getColumn(1);
+        var categoryColumn = table.getColumnModel().getColumn(2);
         categoryColumn.setCellRenderer(new CategoryCellRenderer());
         data.setTaskTableModel(model);
 
