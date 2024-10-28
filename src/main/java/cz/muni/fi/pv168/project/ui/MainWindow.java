@@ -1,11 +1,11 @@
 package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.repository.Repository;
 import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
-import cz.muni.fi.pv168.project.business.service.crud.TaskCrudService;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.business.model.DataManager;
 import cz.muni.fi.pv168.project.storage.InMemoryRepository;
@@ -25,6 +25,7 @@ import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -36,37 +37,38 @@ import java.util.Map;
 public class MainWindow {
 
     public static final Color BUTTON_COLOR = new Color(220, 220, 220);
-
-//    public static final Color BG_COLOR = new Color(0, 0, 0);
     public static final DemoDataGenerator DEMO_DATA = new DemoDataGenerator();
 
     private final JFrame frame;
-    private final DatePicker datePicker = createDatePicker();
-    private final JTable taskTable;
     private final DataManager data;
-    private User loggedUser;
 
     /**
      * Constructor for MainWindow.
      * Initializes the main frame, sets the background color, size, and adds the menu bar and filter bar.
      */
     public MainWindow(User loggedUser) {
-        this.loggedUser = loggedUser;
-
         frame = createFrame();
         frame.setIconImage(Icons.APP_ICON.getImage());
         frame.setSize(1024, 768);
 
-        data = new DataManager();
+        data = new DataManager(loggedUser);
 
         Repository<Task> taskRepository = new InMemoryRepository<Task>(DEMO_DATA.getTasks());
         CrudService<Task> taskCrudService = new BaseCrudService<>(taskRepository);
 
-        taskTable = createTaskTable(taskCrudService);
+        Repository<Template> templateRepository = new InMemoryRepository<Template>(new ArrayList<Template>());
+        CrudService<Template> templateCrudService = new BaseCrudService<>(templateRepository);
+
+        var taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
 
+        var templateTable = createTemplateTable(templateCrudService);
+        templateTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
+
         var statisticsTable = createStatisticsTable();
+
         data.setTaskTable(taskTable);
+        data.setTemplateTable(templateTable);
 
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
@@ -76,8 +78,6 @@ public class MainWindow {
         splitPane.setTopComponent(new JScrollPane(taskTable));
         splitPane.setBottomComponent(new JScrollPane(statisticsTable));
         splitPane.setResizeWeight(0.8);
-
-        var templateTable = createTemplateTable();
 
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Tasks", splitPane);
@@ -119,13 +119,13 @@ public class MainWindow {
         menuBar.add(createJMenu("File", new ImportAction(data), new ExportAction(data)));
         //TODO Create TemplateListModel
         menuBar.add(createJMenu("Template",
-                new AddAction(ActionType.TEMPLATE, taskTable, data, null),
+                new AddAction(ActionType.TEMPLATE, data.getTaskTable(), data, null),
                 new ManageAction(ActionType.TEMPLATE, data, frame)));
         menuBar.add((createJMenu("Categories",
-                new AddAction(ActionType.CATEGORY, taskTable, data, null),
+                new AddAction(ActionType.CATEGORY, data.getTaskTable(), data, null),
                 new ManageAction(ActionType.CATEGORY, data, frame))));
         menuBar.add((createJMenu("Time Units",
-                new AddAction(ActionType.TIME_UNIT, taskTable, data, null),
+                new AddAction(ActionType.TIME_UNIT, data.getTaskTable(), data, null),
                 new ManageAction(ActionType.TIME_UNIT, data, frame))));
         menuBar.add(createJMenu("Help"));
 
@@ -184,8 +184,10 @@ public class MainWindow {
                 assigneeComboBox, "--Assignee--"
         );
 
+        var datePicker = new DatePicker();
+
         JButton addNewTaskButton = createButton("New Task ", Icons.ADD_ICON,
-                new ChooseTemplateAction(taskTable, data, frame));
+                new ChooseTemplateAction(data.getTaskTable(), data, frame));
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.RESET_ICON,
                 new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, datePicker));
 
@@ -265,11 +267,17 @@ public class MainWindow {
         return table;
     }
 
-    private JTable createTemplateTable() {
-        var model = new TemplateTableModel();
+    private JTable createTemplateTable(CrudService<Template> templateCrudService) {
+        var model = new TemplateTableModel(templateCrudService);
         var table = new JTable(model);
+        table.setAutoCreateRowSorter(true);
 
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+
+        var categoryColumn = table.getColumnModel().getColumn(1);
+        categoryColumn.setCellRenderer(new CategoryCellRenderer());
+        data.setTemplateTableModel(model);
+
         return table;
     }
 
@@ -339,11 +347,11 @@ public class MainWindow {
      */
 
     private void setUpTaskInspect(JTable taskMenu){
-        taskTable.addMouseListener(new MouseInputAdapter() {
+        data.getTaskTable().addMouseListener(new MouseInputAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println(e.getClickCount());
-                if (e.getClickCount() == 2 && Arrays.stream(taskTable.getSelectedRows()).count() == 1) {
+                if (e.getClickCount() == 2 && Arrays.stream(data.getTaskTable().getSelectedRows()).count() == 1) {
                     InspectAction inspectAction = new InspectAction(ActionType.TASK, taskMenu, null, data);
                     inspectAction.actionPerformed(null);
                 }

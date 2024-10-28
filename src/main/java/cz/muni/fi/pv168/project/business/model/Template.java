@@ -1,6 +1,6 @@
 package cz.muni.fi.pv168.project.business.model;
 
-public class Template {
+public class Template extends Entity {
 
 
     private String name;
@@ -11,8 +11,9 @@ public class Template {
     private String templateName;
 
 
-    public Template(String name, Category category,
+    public Template(Long id, String name, Category category,
                     Integer allocatedTime, TimeUnit timeUnit, String templateName) {
+        super(id);
         this.name = name;
         this.category = category;
         this.allocatedTime = allocatedTime;
@@ -21,7 +22,7 @@ public class Template {
     }
 
     public Template() {
-        this(null, null, null, null, "<Don't use a template>");
+        this(null, null, null, -1, null, "<Don't use a template>");
     }
 
     public String getName() {
@@ -58,6 +59,14 @@ public class Template {
 
     public String getTemplateName() {
         return templateName;
+    }
+
+    public Integer getConvertedAllocatedTime() {
+        return allocatedTime / timeUnit.getRate();
+    }
+
+    public String getConvertedAllocatedTimeString() {
+        return getConvertedAllocatedTime().toString() + " " + timeUnit.getShortName();
     }
 
     public void setTemplateName(String templateName) {

@@ -11,11 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskTableModel extends AbstractTableModel {
-
-    private final List<Task> tasks;
-    private final CrudService<Task> taskCrudService;
-
+public class TaskTableModel extends BaseTableModel<Task> {
     private final List<Column<Task, ?>> columns = List.of(
             Column.readonly("TASK NAME", String.class, Task::getNameOfTask),
             Column.readonly("STATUS", Status.class, Task::getStatus),
@@ -30,14 +26,9 @@ public class TaskTableModel extends AbstractTableModel {
             );
 
     public TaskTableModel(CrudService<Task> taskCrudService) {
-        this.taskCrudService = taskCrudService;
-        this.tasks = new ArrayList<>(taskCrudService.findAll());
+        super(taskCrudService);
     }
 
-    @Override
-    public int getRowCount() {
-        return tasks.size();
-    }
 
     @Override
     public int getColumnCount() {
@@ -46,35 +37,10 @@ public class TaskTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        var task = getEntity(rowIndex);
-        return columns.get(columnIndex).getValue(task);
+        var item = getEntity(rowIndex);
+        return columns.get(columnIndex).getValue(item);
     }
 
-    public Task getEntity(int rowIndex) {
-        return tasks.get(rowIndex);
-    }
-
-    public void updateRow(Task task) {
-        taskCrudService.update(task); //TODO validation
-//                .intoException();
-        int rowIndex = tasks.indexOf(task);
-        fireTableRowsUpdated(rowIndex, rowIndex);
-    }
-
-    public void addRow(Task task){
-        int newRowIndex = tasks.size();
-        taskCrudService.create(task); //TODO validation
-//                        .intoException();
-        tasks.add(task);
-        fireTableRowsInserted(newRowIndex, newRowIndex);
-    }
-
-    public void deleteRow(int rowIndex) {
-        var taskToBeDeleted = getEntity(rowIndex);
-        taskCrudService.deleteById(taskToBeDeleted.getId());
-        tasks.remove(rowIndex);
-        fireTableRowsDeleted(rowIndex, rowIndex);
-    }
     @Override
     public String getColumnName(int columnIndex) {
         return columns.get(columnIndex).getName();

@@ -17,13 +17,19 @@ public class DataManager {
     private final TemplateListModel templates = new TemplateListModel(new ArrayList<>());
     private final EmployeeListModel employees = new EmployeeListModel(new ArrayList<>(DEMO_DATA.getEmployees()));
 
+
+
+    private final User loggedUser;
+
     private JTable taskTable;
     private TaskTableModel taskTableModel;
 
-    //public DataManager(JTable taskTable){
-        //this.taskTable = taskTable;
-    //}
+    private JTable templateTable;
+    private TemplateTableModel templateTableModel;
 
+    public DataManager(User loggedUser) {
+        this.loggedUser = loggedUser;
+    }
 
     public TimeUnitListModel getTimeUnits() {
         return timeUnits;
@@ -47,6 +53,29 @@ public class DataManager {
         this.taskTable = taskTable;
     }
 
-    public void setTaskTableModel(TaskTableModel taskTableModel){this.taskTableModel = taskTableModel;}
-    public  TaskTableModel getTaskTableModel(){return this.taskTableModel;}
+    public JTable getTemplateTable() {
+        return templateTable;
+    }
+
+    public void setTemplateTable(JTable templateTable) {
+        this.templateTable = templateTable;
+    }
+
+    public void setTaskTableModel(TaskTableModel taskTableModel) {
+        this.taskTableModel = taskTableModel;
+    }
+    public TaskTableModel getTaskTableModel(){return this.taskTableModel;}
+
+    public void setTemplateTableModel(TemplateTableModel model) {
+        this.templateTableModel = model;
+    }
+
+    public TemplateTableModel getTemplateTableModel() {
+        return this.templateTableModel;
+    }
+
+    public User getLoggedUser() {
+        return loggedUser;
+    }
+
 }

@@ -56,7 +56,7 @@ public class TemplateDialog extends EntityDialog<Template>{
 
     @Override
     Template getEntity() {
-        return new Template(nameField.getText(),
+        return new Template(null, nameField.getText(),
                 (Category) categoryComboBox.getSelectedItem(),
                 allocatedTimeField.getValue(),
                 (TimeUnit) timeUnitComboBox.getSelectedItem(),
