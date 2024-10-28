@@ -13,7 +13,7 @@ public class TemplateTableModel extends BaseTableModel<Template> {
             Column.readonly("Template Name", String.class, Template::getTemplateName),
             Column.readonly("Task Name", String.class, Template::getName),
             Column.readonly("Category", Category.class, Template::getCategory),
-            Column.readonly("Allocated Time", String.class, Template::getConvertedAllocatedTimeString)
+            Column.readonly("Allocated Time", String.class, Template::getAllocatedTimeString)
             );
 
     public TemplateTableModel(CrudService<Template> crudService) {

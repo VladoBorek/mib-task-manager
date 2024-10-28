@@ -61,14 +61,6 @@ public class Template extends Entity {
         return templateName;
     }
 
-    public Integer getConvertedAllocatedTime() {
-        return allocatedTime / timeUnit.getRate();
-    }
-
-    public String getConvertedAllocatedTimeString() {
-        return getConvertedAllocatedTime().toString() + " " + timeUnit.getShortName();
-    }
-
     public void setTemplateName(String templateName) {
         this.templateName = templateName;
     }
@@ -76,5 +68,9 @@ public class Template extends Entity {
     @Override
     public String toString() {
         return templateName;
+    }
+
+    public String getAllocatedTimeString() {
+        return getAllocatedTime().toString() + " " + timeUnit.getShortName();
     }
 }

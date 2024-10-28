@@ -11,20 +11,20 @@ import java.util.List;
  */
 public class BaseCrudService<T extends Entity> implements CrudService<T> {
 
-    private final Repository<T> taskRepository;
+    private final Repository<T> repository;
 
     public BaseCrudService(Repository<T> taskRepository) {
-        this.taskRepository = taskRepository;
+        this.repository = taskRepository;
     }
 
     @Override
     public List<T> findAll() {
-        return taskRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public boolean create(T newEntity) {
-        var savedEntity = taskRepository.create(newEntity);
+        var savedEntity = repository.create(newEntity);
         newEntity.setId(savedEntity.getId());
 
         return true; //TODO validation
@@ -32,18 +32,18 @@ public class BaseCrudService<T extends Entity> implements CrudService<T> {
 
     @Override
     public boolean update(T entity) {
-        taskRepository.update(entity);
+        repository.update(entity);
 
         return true; //TODO validation
     }
 
     @Override
     public void deleteById(Long id) {
-        taskRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
     @Override
     public void deleteAll() {
-        taskRepository.deleteAll();
+        repository.deleteAll();
     }
 }

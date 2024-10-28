@@ -54,4 +54,8 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
         items.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
+
+    public List<T> getAllRows() {
+        return items;
+    }
 }

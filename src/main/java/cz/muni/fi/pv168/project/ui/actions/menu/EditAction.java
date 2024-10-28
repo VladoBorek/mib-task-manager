@@ -9,6 +9,7 @@ import cz.muni.fi.pv168.project.ui.dialog.AddTaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
@@ -38,7 +39,6 @@ public class EditAction extends AbstractAction {
                 var task = taskTableModel.getEntity(modelRow);
 
                 var tDialog = new AddTaskDialog(task, data);
-                System.out.println(task.getNameOfTask());
                 tDialog.show(data.getTaskTable(), "Edit Task").ifPresent(taskTableModel::updateRow);
                 return;
 
@@ -72,15 +72,11 @@ public class EditAction extends AbstractAction {
                 if (template == null) {
                     return;
                 }
+
+                var templateTableModel = (TemplateTableModel) data.getTemplateTable().getModel();
                 var templateDialog = new TemplateDialog(data, template);
-                templateDialog.show(comboBox, "Edit Template").ifPresent(newTemplate -> {
-                    template.setName(newTemplate.getName());
-                    template.setCategory(newTemplate.getCategory());
-                    template.setAllocatedTime(newTemplate.getAllocatedTime());
-                    template.setTimeUnit(newTemplate.getTimeUnit());
-                });
+                templateDialog.show(comboBox, "Edit Template").ifPresent(templateTableModel::updateRow);
                 comboBox.setSelectedIndex(0);
-                return;
         }
     }
 }

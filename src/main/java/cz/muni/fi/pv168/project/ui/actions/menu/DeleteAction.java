@@ -5,6 +5,7 @@ import cz.muni.fi.pv168.project.business.model.DataManager;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
@@ -50,6 +51,14 @@ public class DeleteAction extends AbstractAction {
 //                System.out.println(task.getNameOfTask());
 //                tDialog.show(contentTable, "Edit Task").ifPresent(taskTableModel::updateRow);
                 return;
+            case TEMPLATE:
+                var templateTableModel = (TemplateTableModel) data.getTemplateTable().getModel();
+                Arrays.stream(data.getTemplateTable().getSelectedRows())
+                        .map(data.getTemplateTable()::convertRowIndexToModel)
+                        .boxed()
+                        .sorted(Comparator.reverseOrder())
+                        .forEach(templateTableModel::deleteRow);
+                return;
             case CATEGORY:
                 var category = (Category) comboBox.getSelectedItem();
                 data.getCategories().removeCategory(category);
@@ -67,11 +76,6 @@ public class DeleteAction extends AbstractAction {
                 data.getTimeUnits().removeTimeUnit(timeUnit);
 
                 comboBox.removeItem(timeUnit);
-                return;
-            case TEMPLATE:
-                var template = (Template) comboBox.getSelectedItem();
-                data.getTemplates().removeTemplate(template);
-                comboBox.removeItem(template);
                 return;
         }
     }

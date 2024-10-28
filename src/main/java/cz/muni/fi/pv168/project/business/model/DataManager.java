@@ -4,6 +4,7 @@ import cz.muni.fi.pv168.project.ui.model.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import static cz.muni.fi.pv168.project.ui.MainWindow.DEMO_DATA;
 
@@ -14,7 +15,7 @@ import static cz.muni.fi.pv168.project.ui.MainWindow.DEMO_DATA;
 public class DataManager {
     private final TimeUnitListModel timeUnits = new TimeUnitListModel(new ArrayList<>(DEMO_DATA.getTimeUnits()));
     private final CategoryListModel categories = new CategoryListModel(new ArrayList<>(DEMO_DATA.getCategories()));
-    private final TemplateListModel templates = new TemplateListModel(new ArrayList<>());
+//    private final TemplateListModel templates = new TemplateListModel(new ArrayList<>());
     private final EmployeeListModel employees = new EmployeeListModel(new ArrayList<>(DEMO_DATA.getEmployees()));
 
 
@@ -36,9 +37,6 @@ public class DataManager {
 
     public CategoryListModel getCategories() {
         return categories;
-    }
-    public TemplateListModel getTemplates() {
-        return templates;
     }
     public EmployeeListModel getEmployees() {
         return employees;
@@ -70,4 +68,7 @@ public class DataManager {
         return loggedUser;
     }
 
+    public List<Template> getTemplates() {
+        return ((TemplateTableModel) getTemplateTable().getModel()).getAllRows();
+    }
 }
