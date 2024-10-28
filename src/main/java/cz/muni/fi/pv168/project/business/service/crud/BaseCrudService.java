@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.project.business.service.crud;
 
+import cz.muni.fi.pv168.project.business.model.Entity;
 import cz.muni.fi.pv168.project.business.model.Task;
-import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.repository.Repository;
 
 import java.util.List;
@@ -9,21 +9,21 @@ import java.util.List;
 /**
  * Crud operations for the {@link Task} entity.
  */
-public class TaskCrudService implements CrudService<Task> {
+public class BaseCrudService<T extends Entity> implements CrudService<T> {
 
-    private final Repository<Task> taskRepository;
+    private final Repository<T> taskRepository;
 
-    public TaskCrudService(Repository<Task> taskRepository) {
+    public BaseCrudService(Repository<T> taskRepository) {
         this.taskRepository = taskRepository;
     }
 
     @Override
-    public List<Task> findAll() {
+    public List<T> findAll() {
         return taskRepository.findAll();
     }
 
     @Override
-    public boolean create(Task newEntity) {
+    public boolean create(T newEntity) {
         var savedEntity = taskRepository.create(newEntity);
         newEntity.setId(savedEntity.getId());
 
@@ -31,7 +31,7 @@ public class TaskCrudService implements CrudService<Task> {
     }
 
     @Override
-    public boolean update(Task entity) {
+    public boolean update(T entity) {
         taskRepository.update(entity);
 
         return true; //TODO validation

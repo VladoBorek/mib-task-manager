@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.project.ui;
 import com.github.lgooddatepicker.components.DatePicker;
 import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.repository.Repository;
+import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.business.service.crud.TaskCrudService;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
@@ -59,7 +60,7 @@ public class MainWindow {
         data = new DataManager();
 
         Repository<Task> taskRepository = new InMemoryRepository<Task>(DEMO_DATA.getTasks());
-        CrudService<Task> taskCrudService = new TaskCrudService(taskRepository);
+        CrudService<Task> taskCrudService = new BaseCrudService<>(taskRepository);
 
         taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));

@@ -15,7 +15,7 @@ import java.util.List;
  * @author Vladimir Borek
  */
 public class TemplateTableModel extends AbstractTableModel {
-    private final String[] columnNames = {"Template Name", "TODO", "TODO", "TODO"};
+    private final String[] columnNames = {"Template Name", "Category", "Allocated Time"};
     private final List<Template> templateData;
     public TemplateTableModel(List<Template> templateData) {
         this.templateData = templateData;
