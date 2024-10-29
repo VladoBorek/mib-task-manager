@@ -249,7 +249,7 @@ public class MainWindow {
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         table.setAutoCreateRowSorter(true);
 
-        var progressColumn = table.getColumnModel().getColumn(8);
+        var progressColumn = table.getColumnModel().getColumn(7);
         progressColumn.setCellRenderer(new TaskProgressBar());
         var categoryColumn = table.getColumnModel().getColumn(2);
         categoryColumn.setCellRenderer(new CategoryCellRenderer());
