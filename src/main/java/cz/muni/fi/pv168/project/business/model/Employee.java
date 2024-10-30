@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project.model;
+package cz.muni.fi.pv168.project.business.model;
 
 /**
  * @author Maroš Pavlík
@@ -28,7 +28,8 @@ public class Employee {
         this.id = id;
     }
 
-    public String getCode() {
+    @Override
+    public String toString() {
         if (id == 0) {
             return "Not assigned";
         }

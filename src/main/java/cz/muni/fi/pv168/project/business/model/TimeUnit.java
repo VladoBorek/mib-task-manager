@@ -1,10 +1,11 @@
-package cz.muni.fi.pv168.project.model;
+package cz.muni.fi.pv168.project.business.model;
 
 public abstract class TimeUnit {
-    private static final String BASE_UNIT = "Minute";
+    public static final String BASE_UNIT = "Minute";
+    public static final String BASE_UNIT_SHORT = "min";
 
     private String name;
-
+    private String shortName;
     private Integer rate;
 
 
@@ -12,7 +13,7 @@ public abstract class TimeUnit {
      * Creates a new instance of base time unit
      */
     public TimeUnit() {
-        this(BASE_UNIT, 1);
+        this(BASE_UNIT, BASE_UNIT_SHORT, 1);
     }
 
     /**
@@ -20,8 +21,9 @@ public abstract class TimeUnit {
      * @param name name of the unit
      * @param rate conversion rate to the base time unit
      */
-    public TimeUnit(String name, Integer rate) {
+    public TimeUnit(String name, String shortName, Integer rate) {
         this.name = name;
+        this.shortName = shortName;
         this.rate = rate;
     }
 
@@ -50,5 +52,9 @@ public abstract class TimeUnit {
     @Override
     public String toString() {
         return name;
+    }
+
+    public String getShortName() {
+        return shortName;
     }
 }

@@ -1,12 +1,11 @@
 package cz.muni.fi.pv168.project.ui.dialog;
 
-import cz.muni.fi.pv168.project.model.DataManager;
-import cz.muni.fi.pv168.project.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.model.DataManager;
+import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.DeleteAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.EditAction;
-import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
 
 
 import javax.swing.*;
@@ -30,10 +29,10 @@ public class ManageTimeUnitDialog extends JDialog {
         comboPanel.add(new JLabel("Select time unit:"));
         comboPanel.add(timeUnitComboBox);
 
-        JButton editButton = createButton("Edit", new EditAction(ActionType.TIME_UNIT,
-                null , timeUnitComboBox, data));
-        JButton deleteButton = createButton("Delete", new DeleteAction(ActionType.TIME_UNIT,
-                null , timeUnitComboBox, data));
+        JButton editButton = createButton("Edit",
+                new EditAction(ActionType.TIME_UNIT, timeUnitComboBox, data));
+        JButton deleteButton = createButton("Delete",
+                new DeleteAction(ActionType.TIME_UNIT, timeUnitComboBox, data));
         add(comboPanel, BorderLayout.NORTH);
         add(editButton, BorderLayout.CENTER);
         add(deleteButton, BorderLayout.SOUTH);

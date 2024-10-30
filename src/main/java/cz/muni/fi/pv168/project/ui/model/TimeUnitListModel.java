@@ -1,11 +1,8 @@
 package cz.muni.fi.pv168.project.ui.model;
 
-import cz.muni.fi.pv168.project.model.Category;
-import cz.muni.fi.pv168.project.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.model.TimeUnit;
 
 import javax.swing.*;
-import java.lang.reflect.Array;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +18,14 @@ public class TimeUnitListModel extends AbstractListModel<TimeUnit> {
     }
 
     public void addUnit(TimeUnit unit) {
+        //Dunno if this should be here
+        boolean nameAlreadyUsed = timeUnits.stream()
+                .anyMatch(timeUnit -> timeUnit.getName().equals(unit.getName()));
+        if(nameAlreadyUsed){
+            JFrame frame = new JFrame();
+            JOptionPane.showMessageDialog(frame, "Time unit with this name already exists!");
+            return;
+        }
         timeUnits.add(unit);
     }
 

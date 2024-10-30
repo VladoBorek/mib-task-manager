@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project.model;
+package cz.muni.fi.pv168.project.business.model;
 
 /**
  * Class for instantiaziation of custom {@link TimeUnit} objects.
@@ -11,8 +11,8 @@ public class CustomTimeUnit extends TimeUnit{
      * @param name name of the unit
      * @param rate conversion rate to the base time unit
      */
-    public CustomTimeUnit(String name, Integer rate) {
-        super(name, rate);
+    public CustomTimeUnit(String name, String shortName, Integer rate) {
+        super(name, shortName, rate);
     }
 
     /**

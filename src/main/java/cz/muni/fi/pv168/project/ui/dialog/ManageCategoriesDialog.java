@@ -1,18 +1,14 @@
 package cz.muni.fi.pv168.project.ui.dialog;
 
-import cz.muni.fi.pv168.project.model.Category;
-import cz.muni.fi.pv168.project.model.DataManager;
-import cz.muni.fi.pv168.project.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.model.DataManager;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.DeleteAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.EditAction;
-import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
-import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
+import cz.muni.fi.pv168.project.ui.model.CategoryComboboxRenderer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 
 public class ManageCategoriesDialog extends JDialog {
@@ -23,14 +19,18 @@ public class ManageCategoriesDialog extends JDialog {
 
 
         var comboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getCategories().toArray()));
+        comboBox.setRenderer(new CategoryComboboxRenderer());
+        CategoryComboboxRenderer.setCategoryComboboxColor(comboBox);
+        comboBox.addActionListener(e -> {
+            CategoryComboboxRenderer.setCategoryComboboxColor(comboBox);
+        });
+
         var comboPanel = new JPanel();
         comboPanel.add(new JLabel("Select a category:"));
         comboPanel.add(comboBox);
 
-        JButton editButton = createButton("Edit", new EditAction(ActionType.CATEGORY,
-                null , comboBox, data));
-        JButton deleteButton = createButton("Delete", new DeleteAction(ActionType.CATEGORY,
-                null ,comboBox , data));
+        JButton editButton = createButton("Edit", new EditAction(ActionType.CATEGORY, comboBox, data));
+        JButton deleteButton = createButton("Delete", new DeleteAction(ActionType.CATEGORY, comboBox , data));
 
         add(comboPanel, BorderLayout.NORTH);
         add(editButton, BorderLayout.CENTER);

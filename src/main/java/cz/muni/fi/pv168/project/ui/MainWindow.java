@@ -1,30 +1,30 @@
 package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import cz.muni.fi.pv168.project.business.model.Template;
+import cz.muni.fi.pv168.project.business.model.User;
+import cz.muni.fi.pv168.project.business.repository.Repository;
+import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
+import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
-import cz.muni.fi.pv168.project.model.CustomTimeUnit;
-import cz.muni.fi.pv168.project.model.DataManager;
-import cz.muni.fi.pv168.project.model.TimeUnit;
-import cz.muni.fi.pv168.project.model.*;
+import cz.muni.fi.pv168.project.business.model.DataManager;
+import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.model.CategoryCellRenderer;
-import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 
 import cz.muni.fi.pv168.project.ui.model.EmployeeComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.model.StatisticsTableModel;
 
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
-import cz.muni.fi.pv168.project.ui.model.TemplateListModel;
-import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
+import cz.muni.fi.pv168.project.ui.model.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
-import cz.muni.fi.pv168.project.model.Task;
+import cz.muni.fi.pv168.project.business.model.Task;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,35 +37,37 @@ import java.util.Map;
 public class MainWindow {
 
     public static final Color BUTTON_COLOR = new Color(220, 220, 220);
-
-//    public static final Color BG_COLOR = new Color(0, 0, 0);
     public static final DemoDataGenerator DEMO_DATA = new DemoDataGenerator();
 
     private final JFrame frame;
-    private final DatePicker datePicker = createDatePicker();
-    private final JTable taskTable;
-    private final JTable statisticsTable;
     private final DataManager data;
 
     /**
      * Constructor for MainWindow.
      * Initializes the main frame, sets the background color, size, and adds the menu bar and filter bar.
      */
-    public MainWindow() {
+    public MainWindow(User loggedUser) {
         frame = createFrame();
         frame.setIconImage(Icons.APP_ICON.getImage());
-
-        // This didn't do anything
-//        frame.getContentPane().setBackground(BG_COLOR);
-
         frame.setSize(1024, 768);
-        data = new DataManager();
 
-        taskTable = createTaskTable(DEMO_DATA.getTasks());
-        taskTable.setComponentPopupMenu(createTaskTablePopupMenu(taskTable));
+        data = new DataManager(loggedUser);
 
-        statisticsTable = createStatisticsTable();
+        Repository<Task> taskRepository = new InMemoryRepository<Task>(DEMO_DATA.getTasks());
+        CrudService<Task> taskCrudService = new BaseCrudService<>(taskRepository);
+
+        Repository<Template> templateRepository = new InMemoryRepository<Template>(new ArrayList<Template>());
+        CrudService<Template> templateCrudService = new BaseCrudService<>(templateRepository);
+
+        var taskTable = createTaskTable(taskCrudService);
+        taskTable.setComponentPopupMenu(createTaskTablePopupMenu());
+
+        var templateTable = createTemplateTable(templateCrudService);
+
+        var statisticsTable = createStatisticsTable();
+
         data.setTaskTable(taskTable);
+        data.setTemplateTable(templateTable);
 
         frame.setJMenuBar(createMenuBar());
         frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
@@ -74,11 +76,18 @@ public class MainWindow {
         splitPane.setDividerSize(10);
         splitPane.setTopComponent(new JScrollPane(taskTable));
         splitPane.setBottomComponent(new JScrollPane(statisticsTable));
-        frame.add(splitPane, BorderLayout.CENTER);
+        splitPane.setResizeWeight(0.8);
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("Tasks", splitPane);
+        tabbedPane.addTab("Templates", new JScrollPane(templateTable));
+
+        frame.add(tabbedPane, BorderLayout.CENTER);
 
         frame.setLocationRelativeTo(null);
         frame.pack();
         setUpTaskInspect(taskTable);
+        frame.setSize(1024, 768);
     }
 
     /**
@@ -109,13 +118,13 @@ public class MainWindow {
         menuBar.add(createJMenu("File", new ImportAction(data), new ExportAction(data)));
         //TODO Create TemplateListModel
         menuBar.add(createJMenu("Template",
-                new AddAction(ActionType.TEMPLATE, taskTable, data, null),
+                new AddAction(ActionType.TEMPLATE, data, null),
                 new ManageAction(ActionType.TEMPLATE, data, frame)));
         menuBar.add((createJMenu("Categories",
-                new AddAction(ActionType.CATEGORY, taskTable, data, null),
+                new AddAction(ActionType.CATEGORY, data, null),
                 new ManageAction(ActionType.CATEGORY, data, frame))));
         menuBar.add((createJMenu("Time Units",
-                new AddAction(ActionType.TIME_UNIT, taskTable, data, null),
+                new AddAction(ActionType.TIME_UNIT, data, null),
                 new ManageAction(ActionType.TIME_UNIT, data, frame))));
         menuBar.add(createJMenu("Help"));
 
@@ -163,8 +172,6 @@ public class MainWindow {
                 "--Category--");
         JComboBox<Object> assigneeComboBox = createFilterComboBox(data.getEmployees().toArray(),
                 "--Assignee--");
-        JComboBox<Object> customerComboBox = createFilterComboBox(DEMO_DATA.getCustomers().toArray(),
-                "--Customer--");
         assigneeComboBox.setRenderer(new EmployeeComboboxRenderer());
 
         Map<Boolean, List<JCheckBox>> resetValuesCheckboxes = Map.of(
@@ -173,14 +180,13 @@ public class MainWindow {
 
         Map<JComboBox<Object>, String> resetValuesComboBoxes = Map.of(
                 categoryComboBox, "--Category--",
-                assigneeComboBox, "--Assignee--",
-                customerComboBox, "--Customer--"
+                assigneeComboBox, "--Assignee--"
         );
 
+        var datePicker = new DatePicker();
+
         JButton addNewTaskButton = createButton("New Task ", Icons.ADD_ICON,
-                new ChooseTemplateAction(taskTable, data, frame));
-
-
+                new ChooseTemplateAction(data, frame));
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.RESET_ICON,
                 new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, datePicker));
 
@@ -188,33 +194,32 @@ public class MainWindow {
 
         filterBar.addSeparator();
 
-        filterBar.add(filterToDo);
-        filterBar.add(filterInProgress);
-        filterBar.add(filterComplete);
-        filterBar.add(filterOnHold);
+        JPanel statusPanel = new JPanel(new GridLayout(2, 2));
+        statusPanel.add(filterToDo);
+        statusPanel.add(filterInProgress);
+        statusPanel.add(filterComplete);
+        statusPanel.add(filterOnHold);
+        filterBar.add(statusPanel);
 
         filterBar.addSeparator();
 
-        filterBar.add(filterOverdue);
-        //TODO filterOverdue will filter overdue tasks date picked by datepicker
-        JPanel datePickerPanel = new JPanel(new BorderLayout());
-        datePickerPanel.setMaximumSize(new Dimension(150, 25));
-        datePickerPanel.setPreferredSize(new Dimension(150, 25));
-        datePickerPanel.add(datePicker, BorderLayout.CENTER);
-        filterBar.add(datePickerPanel);
+        JPanel filterDatePanel = new JPanel(new GridLayout(2, 2));
+        filterDatePanel.add(filterOverdue);
+        filterDatePanel.add(datePicker);
+        filterDatePanel.add(filterOverBudget);
+        filterBar.add(filterDatePanel);
 
         filterBar.addSeparator();
 
-        filterBar.add(filterOverBudget);
+        JPanel categoryAssigneePanel = new JPanel(new GridLayout(2, 1));
+        categoryAssigneePanel.add(categoryComboBox);
+        categoryAssigneePanel.add(assigneeComboBox);
+        filterBar.add(categoryAssigneePanel);
 
         filterBar.addSeparator();
 
-        filterBar.add(categoryComboBox);
-        filterBar.add(assigneeComboBox);
-        filterBar.add(customerComboBox);
-
-        filterBar.addSeparator();
         filterBar.add(resetFiltersButton);
+
         return filterBar;
     }
 
@@ -235,20 +240,33 @@ public class MainWindow {
     }
 
     /**
-     * @param tasks Tasks for the table
+     * @param taskCrudService Tasks for the table
      * @return Table with tasks
      */
-    private JTable createTaskTable(List<Task> tasks) {
-        var model = new TaskTableModel(tasks);
+    private JTable createTaskTable(CrudService<Task> taskCrudService) {
+        var model = new TaskTableModel(taskCrudService);
         var table = new JTable(model);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         table.setAutoCreateRowSorter(true);
 
         var progressColumn = table.getColumnModel().getColumn(8);
         progressColumn.setCellRenderer(new TaskProgressBar());
-        var categoryColumn = table.getColumnModel().getColumn(1);
+        var categoryColumn = table.getColumnModel().getColumn(2);
         categoryColumn.setCellRenderer(new CategoryCellRenderer());
         data.setTaskTableModel(model);
+
+        return table;
+    }
+
+    private JTable createTemplateTable(CrudService<Template> templateCrudService) {
+        var model = new TemplateTableModel(templateCrudService);
+        var table = new JTable(model);
+        table.setAutoCreateRowSorter(true);
+
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+
+        var categoryColumn = table.getColumnModel().getColumn(1);
+        categoryColumn.setCellRenderer(new CategoryCellRenderer());
 
         return table;
     }
@@ -309,13 +327,13 @@ public class MainWindow {
     /**
      * Creates pop up menu for the task table
      *
-     * @param taskMenu JTable with content for edit
      * @return created menu
      */
-    private JPopupMenu createTaskTablePopupMenu(JTable taskMenu) {
+    private JPopupMenu createTaskTablePopupMenu() {
         JPopupMenu menu = new JPopupMenu();
-        menu.add(new EditAction(ActionType.TASK, taskMenu, null, data));
-        menu.add(new DeleteAction(ActionType.TASK, taskMenu, null, data));
+        menu.add(new EditAction(ActionType.TASK, null, data));
+        menu.add(new DeleteAction(ActionType.TASK, null, data));
+        menu.add(new InspectAction(ActionType.TASK, null, data));
 
         return menu;
     }
@@ -326,12 +344,12 @@ public class MainWindow {
      */
 
     private void setUpTaskInspect(JTable taskMenu){
-        taskTable.addMouseListener(new MouseInputAdapter() {
+        data.getTaskTable().addMouseListener(new MouseInputAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println(e.getClickCount());
-                if (e.getClickCount() == 2 && Arrays.stream(taskTable.getSelectedRows()).count() == 1) {
-                    InspectAction inspectAction = new InspectAction(ActionType.TASK, taskMenu, null, data);
+                if (e.getClickCount() == 2 && Arrays.stream(data.getTaskTable().getSelectedRows()).count() == 1) {
+                    InspectAction inspectAction = new InspectAction(ActionType.TASK, null, data);
                     inspectAction.actionPerformed(null);
                 }
             }

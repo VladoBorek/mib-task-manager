@@ -1,6 +1,6 @@
 package cz.muni.fi.pv168.project.ui.model;
 
-import cz.muni.fi.pv168.project.model.Employee;
+import cz.muni.fi.pv168.project.business.model.Employee;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +15,7 @@ public class EmployeeComboboxRenderer extends DefaultListCellRenderer {
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
         if (value instanceof Employee employee) {
-            label.setText(employee.getCode());
+            label.setText(employee.toString());
         }
 
         return label;
