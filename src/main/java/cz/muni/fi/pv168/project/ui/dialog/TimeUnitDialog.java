@@ -37,6 +37,6 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
     @Override
     TimeUnit getEntity() {
-        return new CustomTimeUnit(timeUnitNameField.getText(), shortNameField.getText(), conversionRateField.getValue());
+        return new CustomTimeUnit(0L, timeUnitNameField.getText(), shortNameField.getText(), conversionRateField.getValue());
     }
 }

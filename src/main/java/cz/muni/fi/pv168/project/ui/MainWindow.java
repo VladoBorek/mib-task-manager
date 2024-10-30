@@ -2,6 +2,7 @@ package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import cz.muni.fi.pv168.project.business.model.Template;
+import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.repository.Repository;
 import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
@@ -25,6 +26,7 @@ import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,10 +55,10 @@ public class MainWindow {
 
         data = new DataManager(loggedUser);
 
-        Repository<Task> taskRepository = new InMemoryRepository<Task>(DEMO_DATA.getTasks());
+        Repository<Task> taskRepository = new InMemoryRepository<>(DEMO_DATA.getTasks());
         CrudService<Task> taskCrudService = new BaseCrudService<>(taskRepository);
 
-        Repository<Template> templateRepository = new InMemoryRepository<Template>(new ArrayList<Template>());
+        Repository<Template> templateRepository = new InMemoryRepository<>(new ArrayList<>());
         CrudService<Template> templateCrudService = new BaseCrudService<>(templateRepository);
 
         var taskTable = createTaskTable(taskCrudService);
