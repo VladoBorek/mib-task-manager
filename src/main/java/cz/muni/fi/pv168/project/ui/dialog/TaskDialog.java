@@ -13,6 +13,7 @@ import cz.muni.fi.pv168.project.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.LogTimeAction;
 import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.EmployeeComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
@@ -141,8 +142,10 @@ public class TaskDialog extends EntityDialog<Task>{
 
         if (toInspect) {
             //TODO: finish implementation
+//            addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON,
+//                    new AddAction(ActionType.TIME_UNIT, data.getTaskTable(), data, null));
             addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON,
-                    new AddAction(ActionType.TIME_UNIT, data.getTaskTable(), data, null));
+                    new LogTimeAction(ActionType.TIME_UNIT, data, task));
         }
         else {
             addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
