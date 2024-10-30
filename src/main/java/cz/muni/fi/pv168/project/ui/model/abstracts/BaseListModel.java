@@ -33,7 +33,7 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
         items.add(item);
     }
 
-    public void removeTimeUnit(T item) {
+    public void remove(T item) {
         crudService.deleteById(item.getId());
         items.remove(item);
     }
