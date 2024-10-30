@@ -17,9 +17,8 @@ public class TaskTableModel extends BaseTableModel<Task> {
             Column.readonly("CATEGORY", Category.class, Task::getCategory),
             Column.readonly("CUSTOMER", String.class, Task::getCustomer),
             Column.readonly("ASSIGNED TO", String.class, Task::getAssignedToString),
-            Column.readonly("LOGGED TIME", Integer.class, Task::getConvertedLoggedTime),
-            Column.readonly("ALLOCATED TIME", Integer.class, Task::getConvertedAllocatedTime),
-            Column.readonly("TIME UNIT", TimeUnit.class, Task::getTimeUnit),
+            Column.readonly("LOGGED TIME", String.class, Task::getConvertedLoggedTimeString),
+            Column.readonly("ALLOCATED TIME", String.class, Task::getConvertedAllocatedTimeString),
             Column.readonly("% DONE", Float.class, Task::getPercentage),
             Column.readonly("DUE DATE", LocalDate.class, Task::getDueDate)
             );

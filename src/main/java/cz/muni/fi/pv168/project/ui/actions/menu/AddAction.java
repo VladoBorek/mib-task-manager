@@ -113,7 +113,7 @@ public class AddAction extends AbstractAction {
      */
     private void addTimeUnit() {
         var dialog = new TimeUnitDialog();
-        dialog.show(null, "Add new time unit").ifPresent(data.getTimeUnits()::addUnit);
+        dialog.show(null, "Add new time unit").ifPresent(data.getTimeUnits()::add);
     }
 
     /*
@@ -122,7 +122,7 @@ public class AddAction extends AbstractAction {
     private void addTimeUnit(JComboBox<TimeUnit> timeUnitsComboBox) {
         var dialog = new TimeUnitDialog();
         dialog.show(null, "Add new time unit").ifPresent(newTimeUnit -> {
-            data.getTimeUnits().addUnit(newTimeUnit);
+            data.getTimeUnits().add(newTimeUnit);
             DefaultComboBoxModel<TimeUnit> model = (DefaultComboBoxModel<TimeUnit>) timeUnitsComboBox.getModel();
             model.addElement(newTimeUnit);
             timeUnitsComboBox.setSelectedItem(newTimeUnit);

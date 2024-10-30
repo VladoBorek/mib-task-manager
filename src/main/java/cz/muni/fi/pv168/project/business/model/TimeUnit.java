@@ -1,6 +1,6 @@
 package cz.muni.fi.pv168.project.business.model;
 
-public abstract class TimeUnit {
+public abstract class TimeUnit extends Entity {
     public static final String BASE_UNIT = "Minute";
     public static final String BASE_UNIT_SHORT = "min";
 
@@ -13,7 +13,7 @@ public abstract class TimeUnit {
      * Creates a new instance of base time unit
      */
     public TimeUnit() {
-        this(BASE_UNIT, BASE_UNIT_SHORT, 1);
+        this(0L, BASE_UNIT, BASE_UNIT_SHORT, 1);
     }
 
     /**
@@ -21,7 +21,8 @@ public abstract class TimeUnit {
      * @param name name of the unit
      * @param rate conversion rate to the base time unit
      */
-    public TimeUnit(String name, String shortName, Integer rate) {
+    public TimeUnit(Long id, String name, String shortName, Integer rate) {
+        super(id);
         this.name = name;
         this.shortName = shortName;
         this.rate = rate;
