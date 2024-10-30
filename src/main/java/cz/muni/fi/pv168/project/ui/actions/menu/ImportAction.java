@@ -79,8 +79,8 @@ public class ImportAction extends AbstractAction {
                         }
                     }
                     if (!foundCategory){
-                        category = new Category(categoryName, categoryColor);
-                        data.getCategories().addCategory(category);
+                        category = new Category(null, categoryName, categoryColor);
+                        data.getCategories().add(category);
                     }
                     // Get status
                     for (Status s:Status.values()) {
@@ -102,8 +102,8 @@ public class ImportAction extends AbstractAction {
                         }
                     }
                     if(!foundEmployee){
-                        assignedTo = new Employee(employeeName, employeeId);
-                        data.getEmployees().addEmployee(assignedTo);
+                        assignedTo = new Employee(null, employeeName, employeeId);
+                        data.getEmployees().add(assignedTo);
                     }
                     //Get Time Unit
                     var timeUnitName = jsonObject.getString("TIME UNIT");

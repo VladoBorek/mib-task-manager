@@ -36,7 +36,7 @@ public class Task extends Entity {
     }
 
     public Task(Template template) {
-        this(null, Status.TO_DO, "", template.getCategory(), "", template.getName(), new Employee("-", 0),
+        this(null, Status.TO_DO, "", template.getCategory(), "", template.getName(), new Employee(null, "-", 0),
                 0, template.getAllocatedTime(), template.getTimeUnit(), null);
     }
 

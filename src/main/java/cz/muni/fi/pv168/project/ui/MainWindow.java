@@ -349,7 +349,7 @@ public class MainWindow {
         data.getTaskTable().addMouseListener(new MouseInputAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println(e.getClickCount());
+//                System.out.println(e.getClickCount());
                 if (e.getClickCount() == 2 && Arrays.stream(data.getTaskTable().getSelectedRows()).count() == 1) {
                     InspectAction inspectAction = new InspectAction(ActionType.TASK, null, data);
                     inspectAction.actionPerformed(null);
