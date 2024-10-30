@@ -1,49 +1,24 @@
 package cz.muni.fi.pv168.project.ui.model;
 
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.service.crud.CrudService;
+import cz.muni.fi.pv168.project.ui.model.abstracts.BaseListModel;
 
 import javax.swing.*;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * List of {@link TimeUnit} objects.
  */
-public class TimeUnitListModel extends AbstractListModel<TimeUnit> {
+public class TimeUnitListModel extends BaseListModel<TimeUnit> {
 
-    private final List<TimeUnit> timeUnits;
-
-    public TimeUnitListModel(ArrayList<TimeUnit> timeUnits) {
-        this.timeUnits = timeUnits;
-    }
-
-    public void addUnit(TimeUnit unit) {
-        //Dunno if this should be here
-        boolean nameAlreadyUsed = timeUnits.stream()
-                .anyMatch(timeUnit -> timeUnit.getName().equals(unit.getName()));
-        if(nameAlreadyUsed){
-            JFrame frame = new JFrame();
-            JOptionPane.showMessageDialog(frame, "Time unit with this name already exists!");
-            return;
-        }
-        timeUnits.add(unit);
+    public TimeUnitListModel(ArrayList<TimeUnit> timeUnits, CrudService<TimeUnit> timeUnitCrudService) {
+        super(timeUnits, timeUnitCrudService);
     }
 
     public TimeUnit[] toArray() {
-        return timeUnits.toArray(new TimeUnit[0]);
-    }
-
-    public void removeTimeUnit(TimeUnit unit) {
-        timeUnits.remove(unit);
-    }
-
-    @Override
-    public int getSize() {
-        return timeUnits.size();
-    }
-
-    @Override
-    public TimeUnit getElementAt(int index) {
-        return timeUnits.get(index);
+        return items.toArray(new TimeUnit[0]);
     }
 }

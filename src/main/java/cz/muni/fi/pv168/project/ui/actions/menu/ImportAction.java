@@ -118,8 +118,8 @@ public class ImportAction extends AbstractAction {
                         }
                     }
                     if(!foundTimeUnit){
-                        timeUnit = new CustomTimeUnit(timeUnitName, "TODO", timeUnitRate);
-                        data.getTimeUnits().addUnit(timeUnit);
+                        timeUnit = new CustomTimeUnit(null, timeUnitName, "TODO", timeUnitRate);
+                        data.getTimeUnits().add(timeUnit);
                     }
 
                     Task task = new Task(null, taskStatus, description, category, customer, nameOfTask, assignedTo, loggedTIme, allocatedTime, timeUnit, dueDate);
