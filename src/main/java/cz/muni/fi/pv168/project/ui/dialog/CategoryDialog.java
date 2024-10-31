@@ -32,6 +32,6 @@ public class CategoryDialog extends EntityDialog<Category> {
 
     @Override
     Category getEntity() {
-        return new Category(nameField.getText(), colorChooser.getColor());
+        return new Category(null, nameField.getText(), colorChooser.getColor());
     }
 }
