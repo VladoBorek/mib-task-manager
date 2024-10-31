@@ -66,6 +66,8 @@ public class EditAction extends AbstractAction {
                 timeUnitDialog.show(comboBox, "Edit Time Unit").ifPresent(newTimeUnit -> {
                     timeunit.setName(newTimeUnit.getName());
                     timeunit.setRate(newTimeUnit.getRate());
+                    timeunit.setShortName(newTimeUnit.getShortName());
+
                 });
                 data.getTimeUnits().update(timeunit);
 
