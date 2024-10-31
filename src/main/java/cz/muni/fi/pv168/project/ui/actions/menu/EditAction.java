@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.AddTaskDialog;
+import cz.muni.fi.pv168.project.ui.dialog.ManageTimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
@@ -20,11 +21,21 @@ public class EditAction extends AbstractAction {
     private final DataManager data;
     private final ActionType type;
 
+    private ManageTimeUnitDialog manageTimeUnitDialog;
+
     public EditAction (ActionType type, JComboBox comboBox, DataManager data) {
         super("Edit", Icons.MANAGE_ICON);
         this.type = type;
         this.data = data;
         this.comboBox = comboBox;
+    }
+
+    public EditAction (ActionType type, JComboBox comboBox, DataManager data, ManageTimeUnitDialog manageTimeUnitDialog) {
+        super("Edit", Icons.MANAGE_ICON);
+        this.type = type;
+        this.data = data;
+        this.comboBox = comboBox;
+        this.manageTimeUnitDialog = manageTimeUnitDialog;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -72,6 +83,8 @@ public class EditAction extends AbstractAction {
                 data.getTimeUnits().update(timeunit);
 
                 comboBox.setSelectedIndex(0);
+                manageTimeUnitDialog.dispose();
+
                 return;
             case TEMPLATE:
                 var template = (Template) comboBox.getSelectedItem();
