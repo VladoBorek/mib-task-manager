@@ -53,7 +53,29 @@ public class InspectTaskDialog extends EntityDialog<Task>{
         setValues();
         addFields();
         setPanel();
+        FormatFields();
+    }
+
+    private void FormatFields(){
         centerOutText();
+        setBorders();
+
+        description.setLineWrap(true);
+        description.setWrapStyleWord(true);
+        description.setEditable(false);
+        description.setOpaque(false);
+    }
+
+    private void setBorders(){
+        taskName.setBorder(labelBorder);
+        customer.setBorder(labelBorder);
+        assignedTo.setBorder(labelBorder);
+        status.setBorder(labelBorder);
+        category.setBorder(BorderFactory.createLineBorder(task.getCategory().getColor(), 5));
+        loggedTime.setBorder(labelBorder);
+        allocatedTime.setBorder(labelBorder);
+        date.setBorder(labelBorder);
+        description.setBorder(labelBorder);
     }
 
     private void centerOutText() {
@@ -83,21 +105,6 @@ public class InspectTaskDialog extends EntityDialog<Task>{
         loggedTime.setText(task.getConvertedLoggedTimeString());
         allocatedTime.setText(task.getConvertedAllocatedTimeString());
         date.setText(task.getDueDate().toString());
-
-        taskName.setBorder(labelBorder);
-        customer.setBorder(labelBorder);
-        assignedTo.setBorder(labelBorder);
-        status.setBorder(labelBorder);
-        category.setBorder(BorderFactory.createLineBorder(task.getCategory().getColor(), 5));
-        loggedTime.setBorder(labelBorder);
-        allocatedTime.setBorder(labelBorder);
-        date.setBorder(labelBorder);
-
-        description.setBorder(labelBorder);
-        description.setLineWrap(true);
-        description.setWrapStyleWord(true);
-        description.setEditable(false);
-        description.setOpaque(false);
     }
 
     private void addFields(){
