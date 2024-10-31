@@ -53,19 +53,18 @@ public class InspectTaskDialog extends EntityDialog<Task>{
         setValues();
         addFields();
         setPanel();
-
         centerOutText();
     }
 
     private void centerOutText() {
-        customer.setHorizontalAlignment(SwingConstants.CENTER);
-        status.setHorizontalAlignment(SwingConstants.CENTER);
-        assignedTo.setHorizontalAlignment(SwingConstants.CENTER);
-        category.setHorizontalAlignment(SwingConstants.CENTER);
         taskName.setHorizontalAlignment(SwingConstants.CENTER);
         customer.setHorizontalAlignment(SwingConstants.CENTER);
+        category.setHorizontalAlignment(SwingConstants.CENTER);
+        assignedTo.setHorizontalAlignment(SwingConstants.CENTER);
+        status.setHorizontalAlignment(SwingConstants.CENTER);
         loggedTime.setHorizontalAlignment(SwingConstants.CENTER);
         allocatedTime.setHorizontalAlignment(SwingConstants.CENTER);
+        date.setHorizontalAlignment(SwingConstants.CENTER);
     }
 
     private void setValues() {
