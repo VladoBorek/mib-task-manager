@@ -335,7 +335,7 @@ public class MainWindow {
         JPopupMenu menu = new JPopupMenu();
         menu.add(new EditAction(ActionType.TASK, null, data));
         menu.add(new DeleteAction(ActionType.TASK, null, data));
-        menu.add(new InspectAction(ActionType.TASK, null, data));
+        menu.add(new InspectAction(ActionType.TASK, frame, data));
 
         return menu;
     }
@@ -351,7 +351,7 @@ public class MainWindow {
             public void mouseClicked(MouseEvent e) {
 //                System.out.println(e.getClickCount());
                 if (e.getClickCount() == 2 && Arrays.stream(data.getTaskTable().getSelectedRows()).count() == 1) {
-                    InspectAction inspectAction = new InspectAction(ActionType.TASK, null, data);
+                    InspectAction inspectAction = new InspectAction(ActionType.TASK, frame, data);
                     inspectAction.actionPerformed(null);
                 }
             }

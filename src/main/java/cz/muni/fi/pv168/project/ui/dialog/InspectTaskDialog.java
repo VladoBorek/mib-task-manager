@@ -24,9 +24,7 @@ import java.awt.*;
 public class InspectTaskDialog extends EntityDialog<Task>{
 
     private static final Border labelBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
-
     private final Task task;
-
     private final JLabel taskName = new JLabel();
     private final JTextArea  description = new JTextArea();
     private final JLabel customer = new JLabel();
@@ -109,7 +107,7 @@ public class InspectTaskDialog extends EntityDialog<Task>{
 
     private void addFields(){
         JButton addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new LogTimeAction(ActionType.TIME_UNIT, data, task));
+                new LogTimeAction(data, this, task));
 
         addCentered("Task name", taskName);
         addCentered("Description", description);
@@ -122,8 +120,13 @@ public class InspectTaskDialog extends EntityDialog<Task>{
         addCentered("Due date", date);
     }
 
+    public void updateLoggedTime(){
+        loggedTime.setText(task.getConvertedLoggedTimeString());
+    }
     @Override
     Task getEntity() {
         return task;
     }
+
+
 }

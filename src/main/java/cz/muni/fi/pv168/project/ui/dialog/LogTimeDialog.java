@@ -30,6 +30,13 @@ public class LogTimeDialog extends EntityDialog<Integer> {
 
         setPanel();
     }
+    public LogTimeDialog(DataManager data) {
+        timeUnitComboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getTimeUnits().toArray()));
+        add("Time", timeField);
+        add("Time Unit", timeUnitComboBox);
+
+        setPanel();
+    }
 
     @Override
     Integer getEntity() {
