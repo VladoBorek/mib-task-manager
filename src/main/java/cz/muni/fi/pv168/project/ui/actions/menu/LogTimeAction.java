@@ -84,7 +84,7 @@ public class LogTimeAction extends AbstractAction{
      */
     private void LogTime() {
         var dialog = new TimeUnitDialog();
-        dialog.show(null, "Add new time unit").ifPresent(data.getTimeUnits()::addUnit);
+        dialog.show(null, "Add new time unit").ifPresent(data.getTimeUnits()::add);
     }
 
     /*
@@ -93,11 +93,15 @@ public class LogTimeAction extends AbstractAction{
     private void LogTime(JComboBox<TimeUnit> timeUnitsComboBox) {
         var dialog = new TimeUnitDialog();
         dialog.show(null, "Add new time unit").ifPresent(newTimeUnit -> {
-            data.getTimeUnits().addUnit(newTimeUnit);
+            data.getTimeUnits().add(newTimeUnit);
             DefaultComboBoxModel<TimeUnit> model = (DefaultComboBoxModel<TimeUnit>) timeUnitsComboBox.getModel();
             model.addElement(newTimeUnit);
             timeUnitsComboBox.setSelectedItem(newTimeUnit);
         });
+    }
+
+    private void addUnit(TimeUnit timeUnit){
+
     }
 
 
