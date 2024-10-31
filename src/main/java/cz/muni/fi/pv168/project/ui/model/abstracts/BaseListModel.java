@@ -38,6 +38,10 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
         items.remove(item);
     }
 
+    public void update(T item) {
+        crudService.update(item);
+    }
+
 
     @Override
     public int getSize() {

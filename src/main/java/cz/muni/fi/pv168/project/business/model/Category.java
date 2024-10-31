@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * The Category class represents a task category with a name and a color.
  */
-public class Category {
+public class Category extends Entity {
     private String name;
     private Color color;
 
@@ -15,7 +15,8 @@ public class Category {
      * @param name  the name of the category.
      * @param color the color associated with the category.
      */
-    public Category(String name, Color color) {
+    public Category(Long id, String name, Color color) {
+        super(id);
         this.name = name;
         this.color = color;
     }

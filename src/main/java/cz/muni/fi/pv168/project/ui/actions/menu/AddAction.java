@@ -134,7 +134,7 @@ public class AddAction extends AbstractAction {
      */
     private void addCategory() {
         var dialog = new CategoryDialog();
-        dialog.show(null, "Add a new Category").ifPresent(data.getCategories()::addCategory);
+        dialog.show(null, "Add a new Category").ifPresent(data.getCategories()::add);
     }
 
     /*
@@ -143,7 +143,7 @@ public class AddAction extends AbstractAction {
     private void addCategory(JComboBox<Object> categoryComboBox) {
         var dialog = new CategoryDialog();
         dialog.show(null, "Add a new Category").ifPresent(newCategory -> {
-            data.getCategories().addCategory(newCategory);
+            data.getCategories().add(newCategory);
             DefaultComboBoxModel<Object> model = (DefaultComboBoxModel<Object>) categoryComboBox.getModel();
             model.addElement(newCategory);
             categoryComboBox.setSelectedItem(newCategory);

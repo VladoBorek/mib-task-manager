@@ -14,16 +14,16 @@ import java.util.List;
 public class DemoDataGenerator {
 
     private static final List<Category> CATEGORIES= List.of(
-            new Category("Online", new Color(200,1,1)),
-            new Category("In-Person", new Color(2,200,2)),
-            new Category("Systems update", new Color(3,3,200))
+            new Category(null, "Online", new Color(200,1,1)),
+            new Category(null, "In-Person", new Color(2,200,2)),
+            new Category(null, "Systems update", new Color(3,3,200))
     );
     private static final List<Employee> EMPLOYEES = List.of(
-            new Employee("Not assigned", 0),
-            new Employee("Remy", 1),
-            new Employee("Ramy", 2),
-            new Employee("Rumy", 3),
-            new Employee("Romy", 4)
+            new Employee(null, "Not assigned", 0),
+            new Employee(null, "Remy", 1),
+            new Employee(null, "Ramy", 2),
+            new Employee(null, "Rumy", 3),
+            new Employee(null, "Romy", 4)
     );
 
     private static final List<TimeUnit> TIME_UNITS = List.of(

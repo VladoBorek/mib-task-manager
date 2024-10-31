@@ -3,13 +3,14 @@ package cz.muni.fi.pv168.project.business.model;
 /**
  * @author Maroš Pavlík
  */
-public class Employee {
+public class Employee extends Entity {
 
     private String name;
-    private int id;
-    public Employee(String name, int id) {
+    private int employeeId;
+    public Employee(Long id, String name, int employeeId) {
+        super(id);
         this.name = name;
-        this.id = id;
+        this.employeeId = employeeId;
     }
 
     public String getName() {
@@ -20,12 +21,12 @@ public class Employee {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public int getEmployeeId() {
+        return employeeId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
 
     @Override

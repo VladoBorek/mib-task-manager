@@ -1,6 +1,9 @@
 package cz.muni.fi.pv168.project.ui.model;
 
 import cz.muni.fi.pv168.project.business.model.Employee;
+import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.service.crud.CrudService;
+import cz.muni.fi.pv168.project.ui.model.abstracts.BaseListModel;
 
 import javax.swing.*;
 import java.util.List;
@@ -8,33 +11,13 @@ import java.util.List;
 /**
  * @author Maroš Pavlík
  */
-public class EmployeeListModel extends AbstractListModel<Employee> {
+public class EmployeeListModel extends BaseListModel<Employee> {
 
-    private final List<Employee> employees;
-
-    public EmployeeListModel(List<Employee> employees) {
-        this.employees = employees;
+    public EmployeeListModel(List<Employee> employees, CrudService<Employee> employeeCrudService) {
+        super(employees, employeeCrudService);
     }
-
-    public void addEmployee(Employee employee) {
-        employees.add(employee);
-    }
-
-    public void removeEmployee(Employee employee) {
-        this.employees.remove(employee);
-    }
-
     public Employee[] toArray() {
-        return employees.toArray(new Employee[0]);
-    }
+        return items.toArray(new Employee[0]);
 
-    @Override
-    public int getSize() {
-        return employees.size();
-    }
-
-    @Override
-    public Employee getElementAt(int index) {
-        return employees.get(index);
     }
 }

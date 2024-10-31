@@ -18,8 +18,8 @@ import static cz.muni.fi.pv168.project.ui.MainWindow.DEMO_DATA;
  */
 public class DataManager {
     private final TimeUnitListModel timeUnits;
-    private final CategoryListModel categories = new CategoryListModel(new ArrayList<>(DEMO_DATA.getCategories()));
-    private final EmployeeListModel employees = new EmployeeListModel(new ArrayList<>(DEMO_DATA.getEmployees()));
+    private final CategoryListModel categories;
+    private final EmployeeListModel employees;
 
     private final User loggedUser;
     private JTable taskTable;
@@ -30,6 +30,14 @@ public class DataManager {
         Repository<TimeUnit> timeUnitRepository = new InMemoryRepository<>(DEMO_DATA.getTimeUnits());
         CrudService<TimeUnit> timeUnitCrudService = new BaseCrudService<>(timeUnitRepository);
         this.timeUnits = new TimeUnitListModel(new ArrayList<>(DEMO_DATA.getTimeUnits()), timeUnitCrudService);
+
+        Repository<Category> categoryRepository = new InMemoryRepository<>(DEMO_DATA.getCategories());
+        CrudService<Category> categoryCrudService = new BaseCrudService<>(categoryRepository);
+        this.categories = new CategoryListModel(new ArrayList<>(DEMO_DATA.getCategories()), categoryCrudService);
+
+        Repository<Employee> employeeRepository = new InMemoryRepository<>(DEMO_DATA.getEmployees());
+        CrudService<Employee> employeeCrudService = new BaseCrudService<>(employeeRepository);
+        this.employees = new EmployeeListModel(new ArrayList<>(DEMO_DATA.getEmployees()), employeeCrudService);
 
         this.loggedUser = loggedUser;
     }

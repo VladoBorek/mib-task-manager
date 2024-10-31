@@ -52,6 +52,8 @@ public class EditAction extends AbstractAction {
                     category.setName(newCat.getName());
                     category.setColor(newCat.getColor());
                 });
+                data.getCategories().update(category);
+
                 comboBox.setSelectedIndex(0);
                 return;
 
@@ -65,6 +67,8 @@ public class EditAction extends AbstractAction {
                     timeunit.setName(newTimeUnit.getName());
                     timeunit.setRate(newTimeUnit.getRate());
                 });
+                data.getTimeUnits().update(timeunit);
+
                 comboBox.setSelectedIndex(0);
                 return;
             case TEMPLATE:

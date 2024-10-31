@@ -61,7 +61,7 @@ public class DeleteAction extends AbstractAction {
                 return;
             case CATEGORY:
                 var category = (Category) comboBox.getSelectedItem();
-                data.getCategories().removeCategory(category);
+                data.getCategories().remove(category);
                 comboBox.removeItem(category);
                 return;
             case TIME_UNIT:
