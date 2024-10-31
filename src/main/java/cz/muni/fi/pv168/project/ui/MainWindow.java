@@ -267,7 +267,7 @@ public class MainWindow {
 
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
-        var categoryColumn = table.getColumnModel().getColumn(1);
+        var categoryColumn = table.getColumnModel().getColumn(2);
         categoryColumn.setCellRenderer(new CategoryCellRenderer());
 
         return table;
