@@ -91,6 +91,7 @@ public class AddAction extends AbstractAction {
     private void addTask() {
         TaskTableModel taskTableModel = (TaskTableModel) data.getTaskTable().getModel();
         AddTaskDialog dialog;
+
         if (((Template) Objects.requireNonNull(chosenTemplate.getSelectedItem()))
                 .getTemplateName().compareTo("<Don't use a template>") == 0) {
             dialog = new AddTaskDialog(null, data);

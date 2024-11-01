@@ -64,6 +64,7 @@ public class MainWindow {
         var taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu());
 
+
         var templateTable = createTemplateTable(templateCrudService);
 
         var statisticsTable = createStatisticsTable();

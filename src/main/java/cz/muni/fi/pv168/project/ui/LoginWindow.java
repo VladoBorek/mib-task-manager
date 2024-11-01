@@ -85,7 +85,7 @@ public class LoginWindow {
     }
 
     private void login() {
-        MainWindow mainWindow = new MainWindow(new User(usernameField.getText(), idField.getValue()));
+        MainWindow mainWindow = new MainWindow(new User(usernameField.getText(), (long) idField.getValue()));
         System.out.println("logged as: " + usernameField.getText());
         mainWindow.show();
     }

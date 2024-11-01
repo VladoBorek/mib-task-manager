@@ -30,6 +30,7 @@ public class InspectTaskDialog extends EntityDialog<Task>{
     private final JLabel customer = new JLabel();
     private final JLabel assignedTo = new JLabel();
     private final JLabel status = new JLabel();
+    private JTable timeLogTable;
     private final JLabel category = new JLabel();
     private final JLabel loggedTime = new JLabel();
     private final JLabel allocatedTime = new JLabel();
@@ -43,6 +44,7 @@ public class InspectTaskDialog extends EntityDialog<Task>{
 
         this.data = data;
         this.task = task;
+        this.timeLogTable = task.getTimeLogTable();
 
         description.setPreferredSize(new Dimension(200, 100));
         description.setMinimumSize(new Dimension(200, 100));
@@ -115,7 +117,12 @@ public class InspectTaskDialog extends EntityDialog<Task>{
         addCentered("Category", category);
         addCentered("Assigned to", assignedTo);
         addCentered("Status", status);
-        addCentered("Logged time", loggedTime, addLogTimeButton);
+
+        JScrollPane scrollPane = new JScrollPane(timeLogTable);
+        scrollPane.setPreferredSize(new Dimension(200, 100));
+        addCentered("Time log table", scrollPane);
+
+        addCentered("Total logged time", loggedTime, addLogTimeButton);
         addCentered("Allocated time", allocatedTime);
         addCentered("Due date", date);
     }
