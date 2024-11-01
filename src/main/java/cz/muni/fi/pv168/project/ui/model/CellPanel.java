@@ -1,0 +1,27 @@
+package cz.muni.fi.pv168.project.ui.model;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * @author Vladimir Borek
+ */
+public class CellPanel extends JPanel {
+    public CellPanel(String text, JLabel label) {
+        setLayout(new BorderLayout());
+        setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 5));
+
+
+        JPanel textLabelPanel = new JPanel(new BorderLayout());
+        JLabel textLabel = new JLabel(text);
+        textLabelPanel.add(textLabel);
+        //textLabelPanel.setBackground(Color.YELLOW);
+
+        JPanel labelPanel = new JPanel(new BorderLayout());
+        labelPanel.add(label);
+        //labelPanel.setBackground(Color.GREEN);
+
+        add(textLabelPanel, BorderLayout.NORTH);
+        add(labelPanel, BorderLayout.CENTER);
+    }
+}

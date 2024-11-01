@@ -14,6 +14,7 @@ import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.LogTimeAction;
 import cz.muni.fi.pv168.project.ui.model.CategoryComboboxRenderer;
+import cz.muni.fi.pv168.project.ui.model.CellPanel;
 import cz.muni.fi.pv168.project.ui.model.EmployeeComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -45,29 +46,29 @@ public class InspectTaskDialog extends EntityDialog<Task>{
     private final JPanel logBottomInfoPanel = new JPanel();
 
 
-
+ // *** CALE TOTO ESTE REFACTORNEM
 
     public InspectTaskDialog(Task task, DataManager data){
-        super(700, 650);
+        super(700, 400);
         this.data = data;
         this.task = task;
         this.timeLogTable = task.getTimeLogTable();
-
-        SetupPanelLayouts();
 
         description.setPreferredSize(new Dimension(200, 100));
         description.setMinimumSize(new Dimension(200, 100));
         description.setMaximumSize(new Dimension(200, 100));
 
         setValues();
-        addFields();
+        SetupPanelLayouts();
+        //setValues();
+        //addFields();
         //setPanel();
         FormatFields();
     }
 
     private void SetupPanelLayouts(){
-        leftPanel.setLayout(new GridLayout(0, 2));
-
+        //leftPanel.setLayout(new GridLayout(0, 2));
+        leftPanel.setLayout(new BorderLayout());
         rightPanel.setLayout(new BorderLayout());
 
         leftPanel.setBorder(new EmptyBorder(0, 0, 0, 15));
@@ -79,16 +80,52 @@ public class InspectTaskDialog extends EntityDialog<Task>{
         super.getPanel().add(leftPanel);
         super.getPanel().add(rightPanel);
 
-        leftPanel.add(super.getLabelPanel());
-        leftPanel.add(super.getComponentPanel());
+        JPanel infoLabelsPanel = new JPanel(new GridLayout(3, 2));
+        JPanel descriptionLabelPanel = new JPanel(new BorderLayout());
+
+        JPanel textLabelPanel = new JPanel(new BorderLayout());
+        JLabel textLabel = new JLabel("Description:");
+        textLabelPanel.add(textLabel);
+        //textLabelPanel.setBackground(Color.YELLOW);
+
+        JPanel labelPanel = new JPanel(new BorderLayout());
+        labelPanel.add(description);
+
+        //labelPanel.setBackground(Color.GREEN);
+
+        descriptionLabelPanel.add(textLabelPanel, BorderLayout.NORTH);
+        descriptionLabelPanel.add(labelPanel, BorderLayout.CENTER);
+
+        // infoLabelsPanel.setBackground(Color.WHITE);
+        //descriptionLabelPanel.setBackground(Color.BLUE);
+
+
+        leftPanel.add(infoLabelsPanel);
+        leftPanel.add(descriptionLabelPanel,BorderLayout.SOUTH);
+
+        //descriptionLabelPanel.add(description);
+
+        infoLabelsPanel.add(new CellPanel("Task-name:", taskName));
+        infoLabelsPanel.add(new CellPanel("Customer:", customer));
+        infoLabelsPanel.add(new CellPanel("Category:", category));
+        infoLabelsPanel.add(new CellPanel("Assigned to:", assignedTo));
+        infoLabelsPanel.add(new CellPanel("Status:", status));
+        infoLabelsPanel.add(new CellPanel("Due date:", date));
+
+
+        // *** RIGHT SIDE *** //
+
+
+        //leftPanel.add(super.getLabelPanel());
+        //leftPanel.add(super.getComponentPanel());
 
         logTablePanel.setBackground(Color.DARK_GRAY);
-        logTablePanel.setPreferredSize(new Dimension(300, 400));
+        logTablePanel.setPreferredSize(new Dimension(300, 250));
         logTablePanel.add(new JLabel("LOG TIME TABLE"));
 
 
         JScrollPane scrollPane = new JScrollPane(timeLogTable);
-        scrollPane.setPreferredSize(new Dimension(300, 500));
+        scrollPane.setPreferredSize(new Dimension(300, 250));
         JPanel componentWrapper = new JPanel();
         componentWrapper.setLayout(new FlowLayout(FlowLayout.CENTER));
         componentWrapper.add(scrollPane);
