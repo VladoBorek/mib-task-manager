@@ -13,6 +13,7 @@ abstract class EntityDialog<E> {
     private final JPanel componentPanel = new JPanel();
     private final JPanel buttonPanel = new JPanel();
 
+
     EntityDialog() {
         var layout = new BoxLayout(panel, BoxLayout.X_AXIS);
         panel.setLayout(layout);
@@ -21,15 +22,18 @@ abstract class EntityDialog<E> {
         componentPanel.setLayout(new GridLayout(0, 1));
     }
     EntityDialog(int width, int height) {
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        // panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.setLayout(new GridLayout(1, 2));
 
-        labelPanel.setLayout(new GridLayout(0, 1));
-        componentPanel.setLayout(new GridLayout(0, 1));
-        buttonPanel.setLayout(new GridLayout(0, 1));
+//        labelPanel.setLayout(new GridLayout(0, 1));
+//        componentPanel.setLayout(new GridLayout(0, 1));
+//
+//        //buttonPanel.setLayout(new GridLayout(0, 1));
+//
+//        panel.add(labelPanel);
+//        panel.add(componentPanel);
 
-        panel.add(labelPanel);
-        panel.add(componentPanel);
-        panel.add(buttonPanel);
+        //panel.add(buttonPanel);
 
         panel.setPreferredSize(new Dimension(width, height));
     }
@@ -65,14 +69,22 @@ abstract class EntityDialog<E> {
 
     }
 
-    protected JPanel getPanel() {
+    public JPanel getPanel() {
         return panel;
     }
+    public JPanel getLabelPanel(){
+        return this.labelPanel;
+    }
+
+    public JPanel getComponentPanel(){
+        return this.componentPanel;
+    }
+
 
     void setPanel(){
         panel.add(labelPanel);
         panel.add(componentPanel);
-        panel.add(buttonPanel);
+        // panel.add(buttonPanel);
     }
 
     abstract E getEntity();

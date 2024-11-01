@@ -19,6 +19,7 @@ import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class InspectTaskDialog extends EntityDialog<Task>{
@@ -38,13 +39,21 @@ public class InspectTaskDialog extends EntityDialog<Task>{
 
     private final DataManager data;
 
+    private final JPanel leftPanel = new JPanel();
+    private final JPanel rightPanel = new JPanel();
+    private final JPanel logTablePanel = new JPanel();
+    private final JPanel logBottomInfoPanel = new JPanel();
+
+
+
 
     public InspectTaskDialog(Task task, DataManager data){
-        super(500, 600);
-
+        super(700, 650);
         this.data = data;
         this.task = task;
         this.timeLogTable = task.getTimeLogTable();
+
+        SetupPanelLayouts();
 
         description.setPreferredSize(new Dimension(200, 100));
         description.setMinimumSize(new Dimension(200, 100));
@@ -52,10 +61,78 @@ public class InspectTaskDialog extends EntityDialog<Task>{
 
         setValues();
         addFields();
-        setPanel();
+        //setPanel();
         FormatFields();
     }
 
+    private void SetupPanelLayouts(){
+        leftPanel.setLayout(new GridLayout(0, 2));
+
+        rightPanel.setLayout(new BorderLayout());
+
+        leftPanel.setBorder(new EmptyBorder(0, 0, 0, 15));
+        rightPanel.setBorder(new EmptyBorder(0, 15, 0, 0));
+
+        super.getLabelPanel().setLayout(new GridLayout(0, 1));
+        super.getComponentPanel().setLayout(new GridLayout(0, 1));
+
+        super.getPanel().add(leftPanel);
+        super.getPanel().add(rightPanel);
+
+        leftPanel.add(super.getLabelPanel());
+        leftPanel.add(super.getComponentPanel());
+
+        logTablePanel.setBackground(Color.DARK_GRAY);
+        logTablePanel.setPreferredSize(new Dimension(300, 400));
+        logTablePanel.add(new JLabel("LOG TIME TABLE"));
+
+
+        JScrollPane scrollPane = new JScrollPane(timeLogTable);
+        scrollPane.setPreferredSize(new Dimension(300, 500));
+        JPanel componentWrapper = new JPanel();
+        componentWrapper.setLayout(new FlowLayout(FlowLayout.CENTER));
+        componentWrapper.add(scrollPane);
+
+        logTablePanel.add(scrollPane);
+
+
+
+        JPanel timeLogtextLabelsPanel = new JPanel(new GridLayout(1, 3));
+
+        JLabel allocatedTimeLabel = new JLabel("Allocated time", SwingConstants.CENTER);
+        JLabel totalTimeLabel = new JLabel("Total logged", SwingConstants.CENTER);
+        JLabel logTimeLabel = new JLabel("Log time", SwingConstants.CENTER);
+
+        timeLogtextLabelsPanel.add(allocatedTimeLabel);
+        timeLogtextLabelsPanel.add(totalTimeLabel);
+        timeLogtextLabelsPanel.add(logTimeLabel);
+
+        logBottomInfoPanel.setLayout(new GridLayout(1, 3));
+
+        //JButton logButton = new JButton("Log 10h");
+        // JButton allocatedButton = new JButton("Al 5h");
+        JButton addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON,
+                new LogTimeAction(data, this, task));
+
+        allocatedTime.setPreferredSize(new Dimension(200, 80));
+        loggedTime.setPreferredSize(new Dimension(200, 80));
+        addLogTimeButton.setPreferredSize(new Dimension(200, 80));
+
+        //this.allocatedTime.setPreferredSize(new Dimension(200, 80));
+
+        logBottomInfoPanel.add(this.allocatedTime);
+        logBottomInfoPanel.add(this.loggedTime);
+        logBottomInfoPanel.add(addLogTimeButton);
+
+
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(timeLogtextLabelsPanel, BorderLayout.NORTH);
+        bottomPanel.add(logBottomInfoPanel, BorderLayout.SOUTH);
+
+        rightPanel.add(logTablePanel, BorderLayout.CENTER);
+        rightPanel.add(bottomPanel, BorderLayout.SOUTH);
+
+    }
     private void FormatFields(){
         centerOutText();
         setBorders();
@@ -118,13 +195,17 @@ public class InspectTaskDialog extends EntityDialog<Task>{
         addCentered("Assigned to", assignedTo);
         addCentered("Status", status);
 
-        JScrollPane scrollPane = new JScrollPane(timeLogTable);
-        scrollPane.setPreferredSize(new Dimension(200, 100));
-        addCentered("Time log table", scrollPane);
+//        JScrollPane scrollPane = new JScrollPane(timeLogTable);
+//        scrollPane.setPreferredSize(new Dimension(200, 100));
+//        addCentered("Time log table", scrollPane);
 
-        addCentered("Total logged time", loggedTime, addLogTimeButton);
-        addCentered("Allocated time", allocatedTime);
+        //addCentered("Total logged time", loggedTime, addLogTimeButton);
+        //addCentered("Allocated time", allocatedTime);
         addCentered("Due date", date);
+
+
+
+
     }
 
     public void updateLoggedTime(){
