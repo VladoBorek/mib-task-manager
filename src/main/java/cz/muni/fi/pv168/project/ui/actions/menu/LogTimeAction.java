@@ -34,7 +34,7 @@ public class LogTimeAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var dialog = new LogTimeDialog(data);
+        var dialog = new LogTimeDialog(data, task);
         dialog.show(null, "Log Time").ifPresent(newTime -> {
             task.setLoggedTime(task.getLoggedTime() + newTime);
         });
