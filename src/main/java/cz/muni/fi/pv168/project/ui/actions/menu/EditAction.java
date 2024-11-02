@@ -87,15 +87,30 @@ public class EditAction extends AbstractAction {
 
                 return;
             case TEMPLATE:
-                var template = (Template) comboBox.getSelectedItem();
-                if (template == null) {
-                    return;
+
+                Template template;
+
+                if (comboBox != null){
+                    template = (Template) comboBox.getSelectedItem();
+                    if (template == null) {
+                        return;
+                    }
+                }
+                else {
+                    selectedRows = data.getTemplateTable().getSelectedRows();
+                    if (selectedRows.length != 1) {
+                        throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
+                    }
+
+                    int model = data.getTemplateTable().convertRowIndexToModel(selectedRows[0]);
+                    TemplateTableModel templateTableModel = (TemplateTableModel) data.getTemplateTable().getModel();
+                    template = templateTableModel.getEntity(model);
+
                 }
 
                 var templateTableModel = (TemplateTableModel) data.getTemplateTable().getModel();
                 var templateDialog = new TemplateDialog(data, template);
                 templateDialog.show(comboBox, "Edit Template").ifPresent(templateTableModel::updateRow);
-                comboBox.setSelectedIndex(0);
         }
     }
 }
