@@ -32,6 +32,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+
 /**
  * Main application window for the MIB Task Manager.
  * Handles the creation and layout of the main frame.
@@ -43,6 +48,8 @@ public class MainWindow {
 
     private final JFrame frame;
     private final DataManager data;
+
+    private JButton newSomethingButton;
 
     /**
      * Constructor for MainWindow.
@@ -73,7 +80,10 @@ public class MainWindow {
         data.setTemplateTable(templateTable);
 
         frame.setJMenuBar(createMenuBar());
-        frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
+
+        var filterBar = createFilterBar();
+
+        frame.add(filterBar, BorderLayout.BEFORE_FIRST_LINE);
 
         var splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         splitPane.setDividerSize(10);
@@ -85,12 +95,36 @@ public class MainWindow {
         tabbedPane.addTab("Tasks", splitPane);
         tabbedPane.addTab("Templates", new JScrollPane(templateTable));
 
-        frame.add(tabbedPane, BorderLayout.CENTER);
+        tabbedPane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int selectedIndex = tabbedPane.getSelectedIndex();
+                String selectedTabTitle = tabbedPane.getTitleAt(selectedIndex);
+                filterBar.remove(newSomethingButton);
 
+                if ("Templates".equals(selectedTabTitle)) {
+                    newSomethingButton = createButton("Template ", Icons.ADD_ICON,
+                            new AddAction(ActionType.TEMPLATE, data, null));
+                }
+                if ("Tasks".equals(selectedTabTitle)){
+                    newSomethingButton = createButton("New Task ", Icons.ADD_ICON,
+                            new ChooseTemplateAction(data, frame));
+                }
+
+                filterBar.add(newSomethingButton, 0);
+                filterBar.revalidate();
+                filterBar.repaint();
+            }
+        });
+
+
+        frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setLocationRelativeTo(null);
         frame.pack();
         setUpTaskInspect(taskTable);
         frame.setSize(1024, 768);
+
+
     }
 
     /**
@@ -188,12 +222,16 @@ public class MainWindow {
 
         var datePicker = new DatePicker();
 
+
         JButton addNewTaskButton = createButton("New Task ", Icons.ADD_ICON,
                 new ChooseTemplateAction(data, frame));
+
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.RESET_ICON,
                 new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, datePicker));
 
-        filterBar.add(addNewTaskButton);
+        newSomethingButton = addNewTaskButton;
+
+        filterBar.add(newSomethingButton);
 
         filterBar.addSeparator();
 
