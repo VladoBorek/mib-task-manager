@@ -287,11 +287,13 @@ public class MainWindow {
     private JTable createTaskTable(CrudService<Task> taskCrudService) {
         var model = new TaskTableModel(taskCrudService);
         var table = new JTable(model);
+
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         table.setAutoCreateRowSorter(true);
 
         var progressColumn = table.getColumnModel().getColumn(7);
         progressColumn.setCellRenderer(new TaskProgressBar());
+
         var categoryColumn = table.getColumnModel().getColumn(2);
         categoryColumn.setCellRenderer(new CategoryCellRenderer());
         data.setTaskTableModel(model);
@@ -302,11 +304,12 @@ public class MainWindow {
     private JTable createTemplateTable(CrudService<Template> templateCrudService) {
         var model = new TemplateTableModel(templateCrudService);
         var table = new JTable(model);
-        table.setAutoCreateRowSorter(true);
 
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        table.setAutoCreateRowSorter(true);
 
-        var categoryColumn = table.getColumnModel().getColumn(1);
+
+        var categoryColumn = table.getColumnModel().getColumn(2);
         categoryColumn.setCellRenderer(new CategoryCellRenderer());
 
         return table;

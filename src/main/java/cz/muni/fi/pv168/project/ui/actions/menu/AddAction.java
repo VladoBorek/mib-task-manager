@@ -105,7 +105,9 @@ public class AddAction extends AbstractAction {
     private void addTemplate() {
         TemplateTableModel templateTableModel = (TemplateTableModel) data.getTemplateTable().getModel();
         TemplateDialog dialog;
+
         dialog = new TemplateDialog(data, null);
+
         dialog.show(data.getTaskTable(), "Add new Template").ifPresent(templateTableModel::addRow);
     }
 
