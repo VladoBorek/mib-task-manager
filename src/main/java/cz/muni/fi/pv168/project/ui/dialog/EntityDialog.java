@@ -1,5 +1,7 @@
 package cz.muni.fi.pv168.project.ui.dialog;
 
+import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Optional;
@@ -21,21 +23,27 @@ abstract class EntityDialog<E> {
         labelPanel.setLayout(new GridLayout(0, 1));
         componentPanel.setLayout(new GridLayout(0, 1));
     }
-    EntityDialog(int width, int height) {
-        // panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        panel.setLayout(new GridLayout(1, 2));
 
-//        labelPanel.setLayout(new GridLayout(0, 1));
-//        componentPanel.setLayout(new GridLayout(0, 1));
-//
-//        //buttonPanel.setLayout(new GridLayout(0, 1));
-//
-//        panel.add(labelPanel);
-//        panel.add(componentPanel);
-
-        //panel.add(buttonPanel);
-
+    EntityDialog(int width, int height, ActionType actionType) {
         panel.setPreferredSize(new Dimension(width, height));
+
+        switch (actionType){
+
+            case INSPECT -> {
+                panel.setLayout(new GridLayout(1, 2));
+            }
+
+            case TASK -> {
+                panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+                labelPanel.setLayout(new GridLayout(0, 1));
+                componentPanel.setLayout(new GridLayout(0, 1));
+                buttonPanel.setLayout(new GridLayout(0, 1));
+
+                panel.add(labelPanel);
+                panel.add(componentPanel);
+                panel.add(buttonPanel);
+            }
+        }
     }
 
     void add(String labelText, JComponent component) {
@@ -84,7 +92,7 @@ abstract class EntityDialog<E> {
     void setPanel(){
         panel.add(labelPanel);
         panel.add(componentPanel);
-        // panel.add(buttonPanel);
+        //panel.add(buttonPanel);
     }
 
     abstract E getEntity();

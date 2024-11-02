@@ -49,7 +49,7 @@ public class InspectTaskDialog extends EntityDialog<Task>{
  // *** CALE TOTO ESTE REFACTORNEM
 
     public InspectTaskDialog(Task task, DataManager data){
-        super(700, 400);
+        super(700, 400, ActionType.INSPECT);
         this.data = data;
         this.task = task;
         this.timeLogTable = task.getTimeLogTable();
@@ -119,7 +119,8 @@ public class InspectTaskDialog extends EntityDialog<Task>{
         //leftPanel.add(super.getLabelPanel());
         //leftPanel.add(super.getComponentPanel());
 
-        logTablePanel.setBackground(Color.DARK_GRAY);
+        //logTablePanel.setBackground(Color.DARK_GRAY);
+        logTablePanel.setBackground(new Color(211, 211, 211));
         logTablePanel.setPreferredSize(new Dimension(300, 250));
         logTablePanel.add(new JLabel("LOG TIME TABLE"));
 

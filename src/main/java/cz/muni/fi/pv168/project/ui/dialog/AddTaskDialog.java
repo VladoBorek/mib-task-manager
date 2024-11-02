@@ -51,7 +51,7 @@ public class AddTaskDialog extends EntityDialog<Task>{
     private final DataManager data;
 
     public AddTaskDialog(Task task, DataManager data){
-        super(500, 600);
+        super(500, 600, ActionType.TASK);
 
         this.data = data;
         this.task = task;
@@ -71,21 +71,22 @@ public class AddTaskDialog extends EntityDialog<Task>{
             setValues();
         }
         addFields();
-        setPanel();
-
+        //setPanel();
         centerOutText();
     }
 
     private void centerOutText(){
         DefaultListCellRenderer listRenderer = new DefaultListCellRenderer();
         EmployeeComboboxRenderer employeeComboboxRenderer = new EmployeeComboboxRenderer();
+        CategoryComboboxRenderer categoryComboboxRenderer = new CategoryComboboxRenderer();
 
         employeeComboboxRenderer.setHorizontalAlignment(EmployeeComboboxRenderer.CENTER);
         listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
+        categoryComboboxRenderer.setHorizontalAlignment(CategoryComboboxRenderer.CENTER);
 
         statusComboBox.setRenderer(listRenderer);
         assignedToComboBox.setRenderer(employeeComboboxRenderer);
-        categoryComboBox.setRenderer(new CategoryComboboxRenderer());
+        categoryComboBox.setRenderer(categoryComboboxRenderer);
 
         CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
         categoryComboBox.addActionListener(e -> {
@@ -121,25 +122,9 @@ public class AddTaskDialog extends EntityDialog<Task>{
     }
 
     private void addFields(){
-
-//<<<<<<< HEAD:src/main/java/cz/muni/fi/pv168/project/ui/dialog/TaskDialog.java
-//        if (toInspect) {
-//            //TODO: finish implementation
-////            addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON,
-////                    new AddAction(ActionType.TIME_UNIT, data.getTaskTable(), data, null));
-//            addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON,
-//                    new LogTimeAction(ActionType.TIME_UNIT, data, task));
-//        }
-//        else {
-//            addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
-//                    new AddAction(ActionType.TIME_UNIT, data.getTaskTable(), data, null,
-//                            timeUnitsComboBox, categoryComboBox));
-//        }
-// =======
         JButton addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
                 new AddAction(ActionType.TIME_UNIT, data, null,
                         timeUnitsComboBox, categoryComboBox));
-// >>>>>>> 3e9ed7347563e78318282de0af06065c13c74114:src/main/java/cz/muni/fi/pv168/project/ui/dialog/AddTaskDialog.java
 
         JButton addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
                 new AddAction(ActionType.CATEGORY, data, null,
