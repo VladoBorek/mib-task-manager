@@ -73,6 +73,7 @@ public class MainWindow {
 
 
         var templateTable = createTemplateTable(templateCrudService);
+        templateTable.setComponentPopupMenu(createTemplateTablePopupMenu());
 
         var statisticsTable = createStatisticsTable();
 
@@ -379,6 +380,13 @@ public class MainWindow {
         menu.add(new DeleteAction(ActionType.TASK, null, data));
         menu.add(new InspectAction(ActionType.TASK, frame, data));
 
+        return menu;
+    }
+
+    private JPopupMenu createTemplateTablePopupMenu() {
+        JPopupMenu menu = new JPopupMenu();
+        menu.add(new EditAction(ActionType.TEMPLATE, null, data));
+        menu.add(new DeleteAction(ActionType.TEMPLATE, null, data));
         return menu;
     }
 
