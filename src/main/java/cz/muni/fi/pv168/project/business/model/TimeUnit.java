@@ -58,4 +58,5 @@ public abstract class TimeUnit extends Entity {
     public String getShortName() {
         return shortName;
     }
+    public void setShortName(String shortName) { this.shortName = shortName; }
 }

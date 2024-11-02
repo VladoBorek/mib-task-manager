@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.project.ui.dialog;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.DataManager;
+import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
@@ -23,6 +24,7 @@ public class LogTimeDialog extends EntityDialog<Integer> {
     private final JIntegerTextField timeField = new JIntegerTextField();
     private final JComboBox<TimeUnit> timeUnitComboBox;
 
+
     public LogTimeDialog(JFrame parent, DataManager data) {
         timeUnitComboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getTimeUnits().toArray()));
         add("Time", timeField);
@@ -30,6 +32,23 @@ public class LogTimeDialog extends EntityDialog<Integer> {
 
         setPanel();
     }
+    public LogTimeDialog(DataManager data) {
+        timeUnitComboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getTimeUnits().toArray()));
+        add("Time", timeField);
+        add("Time Unit", timeUnitComboBox);
+
+        setPanel();
+    }
+
+    public LogTimeDialog(DataManager data, Task task) {
+        timeUnitComboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getTimeUnits().toArray()));
+        timeUnitComboBox.setSelectedItem(task.getTimeUnit());
+        add("Time", timeField);
+        add("Time Unit", timeUnitComboBox);
+
+        setPanel();
+    }
+
 
     @Override
     Integer getEntity() {

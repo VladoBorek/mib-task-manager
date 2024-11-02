@@ -33,10 +33,12 @@ public class ChooseTemplateDialog extends JDialog {
         setLocationRelativeTo(parent);
     }
 
-    private JButton createButton(String buttonText, Action a)
-    {
+    private JButton createButton(String buttonText, Action a) {
         var button = new JButton(buttonText);
-        button.addActionListener(a);
+        button.addActionListener(e -> {
+            a.actionPerformed(e);
+            dispose();
+        });
         button.setBackground(MainWindow.BUTTON_COLOR);
         button.setFocusPainted(false);
         return button;

@@ -32,6 +32,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+
 /**
  * Main application window for the MIB Task Manager.
  * Handles the creation and layout of the main frame.
@@ -43,6 +48,8 @@ public class MainWindow {
 
     private final JFrame frame;
     private final DataManager data;
+
+    private JButton newSomethingButton;
 
     /**
      * Constructor for MainWindow.
@@ -64,6 +71,7 @@ public class MainWindow {
         var taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu());
 
+
         var templateTable = createTemplateTable(templateCrudService);
 
         var statisticsTable = createStatisticsTable();
@@ -72,24 +80,51 @@ public class MainWindow {
         data.setTemplateTable(templateTable);
 
         frame.setJMenuBar(createMenuBar());
-        frame.add(createFilterBar(), BorderLayout.BEFORE_FIRST_LINE);
+
+        var filterBar = createFilterBar();
+
+        frame.add(filterBar, BorderLayout.BEFORE_FIRST_LINE);
 
         var splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         splitPane.setDividerSize(10);
         splitPane.setTopComponent(new JScrollPane(taskTable));
         splitPane.setBottomComponent(new JScrollPane(statisticsTable));
-        splitPane.setResizeWeight(0.8);
+        splitPane.setResizeWeight(0.85);
 
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Tasks", splitPane);
         tabbedPane.addTab("Templates", new JScrollPane(templateTable));
 
-        frame.add(tabbedPane, BorderLayout.CENTER);
+        tabbedPane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int selectedIndex = tabbedPane.getSelectedIndex();
+                String selectedTabTitle = tabbedPane.getTitleAt(selectedIndex);
+                filterBar.remove(newSomethingButton);
 
+                if ("Templates".equals(selectedTabTitle)) {
+                    newSomethingButton = createButton("Template ", Icons.ADD_ICON,
+                            new AddAction(ActionType.TEMPLATE, data, null));
+                }
+                if ("Tasks".equals(selectedTabTitle)){
+                    newSomethingButton = createButton("New Task ", Icons.ADD_ICON,
+                            new ChooseTemplateAction(data, frame));
+                }
+
+                filterBar.add(newSomethingButton, 0);
+                filterBar.revalidate();
+                filterBar.repaint();
+            }
+        });
+
+
+        frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setLocationRelativeTo(null);
         frame.pack();
         setUpTaskInspect(taskTable);
         frame.setSize(1024, 768);
+
+
     }
 
     /**
@@ -187,12 +222,16 @@ public class MainWindow {
 
         var datePicker = new DatePicker();
 
+
         JButton addNewTaskButton = createButton("New Task ", Icons.ADD_ICON,
                 new ChooseTemplateAction(data, frame));
+
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.RESET_ICON,
                 new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, datePicker));
 
-        filterBar.add(addNewTaskButton);
+        newSomethingButton = addNewTaskButton;
+
+        filterBar.add(newSomethingButton);
 
         filterBar.addSeparator();
 
@@ -248,11 +287,13 @@ public class MainWindow {
     private JTable createTaskTable(CrudService<Task> taskCrudService) {
         var model = new TaskTableModel(taskCrudService);
         var table = new JTable(model);
+
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         table.setAutoCreateRowSorter(true);
 
         var progressColumn = table.getColumnModel().getColumn(7);
         progressColumn.setCellRenderer(new TaskProgressBar());
+
         var categoryColumn = table.getColumnModel().getColumn(2);
         categoryColumn.setCellRenderer(new CategoryCellRenderer());
         data.setTaskTableModel(model);
@@ -263,11 +304,12 @@ public class MainWindow {
     private JTable createTemplateTable(CrudService<Template> templateCrudService) {
         var model = new TemplateTableModel(templateCrudService);
         var table = new JTable(model);
-        table.setAutoCreateRowSorter(true);
 
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        table.setAutoCreateRowSorter(true);
 
-        var categoryColumn = table.getColumnModel().getColumn(1);
+
+        var categoryColumn = table.getColumnModel().getColumn(2);
         categoryColumn.setCellRenderer(new CategoryCellRenderer());
 
         return table;
@@ -335,7 +377,7 @@ public class MainWindow {
         JPopupMenu menu = new JPopupMenu();
         menu.add(new EditAction(ActionType.TASK, null, data));
         menu.add(new DeleteAction(ActionType.TASK, null, data));
-        menu.add(new InspectAction(ActionType.TASK, null, data));
+        menu.add(new InspectAction(ActionType.TASK, frame, data));
 
         return menu;
     }
@@ -351,7 +393,7 @@ public class MainWindow {
             public void mouseClicked(MouseEvent e) {
 //                System.out.println(e.getClickCount());
                 if (e.getClickCount() == 2 && Arrays.stream(data.getTaskTable().getSelectedRows()).count() == 1) {
-                    InspectAction inspectAction = new InspectAction(ActionType.TASK, null, data);
+                    InspectAction inspectAction = new InspectAction(ActionType.TASK, frame, data);
                     inspectAction.actionPerformed(null);
                 }
             }

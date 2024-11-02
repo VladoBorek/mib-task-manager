@@ -13,15 +13,17 @@ import java.awt.event.ActionEvent;
  * @author Vladimir Borek
  */
 public class InspectAction extends AbstractAction {
-    private final JComboBox comboBox;
     private final DataManager data;
     private final ActionType type;
 
-    public InspectAction (ActionType type, JComboBox comboBox, DataManager data) {
+    private final JFrame frame;
+
+    public InspectAction (ActionType type, JFrame frame, DataManager data) {
         super("Inspect Task", Icons.INSPECT_ICON);
         this.type = type;
         this.data = data;
-        this.comboBox = comboBox;
+        //this.comboBox = comboBox;
+        this.frame = frame;
     }
     @Override
     public void actionPerformed(ActionEvent e) {

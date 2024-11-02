@@ -1,6 +1,19 @@
 package cz.muni.fi.pv168.project.business.model;
 
+import cz.muni.fi.pv168.project.business.repository.Repository;
+import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
+import cz.muni.fi.pv168.project.business.service.crud.CrudService;
+import cz.muni.fi.pv168.project.data.DemoDataGenerator;
+import cz.muni.fi.pv168.project.storage.InMemoryRepository;
+import cz.muni.fi.pv168.project.ui.model.LogTimeInfoTableModel;
+
+import java.util.List;
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import static java.lang.Math.round;
 
@@ -20,6 +33,8 @@ public class Task extends Entity {
     private TimeUnit timeUnit;
     private LocalDate dueDate;
 
+    private JTable timeLogTable;
+
     public Task(Long id, Status status, String description, Category category, String customer,String nameOfTask,
                 Employee assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
         super(id);
@@ -33,12 +48,52 @@ public class Task extends Entity {
         this.allocatedTime = allocatedTime * timeUnit.getRate();
         this.timeUnit = timeUnit;
         this.dueDate = dueDate;
+
+        DemoDataGenerator demoDataGenerator = new DemoDataGenerator();
+        List<LogTimeInfo> logTimeInfoList = generateLogTimeInfoData(demoDataGenerator.getEmployees());
+
+        Repository<LogTimeInfo> logTimeInfoRepository = new InMemoryRepository<>(logTimeInfoList);
+        CrudService<LogTimeInfo> logTimeInfoCrudService = new BaseCrudService<>(logTimeInfoRepository);
+
+        this.timeLogTable = createLogTimeInfoTable(logTimeInfoCrudService);
+
     }
 
     public Task(Template template) {
         this(null, Status.TO_DO, "", template.getCategory(), "", template.getName(), new Employee(null, "-", 0),
                 0, template.getAllocatedTime(), template.getTimeUnit(), null);
     }
+
+    public JTable createLogTimeInfoTable(CrudService<LogTimeInfo> logTimeInfoCrudService){
+        var model = new LogTimeInfoTableModel(logTimeInfoCrudService);
+        var table = new JTable(model);
+
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        table.setAutoCreateRowSorter(true);
+
+        var idColumn = table.getColumnModel().getColumn(0);
+        var nameColumn = table.getColumnModel().getColumn(1);
+        var timeColumn = table.getColumnModel().getColumn(2);
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        idColumn.setCellRenderer(centerRenderer);
+        nameColumn.setCellRenderer(centerRenderer);
+        timeColumn.setCellRenderer(centerRenderer);
+
+        return table;
+    }
+
+    public ArrayList<LogTimeInfo> generateLogTimeInfoData(List<Employee> employees) {
+        var logTimeInfos = new ArrayList<LogTimeInfo>();
+        for (Employee employee : employees) {
+            LogTimeInfo logTimeInfo = new LogTimeInfo(this.loggedTime / employees.size(), employee);
+            logTimeInfos.add(logTimeInfo);
+        }
+        return logTimeInfos;
+    }
+
 
     public Status getStatus() {
         return status;
@@ -154,5 +209,9 @@ public class Task extends Entity {
         return 0.0F;
     }
         return ((float)loggedTime/(float)allocatedTime) * 100;
+    }
+
+    public JTable getTimeLogTable(){
+        return this.timeLogTable;
     }
 }

@@ -31,6 +31,7 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
 
         add("Time unit name", timeUnitNameField);
+        add("Time unit short name", shortNameField);
         add("Conversion rate to " + TimeUnit.getBaseUnit() + "  ", conversionRateField);
         setPanel();
     }
