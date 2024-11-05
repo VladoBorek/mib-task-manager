@@ -3,7 +3,6 @@ package cz.muni.fi.pv168.project.ui.dialog;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.business.model.CustomTimeUnit;
 import cz.muni.fi.pv168.project.business.model.DataManager;
 import cz.muni.fi.pv168.project.business.model.Employee;
 import cz.muni.fi.pv168.project.business.model.Status;
@@ -12,128 +11,87 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
-//<<<<<<< HEAD:src/main/java/cz/muni/fi/pv168/project/ui/dialog/TaskDialog.java
-import cz.muni.fi.pv168.project.ui.actions.menu.LogTimeAction;
-import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
-//=======
 import cz.muni.fi.pv168.project.ui.model.CategoryComboboxRenderer;
-//>>>>>>> 3e9ed7347563e78318282de0af06065c13c74114:src/main/java/cz/muni/fi/pv168/project/ui/dialog/AddTaskDialog.java
-import cz.muni.fi.pv168.project.ui.model.EmployeeComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicComboBoxUI;
-import javax.swing.plaf.basic.BasicComboPopup;
-import javax.swing.plaf.basic.ComboPopup;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Objects;
 
 public class AddTaskDialog extends EntityDialog<Task>{
+    private Task task;
 
     private final JTextField taskNameField = new JTextField();
-    private final JTextArea descriptionArea = new JTextArea();
     private final JTextField customerField = new JTextField();
+    private final JTextArea descriptionArea = new JTextArea();
 
-    private final Task task;
+    private JComboBox<Employee> assignedToComboBox;
 
-    private final JComboBox<Employee> assignedToComboBox;
+    private JPanel timeUnitPanel;
+    private JPanel categoryPanel;
+
     private final JComboBox<Status> statusComboBox = new JComboBox<>(Status.values());
-
-    private final JComboBox<Object> categoryComboBox;
+    private JComboBox<Category> categoryComboBox;
+    private JComboBox<TimeUnit> timeUnitsComboBox;
 
     private final JIntegerTextField loggedTimeField = new JIntegerTextField();
     private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
 
     private final DatePicker datePicker = new DatePicker();
 
-    private final JComboBox<TimeUnit> timeUnitsComboBox;
-    private final TimeUnit timeUnit = new CustomTimeUnit();
-
-    private final DataManager data;
-
-//    class ComboBoxWithButtonUI extends BasicComboBoxUI {
-//
-//        @Override
-//        protected ComboPopup createPopup() {
-//            BasicComboPopup popup = new BasicComboPopup(comboBox) {
-//
-//                @Override
-//                protected JScrollPane createScroller() {
-//                    JScrollPane scrollPane = super.createScroller();
-//
-//                    JPanel panel = new JPanel(new BorderLayout());
-//                    panel.add(getList(), BorderLayout.CENTER); // Get the list from the popup
-//
-//                    JButton addButton = MainWindow.createButton("", Icons.ADD_ICON, new AddAction(ActionType.CATEGORY, data, null, null, categoryComboBox));
-//                    panel.add(addButton, BorderLayout.SOUTH);
-//
-//                    scrollPane.setViewportView(panel);
-//                    return scrollPane;
-//                }
-//            };
-//            return popup;
-//        }
-//
-//    }
-
-    public AddTaskDialog(Task task, DataManager data){
-        super(500, 600, ActionType.TASK);
-
-        this.data = data;
+    public AddTaskDialog(Task task, DataManager data) {
         this.task = task;
 
-        this.assignedToComboBox = new JComboBox<>(data.getEmployees().toArray());
-
-        this.categoryComboBox = new JComboBox<>(data.getCategories().toArray());
-
-        // this.categoryComboBox.setUI(new ComboBoxWithButtonUI());
-        //this.categoryComboBox.
-
-        this.timeUnitsComboBox = new JComboBox<>(data.getTimeUnits().toArray());
-
-        descriptionArea.setLineWrap(true);
-        descriptionArea.setWrapStyleWord(true);
-
-        descriptionArea.setPreferredSize(new Dimension(200, 100));
-        descriptionArea.setMinimumSize(new Dimension(200, 100));
-        descriptionArea.setMaximumSize(new Dimension(200, 100));
-
+        setUpUI(data);
         if (task != null) {
             setValues();
         }
         addFields();
-        //setPanel();
-        centerOutText();
+        setPanel();
     }
 
-    private void centerOutText(){
-        DefaultListCellRenderer listRenderer = new DefaultListCellRenderer();
-        EmployeeComboboxRenderer employeeComboboxRenderer = new EmployeeComboboxRenderer();
-        CategoryComboboxRenderer categoryComboboxRenderer = new CategoryComboboxRenderer();
-
-        employeeComboboxRenderer.setHorizontalAlignment(EmployeeComboboxRenderer.CENTER);
-        listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
-        categoryComboboxRenderer.setHorizontalAlignment(CategoryComboboxRenderer.CENTER);
-
-        statusComboBox.setRenderer(listRenderer);
-        assignedToComboBox.setRenderer(employeeComboboxRenderer);
-        categoryComboBox.setRenderer(categoryComboboxRenderer);
+    private void setUpUI(DataManager data) {
+        categoryComboBox = new JComboBox<>(data.getCategories().toArray());
+        timeUnitsComboBox = new JComboBox<>(data.getTimeUnits().toArray());
+        var addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
+                new AddAction(ActionType.TIME_UNIT, data, null,
+                        timeUnitsComboBox, categoryComboBox));
+        var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
+                new AddAction(ActionType.CATEGORY, data, null,
+                        timeUnitsComboBox, categoryComboBox));
 
         CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
-        categoryComboBox.addActionListener(e -> {
-            CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
-        });
+        categoryComboBox.addActionListener(e -> CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox));
 
-        timeUnitsComboBox.setRenderer(listRenderer);
-        //assignedToComboBox.setRenderer(listRenderer);
+        categoryPanel = createTwoPartPanel(categoryComboBox, addCategoryButton);
+        timeUnitPanel = createTwoPartPanel(timeUnitsComboBox, addTimeUnitButton);
 
-        taskNameField.setHorizontalAlignment(SwingConstants.CENTER);
-        customerField.setHorizontalAlignment(SwingConstants.CENTER);
-        loggedTimeField.setHorizontalAlignment(SwingConstants.CENTER);
-        allocatedTimeField.setHorizontalAlignment(SwingConstants.CENTER);
+        assignedToComboBox = new JComboBox<>(data.getEmployees().toArray());
 
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+        datePicker.setDateToToday();
+    }
+
+    private JPanel createTwoPartPanel(JComponent comboBox, JComponent button) {
+        var newPanel = new JPanel(new GridBagLayout());
+        var constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        newPanel.add(comboBox, constraints);
+
+        constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.VERTICAL;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.weightx = 0;
+        constraints.weighty = 1.0;
+        newPanel.add(button, constraints);
+
+        return newPanel;
     }
 
     private void setValues()
@@ -147,32 +105,20 @@ public class AddTaskDialog extends EntityDialog<Task>{
         loggedTimeField.setValue(task.getConvertedLoggedTime());
         allocatedTimeField.setValue(task.getConvertedAllocatedTime());
         datePicker.setDate(task.getDueDate());
-
-        timeUnit.setName(task.getTimeUnit().getName());
-        timeUnit.setRate(task.getTimeUnit().getRate());
         timeUnitsComboBox.setSelectedItem(task.getTimeUnit());
-
     }
 
     private void addFields(){
-        JButton addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.TIME_UNIT, data, null,
-                        timeUnitsComboBox, categoryComboBox));
-
-        JButton addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.CATEGORY, data, null,
-                        timeUnitsComboBox, categoryComboBox));
-
-        addCentered("Task name", taskNameField);
-        addCentered("Description", new JScrollPane(descriptionArea));
-        addCentered("Customer", customerField);
-        addCentered("Category", categoryComboBox, addCategoryButton);
-        addCentered("Assigned to", assignedToComboBox);
-        addCentered("Status", statusComboBox);
-        addCentered("Logged time", loggedTimeField);
-        addCentered("Allocated time", allocatedTimeField);
-        addCentered("Time unit", timeUnitsComboBox, addTimeUnitButton);
-        addCentered("Due date", datePicker);
+        add("Task name", taskNameField);
+        add("Description", new JScrollPane(descriptionArea));
+        add("Customer", customerField);
+        add("Category", categoryPanel);
+        add("Assigned to", assignedToComboBox);
+        add("Status", statusComboBox);
+        add("Logged time", loggedTimeField);
+        add("Allocated time", allocatedTimeField);
+        add("Time unit", timeUnitPanel);
+        add("Due date", datePicker);
     }
 
     private boolean validateFields() {
@@ -197,8 +143,6 @@ public class AddTaskDialog extends EntityDialog<Task>{
         if (!validateFields()) {
             return null;
         }
-        var task = this.task;
-
         if (task != null) {
             task.setNameOfTask(taskNameField.getText());
             task.setCustomer(customerField.getText());
@@ -211,7 +155,6 @@ public class AddTaskDialog extends EntityDialog<Task>{
             task.setTimeUnit((TimeUnit) timeUnitsComboBox.getSelectedItem());
 
         }
-
         else {
             task = new Task(null, (Status) statusComboBox.getSelectedItem(),
                     this.descriptionArea.getText(),
