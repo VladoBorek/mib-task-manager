@@ -4,6 +4,7 @@ import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 import java.util.Optional;
 
 import static javax.swing.JOptionPane.*;
@@ -24,6 +25,7 @@ abstract class EntityDialog<E> {
         componentPanel.setLayout(new GridLayout(0, 1));
     }
 
+    // TODO: This and addCentered is here solely for inspect task and should be gone soon
     EntityDialog(int width, int height, ActionType actionType) {
         panel.setPreferredSize(new Dimension(width, height));
 
@@ -68,12 +70,7 @@ abstract class EntityDialog<E> {
         componentWrapper.add(component);
         componentPanel.add(component, "wmin 250lp, grow");
 
-        if (button != null) {
-            buttonPanel.add(button);
-        }
-        else {
-            buttonPanel.add(new JLabel(""));
-        }
+        buttonPanel.add(Objects.requireNonNullElseGet(button, () -> new JLabel("")));
 
     }
 
