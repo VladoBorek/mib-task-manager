@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * @author Nikol Otáhalů
  */
-public class CsvExport {
+public class ExportJSON {
     public static void exportTaskTableToJson(JTable table) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Specify a file to save");
