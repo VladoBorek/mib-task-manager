@@ -58,4 +58,11 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
     public List<T> getAllRows() {
         return items;
     }
+
+    public void deleteAllRows(){
+        var totalRows = getRowCount();
+        for (int i = 0; i < totalRows; i++) {
+            deleteRow(0);
+        }
+    }
 }
