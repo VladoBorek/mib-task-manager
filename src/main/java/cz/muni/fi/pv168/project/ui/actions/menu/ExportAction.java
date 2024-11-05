@@ -40,11 +40,16 @@ public class ExportAction extends AbstractAction {
                     for (int j = 0; j < model.getColumnCount(); j++) {
                         jsonObject.put(model.getColumnName(j), model.getValueAt(i, j));
                     }
+                    jsonObject.put("LOGGED TIME CLEAR", model.getEntity(i).getConvertedLoggedTime());
+                    jsonObject.put("ALLOCATED TIME CLEAR", model.getEntity(i).getConvertedAllocatedTime());
+
                     jsonObject.put("DESCRIPTION", model.getEntity(i).getDescription());
                     jsonObject.put("EMPLOYEE NAME", model.getEntity(i).getAssignedTo().getName());
                     jsonObject.put("EMPLOYEE ID", model.getEntity(i).getAssignedTo().getId());
                     jsonObject.put("CATEGORY COLOR", model.getEntity(i).getCategory().getColor().getRGB());
                     jsonObject.put("TIME UNIT RATE", model.getEntity(i).getTimeUnit().getRate());
+
+                    jsonObject.put("TIME UNIT", model.getEntity(i).getTimeUnit().getName());
                     jsonArray.put(jsonObject);
                 }
 

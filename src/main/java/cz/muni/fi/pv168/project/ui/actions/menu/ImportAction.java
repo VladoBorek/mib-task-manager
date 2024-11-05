@@ -40,9 +40,31 @@ public class ImportAction extends AbstractAction {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select JSON file with tasks to import");
 
+        //Override or add tasks from import
         int userSelection = fileChooser.showOpenDialog(null);
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+
+            if (!filePath.toLowerCase().endsWith(".json")) {
+                JOptionPane.showMessageDialog(null, "Please select a valid JSON file.", "Invalid File",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            String[] options = {"Override", "Add"};
+            int choice = JOptionPane.showOptionDialog(null,
+                    "Do you want to override existing tasks or add new ones?",
+                    "Import Options",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null, options, options[0]);
+            //Override option, clear the table
+            if (choice == 0){
+                var totalRows = data.getTaskTableModel().getRowCount();
+                for (int i = 0; i < totalRows; i++) {
+                    data.getTaskTableModel().deleteRow(0);
+                }
+                data.getTaskTable().updateUI();
+            }
 
             try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
                 StringBuilder jsonContent = new StringBuilder();
@@ -61,8 +83,8 @@ public class ImportAction extends AbstractAction {
                     String customer = jsonObject.getString("CUSTOMER");
                     String nameOfTask = jsonObject.getString("TASK NAME");
                     Employee assignedTo = null;
-                    Integer loggedTIme = jsonObject.getInt("LOGGED TIME");
-                    Integer allocatedTime = jsonObject.getInt("ALLOCATED TIME");
+                    Integer loggedTIme = jsonObject.getInt("LOGGED TIME CLEAR");
+                    Integer allocatedTime = jsonObject.getInt("ALLOCATED TIME CLEAR");
                     TimeUnit timeUnit = null;
                     LocalDate dueDate = LocalDate.parse(jsonObject.getString("DUE DATE"));
 
@@ -122,8 +144,11 @@ public class ImportAction extends AbstractAction {
                         data.getTimeUnits().add(timeUnit);
                     }
 
+                    //New
+
                     Task task = new Task(null, taskStatus, description, category, customer, nameOfTask, assignedTo, loggedTIme, allocatedTime, timeUnit, dueDate);
                     data.getTaskTableModel().addRow(task);
+
                 }
 
             } catch (IOException e) {
