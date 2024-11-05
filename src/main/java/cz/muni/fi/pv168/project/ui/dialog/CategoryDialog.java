@@ -4,6 +4,8 @@ import cz.muni.fi.pv168.project.business.model.Category;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Dialog windows that will open when creating or editing categories
@@ -11,27 +13,56 @@ import java.awt.*;
 public class CategoryDialog extends EntityDialog<Category> {
 
     private final JTextField nameField = new JTextField();
-    private final JColorChooser colorChooser = new JColorChooser();
+    private final JPanel colorPreviewPanel = new JPanel();
+    private Color selectedColor = Color.lightGray;
 
     public CategoryDialog() {
-        nameField.setMaximumSize(new Dimension(10, 10));
-        add("Name", nameField);
-        add("colour", colorChooser);
+        nameField.setPreferredSize(new Dimension(200, 25));
+
+        colorPreviewPanel.setPreferredSize(new Dimension(175, 25));
+        colorPreviewPanel.setBackground(selectedColor);
+        colorPreviewPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+
+        var colorPanel = new JPanel();
+        colorPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 5));
+        colorPanel.add(colorPreviewPanel);
+        colorPanel.add(setUpColorButton());
+
+        add("Name:", nameField);
+        add("Color:", colorPanel);
         setPanel();
     }
 
     public CategoryDialog(Category category) {
-        nameField.setMaximumSize(new Dimension(50, 10));
+        this();
         nameField.setText(category.getName());
-        colorChooser.setColor(category.getColor());
-        add("Name", nameField);
-        add("colour", colorChooser);
-        setPanel();
+        setSelectedColor(category.getColor());
     }
 
+    private JButton setUpColorButton() {
+        var colorButton = new JButton("˅");
+        colorButton.setPreferredSize(new Dimension(25, 25));
+        colorButton.setFont(new Font("Dialog", Font.BOLD, 12));
+        colorButton.addActionListener(e -> {
+            var chosenColor = JColorChooser.showDialog(
+                    colorPreviewPanel,
+                    "Choose Category Color",
+                    selectedColor
+            );
+            if (chosenColor != null) {
+                setSelectedColor(chosenColor);
+            }
+        });
+        return colorButton;
+    }
+
+    private void setSelectedColor(Color color) {
+        selectedColor = color;
+        colorPreviewPanel.setBackground(color);
+    }
 
     @Override
     Category getEntity() {
-        return new Category(null, nameField.getText(), colorChooser.getColor());
+        return new Category(null, nameField.getText(), selectedColor);
     }
 }
