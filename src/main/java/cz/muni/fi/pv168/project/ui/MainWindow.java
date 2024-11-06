@@ -54,6 +54,12 @@ public class MainWindow {
 
     private JButton newSomethingButton;
 
+    private JCheckBox filterToDo;
+    private JCheckBox filterComplete;
+    private JCheckBox filterInProgress;
+    private JCheckBox filterOnHold;
+
+
     /**
      * Constructor for MainWindow.
      * Initializes the main frame, sets the background color, size, and adds the menu bar and filter bar.
@@ -214,15 +220,9 @@ public class MainWindow {
         filterBar.setFloatable(false);
         filterBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
-        JCheckBox filterToDo = createFilterCheckbox("To-Do", true);
-        JCheckBox filterInProgress = createFilterCheckbox("In-Progress", true);
-        JCheckBox filterComplete = createFilterCheckbox("Completed", true);
-        JCheckBox filterOnHold = createFilterCheckbox("On-Hold", true);
-
+        JPanel statusPanel = setupStatusCheckboxes(taskTableFilter);
 
         var categoryComboBox = createCategoryFilter(taskTableFilter, data.getCategories());
-//        JComboBox<Object> categoryComboBox = createFilterComboBox(data.getCategories().toArray(),
-//                "--Category--");
 
         Map<Boolean, List<JCheckBox>> resetValuesCheckboxes = Map.of(
                 true, List.of(filterToDo, filterInProgress, filterComplete, filterOnHold),
@@ -232,44 +232,70 @@ public class MainWindow {
 //                categoryComboBox, "--Category--"
         );
 
-        var fromDatePicker = new DatePicker();
-        var toDatePicker = new DatePicker();
-
-        JButton addNewTaskButton = createButton("New Task ", Icons.ADD_ICON,
+        JButton newSomethingButton = createButton("New Task ", Icons.ADD_ICON,
                 new ChooseTemplateAction(data, frame));
-
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.RESET_ICON,
-                new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, fromDatePicker));
-
-        newSomethingButton = addNewTaskButton;
+                new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, null));
 
         filterBar.add(newSomethingButton);
-
         filterBar.addSeparator();
+        filterBar.add(statusPanel);
+        filterBar.addSeparator();
+
+        JPanel filterDatePanel = setupDatePanel();
+
+        filterBar.add(filterDatePanel);
+        filterBar.addSeparator();
+        filterBar.add(categoryComboBox);
+        filterBar.addSeparator();
+        filterBar.add(resetFiltersButton);
+
+        return filterBar;
+    }
+
+    private JPanel setupDatePanel() {
+        JPanel filterDatePanel = new JPanel(new GridLayout(2, 1));
+
+        JPanel fromPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        fromPanel.add(new JLabel("Due From "));
+        fromPanel.add(new DatePicker());
+        filterDatePanel.add(fromPanel);
+
+        JPanel toPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        toPanel.add(new JLabel("Due To "));
+        toPanel.add(new DatePicker());
+        filterDatePanel.add(toPanel);
+
+        return filterDatePanel;
+    }
+
+    private JPanel setupStatusCheckboxes(TaskTableFilter taskTableFilter) {
+        filterToDo = createFilterCheckbox("To-Do", true);
+        filterInProgress = createFilterCheckbox("In-Progress", true);
+        filterComplete = createFilterCheckbox("Completed", true);
+        filterOnHold = createFilterCheckbox("On-Hold", true);
+
+        filterToDo.addActionListener(e -> applyStatusFilter(taskTableFilter));
+        filterInProgress.addActionListener(e -> applyStatusFilter(taskTableFilter));
+        filterComplete.addActionListener(e -> applyStatusFilter(taskTableFilter));
+        filterOnHold.addActionListener(e -> applyStatusFilter(taskTableFilter));
 
         JPanel statusPanel = new JPanel(new GridLayout(2, 2));
         statusPanel.add(filterToDo);
         statusPanel.add(filterInProgress);
         statusPanel.add(filterComplete);
         statusPanel.add(filterOnHold);
-        filterBar.add(statusPanel);
 
-        filterBar.addSeparator();
+        return statusPanel;
+    }
 
-        JPanel filterDatePanel = new JPanel(new GridLayout(2, 2));
-        filterDatePanel.add(fromDatePicker);
-        filterDatePanel.add(toDatePicker);
-        filterBar.add(filterDatePanel);
-
-        filterBar.addSeparator();
-
-        filterBar.add(categoryComboBox);
-
-        filterBar.addSeparator();
-
-        filterBar.add(resetFiltersButton);
-
-        return filterBar;
+    private void applyStatusFilter(TaskTableFilter taskTableFilter) {
+        taskTableFilter.filterStatus(
+                filterToDo.isSelected(),
+                filterInProgress.isSelected(),
+                filterComplete.isSelected(),
+                filterOnHold.isSelected()
+        );
     }
 
     private static JComboBox<Either<SpecialFilterCategoryValues, Category>> createCategoryFilter(
@@ -294,7 +320,6 @@ public class MainWindow {
         checkBox.setText(checkBoxText);
         checkBox.setSelected(setSelected);
         checkBox.setFocusPainted(false);
-        //TODO add Action? somehow make the filters work
         return checkBox;
     }
 
