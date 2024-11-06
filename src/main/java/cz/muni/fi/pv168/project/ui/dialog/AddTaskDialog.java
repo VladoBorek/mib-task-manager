@@ -11,7 +11,7 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
-import cz.muni.fi.pv168.project.ui.model.CategoryComboboxRenderer;
+import cz.muni.fi.pv168.project.ui.renderers.CategoryComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;

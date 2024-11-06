@@ -5,7 +5,7 @@ import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.DeleteAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.EditAction;
-import cz.muni.fi.pv168.project.ui.model.CategoryComboboxRenderer;
+import cz.muni.fi.pv168.project.ui.renderers.CategoryComboboxRenderer;
 
 import javax.swing.*;
 import java.awt.*;
