@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.project.ui.dialog;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Objects;
 import java.util.Optional;
@@ -14,6 +15,8 @@ abstract class EntityDialog<E> {
     private final JPanel panel = new JPanel();
     private final JPanel labelPanel = new JPanel();
     private final JPanel componentPanel = new JPanel();
+    private final JPanel buttonPanel = new JPanel();
+
 
     EntityDialog() {
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
@@ -48,6 +51,7 @@ abstract class EntityDialog<E> {
     void setPanel(){
         panel.add(labelPanel);
         panel.add(componentPanel);
+        //panel.add(buttonPanel);
     }
 
     abstract E getEntity();
