@@ -6,11 +6,12 @@ import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.ui.model.abstracts.BaseTableModel;
+import cz.muni.fi.pv168.project.ui.model.abstracts.EntityTableModel;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class TaskTableModel extends BaseTableModel<Task> {
+public class TaskTableModel extends BaseTableModel<Task> implements EntityTableModel<Task> {
     private final List<Column<Task, ?>> columns = List.of(
             Column.readonly("TASK NAME", String.class, Task::getNameOfTask),
             Column.readonly("STATUS", Status.class, Task::getStatus),
