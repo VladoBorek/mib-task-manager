@@ -14,38 +14,15 @@ abstract class EntityDialog<E> {
     private final JPanel panel = new JPanel();
     private final JPanel labelPanel = new JPanel();
     private final JPanel componentPanel = new JPanel();
-    private final JPanel buttonPanel = new JPanel();
-
 
     EntityDialog() {
-        var layout = new BoxLayout(panel, BoxLayout.X_AXIS);
-        panel.setLayout(layout);
-
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         labelPanel.setLayout(new GridLayout(0, 1));
         componentPanel.setLayout(new GridLayout(0, 1));
     }
 
-    // TODO: This and addCentered is here solely for inspect task and should be gone soon
-    EntityDialog(int width, int height, ActionType actionType) {
+    EntityDialog(int width, int height){
         panel.setPreferredSize(new Dimension(width, height));
-
-        switch (actionType){
-
-            case INSPECT -> {
-                panel.setLayout(new GridLayout(1, 2));
-            }
-
-            case TASK -> {
-                panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-                labelPanel.setLayout(new GridLayout(0, 1));
-                componentPanel.setLayout(new GridLayout(0, 1));
-                buttonPanel.setLayout(new GridLayout(0, 1));
-
-                panel.add(labelPanel);
-                panel.add(componentPanel);
-                panel.add(buttonPanel);
-            }
-        }
     }
 
     void add(String labelText, JComponent component) {
@@ -53,24 +30,6 @@ abstract class EntityDialog<E> {
 
         labelPanel.add(label);
         componentPanel.add(component, "wmin 250lp, grow");
-
-    }
-
-    void addCentered(String labelText, JComponent component) {
-        addCentered(labelText, component, null);
-    }
-
-    void addCentered(String labelText, JComponent component, JButton  button) {
-        var label = new JLabel(labelText);
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        labelPanel.add(label);
-
-        JPanel componentWrapper = new JPanel();
-        componentWrapper.setLayout(new FlowLayout(FlowLayout.CENTER));
-        componentWrapper.add(component);
-        componentPanel.add(component, "wmin 250lp, grow");
-
-        buttonPanel.add(Objects.requireNonNullElseGet(button, () -> new JLabel("")));
 
     }
 
@@ -89,7 +48,6 @@ abstract class EntityDialog<E> {
     void setPanel(){
         panel.add(labelPanel);
         panel.add(componentPanel);
-        //panel.add(buttonPanel);
     }
 
     abstract E getEntity();

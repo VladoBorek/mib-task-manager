@@ -12,8 +12,7 @@ public class CellPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 5));
 
         JPanel textLabelPanel = new JPanel(new BorderLayout());
-        JLabel textLabel = new JLabel(text);
-        textLabelPanel.add(textLabel);
+        textLabelPanel.add(new JLabel(text));
 
         JPanel labelPanel = new JPanel(new BorderLayout());
         labelPanel.add(label);
