@@ -2,17 +2,12 @@ package cz.muni.fi.pv168.project.ui.dialog;
 
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.business.model.CustomTimeUnit;
 import cz.muni.fi.pv168.project.business.model.DataManager;
-import cz.muni.fi.pv168.project.business.model.Employee;
-import cz.muni.fi.pv168.project.business.model.Status;
-import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
-import cz.muni.fi.pv168.project.ui.model.CategoryComboboxRenderer;
+import cz.muni.fi.pv168.project.ui.renderers.CategoryComboboxRenderer;
 
 import javax.swing.*;
-import java.util.Objects;
 
 public class TemplateDialog extends EntityDialog<Template>{
     private final JTextField nameField = new JTextField();
