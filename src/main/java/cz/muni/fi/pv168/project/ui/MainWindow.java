@@ -16,14 +16,14 @@ import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.filters.TaskTableFilter;
 import cz.muni.fi.pv168.project.ui.filters.components.FilterComboboxBuilder;
 import cz.muni.fi.pv168.project.ui.filters.values.SpecialFilterCategoryValues;
-import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.renderers.CategoryCellRenderer;
 
-import cz.muni.fi.pv168.project.ui.model.StatisticsTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
 
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
-import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
-import cz.muni.fi.pv168.project.ui.model.TemplateTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.renderers.CategoryRenderer;
 import cz.muni.fi.pv168.project.ui.renderers.SpecialFilterCategoryValuesRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -35,6 +35,7 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,6 +60,9 @@ public class MainWindow {
     private JCheckBox filterInProgress;
     private JCheckBox filterOnHold;
 
+    private DatePicker fromDatePicker;
+    private DatePicker toDatePicker;
+
 
     /**
      * Constructor for MainWindow.
@@ -66,10 +70,7 @@ public class MainWindow {
      */
     public MainWindow(User loggedUser) {
         data = new DataManager(loggedUser);
-
         frame = createFrame();
-        frame.setIconImage(Icons.APP_ICON.getImage());
-        frame.setSize(1024, 768);
 
         Repository<Task> taskRepository = new InMemoryRepository<>(DEMO_DATA.getTasks());
         CrudService<Task> taskCrudService = new BaseCrudService<>(taskRepository);
@@ -78,10 +79,8 @@ public class MainWindow {
 
         var taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu());
-
         var templateTable = createTemplateTable(templateCrudService);
         templateTable.setComponentPopupMenu(createTemplateTablePopupMenu());
-
         var statisticsTable = createStatisticsTable();
 
         data.setTaskTable(taskTable);
@@ -89,9 +88,8 @@ public class MainWindow {
 
         frame.setJMenuBar(createMenuBar());
 
-        var filterBar = createFilterBar(taskTable, data);
-
-        frame.add(filterBar, BorderLayout.BEFORE_FIRST_LINE);
+        var toolBar = createToolBar(taskTable, data);
+        frame.add(toolBar, BorderLayout.BEFORE_FIRST_LINE);
 
         var splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         splitPane.setDividerSize(10);
@@ -102,31 +100,36 @@ public class MainWindow {
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Tasks", splitPane);
         tabbedPane.addTab("Templates", new JScrollPane(templateTable));
-
         tabbedPane.addChangeListener(e -> {
-            int selectedIndex = tabbedPane.getSelectedIndex();
-            String selectedTabTitle = tabbedPane.getTitleAt(selectedIndex);
-            filterBar.remove(0);
-
-            if ("Templates".equals(selectedTabTitle)) {
-                newSomethingButton = createButton("Template ", Icons.ADD_ICON,
-                        new AddAction(ActionType.TEMPLATE, data, null));
-            }
-            if ("Tasks".equals(selectedTabTitle)){
-                newSomethingButton = createButton("New Task ", Icons.ADD_ICON,
-                        new ChooseTemplateAction(data, frame));
-            }
-
-            filterBar.add(newSomethingButton, 0);
-            filterBar.revalidate();
-            filterBar.repaint();
+            updateToolBarForSelectedTab(tabbedPane, toolBar, data, frame);
         });
-
         frame.add(tabbedPane, BorderLayout.CENTER);
+
+        setUpTaskInspect(taskTable);
+
         frame.setLocationRelativeTo(null);
         frame.pack();
-        setUpTaskInspect(taskTable);
+        // This has to be here idk why
         frame.setSize(1024, 768);
+    }
+
+    private void updateToolBarForSelectedTab(JTabbedPane tabbedPane, JToolBar toolBar, DataManager data, JFrame frame) {
+        int selectedIndex = tabbedPane.getSelectedIndex();
+        String selectedTabTitle = tabbedPane.getTitleAt(selectedIndex);
+        toolBar.remove(0);
+
+        if ("Templates".equals(selectedTabTitle)) {
+            newSomethingButton = createButton("Template ", Icons.ADD_ICON,
+                    new AddAction(ActionType.TEMPLATE, data, null));
+        }
+        if ("Tasks".equals(selectedTabTitle)){
+            newSomethingButton = createButton("New Task ", Icons.ADD_ICON,
+                    new ChooseTemplateAction(data, frame));
+        }
+
+        toolBar.add(newSomethingButton, 0);
+        toolBar.revalidate();
+        toolBar.repaint();
     }
 
     /**
@@ -137,6 +140,8 @@ public class MainWindow {
     private JFrame createFrame() {
         JFrame frame = new JFrame("MIB Task Manager");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setIconImage(Icons.APP_ICON.getImage());
+        frame.setSize(1024, 768);
         return frame;
     }
 
@@ -209,9 +214,9 @@ public class MainWindow {
     /**
      * Creates application Toolbar
      *
-     * @return Toolbar with AddNewTask button and filters for the tasks
+     * @return Toolbar with an Add New button and filters
      */
-    private JToolBar createFilterBar(JTable taskTable, DataManager data) {
+    private JToolBar createToolBar(JTable taskTable, DataManager data) {
         var rowSorter = new TableRowSorter<>((TaskTableModel) taskTable.getModel());
         var taskTableFilter = new TaskTableFilter(rowSorter);
         taskTable.setRowSorter(rowSorter);
@@ -220,30 +225,23 @@ public class MainWindow {
         filterBar.setFloatable(false);
         filterBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
-        JPanel statusPanel = setupStatusCheckboxes(taskTableFilter);
-
+        var statusPanel = createStatusCheckboxesPanel(taskTableFilter);
         var categoryComboBox = createCategoryFilter(taskTableFilter, data.getCategories());
+        var filterDatePanel  = createDateFilterPanel(taskTableFilter);
 
         Map<Boolean, List<JCheckBox>> resetValuesCheckboxes = Map.of(
                 true, List.of(filterToDo, filterInProgress, filterComplete, filterOnHold),
                 false, List.of());
 
-        Map<JComboBox<Object>, String> resetValuesComboBoxes = Map.of(
-//                categoryComboBox, "--Category--"
-        );
-
         JButton newSomethingButton = createButton("New Task ", Icons.ADD_ICON,
                 new ChooseTemplateAction(data, frame));
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.RESET_ICON,
-                new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, null));
+                new ResetFilterAction(resetValuesCheckboxes, categoryComboBox, List.of(fromDatePicker, toDatePicker)));
 
         filterBar.add(newSomethingButton);
         filterBar.addSeparator();
         filterBar.add(statusPanel);
         filterBar.addSeparator();
-
-        JPanel filterDatePanel = setupDatePanel();
-
         filterBar.add(filterDatePanel);
         filterBar.addSeparator();
         filterBar.add(categoryComboBox);
@@ -253,23 +251,34 @@ public class MainWindow {
         return filterBar;
     }
 
-    private JPanel setupDatePanel() {
+    private JPanel createDateFilterPanel(TaskTableFilter taskTableFilter) {
         JPanel filterDatePanel = new JPanel(new GridLayout(2, 1));
 
         JPanel fromPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        fromDatePicker = new DatePicker();
         fromPanel.add(new JLabel("Due From "));
-        fromPanel.add(new DatePicker());
+        fromPanel.add(fromDatePicker);
         filterDatePanel.add(fromPanel);
 
         JPanel toPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        toDatePicker = new DatePicker();
         toPanel.add(new JLabel("Due To "));
-        toPanel.add(new DatePicker());
+        toPanel.add(toDatePicker);
         filterDatePanel.add(toPanel);
+
+        fromDatePicker.addDateChangeListener(
+                e -> updateDateFilter(taskTableFilter, fromDatePicker.getDate(), toDatePicker.getDate()));
+        toDatePicker.addDateChangeListener(
+                e -> updateDateFilter(taskTableFilter, fromDatePicker.getDate(), toDatePicker.getDate()));
 
         return filterDatePanel;
     }
 
-    private JPanel setupStatusCheckboxes(TaskTableFilter taskTableFilter) {
+    private void updateDateFilter(TaskTableFilter taskTableFilter, LocalDate fromDate, LocalDate toDate) {
+        taskTableFilter.filterDueDate(fromDate, toDate);
+    }
+
+    private JPanel createStatusCheckboxesPanel(TaskTableFilter taskTableFilter) {
         filterToDo = createFilterCheckbox("To-Do", true);
         filterInProgress = createFilterCheckbox("In-Progress", true);
         filterComplete = createFilterCheckbox("Completed", true);

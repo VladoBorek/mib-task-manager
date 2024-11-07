@@ -5,7 +5,6 @@ import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
-import cz.muni.fi.pv168.project.ui.model.TemplateTableModel;
 
 import javax.swing.*;
 import java.awt.*;

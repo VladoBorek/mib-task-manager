@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project.ui.model;
+package cz.muni.fi.pv168.project.ui.model.storagemodels;
 
 import cz.muni.fi.pv168.project.business.model.Employee;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;

@@ -1,6 +1,6 @@
 package cz.muni.fi.pv168.project.business.service.export;
 
-import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
