@@ -35,6 +35,7 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -221,9 +222,9 @@ public class MainWindow {
         filterBar.setFloatable(false);
         filterBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
-        JPanel statusPanel = setupStatusCheckboxes(taskTableFilter);
-
+        var statusPanel = createStatusCheckboxesPanel(taskTableFilter);
         var categoryComboBox = createCategoryFilter(taskTableFilter, data.getCategories());
+        var filterDatePanel  = createDateFilterPanel(taskTableFilter);
 
         Map<Boolean, List<JCheckBox>> resetValuesCheckboxes = Map.of(
                 true, List.of(filterToDo, filterInProgress, filterComplete, filterOnHold),
@@ -242,9 +243,6 @@ public class MainWindow {
         filterBar.addSeparator();
         filterBar.add(statusPanel);
         filterBar.addSeparator();
-
-        JPanel filterDatePanel = setupDatePanel();
-
         filterBar.add(filterDatePanel);
         filterBar.addSeparator();
         filterBar.add(categoryComboBox);
@@ -254,23 +252,34 @@ public class MainWindow {
         return filterBar;
     }
 
-    private JPanel setupDatePanel() {
+    private JPanel createDateFilterPanel(TaskTableFilter taskTableFilter) {
         JPanel filterDatePanel = new JPanel(new GridLayout(2, 1));
 
         JPanel fromPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        DatePicker fromDatePicker = new DatePicker();
         fromPanel.add(new JLabel("Due From "));
-        fromPanel.add(new DatePicker());
+        fromPanel.add(fromDatePicker);
         filterDatePanel.add(fromPanel);
 
         JPanel toPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        DatePicker toDatePicker = new DatePicker();
         toPanel.add(new JLabel("Due To "));
-        toPanel.add(new DatePicker());
+        toPanel.add(toDatePicker);
         filterDatePanel.add(toPanel);
+
+        fromDatePicker.addDateChangeListener(
+                e -> updateDateFilter(taskTableFilter, fromDatePicker.getDate(), toDatePicker.getDate()));
+        toDatePicker.addDateChangeListener(
+                e -> updateDateFilter(taskTableFilter, fromDatePicker.getDate(), toDatePicker.getDate()));
 
         return filterDatePanel;
     }
 
-    private JPanel setupStatusCheckboxes(TaskTableFilter taskTableFilter) {
+    private void updateDateFilter(TaskTableFilter taskTableFilter, LocalDate fromDate, LocalDate toDate) {
+        taskTableFilter.filterDueDate(fromDate, toDate);
+    }
+
+    private JPanel createStatusCheckboxesPanel(TaskTableFilter taskTableFilter) {
         filterToDo = createFilterCheckbox("To-Do", true);
         filterInProgress = createFilterCheckbox("In-Progress", true);
         filterComplete = createFilterCheckbox("Completed", true);
