@@ -2,6 +2,7 @@ package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.business.model.Entity;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.repository.Repository;
@@ -38,6 +39,7 @@ import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +61,9 @@ public class MainWindow {
     private JCheckBox filterComplete;
     private JCheckBox filterInProgress;
     private JCheckBox filterOnHold;
+
+    private DatePicker fromDatePicker;
+    private DatePicker toDatePicker;
 
 
     /**
@@ -106,7 +111,7 @@ public class MainWindow {
 
         frame.setLocationRelativeTo(null);
         frame.pack();
-        // This has to be here again idk why
+        // This has to be here idk why
         frame.setSize(1024, 768);
     }
 
@@ -230,14 +235,10 @@ public class MainWindow {
                 true, List.of(filterToDo, filterInProgress, filterComplete, filterOnHold),
                 false, List.of());
 
-        Map<JComboBox<Object>, String> resetValuesComboBoxes = Map.of(
-//                categoryComboBox, "--Category--"
-        );
-
         JButton newSomethingButton = createButton("New Task ", Icons.ADD_ICON,
                 new ChooseTemplateAction(data, frame));
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.RESET_ICON,
-                new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, null));
+                new ResetFilterAction(resetValuesCheckboxes, categoryComboBox, List.of(fromDatePicker, toDatePicker)));
 
         filterBar.add(newSomethingButton);
         filterBar.addSeparator();
@@ -256,13 +257,13 @@ public class MainWindow {
         JPanel filterDatePanel = new JPanel(new GridLayout(2, 1));
 
         JPanel fromPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        DatePicker fromDatePicker = new DatePicker();
+        fromDatePicker = new DatePicker();
         fromPanel.add(new JLabel("Due From "));
         fromPanel.add(fromDatePicker);
         filterDatePanel.add(fromPanel);
 
         JPanel toPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        DatePicker toDatePicker = new DatePicker();
+        toDatePicker = new DatePicker();
         toPanel.add(new JLabel("Due To "));
         toPanel.add(toDatePicker);
         filterDatePanel.add(toPanel);
