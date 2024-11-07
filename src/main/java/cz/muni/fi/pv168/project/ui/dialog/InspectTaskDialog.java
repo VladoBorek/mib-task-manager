@@ -31,7 +31,7 @@ public class InspectTaskDialog extends EntityDialog<Task> {
     private final JPanel rightPanel = new JPanel();
 
     public InspectTaskDialog(Task task, DataManager data) {
-        super(700, 400);
+        super(550, 250);
 
         this.data = data;
         this.task = task;
@@ -89,9 +89,9 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         JButton addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON,
                 new LogTimeAction(data, this, task));
 
-        allocatedTime.setPreferredSize(new Dimension(200, 80));
-        loggedTime.setPreferredSize(new Dimension(200, 80));
-        addLogTimeButton.setPreferredSize(new Dimension(200, 80));
+        //allocatedTime.setPreferredSize(new Dimension(200, 80));
+        //loggedTime.setPreferredSize(new Dimension(200, 80));
+        // addLogTimeButton.setPreferredSize(new Dimension(200, 80));
 
         timeInfoPanel.add(this.allocatedTime);
         timeInfoPanel.add(this.loggedTime);
@@ -103,11 +103,12 @@ public class InspectTaskDialog extends EntityDialog<Task> {
     private JPanel setupLogTablePanel() {
         JPanel logTablePanel = new JPanel();
         logTablePanel.setBackground(new Color(211, 211, 211));
-        logTablePanel.setPreferredSize(new Dimension(300, 250));
+        //logTablePanel.setPreferredSize(new Dimension(300, 250));
         logTablePanel.add(new JLabel("LOG TIME TABLE"));
 
         JScrollPane scrollPane = new JScrollPane(timeLogTable);
-        scrollPane.setPreferredSize(new Dimension(300, 250));
+        //scrollPane.setPreferredSize(new Dimension(300, 250));
+        scrollPane.setPreferredSize(new Dimension(230, 160));
         JPanel componentWrapper = new JPanel();
         componentWrapper.setLayout(new FlowLayout(FlowLayout.CENTER));
         componentWrapper.add(scrollPane);
