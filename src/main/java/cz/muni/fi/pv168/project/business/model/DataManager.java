@@ -4,7 +4,11 @@ import cz.muni.fi.pv168.project.business.repository.Repository;
 import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.storage.InMemoryRepository;
-import cz.muni.fi.pv168.project.ui.model.*;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.CategoryListModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.EmployeeListModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TimeUnitListModel;
 
 import javax.swing.*;
 import java.util.ArrayList;

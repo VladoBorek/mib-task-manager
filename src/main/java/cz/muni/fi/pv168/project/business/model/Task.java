@@ -5,7 +5,7 @@ import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.storage.InMemoryRepository;
-import cz.muni.fi.pv168.project.ui.model.LogTimeInfoTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.LogTimeInfoTableModel;
 
 import java.util.List;
 import javax.swing.*;
@@ -13,7 +13,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import static java.lang.Math.round;
 
