@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.project.ui.dialog;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,7 +31,6 @@ abstract class EntityDialog<E> {
 
         labelPanel.add(label);
         componentPanel.add(component, "wmin 250lp, grow");
-
     }
 
     public JPanel getPanel() {
@@ -48,6 +48,27 @@ abstract class EntityDialog<E> {
     void setPanel(){
         panel.add(labelPanel);
         panel.add(componentPanel);
+    }
+
+    public static JPanel createTwoPartPanel(JComponent comboBox, JComponent button) {
+        var newPanel = new JPanel(new GridBagLayout());
+        var constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        newPanel.add(comboBox, constraints);
+
+        constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.VERTICAL;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.weightx = 0;
+        constraints.weighty = 1.0;
+        newPanel.add(button, constraints);
+
+        return newPanel;
     }
 
     abstract E getEntity();

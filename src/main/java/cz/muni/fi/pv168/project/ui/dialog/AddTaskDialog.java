@@ -12,20 +12,24 @@ import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
 import cz.muni.fi.pv168.project.ui.renderers.CategoryComboboxRenderer;
+//import cz.muni.fi.pv168.project.ui.actions.menu.LogTimeAction;
+//import cz.muni.fi.pv168.project.ui.model.CategoryComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Objects;
 
 public class AddTaskDialog extends EntityDialog<Task>{
     private Task task;
 
+    private final DataManager data;
     private final JTextField taskNameField = new JTextField();
     private final JTextField customerField = new JTextField();
     private final JTextArea descriptionArea = new JTextArea();
 
-    private JComboBox<Employee> assignedToComboBox;
+    private final JComboBox<Employee> assignedToComboBox;
 
     private JPanel timeUnitPanel;
     private JPanel categoryPanel;
@@ -39,25 +43,49 @@ public class AddTaskDialog extends EntityDialog<Task>{
 
     private final DatePicker datePicker = new DatePicker();
 
+    private final JPanel infoPanel = new JPanel();
+    private final JPanel descriptionPanel = new JPanel();
+    private final JPanel timePanel = new JPanel();
+
     public AddTaskDialog(Task task, DataManager data) {
         this.task = task;
+        this.data = data;
+        assignedToComboBox = new JComboBox<>(data.getEmployees().toArray());
 
-        setUpUI(data);
+        setUpUI();
         if (task != null) {
             setValues();
         }
-        addFields();
-        setPanel();
     }
 
-    private void setUpUI(DataManager data) {
+    private void setUpUI() {
+        super.getPanel().setLayout(new BorderLayout());
+
+        setupTwoPartPanels();
+
+        setupInfoPanel();
+        super.getPanel().add(infoPanel, BorderLayout.NORTH);
+
+        setupDescriptionPanel();
+        super.getPanel().add(descriptionPanel, BorderLayout.CENTER);
+
+        setupTimePanel();
+        super.getPanel().add(timePanel, BorderLayout.SOUTH);
+
+        infoPanel.setBorder(new EmptyBorder(0, 0, 5, 0));
+        descriptionPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
+        timePanel.setBorder(new EmptyBorder(5, 0, 0, 0));
+    }
+
+    private void setupTwoPartPanels(){
         categoryComboBox = new JComboBox<>(data.getCategories().toArray());
         timeUnitsComboBox = new JComboBox<>(data.getTimeUnits().toArray());
-        var addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.TIME_UNIT, data, null,
-                        timeUnitsComboBox, categoryComboBox));
+
         var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
                 new AddAction(ActionType.CATEGORY, data, null,
+                        timeUnitsComboBox, categoryComboBox));
+        var addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
+                new AddAction(ActionType.TIME_UNIT, data, null,
                         timeUnitsComboBox, categoryComboBox));
 
         CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
@@ -65,33 +93,66 @@ public class AddTaskDialog extends EntityDialog<Task>{
 
         categoryPanel = createTwoPartPanel(categoryComboBox, addCategoryButton);
         timeUnitPanel = createTwoPartPanel(timeUnitsComboBox, addTimeUnitButton);
+    }
 
-        assignedToComboBox = new JComboBox<>(data.getEmployees().toArray());
+    private void setupInfoPanel(){
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.X_AXIS));
+        infoPanel.add(getLabelPanel());
+        infoPanel.add(getComponentPanel());
+
+        datePicker.setDateToToday();
+
+        add("Task name", taskNameField);
+        add("Customer", customerField);
+        add("Category", categoryPanel);
+        add("Assigned to", assignedToComboBox);
+        add("Status", statusComboBox);
+        add("Due date", datePicker);
+    }
+
+    private void setupDescriptionPanel(){
+        descriptionPanel.setLayout(new BorderLayout());
+
+        JPanel titleDescriptionPanel = new JPanel(new BorderLayout());
+        titleDescriptionPanel.add(new JLabel("Description:"));
+
+        JPanel textDescriptionPanel = new JPanel(new BorderLayout());
+        textDescriptionPanel.add(new JScrollPane(descriptionArea));
+
+        descriptionPanel.add(titleDescriptionPanel, BorderLayout.NORTH);
+        descriptionPanel.add(textDescriptionPanel, BorderLayout.CENTER);
+
+        descriptionArea.setPreferredSize(new Dimension(200, 50));
+        descriptionArea.setMinimumSize(new Dimension(200, 50));
+        descriptionArea.setMaximumSize(new Dimension(200, 50));
 
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
-        datePicker.setDateToToday();
     }
 
-    private JPanel createTwoPartPanel(JComponent comboBox, JComponent button) {
-        var newPanel = new JPanel(new GridBagLayout());
-        var constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.BOTH;
-        constraints.weightx = 1.0;
-        constraints.weighty = 1.0;
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        newPanel.add(comboBox, constraints);
+    private void setupTimePanel(){
+        timePanel.setLayout(new BorderLayout());
+        timePanel.add(setupTimeTitlesPanel(), BorderLayout.NORTH);
+        timePanel.add(setupTimeInfoPanel(), BorderLayout.SOUTH);
+    }
 
-        constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.VERTICAL;
-        constraints.gridx = 1;
-        constraints.gridy = 0;
-        constraints.weightx = 0;
-        constraints.weighty = 1.0;
-        newPanel.add(button, constraints);
+    private JPanel setupTimeTitlesPanel() {
+        JPanel timeTitlesPanel = new JPanel(new GridLayout(1, 2));
 
-        return newPanel;
+        timeTitlesPanel.add(new JLabel("Allocated time"));
+        timeTitlesPanel.add(new JLabel("Time unit"));
+
+        return timeTitlesPanel;
+    }
+
+    private JPanel setupTimeInfoPanel() {
+            JPanel timeInfoPanel = new JPanel();
+
+        timeInfoPanel.setLayout(new GridLayout(1, 2));
+        timeInfoPanel.add(this.allocatedTimeField);
+        timeInfoPanel.add(timeUnitPanel);
+
+        return timeInfoPanel;
     }
 
     private void setValues()
@@ -106,19 +167,6 @@ public class AddTaskDialog extends EntityDialog<Task>{
         allocatedTimeField.setValue(task.getConvertedAllocatedTime());
         datePicker.setDate(task.getDueDate());
         timeUnitsComboBox.setSelectedItem(task.getTimeUnit());
-    }
-
-    private void addFields(){
-        add("Task name", taskNameField);
-        add("Description", new JScrollPane(descriptionArea));
-        add("Customer", customerField);
-        add("Category", categoryPanel);
-        add("Assigned to", assignedToComboBox);
-        add("Status", statusComboBox);
-        add("Logged time", loggedTimeField);
-        add("Allocated time", allocatedTimeField);
-        add("Time unit", timeUnitPanel);
-        add("Due date", datePicker);
     }
 
     private boolean validateFields() {

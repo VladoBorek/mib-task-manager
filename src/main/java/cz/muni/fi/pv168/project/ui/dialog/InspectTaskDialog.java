@@ -3,7 +3,6 @@ package cz.muni.fi.pv168.project.ui.dialog;
 import cz.muni.fi.pv168.project.business.model.DataManager;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.ui.MainWindow;
-import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.LogTimeAction;
 import cz.muni.fi.pv168.project.ui.model.CellPanel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -203,6 +202,4 @@ public class InspectTaskDialog extends EntityDialog<Task> {
     Task getEntity() {
         return task;
     }
-
-
 }
