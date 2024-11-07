@@ -1,9 +1,8 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.business.model.DataManager;
-import cz.muni.fi.pv168.project.ui.dialog.AddTaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.InspectTaskDialog;
-import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;

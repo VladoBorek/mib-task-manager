@@ -9,10 +9,10 @@ import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.AddTaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
-import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
-import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
-import cz.muni.fi.pv168.project.ui.model.TemplateTableModel;
-import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.CategoryListModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TimeUnitListModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;

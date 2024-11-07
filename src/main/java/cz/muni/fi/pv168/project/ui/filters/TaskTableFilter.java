@@ -9,7 +9,7 @@ import cz.muni.fi.pv168.project.ui.filters.matchers.task.TaskCategoryMatcher;
 import cz.muni.fi.pv168.project.ui.filters.matchers.task.TaskDueDateMatcher;
 import cz.muni.fi.pv168.project.ui.filters.matchers.task.TaskStatusMatcher;
 import cz.muni.fi.pv168.project.ui.filters.values.SpecialFilterCategoryValues;
-import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import cz.muni.fi.pv168.project.util.Either;
 
 import javax.swing.table.TableRowSorter;
@@ -46,13 +46,12 @@ public final class TaskTableFilter {
     }
 
     public void filterDueDate(LocalDate fromDate, LocalDate toDate) {
-        // Create a matcher for filtering by due date
         taskCompoundMatcher.setDueDateMatcher(new TaskDueDateMatcher(fromDate, toDate));
     }
 
     /**
      * Container class for all matchers for the EmployeeTable.
-     *
+     * <p>
      * This Matcher evaluates to true, if all contained {@link EntityMatcher} instances
      * evaluate to true.
      */

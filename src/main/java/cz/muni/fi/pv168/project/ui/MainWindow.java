@@ -2,7 +2,6 @@ package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.business.model.Entity;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.repository.Repository;
@@ -17,14 +16,14 @@ import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.filters.TaskTableFilter;
 import cz.muni.fi.pv168.project.ui.filters.components.FilterComboboxBuilder;
 import cz.muni.fi.pv168.project.ui.filters.values.SpecialFilterCategoryValues;
-import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.renderers.CategoryCellRenderer;
 
-import cz.muni.fi.pv168.project.ui.model.StatisticsTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
 
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
-import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
-import cz.muni.fi.pv168.project.ui.model.TemplateTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.renderers.CategoryRenderer;
 import cz.muni.fi.pv168.project.ui.renderers.SpecialFilterCategoryValuesRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -39,7 +38,6 @@ import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
