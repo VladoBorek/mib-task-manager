@@ -15,8 +15,6 @@ abstract class EntityDialog<E> {
     private final JPanel panel = new JPanel();
     private final JPanel labelPanel = new JPanel();
     private final JPanel componentPanel = new JPanel();
-    private final JPanel buttonPanel = new JPanel();
-
 
     EntityDialog() {
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
@@ -33,7 +31,6 @@ abstract class EntityDialog<E> {
 
         labelPanel.add(label);
         componentPanel.add(component, "wmin 250lp, grow");
-
     }
 
     public JPanel getPanel() {
@@ -51,7 +48,27 @@ abstract class EntityDialog<E> {
     void setPanel(){
         panel.add(labelPanel);
         panel.add(componentPanel);
-        //panel.add(buttonPanel);
+    }
+
+    public static JPanel createTwoPartPanel(JComponent comboBox, JComponent button) {
+        var newPanel = new JPanel(new GridBagLayout());
+        var constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        newPanel.add(comboBox, constraints);
+
+        constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.VERTICAL;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.weightx = 0;
+        constraints.weighty = 1.0;
+        newPanel.add(button, constraints);
+
+        return newPanel;
     }
 
     abstract E getEntity();

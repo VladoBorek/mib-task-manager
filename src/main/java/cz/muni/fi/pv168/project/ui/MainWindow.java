@@ -106,7 +106,7 @@ public class MainWindow {
         tabbedPane.addChangeListener(e -> {
             int selectedIndex = tabbedPane.getSelectedIndex();
             String selectedTabTitle = tabbedPane.getTitleAt(selectedIndex);
-            filterBar.remove(newSomethingButton);
+            filterBar.remove(0);
 
             if ("Templates".equals(selectedTabTitle)) {
                 newSomethingButton = createButton("Template ", Icons.ADD_ICON,
