@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.repository.Repository;
@@ -12,28 +13,32 @@ import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.business.model.DataManager;
 import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
-import cz.muni.fi.pv168.project.ui.model.CategoryCellRenderer;
+import cz.muni.fi.pv168.project.ui.filters.TaskTableFilter;
+import cz.muni.fi.pv168.project.ui.filters.components.FilterComboboxBuilder;
+import cz.muni.fi.pv168.project.ui.filters.values.SpecialFilterCategoryValues;
+import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
+import cz.muni.fi.pv168.project.ui.renderers.CategoryCellRenderer;
 
-import cz.muni.fi.pv168.project.ui.model.EmployeeComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.model.StatisticsTableModel;
 
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
 import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.model.TemplateTableModel;
+import cz.muni.fi.pv168.project.ui.renderers.CategoryRenderer;
+import cz.muni.fi.pv168.project.ui.renderers.SpecialFilterCategoryValuesRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.business.model.Task;
+import cz.muni.fi.pv168.project.util.Either;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  * Main application window for the MIB Task Manager.
@@ -49,26 +54,30 @@ public class MainWindow {
 
     private JButton newSomethingButton;
 
+    private JCheckBox filterToDo;
+    private JCheckBox filterComplete;
+    private JCheckBox filterInProgress;
+    private JCheckBox filterOnHold;
+
+
     /**
      * Constructor for MainWindow.
      * Initializes the main frame, sets the background color, size, and adds the menu bar and filter bar.
      */
     public MainWindow(User loggedUser) {
+        data = new DataManager(loggedUser);
+
         frame = createFrame();
         frame.setIconImage(Icons.APP_ICON.getImage());
         frame.setSize(1024, 768);
 
-        data = new DataManager(loggedUser);
-
         Repository<Task> taskRepository = new InMemoryRepository<>(DEMO_DATA.getTasks());
         CrudService<Task> taskCrudService = new BaseCrudService<>(taskRepository);
-
         Repository<Template> templateRepository = new InMemoryRepository<>(new ArrayList<>());
         CrudService<Template> templateCrudService = new BaseCrudService<>(templateRepository);
 
         var taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu());
-
 
         var templateTable = createTemplateTable(templateCrudService);
         templateTable.setComponentPopupMenu(createTemplateTablePopupMenu());
@@ -80,7 +89,7 @@ public class MainWindow {
 
         frame.setJMenuBar(createMenuBar());
 
-        var filterBar = createFilterBar();
+        var filterBar = createFilterBar(taskTable, data);
 
         frame.add(filterBar, BorderLayout.BEFORE_FIRST_LINE);
 
@@ -94,36 +103,30 @@ public class MainWindow {
         tabbedPane.addTab("Tasks", splitPane);
         tabbedPane.addTab("Templates", new JScrollPane(templateTable));
 
-        tabbedPane.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                int selectedIndex = tabbedPane.getSelectedIndex();
-                String selectedTabTitle = tabbedPane.getTitleAt(selectedIndex);
-                filterBar.remove(newSomethingButton);
+        tabbedPane.addChangeListener(e -> {
+            int selectedIndex = tabbedPane.getSelectedIndex();
+            String selectedTabTitle = tabbedPane.getTitleAt(selectedIndex);
+            filterBar.remove(newSomethingButton);
 
-                if ("Templates".equals(selectedTabTitle)) {
-                    newSomethingButton = createButton("Template ", Icons.ADD_ICON,
-                            new AddAction(ActionType.TEMPLATE, data, null));
-                }
-                if ("Tasks".equals(selectedTabTitle)){
-                    newSomethingButton = createButton("New Task ", Icons.ADD_ICON,
-                            new ChooseTemplateAction(data, frame));
-                }
-
-                filterBar.add(newSomethingButton, 0);
-                filterBar.revalidate();
-                filterBar.repaint();
+            if ("Templates".equals(selectedTabTitle)) {
+                newSomethingButton = createButton("Template ", Icons.ADD_ICON,
+                        new AddAction(ActionType.TEMPLATE, data, null));
             }
-        });
+            if ("Tasks".equals(selectedTabTitle)){
+                newSomethingButton = createButton("New Task ", Icons.ADD_ICON,
+                        new ChooseTemplateAction(data, frame));
+            }
 
+            filterBar.add(newSomethingButton, 0);
+            filterBar.revalidate();
+            filterBar.repaint();
+        });
 
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setLocationRelativeTo(null);
         frame.pack();
         setUpTaskInspect(taskTable);
         frame.setSize(1024, 768);
-
-
     }
 
     /**
@@ -186,81 +189,123 @@ public class MainWindow {
         return menu;
     }
 
+    private JTable createTaskTable(CrudService<Task> taskCrudService) {
+        var tableModel = new TaskTableModel(taskCrudService);
+        var table = new JTable(tableModel);
+
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        table.setAutoCreateRowSorter(true);
+
+        var progressColumn = table.getColumnModel().getColumn(7);
+        progressColumn.setCellRenderer(new TaskProgressBar());
+
+        var categoryColumn = table.getColumnModel().getColumn(2);
+        categoryColumn.setCellRenderer(new CategoryCellRenderer());
+        data.setTaskTableModel(tableModel);
+
+        return table;
+    }
+
     /**
      * Creates application Toolbar
      *
      * @return Toolbar with AddNewTask button and filters for the tasks
      */
-    private JToolBar createFilterBar() {
+    private JToolBar createFilterBar(JTable taskTable, DataManager data) {
+        var rowSorter = new TableRowSorter<>((TaskTableModel) taskTable.getModel());
+        var taskTableFilter = new TaskTableFilter(rowSorter);
+        taskTable.setRowSorter(rowSorter);
+
         JToolBar filterBar = new JToolBar();
         filterBar.setFloatable(false);
         filterBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
-        JCheckBox filterToDo = createFilterCheckbox("To-Do", true);
-        JCheckBox filterInProgress = createFilterCheckbox("In-Progress", true);
-        JCheckBox filterComplete = createFilterCheckbox("Completed", true);
-        JCheckBox filterOnHold = createFilterCheckbox("On-Hold", true);
+        JPanel statusPanel = setupStatusCheckboxes(taskTableFilter);
 
-        JCheckBox filterOverdue = createFilterCheckbox("Filter Overdue ", false);
-        JCheckBox filterOverBudget = createFilterCheckbox("Filter Over budget", false);
-
-        JComboBox<Object> categoryComboBox = createFilterComboBox(data.getCategories().toArray(),
-                "--Category--");
-        JComboBox<Object> assigneeComboBox = createFilterComboBox(data.getEmployees().toArray(),
-                "--Assignee--");
-        assigneeComboBox.setRenderer(new EmployeeComboboxRenderer());
+        var categoryComboBox = createCategoryFilter(taskTableFilter, data.getCategories());
 
         Map<Boolean, List<JCheckBox>> resetValuesCheckboxes = Map.of(
                 true, List.of(filterToDo, filterInProgress, filterComplete, filterOnHold),
-                false, List.of(filterOverdue, filterOverBudget));
+                false, List.of());
 
         Map<JComboBox<Object>, String> resetValuesComboBoxes = Map.of(
-                categoryComboBox, "--Category--",
-                assigneeComboBox, "--Assignee--"
+//                categoryComboBox, "--Category--"
         );
 
-        var datePicker = new DatePicker();
-
-
-        JButton addNewTaskButton = createButton("New Task ", Icons.ADD_ICON,
+        JButton newSomethingButton = createButton("New Task ", Icons.ADD_ICON,
                 new ChooseTemplateAction(data, frame));
-
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.RESET_ICON,
-                new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, datePicker));
-
-        newSomethingButton = addNewTaskButton;
+                new ResetFilterAction(resetValuesCheckboxes, resetValuesComboBoxes, null));
 
         filterBar.add(newSomethingButton);
-
         filterBar.addSeparator();
+        filterBar.add(statusPanel);
+        filterBar.addSeparator();
+
+        JPanel filterDatePanel = setupDatePanel();
+
+        filterBar.add(filterDatePanel);
+        filterBar.addSeparator();
+        filterBar.add(categoryComboBox);
+        filterBar.addSeparator();
+        filterBar.add(resetFiltersButton);
+
+        return filterBar;
+    }
+
+    private JPanel setupDatePanel() {
+        JPanel filterDatePanel = new JPanel(new GridLayout(2, 1));
+
+        JPanel fromPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        fromPanel.add(new JLabel("Due From "));
+        fromPanel.add(new DatePicker());
+        filterDatePanel.add(fromPanel);
+
+        JPanel toPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        toPanel.add(new JLabel("Due To "));
+        toPanel.add(new DatePicker());
+        filterDatePanel.add(toPanel);
+
+        return filterDatePanel;
+    }
+
+    private JPanel setupStatusCheckboxes(TaskTableFilter taskTableFilter) {
+        filterToDo = createFilterCheckbox("To-Do", true);
+        filterInProgress = createFilterCheckbox("In-Progress", true);
+        filterComplete = createFilterCheckbox("Completed", true);
+        filterOnHold = createFilterCheckbox("On-Hold", true);
+
+        filterToDo.addActionListener(e -> applyStatusFilter(taskTableFilter));
+        filterInProgress.addActionListener(e -> applyStatusFilter(taskTableFilter));
+        filterComplete.addActionListener(e -> applyStatusFilter(taskTableFilter));
+        filterOnHold.addActionListener(e -> applyStatusFilter(taskTableFilter));
 
         JPanel statusPanel = new JPanel(new GridLayout(2, 2));
         statusPanel.add(filterToDo);
         statusPanel.add(filterInProgress);
         statusPanel.add(filterComplete);
         statusPanel.add(filterOnHold);
-        filterBar.add(statusPanel);
 
-        filterBar.addSeparator();
+        return statusPanel;
+    }
 
-        JPanel filterDatePanel = new JPanel(new GridLayout(2, 2));
-        filterDatePanel.add(filterOverdue);
-        filterDatePanel.add(datePicker);
-        filterDatePanel.add(filterOverBudget);
-        filterBar.add(filterDatePanel);
+    private void applyStatusFilter(TaskTableFilter taskTableFilter) {
+        taskTableFilter.filterStatus(
+                filterToDo.isSelected(),
+                filterInProgress.isSelected(),
+                filterComplete.isSelected(),
+                filterOnHold.isSelected()
+        );
+    }
 
-        filterBar.addSeparator();
-
-        JPanel categoryAssigneePanel = new JPanel(new GridLayout(2, 1));
-        categoryAssigneePanel.add(categoryComboBox);
-        categoryAssigneePanel.add(assigneeComboBox);
-        filterBar.add(categoryAssigneePanel);
-
-        filterBar.addSeparator();
-
-        filterBar.add(resetFiltersButton);
-
-        return filterBar;
+    private static JComboBox<Either<SpecialFilterCategoryValues, Category>> createCategoryFilter(
+            TaskTableFilter taskTableFilter, CategoryListModel categoryListModel) {
+        return FilterComboboxBuilder.create(SpecialFilterCategoryValues.class, categoryListModel)
+                .setSelectedItem(SpecialFilterCategoryValues.ALL)
+                .setSpecialValuesRenderer(new SpecialFilterCategoryValuesRenderer())
+                .setValuesRenderer(new CategoryRenderer())
+                .setFilter(taskTableFilter::filterCategory)
+                .build();
     }
 
     /**
@@ -275,29 +320,7 @@ public class MainWindow {
         checkBox.setText(checkBoxText);
         checkBox.setSelected(setSelected);
         checkBox.setFocusPainted(false);
-        //TODO add Action? somehow make the filters work
         return checkBox;
-    }
-
-    /**
-     * @param taskCrudService Tasks for the table
-     * @return Table with tasks
-     */
-    private JTable createTaskTable(CrudService<Task> taskCrudService) {
-        var model = new TaskTableModel(taskCrudService);
-        var table = new JTable(model);
-
-        table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        table.setAutoCreateRowSorter(true);
-
-        var progressColumn = table.getColumnModel().getColumn(7);
-        progressColumn.setCellRenderer(new TaskProgressBar());
-
-        var categoryColumn = table.getColumnModel().getColumn(2);
-        categoryColumn.setCellRenderer(new CategoryCellRenderer());
-        data.setTaskTableModel(model);
-
-        return table;
     }
 
     private JTable createTemplateTable(CrudService<Template> templateCrudService) {
@@ -320,20 +343,6 @@ public class MainWindow {
 
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         return table;
-    }
-
-    /**
-     * @param buttonText Text to be shown on button
-     * @param icon       Icon for the button
-     * @param a          Action to be performed
-     * @return Button with input characteristics
-     */
-    public static JButton createButton(String buttonText, Icon icon, Action a) {
-        var button = new JButton(buttonText, icon);
-        button.addActionListener(a);
-        button.setBackground(BUTTON_COLOR);
-        button.setFocusPainted(false);
-        return button;
     }
 
     /**
@@ -405,5 +414,19 @@ public class MainWindow {
             }
         });
 
+    }
+
+    /**
+     * @param buttonText Text to be shown on button
+     * @param icon       Icon for the button
+     * @param a          Action to be performed
+     * @return Button with input characteristics
+     */
+    public static JButton createButton(String buttonText, Icon icon, Action a) {
+        var button = new JButton(buttonText, icon);
+        button.addActionListener(a);
+        button.setBackground(BUTTON_COLOR);
+        button.setFocusPainted(false);
+        return button;
     }
 }
