@@ -66,10 +66,7 @@ public class MainWindow {
      */
     public MainWindow(User loggedUser) {
         data = new DataManager(loggedUser);
-
         frame = createFrame();
-        frame.setIconImage(Icons.APP_ICON.getImage());
-        frame.setSize(1024, 768);
 
         Repository<Task> taskRepository = new InMemoryRepository<>(DEMO_DATA.getTasks());
         CrudService<Task> taskCrudService = new BaseCrudService<>(taskRepository);
@@ -78,10 +75,8 @@ public class MainWindow {
 
         var taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu());
-
         var templateTable = createTemplateTable(templateCrudService);
         templateTable.setComponentPopupMenu(createTemplateTablePopupMenu());
-
         var statisticsTable = createStatisticsTable();
 
         data.setTaskTable(taskTable);
@@ -89,9 +84,8 @@ public class MainWindow {
 
         frame.setJMenuBar(createMenuBar());
 
-        var filterBar = createFilterBar(taskTable, data);
-
-        frame.add(filterBar, BorderLayout.BEFORE_FIRST_LINE);
+        var toolBar = createToolBar(taskTable, data);
+        frame.add(toolBar, BorderLayout.BEFORE_FIRST_LINE);
 
         var splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         splitPane.setDividerSize(10);
@@ -102,31 +96,36 @@ public class MainWindow {
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Tasks", splitPane);
         tabbedPane.addTab("Templates", new JScrollPane(templateTable));
-
         tabbedPane.addChangeListener(e -> {
-            int selectedIndex = tabbedPane.getSelectedIndex();
-            String selectedTabTitle = tabbedPane.getTitleAt(selectedIndex);
-            filterBar.remove(newSomethingButton);
-
-            if ("Templates".equals(selectedTabTitle)) {
-                newSomethingButton = createButton("Template ", Icons.ADD_ICON,
-                        new AddAction(ActionType.TEMPLATE, data, null));
-            }
-            if ("Tasks".equals(selectedTabTitle)){
-                newSomethingButton = createButton("New Task ", Icons.ADD_ICON,
-                        new ChooseTemplateAction(data, frame));
-            }
-
-            filterBar.add(newSomethingButton, 0);
-            filterBar.revalidate();
-            filterBar.repaint();
+            updateToolBarForSelectedTab(tabbedPane, toolBar, data, frame);
         });
-
         frame.add(tabbedPane, BorderLayout.CENTER);
+
+        setUpTaskInspect(taskTable);
+
         frame.setLocationRelativeTo(null);
         frame.pack();
-        setUpTaskInspect(taskTable);
+        // This has to be here again idk why
         frame.setSize(1024, 768);
+    }
+
+    private void updateToolBarForSelectedTab(JTabbedPane tabbedPane, JToolBar toolBar, DataManager data, JFrame frame) {
+        int selectedIndex = tabbedPane.getSelectedIndex();
+        String selectedTabTitle = tabbedPane.getTitleAt(selectedIndex);
+        toolBar.remove(0);
+
+        if ("Templates".equals(selectedTabTitle)) {
+            newSomethingButton = createButton("Template ", Icons.ADD_ICON,
+                    new AddAction(ActionType.TEMPLATE, data, null));
+        }
+        if ("Tasks".equals(selectedTabTitle)){
+            newSomethingButton = createButton("New Task ", Icons.ADD_ICON,
+                    new ChooseTemplateAction(data, frame));
+        }
+
+        toolBar.add(newSomethingButton, 0);
+        toolBar.revalidate();
+        toolBar.repaint();
     }
 
     /**
@@ -137,6 +136,8 @@ public class MainWindow {
     private JFrame createFrame() {
         JFrame frame = new JFrame("MIB Task Manager");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setIconImage(Icons.APP_ICON.getImage());
+        frame.setSize(1024, 768);
         return frame;
     }
 
@@ -209,9 +210,9 @@ public class MainWindow {
     /**
      * Creates application Toolbar
      *
-     * @return Toolbar with AddNewTask button and filters for the tasks
+     * @return Toolbar with an Add New button and filters
      */
-    private JToolBar createFilterBar(JTable taskTable, DataManager data) {
+    private JToolBar createToolBar(JTable taskTable, DataManager data) {
         var rowSorter = new TableRowSorter<>((TaskTableModel) taskTable.getModel());
         var taskTableFilter = new TaskTableFilter(rowSorter);
         taskTable.setRowSorter(rowSorter);
