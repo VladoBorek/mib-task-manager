@@ -26,7 +26,6 @@ public class BaseCrudService<T extends Entity> implements CrudService<T> {
     public boolean create(T newEntity) {
         var savedEntity = repository.create(newEntity);
         newEntity.setId(savedEntity.getId());
-
         return true; //TODO validation
     }
 
