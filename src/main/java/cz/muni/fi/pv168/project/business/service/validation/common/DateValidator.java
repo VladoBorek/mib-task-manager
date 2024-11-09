@@ -4,9 +4,7 @@ import cz.muni.fi.pv168.project.business.service.validation.ValidationResult;
 
 import java.time.LocalDate;
 
-/**
- * @author Maroš Pavlík
- */
+
 public class DateValidator extends PropertyValidator<LocalDate>{
 
     public DateValidator() {
