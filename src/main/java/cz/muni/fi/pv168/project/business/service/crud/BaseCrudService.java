@@ -1,9 +1,8 @@
 package cz.muni.fi.pv168.project.business.service.crud;
 
-import cz.muni.fi.pv168.project.business.model.Entity;
+import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.repository.Repository;
-import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationResult;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 

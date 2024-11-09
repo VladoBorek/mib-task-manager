@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project.business.model;
+package cz.muni.fi.pv168.project.business.model.abstracts;
 
 public abstract class Entity {
 

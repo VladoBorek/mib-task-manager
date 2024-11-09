@@ -1,7 +1,6 @@
 package cz.muni.fi.pv168.project.ui.model.abstracts;
 
-import cz.muni.fi.pv168.project.business.model.Entity;
-import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 
 import javax.swing.*;

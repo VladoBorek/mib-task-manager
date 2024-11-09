@@ -1,10 +1,12 @@
 package cz.muni.fi.pv168.project.business.model;
 
-public class Template extends Entity {
+import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
+import cz.muni.fi.pv168.project.business.model.abstracts.EntityWithCategory;
+
+public class Template extends EntityWithCategory {
 
 
     private String name;
-    private Category category;
     private Integer allocatedTime;
     private TimeUnit timeUnit;
 
@@ -13,9 +15,8 @@ public class Template extends Entity {
 
     public Template(Long id, String name, Category category,
                     Integer allocatedTime, TimeUnit timeUnit, String templateName) {
-        super(id);
+        super(id, category);
         this.name = name;
-        this.category = category;
         this.allocatedTime = allocatedTime;
         this.timeUnit = timeUnit;
         this.templateName = templateName;
@@ -31,14 +32,6 @@ public class Template extends Entity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 
     public Integer getAllocatedTime() {
