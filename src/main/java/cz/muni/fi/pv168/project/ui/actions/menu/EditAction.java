@@ -60,8 +60,10 @@ public class EditAction extends AbstractAction {
                 }
                 var cDialog = new CategoryDialog(category);
                 cDialog.show(comboBox, "Edit Category").ifPresent(newCat -> {
-                    category.setName(newCat.getName());
-                    category.setColor(newCat.getColor());
+                    if (data.getCategories().update(newCat)) {
+                        category.setName(newCat.getName());
+                        category.setColor(newCat.getColor());
+                    };
                 });
                 data.getCategories().update(category);
 
@@ -75,10 +77,11 @@ public class EditAction extends AbstractAction {
                 }
                 var timeUnitDialog = new TimeUnitDialog(timeunit);
                 timeUnitDialog.show(comboBox, "Edit Time Unit").ifPresent(newTimeUnit -> {
-                    timeunit.setName(newTimeUnit.getName());
-                    timeunit.setRate(newTimeUnit.getRate());
-                    timeunit.setShortName(newTimeUnit.getShortName());
-
+                    if (data.getTimeUnits().update(newTimeUnit)) {
+                        timeunit.setName(newTimeUnit.getName());
+                        timeunit.setRate(newTimeUnit.getRate());
+                        timeunit.setShortName(newTimeUnit.getShortName());
+                    }
                 });
                 data.getTimeUnits().update(timeunit);
 

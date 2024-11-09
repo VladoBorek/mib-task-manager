@@ -38,8 +38,10 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
         items.remove(item);
     }
 
-    public void update(T item) {
+    public boolean update(T item) {
         crudService.update(item).intoException(); //TODO ADD ERROR POPUP
+
+        return true; // return false if exception
     }
 
 
