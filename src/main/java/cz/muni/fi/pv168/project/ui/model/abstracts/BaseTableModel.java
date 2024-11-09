@@ -34,16 +34,16 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
     }
 
     public void updateRow(T task) {
-        crudService.update(task); //TODO validation
-//                .intoException();
+        crudService.update(task)
+                .intoException(); //TODO ADD ERROR POPUP
         int rowIndex = items.indexOf(task);
         fireTableRowsUpdated(rowIndex, rowIndex);
     }
 
     public void addRow(T task){
         int newRowIndex = items.size();
-        crudService.create(task); //TODO validation
-//                        .intoException();
+        crudService.create(task)
+                .intoException(); //TODO ADD ERROR POPUP
         items.add(task);
         fireTableRowsInserted(newRowIndex, newRowIndex);
     }
@@ -64,5 +64,11 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
         for (int i = 0; i < totalRows; i++) {
             deleteRow(0);
         }
+    }
+
+    public boolean justValidate(T entity) {
+        crudService.validate(entity).intoException(); //TODO ADD ERROR POPUP, return false if exception
+
+        return true;
     }
 }

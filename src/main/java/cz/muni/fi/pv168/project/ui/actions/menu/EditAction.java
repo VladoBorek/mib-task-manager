@@ -2,6 +2,9 @@ package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.DataManager;
+import cz.muni.fi.pv168.project.business.model.Employee;
+import cz.muni.fi.pv168.project.business.model.Status;
+import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
@@ -50,7 +53,13 @@ public class EditAction extends AbstractAction {
                 var task = taskTableModel.getEntity(modelRow);
 
                 var tDialog = new AddTaskDialog(task, data);
-                tDialog.show(data.getTaskTable(), "Edit Task").ifPresent(taskTableModel::updateRow);
+                tDialog.show(data.getTaskTable(), "Edit Task").ifPresent(newTask -> {
+                        if (taskTableModel.justValidate(newTask)) {
+                            updateTask(task, newTask);
+                            taskTableModel.updateRow(task);
+                        }
+                    }
+                );
                 return;
 
             case CATEGORY:
@@ -60,8 +69,10 @@ public class EditAction extends AbstractAction {
                 }
                 var cDialog = new CategoryDialog(category);
                 cDialog.show(comboBox, "Edit Category").ifPresent(newCat -> {
-                    category.setName(newCat.getName());
-                    category.setColor(newCat.getColor());
+                    if (data.getCategories().justValidate(newCat)) {
+                        category.setName(newCat.getName());
+                        category.setColor(newCat.getColor());
+                    };
                 });
                 data.getCategories().update(category);
 
@@ -75,10 +86,11 @@ public class EditAction extends AbstractAction {
                 }
                 var timeUnitDialog = new TimeUnitDialog(timeunit);
                 timeUnitDialog.show(comboBox, "Edit Time Unit").ifPresent(newTimeUnit -> {
-                    timeunit.setName(newTimeUnit.getName());
-                    timeunit.setRate(newTimeUnit.getRate());
-                    timeunit.setShortName(newTimeUnit.getShortName());
-
+                    if (data.getTimeUnits().justValidate(newTimeUnit)) {
+                        timeunit.setName(newTimeUnit.getName());
+                        timeunit.setRate(newTimeUnit.getRate());
+                        timeunit.setShortName(newTimeUnit.getShortName());
+                    }
                 });
                 data.getTimeUnits().update(timeunit);
 
@@ -110,7 +122,33 @@ public class EditAction extends AbstractAction {
 
                 var templateTableModel = (TemplateTableModel) data.getTemplateTable().getModel();
                 var templateDialog = new TemplateDialog(data, template);
-                templateDialog.show(comboBox, "Edit Template").ifPresent(templateTableModel::updateRow);
+                templateDialog.show(comboBox, "Edit Template").ifPresent( newTemplate -> {
+                            if (templateTableModel.justValidate(newTemplate)) {
+                                updateTemplate(template, newTemplate);
+                                templateTableModel.updateRow(template);
+                            }
+                        }
+                );
         }
+    }
+
+    private void updateTask(Task oldT, Task newT) {
+        oldT.setNameOfTask(newT.getNameOfTask());
+        oldT.setCustomer(newT.getCustomer());
+        oldT.setAssignedTo(newT.getAssignedTo());
+        oldT.setCategory(newT.getCategory());
+        oldT.setStatus(newT.getStatus());
+        oldT.setConvertedLoggedTime(newT.getConvertedLoggedTime());
+        oldT.setConvertedAllocatedTime(newT.getConvertedAllocatedTime());
+        oldT.setDueDate(newT.getDueDate());
+        oldT.setTimeUnit(newT.getTimeUnit());
+    }
+
+    private void updateTemplate(Template oldT, Template newT) {
+        oldT.setTemplateName(newT.getTemplateName());
+        oldT.setName(newT.getName());
+        oldT.setTimeUnit(newT.getTimeUnit());
+        oldT.setCategory(newT.getCategory());
+        oldT.setAllocatedTime(newT.getAllocatedTime());
     }
 }
