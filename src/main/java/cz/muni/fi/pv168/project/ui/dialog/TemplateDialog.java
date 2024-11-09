@@ -138,20 +138,12 @@ public class TemplateDialog extends EntityDialog<Template>{
         if (!validateFields()) {
             return null;
         }
-        var template = this.template;
-        if (template != null) {
-            template.setTemplateName(templateNameField.getText());
-            template.setName(nameField.getText());
-            template.setTimeUnit((TimeUnit) timeUnitComboBox.getSelectedItem());
-            template.setCategory((Category) categoryComboBox.getSelectedItem());
-            template.setAllocatedTime(allocatedTimeField.getValue());
-        } else {
-            template = new Template(null, nameField.getText(),
-                    (Category) categoryComboBox.getSelectedItem(),
-                    allocatedTimeField.getValue(),
-                    (TimeUnit) timeUnitComboBox.getSelectedItem(),
-                    templateNameField.getText());
-        }
-        return template;
+        var newTemplate = new Template(null, nameField.getText(),
+                (Category) categoryComboBox.getSelectedItem(),
+                allocatedTimeField.getValue(),
+                (TimeUnit) timeUnitComboBox.getSelectedItem(),
+                templateNameField.getText());
+        return newTemplate;
     }
+
 }

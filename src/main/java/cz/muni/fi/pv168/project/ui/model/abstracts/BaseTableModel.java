@@ -65,4 +65,10 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
             deleteRow(0);
         }
     }
+
+    public boolean justValidate(T entity) {
+        crudService.validate(entity).intoException(); //TODO ADD ERROR POPUP, return false if exception
+
+        return true;
+    }
 }

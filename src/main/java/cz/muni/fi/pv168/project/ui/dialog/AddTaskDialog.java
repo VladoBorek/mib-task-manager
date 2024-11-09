@@ -191,31 +191,29 @@ public class AddTaskDialog extends EntityDialog<Task>{
         if (!validateFields()) {
             return null;
         }
-        if (task != null) {
-            task.setNameOfTask(taskNameField.getText());
-            task.setCustomer(customerField.getText());
-            task.setAssignedTo((Employee) assignedToComboBox.getSelectedItem());
-            task.setCategory((Category) categoryComboBox.getSelectedItem());
-            task.setStatus((Status) statusComboBox.getSelectedItem());
-            task.setConvertedLoggedTime(loggedTimeField.getValue());
-            task.setConvertedAllocatedTime(allocatedTimeField.getValue());
-            task.setDueDate(datePicker.getDate());
-            task.setTimeUnit((TimeUnit) timeUnitsComboBox.getSelectedItem());
 
-        }
-        else {
-            task = new Task(null, (Status) statusComboBox.getSelectedItem(),
-                    this.descriptionArea.getText(),
-                    (Category) categoryComboBox.getSelectedItem(),
-                    customerField.getText(),
-                    taskNameField.getText(),
-                    (Employee) assignedToComboBox.getSelectedItem(),
-                    loggedTimeField.getValue(),
-                    allocatedTimeField.getValue(),
-                    (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem()),
-                    datePicker.getDate());
-        }
-        return task;
+
+//        if (task != null) {
+//            task.setNameOfTask(taskNameField.getText());
+//            task.setCustomer(customerField.getText());
+//            task.setAssignedTo((Employee) assignedToComboBox.getSelectedItem());
+//            task.setCategory((Category) categoryComboBox.getSelectedItem());
+//            task.setStatus((Status) statusComboBox.getSelectedItem());
+//            task.setConvertedLoggedTime(loggedTimeField.getValue());
+//            task.setConvertedAllocatedTime(allocatedTimeField.getValue());
+//            task.setDueDate(datePicker.getDate());
+//            task.setTimeUnit((TimeUnit) timeUnitsComboBox.getSelectedItem());
+
+        return new Task(null, (Status) statusComboBox.getSelectedItem(),
+                this.descriptionArea.getText(),
+                (Category) categoryComboBox.getSelectedItem(),
+                customerField.getText(),
+                taskNameField.getText(),
+                (Employee) assignedToComboBox.getSelectedItem(),
+                loggedTimeField.getValue(),
+                allocatedTimeField.getValue(),
+                (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem()),
+                datePicker.getDate());
     }
 
 

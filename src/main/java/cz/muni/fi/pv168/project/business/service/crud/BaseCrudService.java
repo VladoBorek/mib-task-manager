@@ -55,4 +55,9 @@ public class BaseCrudService<T extends Entity> implements CrudService<T> {
     public void deleteAll() {
         repository.deleteAll();
     }
+
+    @Override
+    public ValidationResult validate(T entity) {
+        return validator.validate(entity);
+    }
 }

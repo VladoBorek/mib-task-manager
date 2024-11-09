@@ -38,10 +38,8 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
         items.remove(item);
     }
 
-    public boolean update(T item) {
+    public void update(T item) {
         crudService.update(item).intoException(); //TODO ADD ERROR POPUP
-
-        return true; // return false if exception
     }
 
 
@@ -53,5 +51,11 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
     @Override
     public T getElementAt(int index) {
         return items.get(index);
+    }
+
+    public boolean justValidate(T entity) {
+        crudService.validate(entity).intoException(); //TODO ADD ERROR POPUP
+
+        return true;  // return false if exception
     }
 }
