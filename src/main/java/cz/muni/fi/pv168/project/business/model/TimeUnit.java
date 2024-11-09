@@ -1,5 +1,7 @@
 package cz.muni.fi.pv168.project.business.model;
 
+import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
+
 public abstract class TimeUnit extends Entity {
     public static final String BASE_UNIT = "Minute";
     public static final String BASE_UNIT_SHORT = "min";

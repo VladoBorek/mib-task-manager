@@ -1,6 +1,8 @@
 package cz.muni.fi.pv168.project.business.model;
 
-public class User extends Entity{
+import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
+
+public class User extends Entity {
     private final String username;
     private final Long Id;
 

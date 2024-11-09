@@ -5,7 +5,7 @@ import cz.muni.fi.pv168.project.business.model.Status;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.ui.filters.matchers.EntityMatcher;
 import cz.muni.fi.pv168.project.ui.filters.matchers.EntityMatchers;
-import cz.muni.fi.pv168.project.ui.filters.matchers.task.TaskCategoryMatcher;
+import cz.muni.fi.pv168.project.ui.filters.matchers.entityWithCategory.EntityCategoryMatcher;
 import cz.muni.fi.pv168.project.ui.filters.matchers.task.TaskDueDateMatcher;
 import cz.muni.fi.pv168.project.ui.filters.matchers.task.TaskStatusMatcher;
 import cz.muni.fi.pv168.project.ui.filters.values.SpecialFilterCategoryValues;
@@ -30,8 +30,8 @@ public final class TaskTableFilter {
 
     public void filterCategory(Either<SpecialFilterCategoryValues, Category> selectedItem) {
         selectedItem.apply(
-                l -> taskCompoundMatcher.setCategoryMatcher(l.getMatcher()),
-                r -> taskCompoundMatcher.setCategoryMatcher(new TaskCategoryMatcher(r))
+                l -> taskCompoundMatcher.setCategoryMatcher((EntityMatcher<Task>) l.getMatcher()),
+                r -> taskCompoundMatcher.setCategoryMatcher(new EntityCategoryMatcher<Task>(r))
         );
     }
 

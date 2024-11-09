@@ -1,5 +1,7 @@
 package cz.muni.fi.pv168.project.business.model;
 
+import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
+import cz.muni.fi.pv168.project.business.model.abstracts.EntityWithCategory;
 import cz.muni.fi.pv168.project.business.repository.Repository;
 import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
@@ -18,11 +20,10 @@ import java.util.ArrayList;
 
 import static java.lang.Math.round;
 
-public class Task extends Entity {
+public class Task extends EntityWithCategory {
 
     private Status status;
     private String description;
-    private Category category;
     private String customer;
     private String nameOfTask;
     private Employee assignedTo;
@@ -30,7 +31,6 @@ public class Task extends Entity {
     // In the base time unit
     private Integer loggedTime;
     private Integer allocatedTime;
-
     private TimeUnit timeUnit;
     private LocalDate dueDate;
 
@@ -38,10 +38,9 @@ public class Task extends Entity {
 
     public Task(Long id, Status status, String description, Category category, String customer,String nameOfTask,
                 Employee assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
-        super(id);
+        super(id, category);
         this.status = status;
         this.description = description;
-        this.category = category;
         this.customer = customer;
         this.nameOfTask = nameOfTask;
         this.assignedTo = assignedTo;
@@ -111,14 +110,6 @@ public class Task extends Entity {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 
     public String getNameOfTask() {

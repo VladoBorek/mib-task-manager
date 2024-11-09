@@ -1,9 +1,11 @@
 package cz.muni.fi.pv168.project.business.model;
 
+import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
+
 /**
  * @author Vladimir Borek
  */
-public class LogTimeInfo extends Entity{
+public class LogTimeInfo extends Entity {
     private Integer loggedTime;
 
     private final Employee user;
