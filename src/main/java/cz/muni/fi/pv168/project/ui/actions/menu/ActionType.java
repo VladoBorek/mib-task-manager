@@ -9,4 +9,5 @@ public enum ActionType {
     TEMPLATE,
     TIME_UNIT,
     FILTER,
+    INSPECT
 }

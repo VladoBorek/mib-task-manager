@@ -5,7 +5,6 @@ import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
-import cz.muni.fi.pv168.project.ui.model.TemplateTableModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,10 +32,12 @@ public class ChooseTemplateDialog extends JDialog {
         setLocationRelativeTo(parent);
     }
 
-    private JButton createButton(String buttonText, Action a)
-    {
+    private JButton createButton(String buttonText, Action a) {
         var button = new JButton(buttonText);
-        button.addActionListener(a);
+        button.addActionListener(e -> {
+            a.actionPerformed(e);
+            dispose();
+        });
         button.setBackground(MainWindow.BUTTON_COLOR);
         button.setFocusPainted(false);
         return button;

@@ -8,7 +8,7 @@ import java.util.function.Function;
  *
  * code from the seminar
  */
-class Column<E, T> {
+public class Column<E, T> {
 
     private final String name;
     private final Function<E, T> valueGetter;
@@ -34,26 +34,26 @@ class Column<E, T> {
         return new Column<>(name, columnClass, valueGetter, null);
     }
 
-    void setValue(Object value, E entity) {
+    public void setValue(Object value, E entity) {
         if (valueSetter == null) {
             throw new UnsupportedOperationException("Cannot set value in readonly column: '" + name + "'");
         }
         valueSetter.accept(entity, columnType.cast(value)); // see Item 33: Consider type-safe heterogeneous containers
     }
 
-    T getValue(E entity) {
+    public T getValue(E entity) {
         return valueGetter.apply(entity);
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    Class<?> getColumnType() {
+    public Class<?> getColumnType() {
         return columnType;
     }
 
-    boolean isEditable() {
+    public boolean isEditable() {
         return valueSetter != null;
     }
 }

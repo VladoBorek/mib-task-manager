@@ -1,7 +1,6 @@
 package cz.muni.fi.pv168.project.ui.resources;
 
 import javax.swing.*;
-import java.net.URL;
 import javax.swing.ImageIcon;
 
 /**
@@ -16,8 +15,8 @@ public final class Icons {
     public static final Icon MANAGE_ICON = createIcon("Crystal_Clear_action_edit.png");
     public static final Icon ADD_ICON = createIcon("Crystal_Clear_action_edit_add.png");
     public static final Icon QUIT_ICON = createIcon("Crystal_Clear_action_exit.png");
-    public static  final Icon IMPORT_ICON = createIcon("Crystal_Clear_action_down.png");
-    public static final Icon EXPORT_ICON = createIcon("Crystal_Clear_action_up.png");
+    public static  final Icon IMPORT_ICON = createIcon("Crystal_Clear_action_import.png");
+    public static final Icon EXPORT_ICON = createIcon("Crystal_Clear_action_export.png");
     public static final Icon INSPECT_ICON = createIcon("Inspect_Icon.png");
     public static final Icon MIB_ICON = createIcon("MIB_Icon.png");
 

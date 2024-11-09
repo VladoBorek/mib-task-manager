@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
+import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.DataManager;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
@@ -8,10 +9,10 @@ import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.AddTaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
-import cz.muni.fi.pv168.project.ui.model.CategoryListModel;
-import cz.muni.fi.pv168.project.ui.model.TaskTableModel;
-import cz.muni.fi.pv168.project.ui.model.TemplateTableModel;
-import cz.muni.fi.pv168.project.ui.model.TimeUnitListModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.CategoryListModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TimeUnitListModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
@@ -23,7 +24,7 @@ public class AddAction extends AbstractAction {
     private final DataManager data;
     private final JComboBox<Template> chosenTemplate;
     private JComboBox<TimeUnit> timeUnitsComboBox = null;
-    private JComboBox<Object> categoryComboBox = null;
+    private JComboBox<Category> categoryComboBox = null;
 
 
     public AddAction(ActionType type,
@@ -40,7 +41,7 @@ public class AddAction extends AbstractAction {
                      DataManager data,
                      JComboBox<Template> chosenTemplate,
                      JComboBox<TimeUnit> timeUnitsComboBox,
-                     JComboBox<Object> categoryComboBox
+                     JComboBox<Category> categoryComboBox
                      ) {
         super("Add new " + type.toString().toLowerCase().replace('_', ' '), Icons.ADD_ICON);
         this.type = type;
@@ -91,6 +92,7 @@ public class AddAction extends AbstractAction {
     private void addTask() {
         TaskTableModel taskTableModel = (TaskTableModel) data.getTaskTable().getModel();
         AddTaskDialog dialog;
+
         if (((Template) Objects.requireNonNull(chosenTemplate.getSelectedItem()))
                 .getTemplateName().compareTo("<Don't use a template>") == 0) {
             dialog = new AddTaskDialog(null, data);
@@ -104,7 +106,9 @@ public class AddAction extends AbstractAction {
     private void addTemplate() {
         TemplateTableModel templateTableModel = (TemplateTableModel) data.getTemplateTable().getModel();
         TemplateDialog dialog;
+
         dialog = new TemplateDialog(data, null);
+
         dialog.show(data.getTaskTable(), "Add new Template").ifPresent(templateTableModel::addRow);
     }
 
@@ -140,11 +144,11 @@ public class AddAction extends AbstractAction {
     /*
     Automatically updates combobox in task window when creating new category
      */
-    private void addCategory(JComboBox<Object> categoryComboBox) {
+    private void addCategory(JComboBox<Category> categoryComboBox) {
         var dialog = new CategoryDialog();
         dialog.show(null, "Add a new Category").ifPresent(newCategory -> {
             data.getCategories().add(newCategory);
-            DefaultComboBoxModel<Object> model = (DefaultComboBoxModel<Object>) categoryComboBox.getModel();
+            DefaultComboBoxModel<Category> model = (DefaultComboBoxModel<Category>) categoryComboBox.getModel();
             model.addElement(newCategory);
             categoryComboBox.setSelectedItem(newCategory);
         });
