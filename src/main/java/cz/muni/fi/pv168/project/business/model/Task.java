@@ -3,6 +3,8 @@ package cz.muni.fi.pv168.project.business.model;
 import cz.muni.fi.pv168.project.business.repository.Repository;
 import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
+import cz.muni.fi.pv168.project.business.service.validation.LogTimeInfoValidator;
+import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.LogTimeInfoTableModel;
@@ -51,8 +53,9 @@ public class Task extends Entity {
         DemoDataGenerator demoDataGenerator = new DemoDataGenerator();
         List<LogTimeInfo> logTimeInfoList = generateLogTimeInfoData(demoDataGenerator.getEmployees());
 
+        Validator<LogTimeInfo> logTimeInfoValidator = new LogTimeInfoValidator();
         Repository<LogTimeInfo> logTimeInfoRepository = new InMemoryRepository<>(logTimeInfoList);
-        CrudService<LogTimeInfo> logTimeInfoCrudService = new BaseCrudService<>(logTimeInfoRepository);
+        CrudService<LogTimeInfo> logTimeInfoCrudService = new BaseCrudService<>(logTimeInfoRepository, logTimeInfoValidator);
 
         this.timeLogTable = createLogTimeInfoTable(logTimeInfoCrudService);
 

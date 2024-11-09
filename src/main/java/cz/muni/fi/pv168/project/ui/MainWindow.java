@@ -7,6 +7,9 @@ import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.repository.Repository;
 import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
+import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
+import cz.muni.fi.pv168.project.business.service.validation.TemplateValidator;
+import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.actions.menu.ExportAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.ImportAction;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
@@ -72,10 +75,13 @@ public class MainWindow {
         data = new DataManager(loggedUser);
         frame = createFrame();
 
+        Validator<Task> taskValidator = new TaskValidator();
         Repository<Task> taskRepository = new InMemoryRepository<>(DEMO_DATA.getTasks());
-        CrudService<Task> taskCrudService = new BaseCrudService<>(taskRepository);
+        CrudService<Task> taskCrudService = new BaseCrudService<>(taskRepository, taskValidator);
+
+        Validator<Template> templateValidator = new TemplateValidator();
         Repository<Template> templateRepository = new InMemoryRepository<>(new ArrayList<>());
-        CrudService<Template> templateCrudService = new BaseCrudService<>(templateRepository);
+        CrudService<Template> templateCrudService = new BaseCrudService<>(templateRepository, templateValidator);
 
         var taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu());

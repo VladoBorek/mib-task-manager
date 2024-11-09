@@ -3,6 +3,10 @@ package cz.muni.fi.pv168.project.business.model;
 import cz.muni.fi.pv168.project.business.repository.Repository;
 import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
+import cz.muni.fi.pv168.project.business.service.validation.CategoryValidator;
+import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
+import cz.muni.fi.pv168.project.business.service.validation.TimeUnitValidator;
+import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.EmployeeListModel;
@@ -31,16 +35,18 @@ public class DataManager {
     private JTable templateTable;
 
     public DataManager(User loggedUser) {
+        Validator<TimeUnit> timeUnitValidator = new TimeUnitValidator();
         Repository<TimeUnit> timeUnitRepository = new InMemoryRepository<>(DEMO_DATA.getTimeUnits());
-        CrudService<TimeUnit> timeUnitCrudService = new BaseCrudService<>(timeUnitRepository);
+        CrudService<TimeUnit> timeUnitCrudService = new BaseCrudService<>(timeUnitRepository, timeUnitValidator);
         this.timeUnits = new TimeUnitListModel(new ArrayList<>(DEMO_DATA.getTimeUnits()), timeUnitCrudService);
 
+        Validator<Category> categoryValidator = new CategoryValidator();
         Repository<Category> categoryRepository = new InMemoryRepository<>(DEMO_DATA.getCategories());
-        CrudService<Category> categoryCrudService = new BaseCrudService<>(categoryRepository);
+        CrudService<Category> categoryCrudService = new BaseCrudService<>(categoryRepository, categoryValidator);
         this.categories = new CategoryListModel(new ArrayList<>(DEMO_DATA.getCategories()), categoryCrudService);
 
         Repository<Employee> employeeRepository = new InMemoryRepository<>(DEMO_DATA.getEmployees());
-        CrudService<Employee> employeeCrudService = new BaseCrudService<>(employeeRepository);
+        CrudService<Employee> employeeCrudService = new BaseCrudService<>(employeeRepository, null); // TODO DELETE EMPLOYEES
         this.employees = new EmployeeListModel(new ArrayList<>(DEMO_DATA.getEmployees()), employeeCrudService);
 
         this.loggedUser = loggedUser;

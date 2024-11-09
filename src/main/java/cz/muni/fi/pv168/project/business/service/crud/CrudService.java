@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.business.service.crud;
 
 import cz.muni.fi.pv168.project.business.model.Entity;
+import cz.muni.fi.pv168.project.business.service.validation.ValidationResult;
 
 import java.util.List;
 
@@ -18,15 +19,13 @@ public interface CrudService<T extends Entity> {
 
     /**
      * Validate and store the given {@code newEntity}.
-     * TODO create validation
      */
-    boolean create(T newEntity);
+    ValidationResult create(T newEntity);
 
     /**
      * Updates the given {@code entity}.
-     * TODO create validation
      */
-    boolean update(T entity);
+    ValidationResult update(T entity);
 
     /**
      * Delete entity with given {@code id}.

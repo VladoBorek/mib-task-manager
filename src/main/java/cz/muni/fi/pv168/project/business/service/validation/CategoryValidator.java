@@ -11,7 +11,7 @@ public class CategoryValidator implements Validator<Category> {
     public ValidationResult validate(Category category) {
         var validators = List.of(
                 Validator.extracting(
-                        Category::getName, new StringLengthValidator(1, 10, "Category name"))
+                        Category::getName, new StringLengthValidator(1, 20, "Category name"))
         );
 
         return Validator.compose(validators).validate(category);

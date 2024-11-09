@@ -29,7 +29,7 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
 
 
     public void add(T item) {
-        crudService.create(item);
+        crudService.create(item).intoException(); //TODO ADD ERROR POPUP
         items.add(item);
     }
 
@@ -39,7 +39,7 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
     }
 
     public void update(T item) {
-        crudService.update(item);
+        crudService.update(item).intoException(); //TODO ADD ERROR POPUP
     }
 
 
