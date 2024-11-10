@@ -23,8 +23,8 @@ public class LogTimeInfo extends Entity {
         this.loggedTime = newLoggedTime;
     }
 
-    public Long getUserId(){
-        return user.getId();
+    public int getUserId(){
+        return user.getEmployeeId();
     }
 
     public String getUsername(){

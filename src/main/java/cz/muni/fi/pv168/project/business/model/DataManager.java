@@ -9,7 +9,6 @@ import cz.muni.fi.pv168.project.business.service.validation.TimeUnitValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.CategoryListModel;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.EmployeeListModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TimeUnitListModel;
@@ -27,7 +26,6 @@ import static cz.muni.fi.pv168.project.ui.MainWindow.DEMO_DATA;
 public class DataManager {
     private final TimeUnitListModel timeUnits;
     private final CategoryListModel categories;
-    private final EmployeeListModel employees;
 
     private final User loggedUser;
     private JTable taskTable;
@@ -45,10 +43,6 @@ public class DataManager {
         CrudService<Category> categoryCrudService = new BaseCrudService<>(categoryRepository, categoryValidator);
         this.categories = new CategoryListModel(new ArrayList<>(DEMO_DATA.getCategories()), categoryCrudService);
 
-        Repository<Employee> employeeRepository = new InMemoryRepository<>(DEMO_DATA.getEmployees());
-        CrudService<Employee> employeeCrudService = new BaseCrudService<>(employeeRepository, null); // TODO DELETE EMPLOYEES
-        this.employees = new EmployeeListModel(new ArrayList<>(DEMO_DATA.getEmployees()), employeeCrudService);
-
         this.loggedUser = loggedUser;
     }
 
@@ -58,9 +52,6 @@ public class DataManager {
 
     public CategoryListModel getCategories() {
         return categories;
-    }
-    public EmployeeListModel getEmployees() {
-        return employees;
     }
 
     public JTable getTaskTable(){
