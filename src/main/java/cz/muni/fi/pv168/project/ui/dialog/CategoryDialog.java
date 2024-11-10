@@ -1,6 +1,8 @@
 package cz.muni.fi.pv168.project.ui.dialog;
 
 import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.business.service.validation.CategoryValidator;
+import cz.muni.fi.pv168.project.business.service.validation.Validator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,6 +65,15 @@ public class CategoryDialog extends EntityDialog<Category> {
 
     @Override
     Category getEntity() {
+        Validator<Category> categoryValidator = new CategoryValidator();
+        var validation = categoryValidator.validate(new Category(null, nameField.getText(), selectedColor));
+        if (!validation.isValid()) {
+            PopUp.infoDialog(
+                    validation.getValidationErrors(),
+                    "Input error",
+                    JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
         return new Category(null, nameField.getText(), selectedColor);
     }
 }
