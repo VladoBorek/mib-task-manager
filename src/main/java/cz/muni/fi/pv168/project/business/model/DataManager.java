@@ -34,6 +34,8 @@ public class DataManager {
     private TaskTableModel taskTableModel;
     private JTable templateTable;
 
+    private JTable statisticsTable;
+
     public DataManager(User loggedUser) {
         Validator<TimeUnit> timeUnitValidator = new TimeUnitValidator();
         Repository<TimeUnit> timeUnitRepository = new InMemoryRepository<>(DEMO_DATA.getTimeUnits());
@@ -91,5 +93,13 @@ public class DataManager {
 
     public List<Template> getTemplates() {
         return ((TemplateTableModel) getTemplateTable().getModel()).getAllRows();
+    }
+
+    public JTable getStatisticsTable() {
+        return statisticsTable;
+    }
+
+    public void setStatisticsTable(JTable statisticsTable) {
+        this.statisticsTable = statisticsTable;
     }
 }

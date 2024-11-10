@@ -85,18 +85,28 @@ public class MainWindow {
 
         var taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu());
+
         var templateTable = createTemplateTable(templateCrudService);
         templateTable.setComponentPopupMenu(createTemplateTablePopupMenu());
-        var statisticsTable = createStatisticsTable();
+
 
         data.setTaskTable(taskTable);
         data.setTemplateTable(templateTable);
+
+        var statisticsTable = createStatisticsTable();
+        data.setStatisticsTable(statisticsTable);
+
+
 
         frame.setJMenuBar(createMenuBar());
 
         var taskToolBar = createTaskToolBar(taskTable, data);
         var templateToolBar = createTemplateToolBar(templateTable, data);
         frame.add(taskToolBar, BorderLayout.BEFORE_FIRST_LINE);
+
+
+
+
 
         var splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         splitPane.setDividerSize(10);
@@ -213,6 +223,7 @@ public class MainWindow {
 
         var categoryColumn = table.getColumnModel().getColumn(2);
         categoryColumn.setCellRenderer(new CategoryCellRenderer());
+
         data.setTaskTableModel(tableModel);
 
         return table;
@@ -225,8 +236,9 @@ public class MainWindow {
      */
     private JToolBar createTaskToolBar(JTable taskTable, DataManager data) {
         var rowSorter = new TableRowSorter<>((TaskTableModel) taskTable.getModel());
-        var taskTableFilter = new TaskTableFilter(rowSorter);
+        var taskTableFilter = new TaskTableFilter(rowSorter, data);
         taskTable.setRowSorter(rowSorter);
+
 
         var filterBar = new JToolBar();
         filterBar.setFloatable(false);
@@ -396,6 +408,7 @@ public class MainWindow {
 
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         table.setAutoCreateRowSorter(true);
+
         var categoryColumn = table.getColumnModel().getColumn(2);
         categoryColumn.setCellRenderer(new CategoryCellRenderer());
 
@@ -403,7 +416,7 @@ public class MainWindow {
     }
 
     private JTable createStatisticsTable(){
-        var model = new StatisticsTableModel();
+        var model = new StatisticsTableModel(data);
         var table = new JTable(model);
 
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));

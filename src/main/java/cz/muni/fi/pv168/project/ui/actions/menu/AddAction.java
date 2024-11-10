@@ -15,6 +15,9 @@ import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TimeUnitListModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
+import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
+
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.Objects;
@@ -110,6 +113,7 @@ public class AddAction extends AbstractAction {
         TaskTableModel taskTableModel = (TaskTableModel) data.getTaskTable().getModel();
         AddTaskDialog dialog;
 
+
         if (((Template) Objects.requireNonNull(chosenTemplate.getSelectedItem()))
                 .getTemplateName().compareTo("<Don't use a template>") == 0) {
             dialog = new AddTaskDialog(null, data);
@@ -118,6 +122,9 @@ public class AddAction extends AbstractAction {
         }
 
         dialog.show(data.getTaskTable(), "Add new Task").ifPresent(taskTableModel::addRow);
+
+        StatisticsTableModel statisticsTableModel = (StatisticsTableModel) data.getStatisticsTable().getModel();
+        statisticsTableModel.refreshStatistics();
     }
 
     private void addTemplate() {
