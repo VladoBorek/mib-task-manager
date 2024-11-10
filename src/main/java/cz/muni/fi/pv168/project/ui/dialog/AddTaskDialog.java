@@ -8,6 +8,8 @@ import cz.muni.fi.pv168.project.business.model.Employee;
 import cz.muni.fi.pv168.project.business.model.Status;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
+import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
@@ -192,7 +194,28 @@ public class AddTaskDialog extends EntityDialog<Task>{
 
     @Override
     Task getEntity() {
+        Validator<Task> taskValidator = new TaskValidator();
+        var validation = taskValidator.validate(
+                new Task(
+                        null, (Status) statusComboBox.getSelectedItem(),
+                this.descriptionArea.getText(),
+                (Category) categoryComboBox.getSelectedItem(),
+                customerField.getText(),
+                taskNameField.getText(),
+                new Employee(assignedToName.getText(), assignedToId.getValue()),
+                loggedTimeField.getValue(),
+                allocatedTimeField.getValue(),
+                (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem()),
+                datePicker.getDate()));
+
         if (!validateFields()) {
+            return null;
+        }
+        if (!validation.isValid()){
+            PopUp.infoDialog(
+                    validation.getValidationErrors(),
+                    "Input error",
+                    JOptionPane.ERROR_MESSAGE);
             return null;
         }
 
