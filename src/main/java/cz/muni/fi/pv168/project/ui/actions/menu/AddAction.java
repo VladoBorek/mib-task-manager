@@ -59,7 +59,6 @@ public class AddAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        //TODO dialog switch for different types
         switch(type) {
             case TASK:
                 addTask();

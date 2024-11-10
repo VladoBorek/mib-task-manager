@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.project.ui.actions.menu;
 import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.DataManager;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -37,18 +38,6 @@ public class DeleteAction extends AbstractAction {
                         .boxed()
                         .sorted(Comparator.reverseOrder())
                         .forEach(taskTableModelTableModel::deleteRow);
-//                TODO (už asi nie. Implemented podla cvika)
-//                var selectedRows = contentTable.getSelectedRows();
-//                if (selectedRows.length != 1) {
-//                    throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
-//                }
-//                var taskTableModel = (TaskTableModel) contentTable.getModel();
-//                int modelRow = contentTable.convertRowIndexToModel(selectedRows[0]);
-//                var task = taskTableModel.getEntity(modelRow);
-//
-//                var tDialog = new TaskDialog(task, categories.toArray());
-//                System.out.println(task.getNameOfTask());
-//                tDialog.show(contentTable, "Edit Task").ifPresent(taskTableModel::updateRow);
                 return;
             case TEMPLATE:
                 var templateTableModel = (TemplateTableModel) data.getTemplateTable().getModel();
@@ -68,8 +57,10 @@ public class DeleteAction extends AbstractAction {
 
                 assert timeUnit != null;
                 if (Objects.equals(timeUnit.getName(), TimeUnit.getBaseUnit())){
-                    JFrame frame = new JFrame();
-                    JOptionPane.showMessageDialog(frame, "You cannot delete " + TimeUnit.getBaseUnit() + " Time Unit!");
+                    PopUp.infoDialog(
+                            "You cannot delete " + TimeUnit.getBaseUnit() + " Time Unit!",
+                            "Forbidden action",
+                            JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 data.getTimeUnits().remove(timeUnit);

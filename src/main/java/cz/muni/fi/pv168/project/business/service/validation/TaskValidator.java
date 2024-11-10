@@ -17,8 +17,11 @@ public class TaskValidator implements Validator<Task>{
                 Validator.extracting(
                         Task::getDescription, new StringLengthValidator(0, 100, "Description")),
                 Validator.extracting(
-                        Task::getDueDate, new DateValidator()
-                )
+                        Task::getDueDate, new DateValidator()),
+                Validator.extracting(
+                        Task ::getCategory, new CategoryValidator()),
+                Validator.extracting(
+                        Task::getTimeUnit, new TimeUnitValidator())
         );
 
         return Validator.compose(validators).validate(task);
