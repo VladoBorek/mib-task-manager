@@ -4,6 +4,7 @@ import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.DataManager;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -72,8 +73,10 @@ public class DeleteAction extends AbstractAction {
 
                 assert timeUnit != null;
                 if (Objects.equals(timeUnit.getName(), TimeUnit.getBaseUnit())){
-                    JFrame frame = new JFrame();
-                    JOptionPane.showMessageDialog(frame, "You cannot delete " + TimeUnit.getBaseUnit() + " Time Unit!");
+                    PopUp.infoDialog(
+                            "You cannot delete " + TimeUnit.getBaseUnit() + " Time Unit!",
+                            "Forbidden action",
+                            JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 data.getTimeUnits().remove(timeUnit);

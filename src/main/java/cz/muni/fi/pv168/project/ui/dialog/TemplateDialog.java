@@ -124,7 +124,10 @@ public class TemplateDialog extends EntityDialog<Template>{
                 || (templateNameField.getText().trim().isEmpty())
                 || (allocatedTimeField.getText().trim().isEmpty())
         ) {
-            JOptionPane.showMessageDialog(null, "Please fill all information", "Error", JOptionPane.ERROR_MESSAGE);
+            PopUp.infoDialog(
+                    "Please fill all information",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;

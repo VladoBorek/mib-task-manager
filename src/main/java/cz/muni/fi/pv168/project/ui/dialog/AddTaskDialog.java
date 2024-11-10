@@ -177,7 +177,10 @@ public class AddTaskDialog extends EntityDialog<Task>{
                 || (allocatedTimeField.getText().trim().isEmpty())
                 || (loggedTimeField.getText().trim().isEmpty())
         ) {
-            JOptionPane.showMessageDialog(null, "Please fill all information", "Error", JOptionPane.ERROR_MESSAGE);
+            PopUp.infoDialog(
+                    "Please fill all information",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;

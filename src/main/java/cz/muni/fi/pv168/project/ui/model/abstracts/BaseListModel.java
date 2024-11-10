@@ -2,6 +2,8 @@ package cz.muni.fi.pv168.project.ui.model.abstracts;
 
 import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
+import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -28,7 +30,14 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
 
 
     public void add(T item) {
-        crudService.create(item).intoException(); //TODO ADD ERROR POPUP
+        try {
+            crudService.create(item)
+                    .intoException();
+        } catch (ValidationException e){
+            PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         items.add(item);
     }
 
@@ -38,7 +47,12 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
     }
 
     public void update(T item) {
-        crudService.update(item).intoException(); //TODO ADD ERROR POPUP
+        try {
+            crudService.update(item)
+                    .intoException();
+        } catch (ValidationException e){
+            PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 
@@ -53,8 +67,12 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
     }
 
     public boolean justValidate(T entity) {
-        crudService.validate(entity).intoException(); //TODO ADD ERROR POPUP
-
+        try {
+            crudService.validate(entity).intoException();
+        } catch (ValidationException e){
+            PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
         return true;  // return false if exception
     }
 }

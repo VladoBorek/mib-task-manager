@@ -177,7 +177,6 @@ public class MainWindow {
         menuBar.setBackground(new Color(240, 240, 240));
 
         menuBar.add(createJMenu("File", new ImportAction(data), new ExportAction(data)));
-        //TODO Create TemplateListModel
         menuBar.add(createJMenu("Template",
                 new AddAction(ActionType.TEMPLATE, data, null),
                 new ManageAction(ActionType.TEMPLATE, data, frame)));
