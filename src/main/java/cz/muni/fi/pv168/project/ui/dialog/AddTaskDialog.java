@@ -82,11 +82,9 @@ public class AddTaskDialog extends EntityDialog<Task>{
         timeUnitsComboBox = new JComboBox<>(data.getTimeUnits().toArray());
 
         var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.CATEGORY, data, null,
-                        timeUnitsComboBox, categoryComboBox));
+                new AddAction(ActionType.CATEGORY, data, null,  categoryComboBox));
         var addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.TIME_UNIT, data, null,
-                        timeUnitsComboBox, categoryComboBox));
+                new AddAction(ActionType.TIME_UNIT, data, null,  timeUnitsComboBox));
 
         CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
         categoryComboBox.addActionListener(e -> CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox));

@@ -35,7 +35,7 @@ public abstract class ManageDialog extends JDialog {
         var buttonsPanel = new JPanel(new BorderLayout());
 
         JButton editButton = createButton("Edit", new EditAction(actionType, comboBox, data));
-        JButton addButton = createButton("Add", new AddAction(actionType, data, comboBox));
+        JButton addButton = createButton("Add", new AddAction(actionType, data, null, comboBox));
         JButton deleteButton = createButton("Delete", new DeleteAction(actionType, comboBox, data));
 
         buttonsPanel.add(editButton, BorderLayout.NORTH);

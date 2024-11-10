@@ -95,7 +95,7 @@ public class EditAction extends AbstractAction {
                 data.getTimeUnits().update(timeunit);
 
                 comboBox.setSelectedIndex(0);
-                manageTimeUnitDialog.dispose();
+                //manageTimeUnitDialog.dispose();
 
                 return;
             case TEMPLATE:

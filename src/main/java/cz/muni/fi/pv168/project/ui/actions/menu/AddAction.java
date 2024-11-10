@@ -25,6 +25,7 @@ public class AddAction extends AbstractAction {
     private final JComboBox<Template> chosenTemplate;
     private JComboBox<TimeUnit> timeUnitsComboBox = null;
     private JComboBox<Category> categoryComboBox = null;
+    private JComboBox<Template> templateComboBox = null;
 
 
     public AddAction(ActionType type,
@@ -40,15 +41,26 @@ public class AddAction extends AbstractAction {
     public AddAction(ActionType type,
                      DataManager data,
                      JComboBox<Template> chosenTemplate,
-                     JComboBox<TimeUnit> timeUnitsComboBox,
-                     JComboBox<Category> categoryComboBox
+                     JComboBox<?> comboBox
                      ) {
         super("Add new " + type.toString().toLowerCase().replace('_', ' '), Icons.ADD_ICON);
         this.type = type;
         this.data = data;
         this.chosenTemplate = chosenTemplate;
-        this.categoryComboBox = categoryComboBox;
-        this.timeUnitsComboBox = timeUnitsComboBox;
+
+        switch (type) {
+            case TEMPLATE:
+                this.templateComboBox = (JComboBox<Template>) comboBox;
+                break;
+            case TIME_UNIT:
+                this.timeUnitsComboBox = (JComboBox<TimeUnit>) comboBox;
+                break;
+            case CATEGORY:
+                this.categoryComboBox = (JComboBox<Category>) comboBox;
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported ActionType: " + type);
+        }
     }
 
 
@@ -81,7 +93,12 @@ public class AddAction extends AbstractAction {
                 }
                 break;
             case TEMPLATE:
-                addTemplate();
+                if (this.templateComboBox == null){
+                    addTemplate();
+                }
+                else {
+                    addTemplate(this.templateComboBox);
+                }
                 break;
         }
     }
@@ -110,6 +127,18 @@ public class AddAction extends AbstractAction {
         dialog = new TemplateDialog(data, null);
 
         dialog.show(data.getTaskTable(), "Add new Template").ifPresent(templateTableModel::addRow);
+    }
+
+    private void addTemplate(JComboBox<Template> templateComboBox) {
+        TemplateTableModel templateTableModel = (TemplateTableModel) data.getTemplateTable().getModel();
+        TemplateDialog dialog = new TemplateDialog(data, null);
+
+        dialog.show(data.getTaskTable(), "Add new Template").ifPresent(newTemplate -> {
+            templateTableModel.addRow(newTemplate);
+            DefaultComboBoxModel<Template> model = (DefaultComboBoxModel<Template>) templateComboBox.getModel();
+            model.addElement(newTemplate);
+            templateComboBox.setSelectedItem(newTemplate);
+        });
     }
 
     /**
@@ -141,16 +170,19 @@ public class AddAction extends AbstractAction {
         dialog.show(null, "Add a new Category").ifPresent(data.getCategories()::add);
     }
 
+
     /*
     Automatically updates combobox in task window when creating new category
      */
     private void addCategory(JComboBox<Category> categoryComboBox) {
         var dialog = new CategoryDialog();
+
         dialog.show(null, "Add a new Category").ifPresent(newCategory -> {
             data.getCategories().add(newCategory);
             DefaultComboBoxModel<Category> model = (DefaultComboBoxModel<Category>) categoryComboBox.getModel();
             model.addElement(newCategory);
             categoryComboBox.setSelectedItem(newCategory);
         });
+
     }
 }
