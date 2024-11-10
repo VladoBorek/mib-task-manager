@@ -78,6 +78,7 @@ public class AddTaskDialog extends EntityDialog<Task>{
 
     private void setupTwoPartPanels(){
         categoryComboBox = new JComboBox<>(data.getCategories().toArray());
+        categoryComboBox.setRenderer(new CategoryComboboxRenderer());
         timeUnitsComboBox = new JComboBox<>(data.getTimeUnits().toArray());
 
         var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
