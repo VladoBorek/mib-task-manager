@@ -29,8 +29,8 @@ public class AddTaskDialog extends EntityDialog<Task>{
     private final JTextField customerField = new JTextField();
     private final JTextArea descriptionArea = new JTextArea();
 
-    private final JComboBox<Employee> assignedToComboBox;
-
+    private final JIntegerTextField assignedToId = new JIntegerTextField();
+    private final JTextField assignedToName = new JTextField();
     private JPanel timeUnitPanel;
     private JPanel categoryPanel;
 
@@ -50,7 +50,6 @@ public class AddTaskDialog extends EntityDialog<Task>{
     public AddTaskDialog(Task task, DataManager data) {
         this.task = task;
         this.data = data;
-        assignedToComboBox = new JComboBox<>(data.getEmployees().toArray());
 
         setUpUI();
         if (task != null) {
@@ -79,6 +78,7 @@ public class AddTaskDialog extends EntityDialog<Task>{
 
     private void setupTwoPartPanels(){
         categoryComboBox = new JComboBox<>(data.getCategories().toArray());
+        categoryComboBox.setRenderer(new CategoryComboboxRenderer());
         timeUnitsComboBox = new JComboBox<>(data.getTimeUnits().toArray());
 
         var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
@@ -103,7 +103,8 @@ public class AddTaskDialog extends EntityDialog<Task>{
         add("Task name", taskNameField);
         add("Customer", customerField);
         add("Category", categoryPanel);
-        add("Assigned to", assignedToComboBox);
+        add("Assigned to ID", assignedToId);
+        add("Assigned to Name", assignedToName);
         add("Status", statusComboBox);
         add("Due date", datePicker);
     }
@@ -158,7 +159,8 @@ public class AddTaskDialog extends EntityDialog<Task>{
         taskNameField.setText(task.getNameOfTask());
         descriptionArea.setText(task.getDescription());
         customerField.setText(task.getCustomer());
-        assignedToComboBox.setSelectedItem(task.getAssignedTo());
+        assignedToId.setValue(task.getAssignedTo().getEmployeeId());
+        assignedToName.setText(task.getAssignedTo().getName());
         categoryComboBox.setSelectedItem(task.getCategory());
         statusComboBox.setSelectedItem(task.getStatus());
         loggedTimeField.setValue(task.getConvertedLoggedTime());
@@ -170,7 +172,8 @@ public class AddTaskDialog extends EntityDialog<Task>{
     private boolean validateFields() {
         if ((taskNameField.getText().trim().isEmpty())
                 || (customerField.getText().trim().isEmpty())
-                || (assignedToComboBox.getSelectedItem() == null)
+                || (assignedToName.getText().trim().isEmpty())
+                || (assignedToId.getText() == null)
                 || (categoryComboBox.getSelectedItem() == null)
                 || (statusComboBox.getSelectedItem() == null)
                 || (timeUnitsComboBox.getSelectedItem() == null)
@@ -193,24 +196,12 @@ public class AddTaskDialog extends EntityDialog<Task>{
             return null;
         }
 
-
-//        if (task != null) {
-//            task.setNameOfTask(taskNameField.getText());
-//            task.setCustomer(customerField.getText());
-//            task.setAssignedTo((Employee) assignedToComboBox.getSelectedItem());
-//            task.setCategory((Category) categoryComboBox.getSelectedItem());
-//            task.setStatus((Status) statusComboBox.getSelectedItem());
-//            task.setConvertedLoggedTime(loggedTimeField.getValue());
-//            task.setConvertedAllocatedTime(allocatedTimeField.getValue());
-//            task.setDueDate(datePicker.getDate());
-//            task.setTimeUnit((TimeUnit) timeUnitsComboBox.getSelectedItem());
-
         return new Task(null, (Status) statusComboBox.getSelectedItem(),
                 this.descriptionArea.getText(),
                 (Category) categoryComboBox.getSelectedItem(),
                 customerField.getText(),
                 taskNameField.getText(),
-                (Employee) assignedToComboBox.getSelectedItem(),
+                new Employee(assignedToName.getText(), assignedToId.getValue()),
                 loggedTimeField.getValue(),
                 allocatedTimeField.getValue(),
                 (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem()),
