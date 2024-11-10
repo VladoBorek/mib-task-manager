@@ -1,6 +1,8 @@
 package cz.muni.fi.pv168.project.business.service.export;
 
 import cz.muni.fi.pv168.project.business.model.*;
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -53,19 +55,6 @@ public class ImportJSON {
     }
 
     /**
-     * Creates dialogue for asking the user, whether to add tasks or override them
-     * @return chosen option by teh user, 0 == Override Tasks
-     */
-    private static int getImportOption() {
-        return JOptionPane.showOptionDialog(null,
-                "Do you want to override existing tasks or add new ones?",
-                "Import Options",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null, new String[]{"Override", "Add"}, "Override");
-    }
-
-    /**
      * Imports data from JSON file and adds them to file manager
      * @param data DataManager where the data will be imported
      */
@@ -79,13 +68,14 @@ public class ImportJSON {
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             String filePath = fileChooser.getSelectedFile().getAbsolutePath();
             if (!filePath.toLowerCase().endsWith(".json")) {
-                JOptionPane.showMessageDialog(null,
-                        "Please select a valid JSON file.",
+                PopUp.infoDialog("Please select a valid JSON file.",
                         "Invalid File",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            int importChoice = getImportOption();
+            int importChoice = PopUp.optionDialog("Do you want to override existing tasks or add new ones?",
+                    "Import Options",
+                    new String[]{"Override", "Add"});
 
             try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
                 StringBuilder jsonContent = new StringBuilder();
@@ -102,20 +92,33 @@ public class ImportJSON {
 
             if (!validateJSONFormat(jsonArray))
             {
-                JOptionPane.showMessageDialog(null,
-                        "Chosen JSON file is not in required format!",
-                        "Invalid file content",
-                        JOptionPane.ERROR_MESSAGE);
+                PopUp.infoDialog("Chosen JSON file is not in required format!",
+                        "Invalid file content", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
+            var tableLength = data.getTaskTableModel().getRowCount();
+
             if (importChoice == 0){
                 data.getTaskTableModel().deleteAllRows();
+                tableLength = 0;
             }
             for (int i = 0; i < jsonArray.length(); i++) {
                 data.getTaskTableModel().addRow(getTaskFromJSON(jsonArray.getJSONObject(i), data));
             }
-            JOptionPane.showMessageDialog(null, "Imported successfully!");
+            //Failed imports
+            var failedImportsCount  = (tableLength + jsonArray.length()) - data.getTaskTableModel().getRowCount();
+            if(failedImportsCount != 0){
+                PopUp.infoDialog(
+                        failedImportsCount + " tasks were not imported.",
+                        null,
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else{
+                PopUp.infoDialog(
+                        "All tasks imported successfully!",
+                        null,
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 

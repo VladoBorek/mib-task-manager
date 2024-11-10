@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.project.business.service.export;
 
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,10 +42,16 @@ public class ExportJSON {
                 }
 
                 fileWriter.write(jsonArray.toString(4)); // Pretty print with an indent of 4 spaces
-                JOptionPane.showMessageDialog(null, "Exported successfully!");
+                PopUp.infoDialog(
+                        "Exported successfully!",
+                        "Export successful",
+                        JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Error exporting data: " + ex.getMessage());
+                PopUp.infoDialog(
+                        "Error exporting data: " + ex.getMessage(),
+                        "Export error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }

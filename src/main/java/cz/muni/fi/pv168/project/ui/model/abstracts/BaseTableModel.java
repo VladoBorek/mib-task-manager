@@ -2,7 +2,10 @@ package cz.muni.fi.pv168.project.ui.model.abstracts;
 
 import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
+import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +32,26 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
     }
 
     public void updateRow(T task) {
-        crudService.update(task)
-                .intoException(); //TODO ADD ERROR POPUP
+        try {
+            crudService.update(task)
+                    .intoException();
+        } catch (ValidationException e){
+            PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         int rowIndex = items.indexOf(task);
         fireTableRowsUpdated(rowIndex, rowIndex);
     }
 
     public void addRow(T task){
         int newRowIndex = items.size();
-        crudService.create(task)
-                .intoException(); //TODO ADD ERROR POPUP
+        try {
+            crudService.create(task)
+                    .intoException();
+        } catch (ValidationException e){
+            PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         items.add(task);
         fireTableRowsInserted(newRowIndex, newRowIndex);
     }
@@ -62,8 +75,12 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
     }
 
     public boolean justValidate(T entity) {
-        crudService.validate(entity).intoException(); //TODO ADD ERROR POPUP, return false if exception
-
+        try {
+            crudService.validate(entity).intoException();
+        } catch (ValidationException e){
+            PopUp.infoDialog(e.getValidationErrors(), "Input Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
         return true;
     }
 }

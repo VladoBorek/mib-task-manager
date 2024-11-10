@@ -34,7 +34,6 @@ public class ManageAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //TODO to open the actual dialogue window
         switch (type){
             case TASK -> System.out.println("User clicked on Manage Task Button");
             case CATEGORY -> {
