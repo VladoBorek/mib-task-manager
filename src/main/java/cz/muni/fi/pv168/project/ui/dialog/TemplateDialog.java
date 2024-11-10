@@ -63,8 +63,7 @@ public class TemplateDialog extends EntityDialog<Template>{
     }
     private void setupCategoryPanel(){
         var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.CATEGORY, data, null,
-                        null, categoryComboBox));
+                new AddAction(ActionType.CATEGORY, data, null, categoryComboBox));
 
         categoryComboBox.setRenderer(new CategoryComboboxRenderer());
         categoryComboBox.addActionListener(e -> {
@@ -77,8 +76,7 @@ public class TemplateDialog extends EntityDialog<Template>{
 
     private void setupTimePanel(){
         var addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.TIME_UNIT, data, null,
-                        timeUnitComboBox, null));
+                new AddAction(ActionType.TIME_UNIT, data, null, timeUnitComboBox));
 
         timeUnitPanel = createTwoPartPanel(timeUnitComboBox, addTimeUnitButton);
 

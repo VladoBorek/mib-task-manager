@@ -12,6 +12,7 @@ import cz.muni.fi.pv168.project.ui.dialog.AddTaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.ManageTimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -60,6 +61,9 @@ public class EditAction extends AbstractAction {
                         }
                     }
                 );
+
+                StatisticsTableModel statisticsTableModel = (StatisticsTableModel) data.getStatisticsTable().getModel();
+                statisticsTableModel.refreshStatistics();
                 return;
 
             case CATEGORY:
@@ -95,7 +99,7 @@ public class EditAction extends AbstractAction {
                 data.getTimeUnits().update(timeunit);
 
                 comboBox.setSelectedIndex(0);
-                manageTimeUnitDialog.dispose();
+                //manageTimeUnitDialog.dispose();
 
                 return;
             case TEMPLATE:

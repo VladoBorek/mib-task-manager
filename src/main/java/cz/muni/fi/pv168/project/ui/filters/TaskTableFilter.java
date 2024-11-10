@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.ui.filters;
 
 import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.business.model.DataManager;
 import cz.muni.fi.pv168.project.business.model.Status;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.ui.filters.matchers.EntityMatcher;
@@ -9,10 +10,12 @@ import cz.muni.fi.pv168.project.ui.filters.matchers.entityWithCategory.EntityCat
 import cz.muni.fi.pv168.project.ui.filters.matchers.task.TaskDueDateMatcher;
 import cz.muni.fi.pv168.project.ui.filters.matchers.task.TaskStatusMatcher;
 import cz.muni.fi.pv168.project.ui.filters.values.SpecialFilterCategoryValues;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import cz.muni.fi.pv168.project.util.Either;
 
 import javax.swing.table.TableRowSorter;
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.EnumSet;
 import java.util.stream.Stream;
@@ -23,8 +26,8 @@ import java.util.stream.Stream;
 public final class TaskTableFilter {
     private final TaskCompoundMatcher taskCompoundMatcher;
 
-    public TaskTableFilter(TableRowSorter<TaskTableModel> rowSorter) {
-        taskCompoundMatcher = new TaskCompoundMatcher(rowSorter);
+    public TaskTableFilter(TableRowSorter<TaskTableModel> rowSorter, DataManager data) {
+        taskCompoundMatcher = new TaskCompoundMatcher(rowSorter, data);
         rowSorter.setRowFilter(taskCompoundMatcher);
     }
 
@@ -62,23 +65,30 @@ public final class TaskTableFilter {
         private EntityMatcher<Task> statusMatcher = EntityMatchers.all();
         private EntityMatcher<Task> dueDateMatcher = EntityMatchers.all();
 
-        private TaskCompoundMatcher(TableRowSorter<TaskTableModel> rowSorter) {
+        private final StatisticsTableModel statisticsTableModel;
+
+        private TaskCompoundMatcher(TableRowSorter<TaskTableModel> rowSorter, DataManager data) {
             this.rowSorter = rowSorter;
+            this.statisticsTableModel = (StatisticsTableModel) data.getStatisticsTable().getModel();
         }
 
         private void setCategoryMatcher(EntityMatcher<Task> categoryMatcher) {
             this.categoryMatcher = categoryMatcher;
             rowSorter.sort();
+            statisticsTableModel.refreshStatistics();
         }
 
         private void setStatusMatcher(EntityMatcher<Task> statusMatcher) {
             this.statusMatcher = statusMatcher;
             rowSorter.sort();
+            statisticsTableModel.refreshStatistics();
+
         }
 
         private void setDueDateMatcher(EntityMatcher<Task> dueDateMatcher) {
             this.dueDateMatcher = dueDateMatcher;
             rowSorter.sort();
+            statisticsTableModel.refreshStatistics();
         }
 
         @Override
