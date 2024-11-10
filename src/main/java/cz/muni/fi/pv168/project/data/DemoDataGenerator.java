@@ -19,11 +19,11 @@ public class DemoDataGenerator {
             new Category(null, "Systems update", new Color(3,3,200))
     );
     private static final List<Employee> EMPLOYEES = List.of(
-            new Employee(null, "Not assigned", 0),
-            new Employee(null, "Remy", 1),
-            new Employee(null, "Ramy", 2),
-            new Employee(null, "Rumy", 3),
-            new Employee(null, "Romy", 4)
+            new Employee("Not assigned", 0),
+            new Employee("Remy", 1),
+            new Employee("Ramy", 2),
+            new Employee("Rumy", 3),
+            new Employee("Romy", 4)
     );
 
     private static final List<TimeUnit> TIME_UNITS = List.of(

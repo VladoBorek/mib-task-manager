@@ -33,7 +33,7 @@ public class ExportJSON {
 
                     jsonObject.put("DESCRIPTION", model.getEntity(i).getDescription());
                     jsonObject.put("EMPLOYEE NAME", model.getEntity(i).getAssignedTo().getName());
-                    jsonObject.put("EMPLOYEE ID", model.getEntity(i).getAssignedTo().getId());
+                    jsonObject.put("EMPLOYEE ID", model.getEntity(i).getAssignedTo().getEmployeeId());
                     jsonObject.put("CATEGORY COLOR", model.getEntity(i).getCategory().getColor().getRGB());
                     jsonObject.put("TIME UNIT RATE", model.getEntity(i).getTimeUnit().getRate());
 

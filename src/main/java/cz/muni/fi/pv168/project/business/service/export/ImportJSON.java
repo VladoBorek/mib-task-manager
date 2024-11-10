@@ -171,15 +171,16 @@ public class ImportJSON {
     private static Employee getEmployee(JSONObject item, DataManager data){
         var employeeId = item.getInt("EMPLOYEE ID");
         var employeeName = item.getString("EMPLOYEE NAME");
-        for (Employee e: data.getEmployees().toArray()) {
-            if(Objects.equals(e.getName(), employeeName)&&
-                    e.getId() == employeeId){
-                return e;
-            }
-        }
-        Employee newEmployee = new Employee(null, employeeName, employeeId);
-        data.getEmployees().add(newEmployee);
-        return newEmployee;
+        return new Employee(employeeName, employeeId);
+//        for (Employee e: data.getEmployees().toArray()) {
+//            if(Objects.equals(e.getName(), employeeName)&&
+//                    e.getId() == employeeId){
+//                return e;
+//            }
+//        }
+//        Employee newEmployee = new Employee(null, employeeName, employeeId);
+//        data.getEmployees().add(newEmployee);
+//        return newEmployee;
     }
     /**
      * Returns Status for the task
