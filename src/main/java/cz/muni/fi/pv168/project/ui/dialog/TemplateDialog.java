@@ -3,8 +3,12 @@ package cz.muni.fi.pv168.project.ui.dialog;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.DataManager;
+import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
+import cz.muni.fi.pv168.project.business.service.validation.TemplateValidator;
+import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
@@ -135,15 +139,25 @@ public class TemplateDialog extends EntityDialog<Template>{
 
     @Override
     Template getEntity() {
-
-        if (!validateFields()) {
-            return null;
-        }
+        Validator<Template> templateValidator = new TemplateValidator();
         var newTemplate = new Template(null, nameField.getText(),
                 (Category) categoryComboBox.getSelectedItem(),
                 allocatedTimeField.getValue(),
                 (TimeUnit) timeUnitComboBox.getSelectedItem(),
                 templateNameField.getText());
+        var validation = templateValidator.validate(newTemplate);
+
+        if (!validateFields()) {
+            return null;
+        }
+        if (!validation.isValid()){
+            PopUp.infoDialog(
+                    validation.getValidationErrors(),
+                    "Input error",
+                    JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+
         return newTemplate;
     }
 
