@@ -186,7 +186,7 @@ public class MainWindow {
         menuBar.add((createJMenu("Time Units",
                 new AddAction(ActionType.TIME_UNIT, data, null),
                 new ManageAction(ActionType.TIME_UNIT, data, frame))));
-        menuBar.add(createButton("Help", null,new HelpAction()));
+        menuBar.add(createButton("About", null,new AboutAction()));
 
         return menuBar;
     }
