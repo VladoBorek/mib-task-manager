@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.project.ui;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.ui.MainWindow;
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import net.miginfocom.swing.MigLayout;
 
@@ -74,8 +75,9 @@ public class LoginWindow {
         loginButton.setPreferredSize(new Dimension(90, 30));
 
         loginButton.addActionListener(e -> {
-            login();
-            frame.dispose();
+            if(login()) {
+                frame.dispose();
+            }
         });
 
         buttonPanel.add(loginButton, BorderLayout.CENTER);
@@ -84,10 +86,18 @@ public class LoginWindow {
         return buttonPanel;
     }
 
-    private void login() {
+    private boolean login() {
+        if (usernameField.getText().isEmpty() || idField.getValue() == 0) {
+            PopUp.infoDialog(
+                    "Please fill all login information.",
+                    "Missing credentials",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
         MainWindow mainWindow = new MainWindow(new User(usernameField.getText(), (long) idField.getValue()));
         System.out.println("logged as: " + usernameField.getText());
         mainWindow.show();
+        return true;
     }
     public void show(){
         this.frame.setVisible(true);

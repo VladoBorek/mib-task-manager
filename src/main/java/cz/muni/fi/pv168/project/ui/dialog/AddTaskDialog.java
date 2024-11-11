@@ -195,9 +195,9 @@ public class AddTaskDialog extends EntityDialog<Task>{
     @Override
     Task getEntity() {
         Validator<Task> taskValidator = new TaskValidator();
-        var validation = taskValidator.validate(
-                new Task(
-                        null, (Status) statusComboBox.getSelectedItem(),
+
+        var newTask = new Task(
+                null, (Status) statusComboBox.getSelectedItem(),
                 this.descriptionArea.getText(),
                 (Category) categoryComboBox.getSelectedItem(),
                 customerField.getText(),
@@ -206,7 +206,8 @@ public class AddTaskDialog extends EntityDialog<Task>{
                 loggedTimeField.getValue(),
                 allocatedTimeField.getValue(),
                 (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem()),
-                datePicker.getDate()));
+                datePicker.getDate());
+        var validation = taskValidator.validate(newTask);
 
         if (!validateFields()) {
             return null;
@@ -219,16 +220,7 @@ public class AddTaskDialog extends EntityDialog<Task>{
             return null;
         }
 
-        return new Task(null, (Status) statusComboBox.getSelectedItem(),
-                this.descriptionArea.getText(),
-                (Category) categoryComboBox.getSelectedItem(),
-                customerField.getText(),
-                taskNameField.getText(),
-                new Employee(assignedToName.getText(), assignedToId.getValue()),
-                loggedTimeField.getValue(),
-                allocatedTimeField.getValue(),
-                (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem()),
-                datePicker.getDate());
+        return newTask;
     }
 
 
