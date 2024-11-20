@@ -14,7 +14,7 @@ import java.util.List;
  */
 public abstract class BaseListModel<T extends Entity> extends AbstractListModel<T> {
 
-    protected final List<T> items;
+    protected List<T> items;
     protected final CrudService<T> crudService;
 
     public BaseListModel(CrudService<T> crudService) {
@@ -74,5 +74,9 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
             return false;
         }
         return true;  // return false if exception
+    }
+
+    public void refresh() {
+        this.items = new ArrayList<>(crudService.findAll());
     }
 }
