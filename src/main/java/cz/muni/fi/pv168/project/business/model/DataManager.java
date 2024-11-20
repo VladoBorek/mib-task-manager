@@ -1,13 +1,7 @@
 package cz.muni.fi.pv168.project.business.model;
 
-import cz.muni.fi.pv168.project.business.repository.Repository;
-import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
+
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
-import cz.muni.fi.pv168.project.business.service.validation.CategoryValidator;
-import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
-import cz.muni.fi.pv168.project.business.service.validation.TimeUnitValidator;
-import cz.muni.fi.pv168.project.business.service.validation.Validator;
-import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
@@ -24,8 +18,8 @@ import static cz.muni.fi.pv168.project.ui.MainWindow.DEMO_DATA;
  * @author Maroš Pavlík
  */
 public class DataManager {
-    private final TimeUnitListModel timeUnits;
-    private final CategoryListModel categories;
+    private TimeUnitListModel timeUnits;
+    private CategoryListModel categories;
 
     private final User loggedUser;
     private JTable taskTable;
@@ -35,17 +29,14 @@ public class DataManager {
     private JTable statisticsTable;
 
     public DataManager(User loggedUser) {
-        Validator<TimeUnit> timeUnitValidator = new TimeUnitValidator();
-        Repository<TimeUnit> timeUnitRepository = new InMemoryRepository<>(DEMO_DATA.getTimeUnits());
-        CrudService<TimeUnit> timeUnitCrudService = new BaseCrudService<>(timeUnitRepository, timeUnitValidator);
-        this.timeUnits = new TimeUnitListModel(new ArrayList<>(DEMO_DATA.getTimeUnits()), timeUnitCrudService);
-
-        Validator<Category> categoryValidator = new CategoryValidator();
-        Repository<Category> categoryRepository = new InMemoryRepository<>(DEMO_DATA.getCategories());
-        CrudService<Category> categoryCrudService = new BaseCrudService<>(categoryRepository, categoryValidator);
-        this.categories = new CategoryListModel(new ArrayList<>(DEMO_DATA.getCategories()), categoryCrudService);
-
         this.loggedUser = loggedUser;
+    }
+    //TODO provisional solution
+    public void setCategories(CrudService<Category> categoryCrudService){
+        this.categories = new CategoryListModel(new ArrayList<>(DEMO_DATA.getCategories()), categoryCrudService);
+    }
+    public void setTimeUnits(CrudService<TimeUnit> timeUnitCrudService){
+        this.timeUnits = new TimeUnitListModel(new ArrayList<>(DEMO_DATA.getTimeUnits()), timeUnitCrudService);
     }
 
     public TimeUnitListModel getTimeUnits() {
@@ -84,6 +75,9 @@ public class DataManager {
 
     public List<Template> getTemplates() {
         return ((TemplateTableModel) getTemplateTable().getModel()).getAllRows();
+    }
+    public TemplateTableModel getTemplateTableModel() {
+        return ((TemplateTableModel) getTemplateTable().getModel());
     }
 
     public JTable getStatisticsTable() {

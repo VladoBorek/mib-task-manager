@@ -1,19 +1,20 @@
 package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.business.model.Template;
-import cz.muni.fi.pv168.project.business.model.User;
+import cz.muni.fi.pv168.project.business.model.*;
 import cz.muni.fi.pv168.project.business.repository.Repository;
 import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
-import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
-import cz.muni.fi.pv168.project.business.service.validation.TemplateValidator;
-import cz.muni.fi.pv168.project.business.service.validation.Validator;
+import cz.muni.fi.pv168.project.business.service.export.ExportService;
+import cz.muni.fi.pv168.project.business.service.export.GenericExportService;
+import cz.muni.fi.pv168.project.business.service.export.GenericImportService;
+import cz.muni.fi.pv168.project.business.service.export.ImportService;
+import cz.muni.fi.pv168.project.business.service.validation.*;
+import cz.muni.fi.pv168.project.export.json.BatchJSONExporter;
+import cz.muni.fi.pv168.project.export.json.BatchJSONImporter;
 import cz.muni.fi.pv168.project.ui.actions.menu.ExportAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.ImportAction;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
-import cz.muni.fi.pv168.project.business.model.DataManager;
 import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.filters.TaskTableFilter;
@@ -31,7 +32,6 @@ import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.renderers.CategoryRenderer;
 import cz.muni.fi.pv168.project.ui.renderers.SpecialFilterCategoryValuesRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
-import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.util.Either;
 
 import javax.swing.*;
@@ -66,6 +66,10 @@ public class MainWindow {
     private DatePicker fromDatePicker;
     private DatePicker toDatePicker;
 
+    private final ExportService exportService;
+    private final ImportService importService;
+
+
 
     /**
      * Constructor for MainWindow.
@@ -79,9 +83,17 @@ public class MainWindow {
         Repository<Task> taskRepository = new InMemoryRepository<>(DEMO_DATA.getTasks());
         CrudService<Task> taskCrudService = new BaseCrudService<>(taskRepository, taskValidator);
 
+        Validator<Category> categoryValidator = new CategoryValidator();
+        Repository<Category> categoryRepository = new InMemoryRepository<>(DEMO_DATA.getCategories());
+        CrudService<Category> categoryCrudService = new BaseCrudService<>(categoryRepository, categoryValidator);
+
         Validator<Template> templateValidator = new TemplateValidator();
         Repository<Template> templateRepository = new InMemoryRepository<>(new ArrayList<>());
         CrudService<Template> templateCrudService = new BaseCrudService<>(templateRepository, templateValidator);
+
+        Validator<TimeUnit> timeUnitValidator = new TimeUnitValidator();
+        Repository<TimeUnit> timeUnitRepository = new InMemoryRepository<>(DEMO_DATA.getTimeUnits());
+        CrudService<TimeUnit> timeUnitCrudService = new BaseCrudService<>(timeUnitRepository, timeUnitValidator);
 
         var taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu());
@@ -90,8 +102,17 @@ public class MainWindow {
         templateTable.setComponentPopupMenu(createTemplateTablePopupMenu());
 
 
+        exportService = new GenericExportService(taskCrudService,categoryCrudService,
+                templateCrudService, timeUnitCrudService, List.of(new BatchJSONExporter()));
+        importService = new GenericImportService(taskCrudService, categoryCrudService,
+                templateCrudService, timeUnitCrudService, List.of(new BatchJSONImporter()));
+
+
         data.setTaskTable(taskTable);
         data.setTemplateTable(templateTable);
+        //TODO provisional solution
+        data.setCategories(categoryCrudService);
+        data.setTimeUnits(timeUnitCrudService);
 
         var statisticsTable = createStatisticsTable();
         data.setStatisticsTable(statisticsTable);
@@ -176,7 +197,7 @@ public class MainWindow {
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(new Color(240, 240, 240));
 
-        menuBar.add(createJMenu("File", new ImportAction(data), new ExportAction(data)));
+        menuBar.add(createJMenu("File", new ImportAction(importService, this::refresh), new ExportAction(exportService)));
         menuBar.add(createJMenu("Template",
                 new AddAction(ActionType.TEMPLATE, data, null),
                 new ManageAction(ActionType.TEMPLATE, data, frame)));
@@ -505,5 +526,12 @@ public class MainWindow {
         button.setBackground(BUTTON_COLOR);
         button.setFocusPainted(false);
         return button;
+    }
+
+    private void refresh() {
+        data.getTaskTableModel().refresh();
+        data.getCategories().refresh();
+        data.getTimeUnits().refresh();
+        data.getTemplateTableModel().refresh();
     }
 }

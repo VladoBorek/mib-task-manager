@@ -12,7 +12,7 @@ import java.util.List;
 
 public abstract class BaseTableModel<T extends Entity> extends AbstractTableModel {
 
-    private final List<T> items;
+    private List<T> items;
     private final CrudService<T> crudService;
 
     public BaseTableModel(CrudService<T> crudService) {
@@ -72,6 +72,11 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
         for (int i = 0; i < totalRows; i++) {
             deleteRow(0);
         }
+    }
+
+    public void refresh() {
+        this.items = new ArrayList<>(crudService.findAll());
+        fireTableDataChanged();
     }
 
     public boolean justValidate(T entity) {

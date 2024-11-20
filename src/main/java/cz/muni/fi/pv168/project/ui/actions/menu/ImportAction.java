@@ -1,25 +1,59 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
-import cz.muni.fi.pv168.project.business.model.DataManager;
-import cz.muni.fi.pv168.project.business.service.export.ImportJSON;
+import cz.muni.fi.pv168.project.business.service.export.ImportService;
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.util.Filter;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 /**
  * @author Nikol Otáhalů
  */
 public class ImportAction extends AbstractAction {
-    private final DataManager dataManager;
+    private final ImportService importService;
+    private final Runnable callback;
 
-    public ImportAction(DataManager dataManager){
-        super("Import tasks", Icons.IMPORT_ICON);
-        this.dataManager = dataManager;
+    public ImportAction(ImportService importService, Runnable callback){
+        super("Import application data", Icons.IMPORT_ICON);
+        this.importService = importService;
+        this.callback = callback;
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ImportJSON.importTaskTableFromJson(dataManager);
+
+        ActionType importOption = importOption();
+
+        int importChoice = PopUp.optionDialog("Do you want to override existing items or add new ones?",
+                "Import Options",
+                new String[]{"Override", "Add"});
+        boolean deleteData = importChoice == 0;
+
+        var fileChooser = new JFileChooser();
+        importService.getFormats().forEach(f -> fileChooser.addChoosableFileFilter(new Filter(f)));
+
+        int dialogResult = fileChooser.showOpenDialog(null);
+        if (dialogResult == JFileChooser.APPROVE_OPTION) {
+            File importFile = fileChooser.getSelectedFile();
+            importService.importData(importFile.getAbsolutePath(), importOption, deleteData);
+
+            PopUp.infoDialog("Import has successfully finished.",
+                    "Import status",
+                    JOptionPane.INFORMATION_MESSAGE);
+            callback.run();
+        }
+    }
+
+    private ActionType importOption(){
+        String[] options = new String[]{"Tasks", "Categories", "Template","Time Units"};
+        return ActionType.values()[
+                PopUp.optionDialog(
+                        "Select items to import",
+                        "Import Options",
+                        options)];
     }
 }
