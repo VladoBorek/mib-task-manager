@@ -83,12 +83,12 @@ public class BatchJSONExporter implements BatchExporter {
     private String createTaskItem(Object object){
         var task = (Task) object;
         return  String.join(",\n",
+                //createJSONLine("id", task.getId()),
                 createJSONLine("status", Status.valueOf(task.getStatus().toString())),
                     createJSONLine("description", task.getDescription()),
                     createJSONLine("customer", task.getCustomer()),
                     createJSONLine("task_name", task.getNameOfTask()),
-                    createJSONLine("assigned_to", task.getAssignedTo().getName()),
-                    createJSONLine("assigned_to_id", task.getAssignedTo().getEmployeeId()),
+                    createJSONLine("assigned_to", task.getAssignedTo()),
                     createJSONLine("logged_time", task.getLoggedTime()),
                     createJSONLine("allocated_time", task.getConvertedAllocatedTime()),
                     createJSONLine("due_date", task.getDueDate()),

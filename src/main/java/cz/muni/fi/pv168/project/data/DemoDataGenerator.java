@@ -1,11 +1,6 @@
 package cz.muni.fi.pv168.project.data;
 
-import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.business.model.CustomTimeUnit;
-import cz.muni.fi.pv168.project.business.model.Employee;
-import cz.muni.fi.pv168.project.business.model.Status;
-import cz.muni.fi.pv168.project.business.model.Task;
-import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.model.*;
 
 import java.awt.*;
 import java.time.LocalDate;
@@ -18,12 +13,11 @@ public class DemoDataGenerator {
             new Category(null, "In-Person", new Color(2,200,2)),
             new Category(null, "Systems update", new Color(3,3,200))
     );
-    private static final List<Employee> EMPLOYEES = List.of(
-            new Employee("Not assigned", 0),
-            new Employee("Remy", 1),
-            new Employee("Ramy", 2),
-            new Employee("Rumy", 3),
-            new Employee("Romy", 4)
+    private static final List<String> EMPLOYEES = List.of(
+            "Not assigned",
+            "Remy",
+            "Ramy",
+            "Romy"
     );
 
     private static final List<TimeUnit> TIME_UNITS = List.of(
@@ -39,6 +33,14 @@ public class DemoDataGenerator {
             new Task(4L, Status.COMPLETED, "Finalize the application development for the 'Cats in Blue' project, including testing and deployment.", CATEGORIES.get(0),"Cats in Blue", "Application", EMPLOYEES.get(3), 10, 10, TIME_UNITS.get(0), LocalDate.now())
             );
 
+    private static final List<LogTimeInfo> LOGS = List.of(
+            new LogTimeInfo(2, new User(EMPLOYEES.get(1), 1L), 2L),
+            new LogTimeInfo(2, new User(EMPLOYEES.get(2), 2L), 1L),
+            new LogTimeInfo(2, new User(EMPLOYEES.get(3), 3L), 1L),
+            new LogTimeInfo(2, new User(EMPLOYEES.get(1), 1L), 1L),
+            new LogTimeInfo(2, new User(EMPLOYEES.get(1), 1L), 1L)
+    );
+
     private static final List<String> CUSTOMERS = List.of(
             "Rats in white",
             "Dogs in blue",
@@ -47,7 +49,11 @@ public class DemoDataGenerator {
 
     public List<Category> getCategories() { return CATEGORIES;}
     public List<String> getCustomers() { return CUSTOMERS;}
-    public List<Employee> getEmployees() { return EMPLOYEES;}
+    public List<String> getEmployees() { return EMPLOYEES;}
     public List<Task> getTasks() { return TASKS;}
     public List<TimeUnit> getTimeUnits() {return TIME_UNITS;}
+
+    public List<LogTimeInfo> getLogs() {
+        return LOGS;
+    }
 }

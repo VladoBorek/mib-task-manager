@@ -8,12 +8,14 @@ import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 public class LogTimeInfo extends Entity {
     private Integer loggedTime;
 
-    private final Employee user;
+    private final User user;
+    private final Long taskID;
 
-    public LogTimeInfo(Integer loggedTime, Employee user){
+    public LogTimeInfo(Integer loggedTime, User user, Long taskID){
         super(null);
         this.loggedTime = loggedTime;
         this.user = user;
+        this.taskID = taskID;
     }
 
     public Integer getLoggedTime(){
@@ -23,11 +25,15 @@ public class LogTimeInfo extends Entity {
         this.loggedTime = newLoggedTime;
     }
 
-    public int getUserId(){
-        return user.getEmployeeId();
+    public Long getTaskID() {
+        return taskID;
+    }
+
+    public Long getUserId(){
+        return user.getId();
     }
 
     public String getUsername(){
-        return user.getName();
+        return user.getUsername();
     }
 }

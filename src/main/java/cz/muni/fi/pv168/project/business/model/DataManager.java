@@ -2,10 +2,7 @@ package cz.muni.fi.pv168.project.business.model;
 
 
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.CategoryListModel;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.TimeUnitListModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -20,6 +17,9 @@ import static cz.muni.fi.pv168.project.ui.MainWindow.DEMO_DATA;
 public class DataManager {
     private TimeUnitListModel timeUnits;
     private CategoryListModel categories;
+
+    private LogTimeInfoTableModel logTimeInfoTableModel;
+    private CrudService<LogTimeInfo> logTimeInfoCrudService;
 
     private final User loggedUser;
     private JTable taskTable;
@@ -39,12 +39,25 @@ public class DataManager {
         this.timeUnits = new TimeUnitListModel(new ArrayList<>(DEMO_DATA.getTimeUnits()), timeUnitCrudService);
     }
 
+    public void setLogInfo(CrudService<LogTimeInfo> logTimeInfoCrudService){
+        this.logTimeInfoCrudService = logTimeInfoCrudService;
+        this.logTimeInfoTableModel = new LogTimeInfoTableModel(logTimeInfoCrudService);
+    }
+
     public TimeUnitListModel getTimeUnits() {
         return timeUnits;
     }
 
     public CategoryListModel getCategories() {
         return categories;
+    }
+
+    public LogTimeInfoTableModel getLogTimeInfoTableModel(){
+        return logTimeInfoTableModel;
+    }
+
+    public CrudService<LogTimeInfo> getLogTimeInfoCrudService() {
+        return logTimeInfoCrudService;
     }
 
     public JTable getTaskTable(){
