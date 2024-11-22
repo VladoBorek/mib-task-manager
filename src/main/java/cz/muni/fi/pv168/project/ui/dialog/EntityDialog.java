@@ -16,17 +16,17 @@ abstract class EntityDialog<E> {
     private final JPanel labelPanel = new JPanel();
     private final JPanel componentPanel = new JPanel();
 
-    EntityDialog() {
+    public EntityDialog() {
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         labelPanel.setLayout(new GridLayout(0, 1, 0, 8));
         componentPanel.setLayout(new GridLayout(0, 1, 0, 8));
     }
 
-    EntityDialog(int width, int height){
+    public EntityDialog(int width, int height){
         panel.setPreferredSize(new Dimension(width, height));
     }
 
-    void add(String labelText, JComponent component) {
+    public void add(String labelText, JComponent component) {
         var label = new JLabel(labelText);
 
         labelPanel.add(label);
@@ -45,7 +45,7 @@ abstract class EntityDialog<E> {
     }
 
 
-    void setPanel(){
+    public void setPanel(){
         panel.add(labelPanel);
         panel.add(componentPanel);
     }
@@ -71,7 +71,7 @@ abstract class EntityDialog<E> {
         return newPanel;
     }
 
-    abstract E getEntity();
+    public abstract E getEntity();
 
     public Optional<E> show(JComponent parentComponent, String title) {
         while (true){
