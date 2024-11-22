@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class LogTimeInfoTableModel extends BaseTableModel<LogTimeInfo> {
     private final List<Column<LogTimeInfo, ?>> columns = List.of(
-            Column.readonly("ID", Integer.class, LogTimeInfo::getUserId),
+            Column.readonly("ID", Long.class, LogTimeInfo::getUserId),
             Column.readonly("Name", String.class, LogTimeInfo::getUsername),
             Column.readonly("Logged Time", Integer.class, LogTimeInfo::getLoggedTime)
     );

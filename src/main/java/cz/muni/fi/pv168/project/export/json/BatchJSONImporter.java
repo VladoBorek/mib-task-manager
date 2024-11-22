@@ -132,11 +132,6 @@ public class BatchJSONImporter implements BatchImporter {
                 (String) values.get("time_unit_name"),
                 (String) values.get("time_unit_short_name"),
                 Integer.parseInt((String) values.get("time_unit_rate")));
-        //TODO yeet employee
-        var employee = new Employee(
-                (String) values.get("assigned_to"),
-                Integer.parseInt((String) values.get("assigned_to_id")));
-        //var employee = (String) values.get("assignedTo");
         //TODO add importing log time table
 
         return new Task(null,
@@ -145,7 +140,7 @@ public class BatchJSONImporter implements BatchImporter {
                 category,
                 (String) values.get("customer"),
                 (String) values.get("task_name"),
-                employee,
+                (String) values.get("assigned_to"),
                 Integer.parseInt((String) values.get("logged_time")),
                 Integer.parseInt((String) values.get("allocated_time")),
                 timeUnit,

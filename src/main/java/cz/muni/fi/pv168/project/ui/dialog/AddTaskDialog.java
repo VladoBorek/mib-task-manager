@@ -4,7 +4,6 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.DataManager;
-import cz.muni.fi.pv168.project.business.model.Employee;
 import cz.muni.fi.pv168.project.business.model.Status;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
@@ -31,7 +30,6 @@ public class AddTaskDialog extends EntityDialog<Task>{
     private final JTextField customerField = new JTextField();
     private final JTextArea descriptionArea = new JTextArea();
 
-    private final JIntegerTextField assignedToId = new JIntegerTextField();
     private final JTextField assignedToName = new JTextField();
     private JPanel timeUnitPanel;
     private JPanel categoryPanel;
@@ -105,7 +103,6 @@ public class AddTaskDialog extends EntityDialog<Task>{
         add("Task name", taskNameField);
         add("Customer", customerField);
         add("Category", categoryPanel);
-        add("Assigned to ID", assignedToId);
         add("Assigned to Name", assignedToName);
         add("Status", statusComboBox);
         add("Due date", datePicker);
@@ -161,8 +158,7 @@ public class AddTaskDialog extends EntityDialog<Task>{
         taskNameField.setText(task.getNameOfTask());
         descriptionArea.setText(task.getDescription());
         customerField.setText(task.getCustomer());
-        assignedToId.setValue(task.getAssignedTo().getEmployeeId());
-        assignedToName.setText(task.getAssignedTo().getName());
+        assignedToName.setText(task.getAssignedTo());
         categoryComboBox.setSelectedItem(task.getCategory());
         statusComboBox.setSelectedItem(task.getStatus());
         loggedTimeField.setValue(task.getConvertedLoggedTime());
@@ -175,7 +171,6 @@ public class AddTaskDialog extends EntityDialog<Task>{
         if ((taskNameField.getText().trim().isEmpty())
                 || (customerField.getText().trim().isEmpty())
                 || (assignedToName.getText().trim().isEmpty())
-                || (assignedToId.getText() == null)
                 || (categoryComboBox.getSelectedItem() == null)
                 || (statusComboBox.getSelectedItem() == null)
                 || (timeUnitsComboBox.getSelectedItem() == null)
@@ -202,7 +197,7 @@ public class AddTaskDialog extends EntityDialog<Task>{
                 (Category) categoryComboBox.getSelectedItem(),
                 customerField.getText(),
                 taskNameField.getText(),
-                new Employee(assignedToName.getText(), assignedToId.getValue()),
+                assignedToName.getText(),
                 loggedTimeField.getValue(),
                 allocatedTimeField.getValue(),
                 (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem()),

@@ -95,6 +95,10 @@ public class MainWindow {
         Repository<TimeUnit> timeUnitRepository = new InMemoryRepository<>(DEMO_DATA.getTimeUnits());
         CrudService<TimeUnit> timeUnitCrudService = new BaseCrudService<>(timeUnitRepository, timeUnitValidator);
 
+        Validator<LogTimeInfo> logTimeInfoValidator = new LogTimeInfoValidator();
+        Repository<LogTimeInfo> logTimeInfoRepository = new InMemoryRepository<>(DEMO_DATA.getLogs());
+        CrudService<LogTimeInfo> logTimeInfoCrudService = new BaseCrudService<>(logTimeInfoRepository, logTimeInfoValidator);
+
         var taskTable = createTaskTable(taskCrudService);
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu());
 
@@ -110,9 +114,9 @@ public class MainWindow {
 
         data.setTaskTable(taskTable);
         data.setTemplateTable(templateTable);
-        //TODO provisional solution
         data.setCategories(categoryCrudService);
         data.setTimeUnits(timeUnitCrudService);
+        data.setLogInfo(logTimeInfoCrudService);
 
         var statisticsTable = createStatisticsTable();
         data.setStatisticsTable(statisticsTable);

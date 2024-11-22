@@ -1,22 +1,14 @@
 package cz.muni.fi.pv168.project.business.model;
 
-import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 import cz.muni.fi.pv168.project.business.model.abstracts.EntityWithCategory;
-import cz.muni.fi.pv168.project.business.repository.Repository;
-import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
-import cz.muni.fi.pv168.project.business.service.validation.LogTimeInfoValidator;
-import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
-import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.LogTimeInfoTableModel;
 
-import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 import static java.lang.Math.round;
 
@@ -26,7 +18,7 @@ public class Task extends EntityWithCategory {
     private String description;
     private String customer;
     private String nameOfTask;
-    private Employee assignedTo;
+    private String assignedTo;
 
     // In the base time unit
     private Integer loggedTime;
@@ -37,7 +29,7 @@ public class Task extends EntityWithCategory {
     private JTable timeLogTable;
 
     public Task(Long id, Status status, String description, Category category, String customer,String nameOfTask,
-                Employee assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
+                String assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
         super(id, category);
         this.status = status;
         this.description = description;
@@ -49,19 +41,20 @@ public class Task extends EntityWithCategory {
         this.timeUnit = timeUnit;
         this.dueDate = dueDate;
 
+
         DemoDataGenerator demoDataGenerator = new DemoDataGenerator();
-        List<LogTimeInfo> logTimeInfoList = generateLogTimeInfoData(demoDataGenerator.getEmployees());
+        //List<LogTimeInfo> logTimeInfoList = generateLogTimeInfoData(demoDataGenerator.getEmployees());
 
-        Validator<LogTimeInfo> logTimeInfoValidator = new LogTimeInfoValidator();
-        Repository<LogTimeInfo> logTimeInfoRepository = new InMemoryRepository<>(logTimeInfoList);
-        CrudService<LogTimeInfo> logTimeInfoCrudService = new BaseCrudService<>(logTimeInfoRepository, logTimeInfoValidator);
+        //Validator<LogTimeInfo> logTimeInfoValidator = new LogTimeInfoValidator();
+        //Repository<LogTimeInfo> logTimeInfoRepository = new InMemoryRepository<>(logTimeInfoList);
+        //CrudService<LogTimeInfo> logTimeInfoCrudService = new BaseCrudService<>(logTimeInfoRepository, logTimeInfoValidator);
 
-        this.timeLogTable = createLogTimeInfoTable(logTimeInfoCrudService);
+        //this.timeLogTable = createLogTimeInfoTable(logTimeInfoCrudService);
 
     }
 
     public Task(Template template) {
-        this(null, Status.TO_DO, "", template.getCategory(), "", template.getName(), new Employee("-", 0),
+        this(null, Status.TO_DO, "", template.getCategory(), "", template.getName(), null,
                 0, template.getAllocatedTime(), template.getTimeUnit(), null);
     }
 
@@ -84,15 +77,6 @@ public class Task extends EntityWithCategory {
         timeColumn.setCellRenderer(centerRenderer);
 
         return table;
-    }
-
-    public ArrayList<LogTimeInfo> generateLogTimeInfoData(List<Employee> employees) {
-        var logTimeInfos = new ArrayList<LogTimeInfo>();
-        for (Employee employee : employees) {
-            LogTimeInfo logTimeInfo = new LogTimeInfo(this.loggedTime / employees.size(), employee);
-            logTimeInfos.add(logTimeInfo);
-        }
-        return logTimeInfos;
     }
 
 
@@ -120,16 +104,16 @@ public class Task extends EntityWithCategory {
         this.nameOfTask = nameOfTask;
     }
 
-    public Employee getAssignedTo() {
+    public String getAssignedTo() {
         return assignedTo;
     }
 
     public String getAssignedToString() {
-        return assignedTo.toString();
+        return assignedTo;
     }
 
 
-    public void setAssignedTo(Employee assignedTo) {
+    public void setAssignedTo(String assignedTo) {
         this.assignedTo = assignedTo;
     }
 

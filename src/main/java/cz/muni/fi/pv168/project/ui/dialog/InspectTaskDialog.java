@@ -1,16 +1,21 @@
 package cz.muni.fi.pv168.project.ui.dialog;
 
-import cz.muni.fi.pv168.project.business.model.DataManager;
-import cz.muni.fi.pv168.project.business.model.Task;
+import cz.muni.fi.pv168.project.business.model.*;
+import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
+import cz.muni.fi.pv168.project.business.service.validation.LogTimeInfoValidator;
+import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.LogTimeAction;
 import cz.muni.fi.pv168.project.ui.model.CellPanel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.LogTimeInfoTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class InspectTaskDialog extends EntityDialog<Task> {
 
@@ -30,17 +35,53 @@ public class InspectTaskDialog extends EntityDialog<Task> {
     private final JPanel leftPanel = new JPanel();
     private final JPanel rightPanel = new JPanel();
 
+    private LogTimeInfoTableModel model = null;
+    private JTable logTimeTable;
+
     public InspectTaskDialog(Task task, DataManager data) {
         super(550, 250);
 
         this.data = data;
         this.task = task;
-        this.timeLogTable = task.getTimeLogTable();
+        this.timeLogTable = createLogTimeInfoTable();
 
         setValues();
         FormatFields();
         SetupPanels();
     }
+    public JTable createLogTimeInfoTable(){
+        var val = new LogTimeInfoValidator();
+        var repo = new InMemoryRepository<LogTimeInfo>(new ArrayList<>());
+        var newCrud = new BaseCrudService<LogTimeInfo>(repo, val);
+        this.model = new LogTimeInfoTableModel(newCrud);
+
+        for (var log:data.getLogTimeInfoCrudService().findAll()) {
+            if (log.getTaskID() == task.getId()){
+                model.addRow(log);
+            }
+        }
+        this.logTimeTable = new JTable(model);
+
+
+
+        this.logTimeTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        this.logTimeTable.setAutoCreateRowSorter(true);
+
+        var idColumn = this.logTimeTable.getColumnModel().getColumn(0);
+        var nameColumn = this.logTimeTable.getColumnModel().getColumn(1);
+        var timeColumn = this.logTimeTable.getColumnModel().getColumn(2);
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        idColumn.setCellRenderer(centerRenderer);
+        nameColumn.setCellRenderer(centerRenderer);
+        timeColumn.setCellRenderer(centerRenderer);
+
+        return this.logTimeTable;
+    }
+
+
 
     private void SetupPanels() {
         super.getPanel().setLayout(new GridLayout(1, 2));
@@ -88,7 +129,6 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         timeInfoPanel.setLayout(new GridLayout(1, 3));
         JButton addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON,
                 new LogTimeAction(data, this, task));
-
         //allocatedTime.setPreferredSize(new Dimension(200, 80));
         //loggedTime.setPreferredSize(new Dimension(200, 80));
         // addLogTimeButton.setPreferredSize(new Dimension(200, 80));
@@ -197,6 +237,7 @@ public class InspectTaskDialog extends EntityDialog<Task> {
 
     public void updateLoggedTime() {
         loggedTime.setText(task.getConvertedLoggedTimeString());
+        model.refresh();
     }
 
     @Override
