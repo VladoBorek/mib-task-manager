@@ -18,8 +18,8 @@ abstract class EntityDialog<E> {
 
     EntityDialog() {
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        labelPanel.setLayout(new GridLayout(0, 1));
-        componentPanel.setLayout(new GridLayout(0, 1));
+        labelPanel.setLayout(new GridLayout(0, 1, 0, 8));
+        componentPanel.setLayout(new GridLayout(0, 1, 0, 8));
     }
 
     EntityDialog(int width, int height){
