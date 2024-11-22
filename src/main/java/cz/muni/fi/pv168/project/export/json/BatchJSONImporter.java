@@ -242,7 +242,7 @@ public class BatchJSONImporter implements BatchImporter {
     private TimeUnit parseTimeUnit(HashMap<String, TimeUnit> timeUnits,
                                    String name, String shortName, Integer rate){
         return timeUnits.computeIfAbsent(name,
-                timeUnit -> new CustomTimeUnit(null, name, shortName, rate));
+                timeUnit -> new TimeUnit(null, name, shortName, rate));
     }
 
     /**
