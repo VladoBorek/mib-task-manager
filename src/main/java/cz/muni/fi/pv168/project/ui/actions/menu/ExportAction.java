@@ -21,12 +21,19 @@ public class ExportAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ActionType exportOption = exportOption();
-        System.out.println(exportOption.toString());
+        var userChoice = PopUp.optionDialog(
+                "Select items to export",
+                "Export Options",
+                new String[]{"Tasks", "Categories", "Template","Time Units"});
+        if (userChoice < 0 || userChoice > 3) {
+            return;
+        }
+
+        ActionType exportOption = ActionType.values()[userChoice];
 
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Specify a file to save");
-        exportService.getFormats().forEach(f -> fileChooser.addChoosableFileFilter(new Filter(f)));
+        exportService.getFormats().forEach(f -> fileChooser.setFileFilter(new Filter(f)));
         int dialogResult = fileChooser.showSaveDialog(null);
         if (dialogResult == JFileChooser.APPROVE_OPTION) {
             String exportFile = fileChooser.getSelectedFile().getAbsolutePath();
@@ -40,15 +47,6 @@ public class ExportAction extends AbstractAction {
                     "Export status",
                     JOptionPane.INFORMATION_MESSAGE);
         }
-    }
-
-    private ActionType exportOption(){
-        String[] options = new String[]{"Tasks", "Categories", "Template","Time Units"};
-        return ActionType.values()[
-                PopUp.optionDialog(
-                        "Select items to export",
-                        "Export Options",
-                        options)];
     }
 }
 
