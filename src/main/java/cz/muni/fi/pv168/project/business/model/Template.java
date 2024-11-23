@@ -1,17 +1,13 @@
 package cz.muni.fi.pv168.project.business.model;
 
-import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 import cz.muni.fi.pv168.project.business.model.abstracts.EntityWithCategory;
 
 public class Template extends EntityWithCategory {
 
-
     private String name;
     private Integer allocatedTime;
     private TimeUnit timeUnit;
-
     private String templateName;
-
 
     public Template(Long id, String name, Category category,
                     Integer allocatedTime, TimeUnit timeUnit, String templateName) {
@@ -58,12 +54,12 @@ public class Template extends EntityWithCategory {
         this.templateName = templateName;
     }
 
+    public String getAllocatedTimeString() {
+        return getAllocatedTime().toString() + " " + timeUnit.getShortName();
+    }
+
     @Override
     public String toString() {
         return templateName;
-    }
-
-    public String getAllocatedTimeString() {
-        return getAllocatedTime().toString() + " " + timeUnit.getShortName();
     }
 }

@@ -52,10 +52,6 @@ public class DataManager {
         return categories;
     }
 
-    public LogTimeInfoTableModel getLogTimeInfoTableModel(){
-        return logTimeInfoTableModel;
-    }
-
     public CrudService<LogTimeInfo> getLogTimeInfoCrudService() {
         return logTimeInfoCrudService;
     }
@@ -89,6 +85,7 @@ public class DataManager {
     public List<Template> getTemplates() {
         return ((TemplateTableModel) getTemplateTable().getModel()).getAllRows();
     }
+    
     public TemplateTableModel getTemplateTableModel() {
         return ((TemplateTableModel) getTemplateTable().getModel());
     }
