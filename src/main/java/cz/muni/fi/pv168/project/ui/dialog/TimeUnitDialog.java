@@ -40,7 +40,7 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
     }
 
     @Override
-    TimeUnit getEntity() {
+    public TimeUnit getEntity() {
         Validator<TimeUnit> timeUnitValidator = new TimeUnitValidator();
         var validation = timeUnitValidator.validate(new TimeUnit(
                 null,

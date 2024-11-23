@@ -51,7 +51,7 @@ public class LogTimeDialog extends EntityDialog<Integer> {
 
 
     @Override
-    Integer getEntity() {
+    public Integer getEntity() {
         return timeField.getValue() * ((TimeUnit) Objects.requireNonNull(timeUnitComboBox.getSelectedItem())).getRate();
     }
 }
