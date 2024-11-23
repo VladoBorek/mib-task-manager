@@ -1,0 +1,68 @@
+package cz.muni.fi.pv168.project.ui.actions.menu.template;
+
+import cz.muni.fi.pv168.project.business.model.Template;
+import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
+import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
+import cz.muni.fi.pv168.project.ui.resources.Icons;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+
+/**
+ * @author Marcel Nadzam
+ */
+public class EditTemplateAction extends EntityBaseAction {
+    private final JComboBox<Template> comboBox;
+
+    public EditTemplateAction(DataManager data, JComboBox<Template> comboBox) {
+        super("Edit Template", Icons.MANAGE_ICON, data);
+        this.comboBox = comboBox;
+    }
+
+    public EditTemplateAction(DataManager data) {
+        this(data, null);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        editTemplate();
+    }
+
+    private void editTemplate() {
+        Template template;
+        TemplateTableModel templateTableModel = (TemplateTableModel) data.getTemplateTable().getModel();
+
+        if (comboBox != null){
+            template = (Template) comboBox.getSelectedItem();
+            if (template == null) {
+                return;
+            }
+        }
+        else {
+            var selectedRows = data.getTemplateTable().getSelectedRows();
+            if (selectedRows.length != 1) {
+                throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
+            }
+
+            int model = data.getTemplateTable().convertRowIndexToModel(selectedRows[0]);
+            template = templateTableModel.getEntity(model);
+        }
+
+        var templateDialog = new TemplateDialog(data, template);
+        templateDialog.show(comboBox, "Edit Template").ifPresent( newTemplate -> {
+                    updateTemplate(template, newTemplate);
+                    templateTableModel.updateRow(template);
+                }
+        );
+    }
+
+    private static void updateTemplate(Template oldT, Template newT) {
+        oldT.setTemplateName(newT.getTemplateName());
+        oldT.setName(newT.getName());
+        oldT.setTimeUnit(newT.getTimeUnit());
+        oldT.setCategory(newT.getCategory());
+        oldT.setAllocatedTime(newT.getAllocatedTime());
+    }
+}

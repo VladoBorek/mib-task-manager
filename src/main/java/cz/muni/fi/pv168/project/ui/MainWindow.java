@@ -20,6 +20,9 @@ import cz.muni.fi.pv168.project.ui.actions.menu.*;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.DeleteTaskAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.EditTaskAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.InspectTaskAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.template.AddTemplateAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.template.DeleteTemplateAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.template.EditTemplateAction;
 import cz.muni.fi.pv168.project.ui.filters.TaskTableFilter;
 import cz.muni.fi.pv168.project.ui.filters.TemplateTableFilter;
 import cz.muni.fi.pv168.project.ui.filters.components.FilterComboboxBuilder;
@@ -206,7 +209,7 @@ public class MainWindow {
 
         menuBar.add(createJMenu("File", new ImportAction(importService, this::refresh), new ExportAction(exportService)));
         menuBar.add(createJMenu("Template",
-                new AddAction(ActionType.TEMPLATE, data, null),
+                new AddTemplateAction(data),
                 new ManageAction(ActionType.TEMPLATE, data, frame)));
         menuBar.add((createJMenu("Categories",
                 new AddAction(ActionType.CATEGORY, data, null),
@@ -314,7 +317,7 @@ public class MainWindow {
         JPanel categoryPanel = createCategoryPanel(categoryComboBox);
 
         JButton newButton = createButton("New ", Icons.ADD_ICON,
-                    new AddAction(ActionType.TEMPLATE, data, null));
+                    new AddTemplateAction(data));
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.RESET_ICON,
                 new ResetFilterAction(new HashMap<>(), categoryComboBox, List.of(fromDatePicker, toDatePicker)));
 
@@ -496,8 +499,8 @@ public class MainWindow {
 
     private JPopupMenu createTemplateTablePopupMenu() {
         JPopupMenu menu = new JPopupMenu();
-        menu.add(new EditAction(ActionType.TEMPLATE, null, data));
-        menu.add(new DeleteAction(ActionType.TEMPLATE, null, data));
+        menu.add(new EditTemplateAction(data));
+        menu.add(new DeleteTemplateAction(data));
         return menu;
     }
 
