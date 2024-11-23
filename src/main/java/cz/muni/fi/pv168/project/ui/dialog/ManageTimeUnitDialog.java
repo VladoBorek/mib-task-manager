@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.DeleteAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.EditAction;
+import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 
 
 import javax.swing.*;
@@ -20,6 +21,6 @@ public class ManageTimeUnitDialog extends ManageDialog {
 
     public ManageTimeUnitDialog(JFrame parent, DataManager data) {
         super(parent, data, ActionType.TIME_UNIT, "Manage time units", "Select time unit:",
-                new JComboBox<>(new DefaultComboBoxModel<>(data.getTimeUnits().toArray())));
+                new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits())));
     }
 }

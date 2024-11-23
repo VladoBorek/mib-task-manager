@@ -17,8 +17,11 @@ public class ChooseTemplateDialog extends JDialog {
         setLayout(new BorderLayout());
 
         var comboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getTemplates().toArray(new Template[0])));
-        comboBox.addItem(new Template());
+        var emptyTemplate = new Template();
+        comboBox.addItem(emptyTemplate);
+        comboBox.setSelectedItem(emptyTemplate);
         var comboPanel = new JPanel();
+
         comboPanel.add(new JLabel("Select a template:"));
         comboPanel.add(comboBox);
 

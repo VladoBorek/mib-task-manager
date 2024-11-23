@@ -11,7 +11,7 @@ public class TaskValidator implements Validator<Task>{
     public ValidationResult validate(Task task) {
         var validators = List.of(
                 Validator.extracting(
-                        Task::getNameOfTask, new StringLengthValidator(1, 25, "Task name")),
+                        Task::getName, new StringLengthValidator(1, 25, "Task name")),
                 Validator.extracting(
                         Task::getCustomer, new StringLengthValidator(2, 25, "Customer")),
                 Validator.extracting(

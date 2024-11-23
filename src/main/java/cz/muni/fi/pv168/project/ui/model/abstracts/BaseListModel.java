@@ -8,6 +8,7 @@ import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 /**
  * @author Maroš Pavlík
@@ -17,17 +18,10 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
     protected List<T> items;
     protected final CrudService<T> crudService;
 
-    public BaseListModel(CrudService<T> crudService) {
-        this.crudService = crudService;
-        this.items = new ArrayList<>(crudService.findAll());
-    }
-
     public BaseListModel(List<T> items, CrudService<T> crudService) {
         this.crudService = crudService;
         this.items = items;
     }
-
-
 
     public void add(T item) {
         try {
@@ -55,17 +49,6 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
         }
     }
 
-
-    @Override
-    public int getSize() {
-        return items.size();
-    }
-
-    @Override
-    public T getElementAt(int index) {
-        return items.get(index);
-    }
-
     public boolean justValidate(T entity) {
         try {
             crudService.validate(entity).intoException();
@@ -78,5 +61,19 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
 
     public void refresh() {
         this.items = new ArrayList<>(crudService.findAll());
+    }
+
+    public List<T> getItems() {
+        return Collections.unmodifiableList(items);
+    }
+
+    @Override
+    public int getSize() {
+        return items.size();
+    }
+
+    @Override
+    public T getElementAt(int index) {
+        return items.get(index);
     }
 }
