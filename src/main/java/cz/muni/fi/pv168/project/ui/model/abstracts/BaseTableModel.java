@@ -78,14 +78,4 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
         this.items = new ArrayList<>(crudService.findAll());
         fireTableDataChanged();
     }
-
-    public boolean justValidate(T entity) {
-        try {
-            crudService.validate(entity).intoException();
-        } catch (ValidationException e){
-            PopUp.infoDialog(e.getValidationErrors(), "Input Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        return true;
-    }
 }

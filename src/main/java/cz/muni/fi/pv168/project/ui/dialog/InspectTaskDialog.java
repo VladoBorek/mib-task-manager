@@ -241,7 +241,7 @@ public class InspectTaskDialog extends EntityDialog<Task> {
     }
 
     @Override
-    Task getEntity() {
+    public Task getEntity() {
         return task;
     }
 }

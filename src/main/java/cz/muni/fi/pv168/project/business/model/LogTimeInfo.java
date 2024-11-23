@@ -30,10 +30,10 @@ public class LogTimeInfo extends Entity {
     }
 
     public Long getUserId(){
-        return user.getId();
+        return user.id();
     }
 
     public String getUsername(){
-        return user.getUsername();
+        return user.username();
     }
 }

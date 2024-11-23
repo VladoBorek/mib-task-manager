@@ -36,6 +36,4 @@ public interface CrudService<T extends Entity> {
      * Delete all entities.
      */
     void deleteAll();
-
-    ValidationResult validate(T entity);
 }

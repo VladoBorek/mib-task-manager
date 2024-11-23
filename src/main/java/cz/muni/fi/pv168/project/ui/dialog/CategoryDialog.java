@@ -64,7 +64,7 @@ public class CategoryDialog extends EntityDialog<Category> {
     }
 
     @Override
-    Category getEntity() {
+    public Category getEntity() {
         Validator<Category> categoryValidator = new CategoryValidator();
         var validation = categoryValidator.validate(new Category(null, nameField.getText(), selectedColor));
         if (!validation.isValid()) {

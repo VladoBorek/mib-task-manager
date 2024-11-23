@@ -9,6 +9,8 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /**
  * @author Maroš Pavlík
@@ -35,6 +37,9 @@ public class LoginWindow {
 
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
+
+        addEnterKeyListener(usernameField);
+        addEnterKeyListener(idField);
     }
 
     private JPanel createTitlePanel() {
@@ -84,6 +89,19 @@ public class LoginWindow {
         buttonPanel.setBackground(Color.WHITE);
 
         return buttonPanel;
+    }
+
+    private void addEnterKeyListener(JComponent component) {
+        component.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    if (login()) {
+                        frame.dispose();
+                    }
+                }
+            }
+        });
     }
 
     private boolean login() {

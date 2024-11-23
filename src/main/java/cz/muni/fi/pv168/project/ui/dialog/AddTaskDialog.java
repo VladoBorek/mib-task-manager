@@ -189,7 +189,7 @@ public class AddTaskDialog extends EntityDialog<Task>{
 
 
     @Override
-    Task getEntity() {
+    public Task getEntity() {
         Validator<Task> taskValidator = new TaskValidator();
 
         var newTask = new Task(

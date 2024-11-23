@@ -21,9 +21,9 @@ public class DemoDataGenerator {
     );
 
     private static final List<TimeUnit> TIME_UNITS = List.of(
-            new CustomTimeUnit(),
-            new CustomTimeUnit(null, "Hour", "h", 60),
-            new CustomTimeUnit(null, "Day", "d", 1440)
+            new TimeUnit(),
+            new TimeUnit(null, "Hour", "h", 60),
+            new TimeUnit(null, "Day", "d", 1440)
     );
 
     private static final List<Task> TASKS= List.of(

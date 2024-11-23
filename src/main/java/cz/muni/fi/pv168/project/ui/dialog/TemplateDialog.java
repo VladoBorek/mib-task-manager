@@ -139,7 +139,7 @@ public class TemplateDialog extends EntityDialog<Template>{
     }
 
     @Override
-    Template getEntity() {
+    public Template getEntity() {
         Validator<Template> templateValidator = new TemplateValidator();
         var newTemplate = new Template(null, nameField.getText(),
                 (Category) categoryComboBox.getSelectedItem(),
