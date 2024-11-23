@@ -1,12 +1,10 @@
 package cz.muni.fi.pv168.project.ui.model.storagemodels;
 
 import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
-import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.ui.model.Column;
 import cz.muni.fi.pv168.project.ui.model.abstracts.BaseTableModel;
 
-import javax.swing.*;
 import java.util.List;
 
 /**
@@ -14,6 +12,7 @@ import java.util.List;
  */
 public class LogTimeInfoTableModel extends BaseTableModel<LogTimeInfo> {
     private final List<Column<LogTimeInfo, ?>> columns = List.of(
+            Column.readonly("ID TASK", Long.class, LogTimeInfo::getTaskID),
             Column.readonly("ID", Long.class, LogTimeInfo::getUserId),
             Column.readonly("Name", String.class, LogTimeInfo::getUsername),
             Column.readonly("Logged Time", Integer.class, LogTimeInfo::getLoggedTime)
