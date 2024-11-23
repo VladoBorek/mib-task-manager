@@ -17,6 +17,7 @@ import cz.muni.fi.pv168.project.ui.actions.export.ImportAction;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
+import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.DeleteTaskAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.EditTaskAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.InspectTaskAction;
@@ -212,7 +213,7 @@ public class MainWindow {
                 new AddTemplateAction(data),
                 new ManageAction(ActionType.TEMPLATE, data, frame)));
         menuBar.add((createJMenu("Categories",
-                new AddAction(ActionType.CATEGORY, data, null),
+                new AddCategoryAction(data),
                 new ManageAction(ActionType.CATEGORY, data, frame))));
         menuBar.add((createJMenu("Time Units",
                 new AddAction(ActionType.TIME_UNIT, data, null),
