@@ -49,16 +49,6 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
         }
     }
 
-    public boolean justValidate(T entity) {
-        try {
-            crudService.validate(entity).intoException();
-        } catch (ValidationException e){
-            PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        return true;  // return false if exception
-    }
-
     public void refresh() {
         this.items = new ArrayList<>(crudService.findAll());
     }

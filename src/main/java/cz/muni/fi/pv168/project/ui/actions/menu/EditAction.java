@@ -54,10 +54,8 @@ public class EditAction extends AbstractAction {
 
                 var tDialog = new AddTaskDialog(task, data);
                 tDialog.show(data.getTaskTable(), "Edit Task").ifPresent(newTask -> {
-                        if (taskTableModel.justValidate(newTask)) {
-                            updateTask(task, newTask);
-                            taskTableModel.updateRow(task);
-                        }
+                        updateTask(task, newTask);
+                        taskTableModel.updateRow(task);
                     }
                 );
 
@@ -72,10 +70,8 @@ public class EditAction extends AbstractAction {
                 }
                 var cDialog = new CategoryDialog(category);
                 cDialog.show(comboBox, "Edit Category").ifPresent(newCat -> {
-                    if (data.getCategories().justValidate(newCat)) {
-                        category.setName(newCat.getName());
-                        category.setColor(newCat.getColor());
-                    };
+                    category.setName(newCat.getName());
+                    category.setColor(newCat.getColor());
                 });
                 data.getCategories().update(category);
 
@@ -89,11 +85,9 @@ public class EditAction extends AbstractAction {
                 }
                 var timeUnitDialog = new TimeUnitDialog(timeunit);
                 timeUnitDialog.show(comboBox, "Edit Time Unit").ifPresent(newTimeUnit -> {
-                    if (data.getTimeUnits().justValidate(newTimeUnit)) {
-                        timeunit.setName(newTimeUnit.getName());
-                        timeunit.setRate(newTimeUnit.getRate());
-                        timeunit.setShortName(newTimeUnit.getShortName());
-                    }
+                    timeunit.setName(newTimeUnit.getName());
+                    timeunit.setRate(newTimeUnit.getRate());
+                    timeunit.setShortName(newTimeUnit.getShortName());
                 });
                 data.getTimeUnits().update(timeunit);
 
@@ -126,10 +120,8 @@ public class EditAction extends AbstractAction {
                 var templateTableModel = (TemplateTableModel) data.getTemplateTable().getModel();
                 var templateDialog = new TemplateDialog(data, template);
                 templateDialog.show(comboBox, "Edit Template").ifPresent( newTemplate -> {
-                            if (templateTableModel.justValidate(newTemplate)) {
-                                updateTemplate(template, newTemplate);
-                                templateTableModel.updateRow(template);
-                            }
+                            updateTemplate(template, newTemplate);
+                            templateTableModel.updateRow(template);
                         }
                 );
         }
