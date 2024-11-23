@@ -136,7 +136,7 @@ public class EditAction extends AbstractAction {
     }
 
     private void updateTask(Task oldT, Task newT) {
-        oldT.setNameOfTask(newT.getNameOfTask());
+        oldT.setName(newT.getName());
         oldT.setCustomer(newT.getCustomer());
         oldT.setAssignedTo(newT.getAssignedTo());
         oldT.setCategory(newT.getCategory());

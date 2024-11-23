@@ -155,7 +155,7 @@ public class AddTaskDialog extends EntityDialog<Task>{
 
     private void setValues()
     {
-        taskNameField.setText(task.getNameOfTask());
+        taskNameField.setText(task.getName());
         descriptionArea.setText(task.getDescription());
         customerField.setText(task.getCustomer());
         assignedToName.setText(task.getAssignedTo());
