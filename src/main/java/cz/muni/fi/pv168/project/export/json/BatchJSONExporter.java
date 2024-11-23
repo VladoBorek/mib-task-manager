@@ -89,7 +89,7 @@ public class BatchJSONExporter implements BatchExporter {
                     createJSONLine("customer", task.getCustomer()),
                     createJSONLine("task_name", task.getName()),
                     createJSONLine("assigned_to", task.getAssignedTo()),
-                    createJSONLine("logged_time", task.getLoggedTime()),
+                    createJSONLine("logged_time", task.getConvertedLoggedTime()),
                     createJSONLine("allocated_time", task.getConvertedAllocatedTime()),
                     createJSONLine("due_date", task.getDueDate()),
                     createCategoryItem(task.getCategory()),

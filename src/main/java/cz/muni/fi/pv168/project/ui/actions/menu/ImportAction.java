@@ -25,8 +25,15 @@ public class ImportAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        var userChoice = PopUp.optionDialog(
+                "Select items to import",
+                "Import Options",
+                new String[]{"Tasks", "Categories", "Template","Time Units"});
+        if (userChoice < 0 || userChoice > 3) {
+            return;
+        }
 
-        ActionType importOption = importOption();
+        ActionType importOption = ActionType.values()[userChoice];
 
         int importChoice = PopUp.optionDialog("Do you want to override existing items or add new ones?",
                 "Import Options",
@@ -34,8 +41,7 @@ public class ImportAction extends AbstractAction {
         boolean deleteData = importChoice == 0;
 
         var fileChooser = new JFileChooser();
-        importService.getFormats().forEach(f -> fileChooser.addChoosableFileFilter(new Filter(f)));
-
+        importService.getFormats().forEach(f -> fileChooser.setFileFilter(new Filter(f)));
         int dialogResult = fileChooser.showOpenDialog(null);
         if (dialogResult == JFileChooser.APPROVE_OPTION) {
             File importFile = fileChooser.getSelectedFile();
@@ -46,14 +52,5 @@ public class ImportAction extends AbstractAction {
                     JOptionPane.INFORMATION_MESSAGE);
             callback.run();
         }
-    }
-
-    private ActionType importOption(){
-        String[] options = new String[]{"Tasks", "Categories", "Template","Time Units"};
-        return ActionType.values()[
-                PopUp.optionDialog(
-                        "Select items to import",
-                        "Import Options",
-                        options)];
     }
 }
