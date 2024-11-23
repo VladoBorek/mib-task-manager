@@ -15,8 +15,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class InspectTaskDialog extends EntityDialog<Task> {
 
@@ -27,7 +27,6 @@ public class InspectTaskDialog extends EntityDialog<Task> {
     private final JLabel customer = new JLabel();
     private final JLabel assignedTo = new JLabel();
     private final JLabel status = new JLabel();
-    private final JTable timeLogTable;
     private final JLabel category = new JLabel();
     private final JLabel loggedTime = new JLabel();
     private final JLabel allocatedTime = new JLabel();
@@ -44,29 +43,28 @@ public class InspectTaskDialog extends EntityDialog<Task> {
 
         this.data = data;
         this.task = task;
-        this.timeLogTable = createLogTimeInfoTable();
+        this.logTimeTable = createLogTimeInfoTable();
 
         setValues();
         FormatFields();
         SetupPanels();
     }
     public JTable createLogTimeInfoTable(){
-        var val = new LogTimeInfoValidator();
-        var repo = new InMemoryRepository<LogTimeInfo>(new ArrayList<>());
-        var newCrud = new BaseCrudService<LogTimeInfo>(repo, val);
-        this.model = new LogTimeInfoTableModel(newCrud);
+        this.model = new LogTimeInfoTableModel(data.getLogTimeInfoCrudService());
+        TableRowSorter<LogTimeInfoTableModel> sorter = new TableRowSorter<>(this.model);
 
-        for (var log:data.getLogTimeInfoCrudService().findAll()) {
-            if (log.getTaskID() == task.getId()){
-                model.addRow(log);
-            }
-        }
         this.logTimeTable = new JTable(model);
 
+        sorter.setRowFilter(RowFilter.numberFilter(RowFilter.ComparisonType.EQUAL,task.getId(), 0));
+        logTimeTable.setRowSorter(sorter);
+
+        var cmodel = logTimeTable.getColumnModel();
+        var col = cmodel.getColumn(0);
+        cmodel.removeColumn(col);
 
 
         this.logTimeTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        this.logTimeTable.setAutoCreateRowSorter(true);
+        //this.logTimeTable.setAutoCreateRowSorter(true);
 
         var idColumn = this.logTimeTable.getColumnModel().getColumn(0);
         var nameColumn = this.logTimeTable.getColumnModel().getColumn(1);
@@ -147,7 +145,7 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         //logTablePanel.setPreferredSize(new Dimension(300, 250));
         logTablePanel.add(new JLabel("LOG TIME TABLE"));
 
-        JScrollPane scrollPane = new JScrollPane(timeLogTable);
+        JScrollPane scrollPane = new JScrollPane(logTimeTable);
         //scrollPane.setPreferredSize(new Dimension(300, 250));
         scrollPane.setPreferredSize(new Dimension(230, 160));
         JPanel componentWrapper = new JPanel();
