@@ -12,6 +12,7 @@ import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
+import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 import cz.muni.fi.pv168.project.ui.renderers.CategoryComboboxRenderer;
 //import cz.muni.fi.pv168.project.ui.actions.menu.LogTimeAction;
 //import cz.muni.fi.pv168.project.ui.model.CategoryComboboxRenderer;
@@ -77,9 +78,9 @@ public class AddTaskDialog extends EntityDialog<Task>{
     }
 
     private void setupTwoPartPanels(){
-        categoryComboBox = new JComboBox<>(data.getCategories().toArray());
+        categoryComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getCategories()));
         categoryComboBox.setRenderer(new CategoryComboboxRenderer());
-        timeUnitsComboBox = new JComboBox<>(data.getTimeUnits().toArray());
+        timeUnitsComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits()));
 
         var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
                 new AddAction(ActionType.CATEGORY, data, null,  categoryComboBox));
@@ -155,7 +156,7 @@ public class AddTaskDialog extends EntityDialog<Task>{
 
     private void setValues()
     {
-        taskNameField.setText(task.getNameOfTask());
+        taskNameField.setText(task.getName());
         descriptionArea.setText(task.getDescription());
         customerField.setText(task.getCustomer());
         assignedToName.setText(task.getAssignedTo());

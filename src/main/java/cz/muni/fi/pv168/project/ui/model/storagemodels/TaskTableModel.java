@@ -14,11 +14,11 @@ import java.util.List;
 
 public class TaskTableModel extends BaseTableModel<Task> implements EntityTableModel<Task> {
     private final List<Column<Task, ?>> columns = List.of(
-            Column.readonly("TASK NAME", String.class, Task::getNameOfTask),
+            Column.readonly("TASK NAME", String.class, Task::getName),
             Column.readonly("STATUS", Status.class, Task::getStatus),
             Column.readonly("CATEGORY", Category.class, Task::getCategory),
             Column.readonly("CUSTOMER", String.class, Task::getCustomer),
-            Column.readonly("ASSIGNED TO", String.class, Task::getAssignedToString),
+            Column.readonly("ASSIGNED TO", String.class, Task::getAssignedTo),
             Column.readonly("LOGGED TIME", String.class, Task::getConvertedLoggedTimeString),
             Column.readonly("ALLOCATED TIME", String.class, Task::getConvertedAllocatedTimeString),
             Column.readonly("% DONE", Float.class, Task::getPercentage),

@@ -223,11 +223,11 @@ public class InspectTaskDialog extends EntityDialog<Task> {
     }
 
     private void setValues() {
-        taskName.setText(task.getNameOfTask());
+        taskName.setText(task.getName());
         taskName.setBorder(taskName.getBorder());
         description.setText(task.getDescription());
         customer.setText(task.getCustomer());
-        assignedTo.setText(task.getAssignedTo().toString());
+        assignedTo.setText(task.getAssignedTo());
         category.setText(task.getCategory().getName());
         status.setText(task.getStatus().toString());
         loggedTime.setText(task.getConvertedLoggedTimeString());

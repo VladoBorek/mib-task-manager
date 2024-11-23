@@ -9,6 +9,7 @@ import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.DeleteAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.EditAction;
+import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,24 +25,8 @@ public class LogTimeDialog extends EntityDialog<Integer> {
     private final JIntegerTextField timeField = new JIntegerTextField();
     private final JComboBox<TimeUnit> timeUnitComboBox;
 
-
-    public LogTimeDialog(JFrame parent, DataManager data) {
-        timeUnitComboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getTimeUnits().toArray()));
-        add("Time", timeField);
-        add("Time Unit", timeUnitComboBox);
-
-        setPanel();
-    }
-    public LogTimeDialog(DataManager data) {
-        timeUnitComboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getTimeUnits().toArray()));
-        add("Time", timeField);
-        add("Time Unit", timeUnitComboBox);
-
-        setPanel();
-    }
-
     public LogTimeDialog(DataManager data, Task task) {
-        timeUnitComboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getTimeUnits().toArray()));
+        timeUnitComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits()));
         timeUnitComboBox.setSelectedItem(task.getTimeUnit());
         add("Time", timeField);
         add("Time Unit", timeUnitComboBox);
