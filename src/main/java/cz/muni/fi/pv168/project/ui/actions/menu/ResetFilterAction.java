@@ -30,16 +30,27 @@ public class ResetFilterAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        resetCheckboxes();
+        resetComboBoxes();
+        resetDatePickers();
+    }
+
+    private void resetCheckboxes() {
         for (Boolean state: resetValuesCheckboxes.keySet()) {
             for (JCheckBox checkBox: resetValuesCheckboxes.get(state)) {
                 checkBox.setSelected(!state);
                 checkBox.doClick();
             }
         }
-        categoryComboBox.setSelectedItem(categoryComboBox.getItemAt(0));
-        for (DatePicker datePicker: datePickers) {
-            datePicker.setDate(null);
-        }
     }
 
+    public void resetComboBoxes() {
+        categoryComboBox.setSelectedItem(categoryComboBox.getItemAt(0));
+    }
+
+    private void resetDatePickers() {
+        for (DatePicker datePicker: datePickers) {
+            datePicker.setDateToToday();
+        }
+    }
 }

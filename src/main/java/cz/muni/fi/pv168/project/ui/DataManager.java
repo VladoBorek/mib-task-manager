@@ -1,6 +1,11 @@
-package cz.muni.fi.pv168.project.business.model;
+package cz.muni.fi.pv168.project.ui;
 
 
+import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
+import cz.muni.fi.pv168.project.business.model.Template;
+import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.ui.model.abstracts.BaseListModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.*;

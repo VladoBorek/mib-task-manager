@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.project.ui.filters;
 
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.business.model.DataManager;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Status;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.ui.filters.matchers.EntityMatcher;
@@ -15,7 +15,6 @@ import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import cz.muni.fi.pv168.project.util.Either;
 
 import javax.swing.table.TableRowSorter;
-import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.EnumSet;
 import java.util.stream.Stream;

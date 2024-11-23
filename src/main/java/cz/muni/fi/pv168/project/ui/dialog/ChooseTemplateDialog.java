@@ -1,10 +1,9 @@
 package cz.muni.fi.pv168.project.ui.dialog;
 
-import cz.muni.fi.pv168.project.business.model.DataManager;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.ui.MainWindow;
-import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
-import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.task.AddTaskAction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +25,7 @@ public class ChooseTemplateDialog extends JDialog {
         comboPanel.add(comboBox);
 
         JButton okButton = createButton("OK",
-                new AddAction(ActionType.TASK, data, comboBox));
+                new AddTaskAction(data, comboBox));
 
         add(comboPanel, BorderLayout.NORTH);
         add(okButton, BorderLayout.SOUTH);
