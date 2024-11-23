@@ -1,6 +1,6 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
-import cz.muni.fi.pv168.project.business.model.DataManager;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.dialog.ChooseTemplateDialog;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 

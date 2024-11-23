@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.business.model.DataManager;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
@@ -42,8 +42,7 @@ public class AddAction extends AbstractAction {
     public AddAction(ActionType type,
                      DataManager data,
                      JComboBox<Template> chosenTemplate,
-                     JComboBox<?> comboBox
-                     ) {
+                     JComboBox<?> comboBox) {
         super("Add new " + type.toString().toLowerCase().replace('_', ' '), Icons.ADD_ICON);
         this.type = type;
         this.data = data;

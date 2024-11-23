@@ -2,11 +2,9 @@ package cz.muni.fi.pv168.project.ui.dialog;
 
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.business.model.DataManager;
-import cz.muni.fi.pv168.project.business.model.Task;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
-import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
 import cz.muni.fi.pv168.project.business.service.validation.TemplateValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.MainWindow;
@@ -20,8 +18,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
-
-import static cz.muni.fi.pv168.project.ui.dialog.AddTaskDialog.createTwoPartPanel;
 
 public class TemplateDialog extends EntityDialog<Template>{
     private final JTextField nameField = new JTextField();

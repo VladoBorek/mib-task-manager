@@ -1,8 +1,7 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.business.model.DataManager;
-import cz.muni.fi.pv168.project.business.model.Status;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
@@ -31,14 +30,6 @@ public class EditAction extends AbstractAction {
         this.type = type;
         this.data = data;
         this.comboBox = comboBox;
-    }
-
-    public EditAction (ActionType type, JComboBox comboBox, DataManager data, ManageTimeUnitDialog manageTimeUnitDialog) {
-        super("Edit", Icons.MANAGE_ICON);
-        this.type = type;
-        this.data = data;
-        this.comboBox = comboBox;
-        this.manageTimeUnitDialog = manageTimeUnitDialog;
     }
     @Override
     public void actionPerformed(ActionEvent e) {

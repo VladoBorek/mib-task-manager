@@ -12,11 +12,14 @@ import cz.muni.fi.pv168.project.business.service.export.ImportService;
 import cz.muni.fi.pv168.project.business.service.validation.*;
 import cz.muni.fi.pv168.project.export.json.BatchJSONExporter;
 import cz.muni.fi.pv168.project.export.json.BatchJSONImporter;
-import cz.muni.fi.pv168.project.ui.actions.menu.ExportAction;
-import cz.muni.fi.pv168.project.ui.actions.menu.ImportAction;
+import cz.muni.fi.pv168.project.ui.actions.export.ExportAction;
+import cz.muni.fi.pv168.project.ui.actions.export.ImportAction;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
+import cz.muni.fi.pv168.project.ui.actions.menu.task.DeleteTaskAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.task.EditTaskAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.task.InspectTaskAction;
 import cz.muni.fi.pv168.project.ui.filters.TaskTableFilter;
 import cz.muni.fi.pv168.project.ui.filters.TemplateTableFilter;
 import cz.muni.fi.pv168.project.ui.filters.components.FilterComboboxBuilder;
@@ -211,7 +214,6 @@ public class MainWindow {
         menuBar.add((createJMenu("Time Units",
                 new AddAction(ActionType.TIME_UNIT, data, null),
                 new ManageAction(ActionType.TIME_UNIT, data, frame))));
-        menuBar.add(createButton("About", null,new AboutAction()));
 
         return menuBar;
     }
@@ -485,9 +487,9 @@ public class MainWindow {
      */
     private JPopupMenu createTaskTablePopupMenu() {
         JPopupMenu menu = new JPopupMenu();
-        menu.add(new EditAction(ActionType.TASK, null, data));
-        menu.add(new DeleteAction(ActionType.TASK, null, data));
-        menu.add(new InspectAction(ActionType.TASK, frame, data));
+        menu.add(new EditTaskAction(data));
+        menu.add(new DeleteTaskAction(data));
+        menu.add(new InspectTaskAction(data));
 
         return menu;
     }
@@ -508,9 +510,8 @@ public class MainWindow {
         data.getTaskTable().addMouseListener(new MouseInputAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-//                System.out.println(e.getClickCount());
                 if (e.getClickCount() == 2 && Arrays.stream(data.getTaskTable().getSelectedRows()).count() == 1) {
-                    InspectAction inspectAction = new InspectAction(ActionType.TASK, frame, data);
+                    InspectTaskAction inspectAction = new InspectTaskAction(data);
                     inspectAction.actionPerformed(null);
                 }
             }

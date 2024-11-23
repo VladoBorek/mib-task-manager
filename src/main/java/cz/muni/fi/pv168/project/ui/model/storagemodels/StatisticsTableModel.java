@@ -1,6 +1,6 @@
 package cz.muni.fi.pv168.project.ui.model.storagemodels;
 
-import cz.muni.fi.pv168.project.business.model.DataManager;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Statistic;
 import cz.muni.fi.pv168.project.business.model.Status;
 import cz.muni.fi.pv168.project.ui.model.statisticTableCell;
