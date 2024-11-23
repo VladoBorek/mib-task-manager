@@ -21,7 +21,7 @@ import cz.muni.fi.pv168.project.ui.filters.TaskTableFilter;
 import cz.muni.fi.pv168.project.ui.filters.TemplateTableFilter;
 import cz.muni.fi.pv168.project.ui.filters.components.FilterComboboxBuilder;
 import cz.muni.fi.pv168.project.ui.filters.values.SpecialFilterCategoryValues;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.CategoryListModel;
+import cz.muni.fi.pv168.project.ui.model.abstracts.BaseListModel;
 import cz.muni.fi.pv168.project.ui.renderers.CategoryCellRenderer;
 
 import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
@@ -392,7 +392,7 @@ public class MainWindow {
     }
 
     private static JComboBox<Either<SpecialFilterCategoryValues, Category>> createTaskCategoryFilter(
-            TaskTableFilter taskTableFilter, CategoryListModel categoryListModel) {
+            TaskTableFilter taskTableFilter, BaseListModel<Category> categoryListModel) {
         return FilterComboboxBuilder.create(SpecialFilterCategoryValues.class, categoryListModel)
                 .setSelectedItem(SpecialFilterCategoryValues.ALL)
                 .setSpecialValuesRenderer(new SpecialFilterCategoryValuesRenderer())
@@ -402,7 +402,7 @@ public class MainWindow {
     }
 
     private static JComboBox<Either<SpecialFilterCategoryValues, Category>> createTemplateCategoryFilter(
-            TemplateTableFilter templateTableFilter, CategoryListModel categoryListModel) {
+            TemplateTableFilter templateTableFilter, BaseListModel<Category> categoryListModel) {
         return FilterComboboxBuilder.create(SpecialFilterCategoryValues.class, categoryListModel)
                 .setSelectedItem(SpecialFilterCategoryValues.ALL)
                 .setSpecialValuesRenderer(new SpecialFilterCategoryValuesRenderer())

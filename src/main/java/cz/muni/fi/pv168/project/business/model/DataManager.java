@@ -2,6 +2,7 @@ package cz.muni.fi.pv168.project.business.model;
 
 
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
+import cz.muni.fi.pv168.project.ui.model.abstracts.BaseListModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.*;
 
 import javax.swing.*;
@@ -15,10 +16,9 @@ import static cz.muni.fi.pv168.project.ui.MainWindow.DEMO_DATA;
  * @author Maroš Pavlík
  */
 public class DataManager {
-    private TimeUnitListModel timeUnits;
-    private CategoryListModel categories;
+    private BaseListModel<TimeUnit> timeUnits;
+    private BaseListModel<Category> categories;
 
-    private LogTimeInfoTableModel logTimeInfoTableModel;
     private CrudService<LogTimeInfo> logTimeInfoCrudService;
 
     private final User loggedUser;
@@ -33,22 +33,23 @@ public class DataManager {
     }
     //TODO provisional solution
     public void setCategories(CrudService<Category> categoryCrudService){
-        this.categories = new CategoryListModel(new ArrayList<>(DEMO_DATA.getCategories()), categoryCrudService);
+        this.categories = new BaseListModel<>(new ArrayList<>(DEMO_DATA.getCategories()), categoryCrudService) {
+        };
     }
     public void setTimeUnits(CrudService<TimeUnit> timeUnitCrudService){
-        this.timeUnits = new TimeUnitListModel(new ArrayList<>(DEMO_DATA.getTimeUnits()), timeUnitCrudService);
+        this.timeUnits = new BaseListModel<>(new ArrayList<>(DEMO_DATA.getTimeUnits()), timeUnitCrudService) {
+        };
     }
 
     public void setLogInfo(CrudService<LogTimeInfo> logTimeInfoCrudService){
         this.logTimeInfoCrudService = logTimeInfoCrudService;
-        this.logTimeInfoTableModel = new LogTimeInfoTableModel(logTimeInfoCrudService);
     }
 
-    public TimeUnitListModel getTimeUnits() {
+    public BaseListModel<TimeUnit> getTimeUnits() {
         return timeUnits;
     }
 
-    public CategoryListModel getCategories() {
+    public BaseListModel<Category> getCategories() {
         return categories;
     }
 

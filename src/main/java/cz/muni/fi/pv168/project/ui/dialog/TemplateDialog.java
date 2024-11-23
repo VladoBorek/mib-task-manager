@@ -12,6 +12,7 @@ import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
+import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 import cz.muni.fi.pv168.project.ui.renderers.CategoryComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -42,8 +43,8 @@ public class TemplateDialog extends EntityDialog<Template>{
         super.getPanel().add(timePanel, BorderLayout.SOUTH);
 
         this.data = data;
-        this.timeUnitComboBox = new JComboBox<>(data.getTimeUnits().toArray());
-        this.categoryComboBox = new JComboBox<>(data.getCategories().toArray());
+        this.timeUnitComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits()));
+        this.categoryComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getCategories()));
 
         setupInfoPanel();
         setupTimePanel();

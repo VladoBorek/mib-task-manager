@@ -9,10 +9,8 @@ import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.AddTaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.CategoryListModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.TimeUnitListModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
@@ -147,9 +145,6 @@ public class AddAction extends AbstractAction {
         });
     }
 
-    /**
-     * Opens a {@link TimeUnitDialog} window, creates a time unit and adds it to {@link TimeUnitListModel}
-     */
     private void addTimeUnit() {
         var dialog = new TimeUnitDialog();
         dialog.show(null, "Add new time unit").ifPresent(data.getTimeUnits()::add);
@@ -168,9 +163,6 @@ public class AddAction extends AbstractAction {
         });
     }
 
-    /**
-     * Opens a {@link CategoryDialog} window, creates a category and adds it to {@link CategoryListModel}
-     */
     private void addCategory() {
         var dialog = new CategoryDialog();
         dialog.show(null, "Add a new Category").ifPresent(data.getCategories()::add);
