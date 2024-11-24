@@ -70,6 +70,10 @@ public abstract class TaskBase extends Entity {
         return getAllocatedTime().toString() + " " + timeUnit.getShortName();
     }
 
+    public void setDescription(String newDescription) {
+        this.description = newDescription;
+    }
+
     public String getDescription() {
         return description;
     }

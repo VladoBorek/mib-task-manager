@@ -27,7 +27,7 @@ public class LogTimeAction extends AbstractAction {
 
         dialog.show(null, "Log Time").ifPresent(newTime -> {
             task.setLoggedTime(task.getLoggedTime() + newTime);
-            data.getLogTimeInfoCrudService().create(new LogTimeInfo(newTime, data.getLoggedUser(), task.getId()));
+            data.getLogTimeInfoCrudService().create(new LogTimeInfo(newTime, data.getLoggedUser(), task.getId())); //TODO check if valid logtimeinfo?
         });
         inspectTaskDialog.updateLoggedTime();
     }

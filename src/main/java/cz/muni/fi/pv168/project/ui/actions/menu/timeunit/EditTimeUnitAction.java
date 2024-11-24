@@ -1,8 +1,10 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.timeunit;
 
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -37,8 +39,12 @@ public class EditTimeUnitAction extends EntityBaseAction {
             timeunit.setRate(newTimeUnit.getRate());
             timeunit.setShortName(newTimeUnit.getShortName());
         });
+        try {
+            data.getTimeUnits().update(timeunit);
+        } catch (ValidationException e) {
+            PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+        }
 
-        data.getTimeUnits().update(timeunit);
         comboBox.setSelectedIndex(0);
     }
 }

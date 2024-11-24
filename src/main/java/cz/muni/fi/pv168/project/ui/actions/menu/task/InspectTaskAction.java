@@ -1,10 +1,13 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.task;
 
+import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.InspectTaskDialog;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -27,7 +30,14 @@ public class InspectTaskAction extends EntityBaseAction {
         var task = taskTableModel.getEntity(modelRow);
 
         var tDialog = new InspectTaskDialog(task, data);
-        tDialog.show(data.getTaskTable(), "Inspect Task").ifPresent(taskTableModel::updateRow);
+        tDialog.show(data.getTaskTable(), "Inspect Task").ifPresent( inspectedTask -> {
+            try {
+                taskTableModel.updateRow(inspectedTask);
+            } catch (ValidationException exception) {
+                PopUp.infoDialog(exception.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        );
     }
 }
 
