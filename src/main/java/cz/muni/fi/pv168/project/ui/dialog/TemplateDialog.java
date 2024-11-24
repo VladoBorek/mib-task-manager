@@ -125,6 +125,9 @@ public class TemplateDialog extends EntityDialog<Template> {
         if ((nameField.getText().trim().isEmpty())
                 || (templateNameField.getText().trim().isEmpty())
                 || (allocatedTimeField.getText().trim().isEmpty())
+                || (categoryComboBox.getSelectedItem() == null)
+                || (timeUnitComboBox.getSelectedItem() == null)
+
         ) {
             PopUp.infoDialog(
                     "Please fill all information",
@@ -137,6 +140,10 @@ public class TemplateDialog extends EntityDialog<Template> {
 
     @Override
     public Template getEntity() {
+        if (!validateFields()) {
+            return null;
+        }
+
         Validator<Template> templateValidator = new TemplateValidator();
         var newTemplate = new Template(null, nameField.getText(),
                 (Category) categoryComboBox.getSelectedItem(),
@@ -144,10 +151,6 @@ public class TemplateDialog extends EntityDialog<Template> {
                 (TimeUnit) timeUnitComboBox.getSelectedItem(),
                 templateNameField.getText());
         var validation = templateValidator.validate(newTemplate);
-
-        if (!validateFields()) {
-            return null;
-        }
         if (!validation.isValid()){
             PopUp.infoDialog(
                     validation.getValidationErrors(),

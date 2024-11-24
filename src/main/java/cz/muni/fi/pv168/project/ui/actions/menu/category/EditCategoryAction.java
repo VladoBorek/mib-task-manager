@@ -1,9 +1,11 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.category;
 
 import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
@@ -35,8 +37,11 @@ public class EditCategoryAction extends EntityBaseAction {
             category.setName(newCat.getName());
             category.setColor(newCat.getColor());
         });
-        data.getCategories().update(category);
-
+        try {
+            data.getCategories().update(category);
+        } catch (ValidationException exception) {
+            PopUp.infoDialog(exception.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+        }
         comboBox.setSelectedIndex(0);
     }
 }
