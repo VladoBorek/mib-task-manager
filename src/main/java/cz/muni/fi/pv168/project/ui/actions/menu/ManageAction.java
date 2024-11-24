@@ -25,6 +25,7 @@ public class ManageAction extends AbstractAction {
         this.frame = frame;
     }
 
+    // TODO: ummm
     private static String getText(ActionType type){
         if (type == ActionType.CATEGORY) {
             return "Manage categories";
