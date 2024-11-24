@@ -1,15 +1,15 @@
 package cz.muni.fi.pv168.project.business.service.export;
 
+import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.business.model.Task;
+import cz.muni.fi.pv168.project.business.model.Template;
+import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.business.service.export.batch.Batch;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchImporter;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
 import cz.muni.fi.pv168.project.business.service.export.format.FormatMapping;
-import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.business.model.Task;
-import cz.muni.fi.pv168.project.business.model.Template;
-import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.utils.ActionType;
 
 import java.util.Collection;
@@ -42,7 +42,7 @@ public class GenericImportService implements ImportService {
     @Override
     public void importData(String filePath, ActionType type, boolean deleteData) {
         if (deleteData) {
-            switch (type){
+            switch (type) {
                 case TASK -> taskCrudService.deleteAll();
                 case CATEGORY -> categoryCrudService.deleteAll();
                 case TEMPLATE -> templateCrudService.deleteAll();
@@ -51,7 +51,7 @@ public class GenericImportService implements ImportService {
         }
         var currentBatch = new Batch(
                 null, categoryCrudService.findAll(),
-            null, timeUnitCrudService.findAll());
+                null, timeUnitCrudService.findAll());
         var batch = getImporter(filePath).importBatch(filePath, type, currentBatch);
         batch.tasks().forEach(this::createTask);
         batch.categories().forEach(this::createCategory);

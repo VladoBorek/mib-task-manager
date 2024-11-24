@@ -5,7 +5,7 @@ import cz.muni.fi.pv168.project.business.service.validation.ValidationResult;
 import java.time.LocalDate;
 
 
-public class DateValidator extends PropertyValidator<LocalDate>{
+public class DateValidator extends PropertyValidator<LocalDate> {
 
     public DateValidator() {
         super("Date");

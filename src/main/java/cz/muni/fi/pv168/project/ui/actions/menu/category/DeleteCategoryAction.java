@@ -3,13 +3,10 @@ package cz.muni.fi.pv168.project.ui.actions.menu.category;
 import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.Arrays;
-import java.util.Comparator;
 
 /**
  * @author Marcel Nadzam

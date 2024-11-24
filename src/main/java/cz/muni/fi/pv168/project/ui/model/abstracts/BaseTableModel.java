@@ -26,7 +26,6 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
     }
 
 
-
     public T getEntity(int rowIndex) {
         return items.get(rowIndex);
     }
@@ -35,7 +34,7 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
         try {
             crudService.update(task)
                     .intoException();
-        } catch (ValidationException e){
+        } catch (ValidationException e) {
             PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -43,12 +42,12 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
         fireTableRowsUpdated(rowIndex, rowIndex);
     }
 
-    public void addRow(T task){
+    public void addRow(T task) {
         int newRowIndex = items.size();
         try {
             crudService.create(task)
                     .intoException();
-        } catch (ValidationException e){
+        } catch (ValidationException e) {
             PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -67,7 +66,7 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
         return items;
     }
 
-    public void deleteAllRows(){
+    public void deleteAllRows() {
         var totalRows = getRowCount();
         for (int i = 0; i < totalRows; i++) {
             deleteRow(0);

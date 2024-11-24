@@ -1,14 +1,13 @@
 package cz.muni.fi.pv168.project.ui.dialog.manage;
 
-import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Template;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.template.AddTemplateAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.template.DeleteTemplateAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.template.EditTemplateAction;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.ManageDialog;
 
 import javax.swing.*;
-
 import java.awt.*;
 
 import static cz.muni.fi.pv168.project.ui.utils.UIElements.createActionsButtonPanel;

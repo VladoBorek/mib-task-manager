@@ -3,21 +3,19 @@ package cz.muni.fi.pv168.project.ui.dialog.task;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Status;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.AddTimeUnitAction;
-import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
+import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 import cz.muni.fi.pv168.project.ui.renderers.CategoryComboboxRenderer;
-//import cz.muni.fi.pv168.project.ui.actions.menu.task.LogTimeAction;
-//import cz.muni.fi.pv168.project.ui.model.CategoryComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
@@ -27,25 +25,19 @@ import java.util.Objects;
 
 public class AddTaskDialog extends EntityDialog<Task> {
     private Task task;
-
     private final DataManager data;
     private final JTextField taskNameField = new JTextField();
     private final JTextField customerField = new JTextField();
     private final JTextArea descriptionArea = new JTextArea();
-
     private final JTextField assignedToName = new JTextField();
     private JPanel timeUnitPanel;
     private JPanel categoryPanel;
-
     private final JComboBox<Status> statusComboBox = new JComboBox<>(Status.values());
     private JComboBox<Category> categoryComboBox;
     private JComboBox<TimeUnit> timeUnitsComboBox;
-
     private final JIntegerTextField loggedTimeField = new JIntegerTextField();
     private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
-
     private final DatePicker datePicker = new DatePicker();
-
     private final JPanel infoPanel = new JPanel();
     private final JPanel descriptionPanel = new JPanel();
     private final JPanel timePanel = new JPanel();
@@ -79,15 +71,15 @@ public class AddTaskDialog extends EntityDialog<Task> {
         timePanel.setBorder(new EmptyBorder(5, 0, 0, 0));
     }
 
-    private void setupTwoPartPanels(){
+    private void setupTwoPartPanels() {
         categoryComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getCategories()));
         categoryComboBox.setRenderer(new CategoryComboboxRenderer());
         timeUnitsComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits()));
 
         var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddCategoryAction(data,  categoryComboBox));
+                new AddCategoryAction(data, categoryComboBox));
         var addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddTimeUnitAction(data,  timeUnitsComboBox));
+                new AddTimeUnitAction(data, timeUnitsComboBox));
 
         CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
         categoryComboBox.addActionListener(e -> CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox));
@@ -96,7 +88,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
         timeUnitPanel = createTwoPartPanel(timeUnitsComboBox, addTimeUnitButton);
     }
 
-    private void setupInfoPanel(){
+    private void setupInfoPanel() {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.X_AXIS));
         infoPanel.add(getLabelPanel());
         infoPanel.add(getComponentPanel());
@@ -111,7 +103,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
         add("Due date", datePicker);
     }
 
-    private void setupDescriptionPanel(){
+    private void setupDescriptionPanel() {
         descriptionPanel.setLayout(new BorderLayout());
 
         JPanel titleDescriptionPanel = new JPanel(new BorderLayout());
@@ -131,7 +123,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
         descriptionArea.setWrapStyleWord(true);
     }
 
-    private void setupTimePanel(){
+    private void setupTimePanel() {
         timePanel.setLayout(new BorderLayout());
         timePanel.add(setupTimeTitlesPanel(), BorderLayout.NORTH);
         timePanel.add(setupTimeInfoPanel(), BorderLayout.SOUTH);
@@ -147,7 +139,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
     }
 
     private JPanel setupTimeInfoPanel() {
-            JPanel timeInfoPanel = new JPanel();
+        JPanel timeInfoPanel = new JPanel();
 
         timeInfoPanel.setLayout(new GridLayout(1, 2));
         timeInfoPanel.add(this.allocatedTimeField);
@@ -156,8 +148,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
         return timeInfoPanel;
     }
 
-    private void setValues()
-    {
+    private void setValues() {
         taskNameField.setText(task.getName());
         descriptionArea.setText(task.getDescription());
         customerField.setText(task.getCustomer());
@@ -210,7 +201,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
         if (!validateFields()) {
             return null;
         }
-        if (!validation.isValid()){
+        if (!validation.isValid()) {
             PopUp.infoDialog(
                     validation.getValidationErrors(),
                     "Input error",

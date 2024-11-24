@@ -1,9 +1,6 @@
 package cz.muni.fi.pv168.project.ui.dialog.task;
 
-import cz.muni.fi.pv168.project.business.model.*;
-import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
-import cz.muni.fi.pv168.project.business.service.validation.LogTimeInfoValidator;
-import cz.muni.fi.pv168.project.storage.InMemoryRepository;
+import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.LogTimeAction;
@@ -50,13 +47,14 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         FormatFields();
         SetupPanels();
     }
-    public JTable createLogTimeInfoTable(){
+
+    public JTable createLogTimeInfoTable() {
         this.model = new LogTimeInfoTableModel(data.getLogTimeInfoCrudService());
         TableRowSorter<LogTimeInfoTableModel> sorter = new TableRowSorter<>(this.model);
 
         this.logTimeTable = new JTable(model);
 
-        sorter.setRowFilter(RowFilter.numberFilter(RowFilter.ComparisonType.EQUAL,task.getId(), 0));
+        sorter.setRowFilter(RowFilter.numberFilter(RowFilter.ComparisonType.EQUAL, task.getId(), 0));
         logTimeTable.setRowSorter(sorter);
 
         var cmodel = logTimeTable.getColumnModel();
@@ -80,7 +78,6 @@ public class InspectTaskDialog extends EntityDialog<Task> {
 
         return this.logTimeTable;
     }
-
 
 
     private void SetupPanels() {
@@ -127,8 +124,7 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         JPanel timeInfoPanel = new JPanel();
 
         timeInfoPanel.setLayout(new GridLayout(1, 3));
-        JButton addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new LogTimeAction(data, this, task));
+        JButton addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON, new LogTimeAction(data, this, task));
         //allocatedTime.setPreferredSize(new Dimension(200, 80));
         //loggedTime.setPreferredSize(new Dimension(200, 80));
         // addLogTimeButton.setPreferredSize(new Dimension(200, 80));

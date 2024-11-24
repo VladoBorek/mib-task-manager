@@ -3,8 +3,8 @@ package cz.muni.fi.pv168.project;
 import com.formdev.flatlaf.FlatLightLaf;
 import cz.muni.fi.pv168.project.ui.LoginWindow;
 
-import javax.swing.UIManager;
-import java.awt.EventQueue;
+import javax.swing.*;
+import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

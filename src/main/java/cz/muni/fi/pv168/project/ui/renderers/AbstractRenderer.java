@@ -9,7 +9,7 @@ import java.awt.*;
  * The {@link AbstractRenderer} abstract class provides the ability of specifying custom rendering of certain type.
  *
  * @param <T> The type to be rendered
- * */
+ */
 public abstract class AbstractRenderer<T> implements ListCellRenderer<T>, TableCellRenderer {
 
     private final Class<T> elementType;

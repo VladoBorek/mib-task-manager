@@ -1,9 +1,10 @@
 package cz.muni.fi.pv168.project.ui.model.storagemodels;
 
-import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Statistic;
 import cz.muni.fi.pv168.project.business.model.Status;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.model.statisticTableCell;
+
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 import java.time.LocalDate;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author Vladimir Borek
  */
 public class StatisticsTableModel extends AbstractTableModel {
-    private static final int  STATUS_INDEX = 1;
+    private static final int STATUS_INDEX = 1;
     private static final int DUEDATE_INDEX = 8;
     private final String[] columnNames = {"Statistic Name", "Global Statistic", "Filtered Statistic"};
     private Statistic globalStatistics = new Statistic();
@@ -22,7 +23,7 @@ public class StatisticsTableModel extends AbstractTableModel {
     private List<statisticTableCell> statisticsData;
     private final DataManager data;
 
-    public StatisticsTableModel(DataManager data){
+    public StatisticsTableModel(DataManager data) {
         this.statisticsData = new ArrayList<>();
         this.data = data;
 
@@ -31,7 +32,7 @@ public class StatisticsTableModel extends AbstractTableModel {
         addStatisticsToTable();
     }
 
-    private void addStatisticsToTable(){
+    private void addStatisticsToTable() {
         statisticsData.add(new statisticTableCell(
                 "Total Tasks", globalStatistics.getTotal(), filteredStatistics.getTotal()));
         statisticsData.add(new statisticTableCell(
@@ -42,7 +43,7 @@ public class StatisticsTableModel extends AbstractTableModel {
                 "Unfinished Tasks", globalStatistics.getInProgress(), filteredStatistics.getInProgress()));
     }
 
-    private void calculateGlobalStatistics(){
+    private void calculateGlobalStatistics() {
         TaskTableModel taskTableModel = (TaskTableModel) data.getTaskTable().getModel();
         int globalTotalTasks = taskTableModel.getRowCount();
         globalStatistics.setTotal(globalTotalTasks);
@@ -52,18 +53,18 @@ public class StatisticsTableModel extends AbstractTableModel {
             if (taskStatus == Status.COMPLETED) {
                 globalStatistics.setCompleted(globalStatistics.getCompleted() + 1);
 
-            } else{
+            } else {
                 globalStatistics.setInProgress(globalStatistics.getInProgress() + 1);
             }
 
             LocalDate taskDueDate = (LocalDate) taskTableModel.getValueAt(i, DUEDATE_INDEX);
-            if (LocalDate.now().isAfter(taskDueDate)){
+            if (LocalDate.now().isAfter(taskDueDate)) {
                 globalStatistics.setOverdue(globalStatistics.getOverdue() + 1);
             }
         }
     }
 
-    private void calculateFilteredStatistics(){
+    private void calculateFilteredStatistics() {
         TaskTableModel taskTableModel = (TaskTableModel) data.getTaskTable().getModel();
         TableRowSorter<TaskTableModel> rowSorter = (TableRowSorter<TaskTableModel>) data.getTaskTable().getRowSorter();
 
@@ -86,6 +87,7 @@ public class StatisticsTableModel extends AbstractTableModel {
             }
         }
     }
+
     @Override
     public int getRowCount() {
         return statisticsData.size();

@@ -8,7 +8,8 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.ui.model.abstracts.BaseListModel;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.*;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import static cz.muni.fi.pv168.project.ui.MainWindow.DEMO_DATA;
 
 /**
  * Object for holding and managing data
+ *
  * @author Maroš Pavlík
  */
 public class DataManager {
@@ -36,17 +38,19 @@ public class DataManager {
     public DataManager(User loggedUser) {
         this.loggedUser = loggedUser;
     }
+
     //TODO provisional solution
-    public void setCategories(CrudService<Category> categoryCrudService){
+    public void setCategories(CrudService<Category> categoryCrudService) {
         this.categories = new BaseListModel<>(new ArrayList<>(DEMO_DATA.getCategories()), categoryCrudService) {
         };
     }
-    public void setTimeUnits(CrudService<TimeUnit> timeUnitCrudService){
+
+    public void setTimeUnits(CrudService<TimeUnit> timeUnitCrudService) {
         this.timeUnits = new BaseListModel<>(new ArrayList<>(DEMO_DATA.getTimeUnits()), timeUnitCrudService) {
         };
     }
 
-    public void setLogInfo(CrudService<LogTimeInfo> logTimeInfoCrudService){
+    public void setLogInfo(CrudService<LogTimeInfo> logTimeInfoCrudService) {
         this.logTimeInfoCrudService = logTimeInfoCrudService;
     }
 
@@ -62,11 +66,11 @@ public class DataManager {
         return logTimeInfoCrudService;
     }
 
-    public JTable getTaskTable(){
+    public JTable getTaskTable() {
         return taskTable;
     }
 
-    public void setTaskTable(JTable taskTable){
+    public void setTaskTable(JTable taskTable) {
         this.taskTable = taskTable;
     }
 
@@ -82,7 +86,9 @@ public class DataManager {
         this.taskTableModel = taskTableModel;
     }
 
-    public TaskTableModel getTaskTableModel(){return this.taskTableModel;}
+    public TaskTableModel getTaskTableModel() {
+        return this.taskTableModel;
+    }
 
     public User getLoggedUser() {
         return loggedUser;
@@ -91,7 +97,7 @@ public class DataManager {
     public List<Template> getTemplates() {
         return ((TemplateTableModel) getTemplateTable().getModel()).getAllRows();
     }
-    
+
     public TemplateTableModel getTemplateTableModel() {
         return ((TemplateTableModel) getTemplateTable().getModel());
     }

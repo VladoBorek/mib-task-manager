@@ -17,8 +17,8 @@ public interface BatchImporter extends FileFormat {
     /**
      * Imports entities from a file to an ordered {@link Collection}.
      *
-     * @param filePath absolute path of the file to import
-     * @param type {@link ActionType} type of items to be imported
+     * @param filePath    absolute path of the file to import
+     * @param type        {@link ActionType} type of items to be imported
      * @param currentData {@link Batch} batch of current data to limit duplicates
      * @return imported bulk of entities
      * @throws DataManipulationException if the file to import does not exist,

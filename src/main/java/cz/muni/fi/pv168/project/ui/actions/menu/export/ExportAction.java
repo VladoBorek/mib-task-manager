@@ -1,9 +1,9 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.export;
 
 import cz.muni.fi.pv168.project.business.service.export.ExportService;
-import cz.muni.fi.pv168.project.ui.utils.ActionType;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.ui.utils.ActionType;
 import cz.muni.fi.pv168.project.util.Filter;
 
 import javax.swing.*;
@@ -15,7 +15,7 @@ import java.awt.event.ActionEvent;
 public class ExportAction extends AbstractAction {
     private final ExportService exportService;
 
-    public ExportAction(ExportService exportService){
+    public ExportAction(ExportService exportService) {
         super("Export application data", Icons.EXPORT_ICON);
         this.exportService = exportService;
     }
@@ -25,7 +25,7 @@ public class ExportAction extends AbstractAction {
         var userChoice = PopUp.optionDialog(
                 "Select items to export",
                 "Export Options",
-                new String[]{"Tasks", "Categories", "Template","Time Units"});
+                new String[]{"Tasks", "Categories", "Template", "Time Units"});
         if (userChoice < 0 || userChoice > 3) {
             return;
         }

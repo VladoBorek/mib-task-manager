@@ -31,7 +31,7 @@ public class DeleteTimeUnitAction extends EntityBaseAction {
         assert timeUnit != null;
 
         // TODO: hmm
-        if (Objects.equals(timeUnit.getName(), TimeUnit.getBaseUnit())){
+        if (Objects.equals(timeUnit.getName(), TimeUnit.getBaseUnit())) {
             PopUp.infoDialog(
                     "You cannot delete " + TimeUnit.getBaseUnit() + " Time Unit!",
                     "Forbidden action",

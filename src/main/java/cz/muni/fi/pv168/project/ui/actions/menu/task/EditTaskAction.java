@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.task;
 
-import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Task;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.task.AddTaskDialog;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;

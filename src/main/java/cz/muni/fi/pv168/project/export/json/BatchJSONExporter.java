@@ -1,6 +1,10 @@
 package cz.muni.fi.pv168.project.export.json;
 
-import cz.muni.fi.pv168.project.business.model.*;
+import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.business.model.Status;
+import cz.muni.fi.pv168.project.business.model.Task;
+import cz.muni.fi.pv168.project.business.model.Template;
+import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.service.export.DataManipulationException;
 import cz.muni.fi.pv168.project.business.service.export.batch.Batch;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchExporter;
@@ -18,23 +22,25 @@ import java.util.function.Function;
 
 /**
  * Handles the export of the application data to JSON file
+ *
  * @author Nikol Otáhalů
  */
 public class BatchJSONExporter implements BatchExporter {
     private static final Format FORMAT = new Format("JSON", List.of("json"));
-    private static  final String TAB = "    ";
+    private static final String TAB = "    ";
     private static final String ITEM_START = TAB + "{\n";
-    private static final String ITEM_END = "\n"+ TAB + "}";
+    private static final String ITEM_END = "\n" + TAB + "}";
+
     @Override
     public void exportBatch(Batch batch, String filePath, ActionType type) {
         try (var writer = Files.newBufferedWriter(Path.of(filePath), StandardCharsets.UTF_8)) {
             writer.write("[\n");
 
-            switch (type){
-                case TASK -> writeBatch(batch.tasks(),this::createTaskItem, writer);
-                case CATEGORY -> writeBatch(batch.categories(), this::createCategoryItem,writer);
-                case TEMPLATE -> writeBatch(batch.templates(), this::createTemplateItem,writer);
-                case TIME_UNIT -> writeBatch(batch.timeUnits(), this::createTimeUnitItem,writer);
+            switch (type) {
+                case TASK -> writeBatch(batch.tasks(), this::createTaskItem, writer);
+                case CATEGORY -> writeBatch(batch.categories(), this::createCategoryItem, writer);
+                case TEMPLATE -> writeBatch(batch.templates(), this::createTemplateItem, writer);
+                case TIME_UNIT -> writeBatch(batch.timeUnits(), this::createTimeUnitItem, writer);
             }
 
             writer.write("\n]");
@@ -46,7 +52,8 @@ public class BatchJSONExporter implements BatchExporter {
 
     /**
      * Using writer, writes items from Batch collection into a file
-     * @param items Collection from {@link Batch} to be written
+     *
+     * @param items  Collection from {@link Batch} to be written
      * @param create function that is applied to items, returns string which is the written with writer
      * @param writer Buffered writer, that writes the data into file
      * @throws IOException if the writer fails
@@ -67,8 +74,9 @@ public class BatchJSONExporter implements BatchExporter {
 
     /**
      * Creates line for the JSON file export
+     *
      * @param attribute attribute for export
-     * @param value value of the attribute
+     * @param value     value of the attribute
      * @return String in JSON line format
      */
     private String createJSONLine(String attribute, Object value) {
@@ -77,65 +85,70 @@ public class BatchJSONExporter implements BatchExporter {
 
     /**
      * Turns {@link Task} object into a JSON format string
+     *
      * @param object Object (Task) to be turned into string
      * @return String in JSON item format
      */
-    private String createTaskItem(Object object){
+    private String createTaskItem(Object object) {
         var task = (Task) object;
-        return  String.join(",\n",
+        return String.join(",\n",
                 //createJSONLine("id", task.getId()),
                 createJSONLine("status", Status.valueOf(task.getStatus().toString())),
-                    createJSONLine("description", task.getDescription()),
-                    createJSONLine("customer", task.getCustomer()),
-                    createJSONLine("task_name", task.getName()),
-                    createJSONLine("assigned_to", task.getAssignedTo()),
-                    createJSONLine("logged_time", task.getConvertedLoggedTime()),
-                    createJSONLine("allocated_time", task.getConvertedAllocatedTime()),
-                    createJSONLine("due_date", task.getDueDate()),
-                    createCategoryItem(task.getCategory()),
-                    createTimeUnitItem(task.getTimeUnit())
+                createJSONLine("description", task.getDescription()),
+                createJSONLine("customer", task.getCustomer()),
+                createJSONLine("task_name", task.getName()),
+                createJSONLine("assigned_to", task.getAssignedTo()),
+                createJSONLine("logged_time", task.getConvertedLoggedTime()),
+                createJSONLine("allocated_time", task.getConvertedAllocatedTime()),
+                createJSONLine("due_date", task.getDueDate()),
+                createCategoryItem(task.getCategory()),
+                createTimeUnitItem(task.getTimeUnit())
                 //TODO add exporting log time table
         );
     }
+
     /**
      * Turns {@link Category} object into a JSON format string
+     *
      * @param object Object (Category) to be turned into string
      * @return String in JSON item format
      */
-    private String createCategoryItem(Object object){
+    private String createCategoryItem(Object object) {
         var category = (Category) object;
         return String.join(",\n",
-                    createJSONLine("category_name", category.getName()),
-                    createJSONLine("category_color", category.getColor().getRGB()));
+                createJSONLine("category_name", category.getName()),
+                createJSONLine("category_color", category.getColor().getRGB()));
     }
 
     /**
      * Turns {@link Template} object into a JSON format string
+     *
      * @param object Object (Template) to be turned into string
      * @return String in JSON item format
      */
-    private String createTemplateItem(Object object){
+    private String createTemplateItem(Object object) {
         var template = (Template) object;
         return String.join(",\n",
-                    createJSONLine("template_name", template.getTemplateName()),
-                    createJSONLine("allocated_time", template.getAllocatedTime()),
-                    createJSONLine("template_task_name", template.getName()),
-                    createCategoryItem(template.getCategory()),
-                    createTimeUnitItem(template.getTimeUnit())
+                createJSONLine("template_name", template.getTemplateName()),
+                createJSONLine("allocated_time", template.getAllocatedTime()),
+                createJSONLine("template_task_name", template.getName()),
+                createCategoryItem(template.getCategory()),
+                createTimeUnitItem(template.getTimeUnit())
         );
     }
 
     /**
      * Turns {@link TimeUnit} object into a JSON format string
+     *
      * @param object Object (TimeUnit) to be turned into string
      * @return String in JSON item format
      */
-    private String createTimeUnitItem(Object object){
+    private String createTimeUnitItem(Object object) {
         var timeUnit = (TimeUnit) object;
         return String.join(",\n",
-                    createJSONLine("time_unit_name", timeUnit.getName()),
-                    createJSONLine("time_unit_short_name", timeUnit.getShortName()),
-                    createJSONLine("time_unit_rate", timeUnit.getRate())
+                createJSONLine("time_unit_name", timeUnit.getName()),
+                createJSONLine("time_unit_short_name", timeUnit.getShortName()),
+                createJSONLine("time_unit_rate", timeUnit.getRate())
         );
     }
 

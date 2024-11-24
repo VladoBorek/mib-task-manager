@@ -7,8 +7,8 @@ import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Maroš Pavlík
@@ -27,7 +27,7 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
         try {
             crudService.create(item)
                     .intoException();
-        } catch (ValidationException e){
+        } catch (ValidationException e) {
             PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -44,7 +44,7 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
         try {
             crudService.update(item)
                     .intoException();
-        } catch (ValidationException e){
+        } catch (ValidationException e) {
             PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
         }
     }
