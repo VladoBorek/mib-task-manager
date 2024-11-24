@@ -5,7 +5,7 @@ import cz.muni.fi.pv168.project.business.service.export.DataManipulationExceptio
 import cz.muni.fi.pv168.project.business.service.export.batch.Batch;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchImporter;
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
-import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
+import cz.muni.fi.pv168.project.ui.utils.ActionType;
 
 import java.awt.*;
 import java.io.BufferedReader;

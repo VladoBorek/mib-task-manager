@@ -23,6 +23,10 @@ public class AddTimeUnitAction extends EntityBaseAction {
         this.comboBox = comboBox;
     }
 
+    public AddTimeUnitAction(DataManager data) {
+        this(data, null);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         addTimeUnit();

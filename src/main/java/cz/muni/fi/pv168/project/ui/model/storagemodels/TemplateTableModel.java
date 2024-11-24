@@ -38,4 +38,20 @@ public class TemplateTableModel extends BaseTableModel<Template>  implements Ent
     public String getColumnName(int columnIndex) {
         return columns.get(columnIndex).getName();
     }
+
+    public void remove(Template template) {
+        int rowIndex = getRowIndex(template);
+        if (rowIndex != -1) {
+            deleteRow(rowIndex);
+        }
+    }
+
+    private int getRowIndex(Template template) {
+        for (int i = 0; i < getRowCount(); i++) {
+            if (getEntity(i).equals(template)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

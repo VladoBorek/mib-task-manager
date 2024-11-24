@@ -4,8 +4,8 @@ import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
-import cz.muni.fi.pv168.project.ui.dialog.AddTaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
+import cz.muni.fi.pv168.project.ui.dialog.task.AddTaskDialog;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 

@@ -3,8 +3,8 @@ package cz.muni.fi.pv168.project.ui.actions.menu.task;
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
 import cz.muni.fi.pv168.project.business.model.Task;
-import cz.muni.fi.pv168.project.ui.dialog.InspectTaskDialog;
-import cz.muni.fi.pv168.project.ui.dialog.LogTimeDialog;
+import cz.muni.fi.pv168.project.ui.dialog.task.InspectTaskDialog;
+import cz.muni.fi.pv168.project.ui.dialog.task.LogTimeDialog;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

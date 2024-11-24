@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project.ui.dialog;
+package cz.muni.fi.pv168.project.ui.dialog.task;
 
 import cz.muni.fi.pv168.project.business.model.*;
 import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
@@ -7,6 +7,7 @@ import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.LogTimeAction;
+import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.CellPanel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.LogTimeInfoTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;

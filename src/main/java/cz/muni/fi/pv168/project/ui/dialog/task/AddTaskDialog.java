@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project.ui.dialog;
+package cz.muni.fi.pv168.project.ui.dialog.task;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
@@ -10,8 +10,10 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.MainWindow;
-import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
-import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.AddTimeUnitAction;
+import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 import cz.muni.fi.pv168.project.ui.renderers.CategoryComboboxRenderer;
 //import cz.muni.fi.pv168.project.ui.actions.menu.task.LogTimeAction;
@@ -23,7 +25,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Objects;
 
-public class AddTaskDialog extends EntityDialog<Task>{
+public class AddTaskDialog extends EntityDialog<Task> {
     private Task task;
 
     private final DataManager data;
@@ -83,9 +85,9 @@ public class AddTaskDialog extends EntityDialog<Task>{
         timeUnitsComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits()));
 
         var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.CATEGORY, data, null,  categoryComboBox));
+                new AddCategoryAction(data,  categoryComboBox));
         var addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.TIME_UNIT, data, null,  timeUnitsComboBox));
+                new AddTimeUnitAction(data,  timeUnitsComboBox));
 
         CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
         categoryComboBox.addActionListener(e -> CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox));
