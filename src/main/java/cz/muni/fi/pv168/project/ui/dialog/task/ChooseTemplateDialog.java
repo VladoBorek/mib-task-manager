@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project.ui.dialog;
+package cz.muni.fi.pv168.project.ui.dialog.task;
 
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Template;
@@ -34,6 +34,7 @@ public class ChooseTemplateDialog extends JDialog {
         setLocationRelativeTo(parent);
     }
 
+    // TODO: het
     private JButton createButton(String buttonText, Action a) {
         var button = new JButton(buttonText);
         button.addActionListener(e -> {

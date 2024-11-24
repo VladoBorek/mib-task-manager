@@ -8,8 +8,9 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.service.validation.TemplateValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.MainWindow;
-import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
-import cz.muni.fi.pv168.project.ui.actions.menu.AddAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.AddTimeUnitAction;
+import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 import cz.muni.fi.pv168.project.ui.renderers.CategoryComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -19,7 +20,7 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 
-public class TemplateDialog extends EntityDialog<Template>{
+public class TemplateDialog extends EntityDialog<Template> {
     private final JTextField nameField = new JTextField();
     private final JTextField templateNameField = new JTextField();
     private final DataManager data;
@@ -64,7 +65,7 @@ public class TemplateDialog extends EntityDialog<Template>{
     }
     private void setupCategoryPanel(){
         var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.CATEGORY, data, null, categoryComboBox));
+                new AddCategoryAction(data, categoryComboBox));
 
         categoryComboBox.setRenderer(new CategoryComboboxRenderer());
         categoryComboBox.addActionListener(e -> {
@@ -77,7 +78,7 @@ public class TemplateDialog extends EntityDialog<Template>{
 
     private void setupTimePanel(){
         var addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddAction(ActionType.TIME_UNIT, data, null, timeUnitComboBox));
+                new AddTimeUnitAction(data, timeUnitComboBox));
 
         timeUnitPanel = createTwoPartPanel(timeUnitComboBox, addTimeUnitButton);
 

@@ -11,7 +11,7 @@ import cz.muni.fi.pv168.project.business.service.export.batch.BatchExporter;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
 import cz.muni.fi.pv168.project.business.service.export.format.FormatMapping;
-import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
+import cz.muni.fi.pv168.project.ui.utils.ActionType;
 
 import java.util.Collection;
 

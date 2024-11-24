@@ -1,16 +1,12 @@
-package cz.muni.fi.pv168.project.ui.dialog;
-
-import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
+package cz.muni.fi.pv168.project.ui.dialog.abstracts;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.Objects;
 import java.util.Optional;
 
 import static javax.swing.JOptionPane.*;
 
-abstract class EntityDialog<E> {
+public abstract class EntityDialog<E> {
 
     private final JPanel panel = new JPanel();
     private final JPanel labelPanel = new JPanel();
@@ -36,6 +32,7 @@ abstract class EntityDialog<E> {
     public JPanel getPanel() {
         return panel;
     }
+
     public JPanel getLabelPanel(){
         return this.labelPanel;
     }
@@ -50,6 +47,7 @@ abstract class EntityDialog<E> {
         panel.add(componentPanel);
     }
 
+    // TODO: do util
     public static JPanel createTwoPartPanel(JComponent comboBox, JComponent button) {
         var newPanel = new JPanel(new GridBagLayout());
         var constraints = new GridBagConstraints();

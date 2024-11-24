@@ -1,13 +1,10 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.task;
 
 import cz.muni.fi.pv168.project.ui.DataManager;
-import cz.muni.fi.pv168.project.ui.actions.menu.ActionType;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
-import cz.muni.fi.pv168.project.ui.dialog.InspectTaskDialog;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
+import cz.muni.fi.pv168.project.ui.dialog.task.InspectTaskDialog;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 /**
