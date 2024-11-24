@@ -190,8 +190,10 @@ public class AddTaskDialog extends EntityDialog<Task>{
 
     @Override
     public Task getEntity() {
+        if (!validateFields()) {
+            return null;
+        }
         Validator<Task> taskValidator = new TaskValidator();
-
         var newTask = new Task(
                 null, (Status) statusComboBox.getSelectedItem(),
                 this.descriptionArea.getText(),
@@ -205,9 +207,7 @@ public class AddTaskDialog extends EntityDialog<Task>{
                 datePicker.getDate());
         var validation = taskValidator.validate(newTask);
 
-        if (!validateFields()) {
-            return null;
-        }
+
         if (!validation.isValid()){
             PopUp.infoDialog(
                     validation.getValidationErrors(),
