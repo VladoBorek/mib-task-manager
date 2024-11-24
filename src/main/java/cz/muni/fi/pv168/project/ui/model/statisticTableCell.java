@@ -13,11 +13,7 @@ public class statisticTableCell {
         this.globalStatistic = globalStatistic;
         this.filteredStatistic = filteredStatistic;
     }
-
-//    public Statistic(String name){
-//        this. globalStatistic =  function;
-//    }
-
+    
     public String getName() {
         return this.name;
     }

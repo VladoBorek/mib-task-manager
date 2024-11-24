@@ -4,13 +4,11 @@ package cz.muni.fi.pv168.project.business.model;
  * @author Vladimir Borek
  */
 public class Statistic {
-
     private int total = 0;
     private int completed = 0;
     private int overdue = 0;
     private int inProgress = 0;
     private int onHold = 0;
-
 
     public Statistic() {
     }

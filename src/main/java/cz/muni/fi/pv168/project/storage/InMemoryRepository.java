@@ -46,9 +46,6 @@ public class InMemoryRepository<T extends Entity> implements Repository<T> {
             newEntity.setId(newId);
         }
         data.put(newEntity.getId(), newEntity);
-
-//        System.out.println("[InMemoryStorage] Created entity: " + newEntity);
-
         return newEntity;
     }
 
@@ -59,8 +56,6 @@ public class InMemoryRepository<T extends Entity> implements Repository<T> {
             throw new IllegalArgumentException("No existing entity found with given id: " + entity.getId());
         }
         data.put(entity.getId(), entity);
-
-//        System.out.println("[InMemoryStorage] Updated entity: " + entity);
     }
 
     @Override
@@ -69,8 +64,6 @@ public class InMemoryRepository<T extends Entity> implements Repository<T> {
             throw new IllegalArgumentException("Id cannot be null.");
         }
         data.remove(id);
-
-//        System.out.println("[InMemoryStorage] Deleted entity with id: " + id);
     }
 
     @Override
