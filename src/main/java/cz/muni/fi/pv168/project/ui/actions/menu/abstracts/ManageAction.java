@@ -16,23 +16,4 @@ public abstract class ManageAction extends AbstractAction {
         this.data = data;
         this.frame = frame;
     }
-
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//        switch (type){
-//            case TASK -> System.out.println("User clicked on Manage Task Button");
-//            case CATEGORY -> {
-//                var yo = new ManageCategoriesDialog(frame, data);
-//                yo.setVisible(true);
-//            }
-//            case TIME_UNIT -> {
-//                var ej = new ManageTimeUnitDialog(frame, data);
-//                ej.setVisible(true);
-//            }
-//            case TEMPLATE -> {
-//                var sup = new ManageTemplatesDialog(frame, data);
-//                sup.setVisible(true);
-//            }
-//        }
-//    }
 }
