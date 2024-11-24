@@ -1,8 +1,10 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.timeunit;
 
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -29,7 +31,12 @@ public class AddTimeUnitAction extends EntityBaseAction {
     private void addTimeUnit() {
         var dialog = new TimeUnitDialog();
         dialog.show(null, "Add new time unit").ifPresent(newTimeUnit -> {
-            data.getTimeUnits().add(newTimeUnit);
+            try {
+                data.getTimeUnits().add(newTimeUnit);
+            } catch (ValidationException exception) {
+                PopUp.infoDialog(exception.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             DefaultComboBoxModel<TimeUnit> model = (DefaultComboBoxModel<TimeUnit>) comboBox.getModel();
             model.addElement(newTimeUnit);
             comboBox.setSelectedItem(newTimeUnit);

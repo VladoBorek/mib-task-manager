@@ -31,27 +31,15 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
         return items.get(rowIndex);
     }
 
-    public void updateRow(T task) {
-        try {
-            crudService.update(task)
-                    .intoException();
-        } catch (ValidationException e){
-            PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    public void updateRow(T task) throws ValidationException {
+        crudService.update(task).intoException();
         int rowIndex = items.indexOf(task);
         fireTableRowsUpdated(rowIndex, rowIndex);
     }
 
-    public void addRow(T task){
+    public void addRow(T task) throws ValidationException {
         int newRowIndex = items.size();
-        try {
-            crudService.create(task)
-                    .intoException();
-        } catch (ValidationException e){
-            PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        crudService.create(task).intoException();
         items.add(task);
         fireTableRowsInserted(newRowIndex, newRowIndex);
     }

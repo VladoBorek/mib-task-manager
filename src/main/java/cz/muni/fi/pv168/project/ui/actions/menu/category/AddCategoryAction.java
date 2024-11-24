@@ -1,9 +1,11 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.category;
 
 import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
@@ -33,7 +35,13 @@ public class AddCategoryAction extends EntityBaseAction {
     private void addCategory() {
         var dialog = new CategoryDialog();
         dialog.show(null, "Add a new Category").ifPresent(newCategory -> {
-            data.getCategories().add(newCategory);
+            try {
+                data.getCategories().add(newCategory);
+            } catch (ValidationException e) {
+                PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             if (comboBox != null) {
                 DefaultComboBoxModel<Category> model = (DefaultComboBoxModel<Category>) comboBox.getModel();
                 model.addElement(newCategory);

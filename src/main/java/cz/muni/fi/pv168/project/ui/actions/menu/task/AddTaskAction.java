@@ -1,10 +1,12 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.task;
 
+import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.AddTaskDialog;
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -41,7 +43,13 @@ public class AddTaskAction extends EntityBaseAction {
             dialog = new AddTaskDialog(new Task(template), data);
         }
 
-        dialog.show(data.getTaskTable(), "Add new Task").ifPresent(taskTableModel::addRow);
+        dialog.show(data.getTaskTable(), "Add new Task").ifPresent( newTask -> {
+            try {
+                taskTableModel.addRow(newTask);
+            } catch (ValidationException e) {
+                PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
 
         // TODO: umh..
         ((StatisticsTableModel) data.getStatisticsTable().getModel()).refreshStatistics();
