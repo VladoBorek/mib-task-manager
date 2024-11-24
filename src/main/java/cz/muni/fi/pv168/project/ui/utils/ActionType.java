@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project.ui.actions.menu;
+package cz.muni.fi.pv168.project.ui.utils;
 
 /**
  * ActionType of the selected category for actions to be performed

@@ -12,11 +12,13 @@ import cz.muni.fi.pv168.project.business.service.export.ImportService;
 import cz.muni.fi.pv168.project.business.service.validation.*;
 import cz.muni.fi.pv168.project.export.json.BatchJSONExporter;
 import cz.muni.fi.pv168.project.export.json.BatchJSONImporter;
-import cz.muni.fi.pv168.project.ui.actions.export.ExportAction;
-import cz.muni.fi.pv168.project.ui.actions.export.ImportAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.category.ManageCategoriesAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.export.ExportAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.export.ImportAction;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.storage.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.actions.menu.*;
+import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.ManageAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.DeleteTaskAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.EditTaskAction;
@@ -24,6 +26,9 @@ import cz.muni.fi.pv168.project.ui.actions.menu.task.InspectTaskAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.template.AddTemplateAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.template.DeleteTemplateAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.template.EditTemplateAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.template.ManageTemplatesAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.AddTimeUnitAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.ManageTimeUnitsAction;
 import cz.muni.fi.pv168.project.ui.filters.TaskTableFilter;
 import cz.muni.fi.pv168.project.ui.filters.TemplateTableFilter;
 import cz.muni.fi.pv168.project.ui.filters.components.FilterComboboxBuilder;
@@ -211,13 +216,13 @@ public class MainWindow {
         menuBar.add(createJMenu("File", new ImportAction(importService, this::refresh), new ExportAction(exportService)));
         menuBar.add(createJMenu("Template",
                 new AddTemplateAction(data),
-                new ManageAction(ActionType.TEMPLATE, data, frame)));
+                new ManageTemplatesAction(data, frame)));
         menuBar.add((createJMenu("Categories",
                 new AddCategoryAction(data),
-                new ManageAction(ActionType.CATEGORY, data, frame))));
+                new ManageCategoriesAction(data, frame))));
         menuBar.add((createJMenu("Time Units",
-                new AddAction(ActionType.TIME_UNIT, data, null),
-                new ManageAction(ActionType.TIME_UNIT, data, frame))));
+                new AddTimeUnitAction(data),
+                new ManageTimeUnitsAction(data, frame))));
 
         return menuBar;
     }
@@ -523,6 +528,7 @@ public class MainWindow {
 
     }
 
+    // TODO: het
     /**
      * @param buttonText Text to be shown on button
      * @param icon       Icon for the button
