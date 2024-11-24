@@ -12,7 +12,7 @@ public class Statistic {
     private int onHold = 0;
 
 
-    public Statistic(){
+    public Statistic() {
     }
 
     public int getTotal() {

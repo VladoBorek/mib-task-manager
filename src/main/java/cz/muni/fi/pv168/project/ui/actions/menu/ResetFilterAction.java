@@ -19,9 +19,9 @@ public class ResetFilterAction extends AbstractAction {
     JComboBox<Either<SpecialFilterCategoryValues, Category>> categoryComboBox;
     List<DatePicker> datePickers;
 
-    public ResetFilterAction(Map<Boolean,List<JCheckBox>> resetValuesCheckboxes,
+    public ResetFilterAction(Map<Boolean, List<JCheckBox>> resetValuesCheckboxes,
                              JComboBox<Either<SpecialFilterCategoryValues, Category>> categoryComboBox,
-                             List<DatePicker> datePickers){
+                             List<DatePicker> datePickers) {
         super("Reset filters", Icons.RESET_ICON);
         this.resetValuesCheckboxes = resetValuesCheckboxes;
         this.categoryComboBox = categoryComboBox;
@@ -36,8 +36,8 @@ public class ResetFilterAction extends AbstractAction {
     }
 
     private void resetCheckboxes() {
-        for (Boolean state: resetValuesCheckboxes.keySet()) {
-            for (JCheckBox checkBox: resetValuesCheckboxes.get(state)) {
+        for (Boolean state : resetValuesCheckboxes.keySet()) {
+            for (JCheckBox checkBox : resetValuesCheckboxes.get(state)) {
                 checkBox.setSelected(!state);
                 checkBox.doClick();
             }
@@ -49,7 +49,7 @@ public class ResetFilterAction extends AbstractAction {
     }
 
     private void resetDatePickers() {
-        for (DatePicker datePicker: datePickers) {
+        for (DatePicker datePicker : datePickers) {
             datePicker.setDateToToday();
         }
     }

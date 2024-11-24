@@ -1,9 +1,9 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.task;
 
-import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
-import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
+import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.AddTaskDialog;
@@ -43,7 +43,7 @@ public class AddTaskAction extends EntityBaseAction {
             dialog = new AddTaskDialog(new Task(template), data);
         }
 
-        dialog.show(data.getTaskTable(), "Add new Task").ifPresent( newTask -> {
+        dialog.show(data.getTaskTable(), "Add new Task").ifPresent(newTask -> {
             try {
                 taskTableModel.addRow(newTask);
             } catch (ValidationException e) {

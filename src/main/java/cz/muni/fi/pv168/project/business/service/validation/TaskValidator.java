@@ -6,7 +6,7 @@ import cz.muni.fi.pv168.project.business.service.validation.common.StringLengthV
 
 import java.util.List;
 
-public class TaskValidator implements Validator<Task>{
+public class TaskValidator implements Validator<Task> {
     @Override
     public ValidationResult validate(Task task) {
         var validators = List.of(
@@ -21,7 +21,7 @@ public class TaskValidator implements Validator<Task>{
                 Validator.extracting(
                         Task::getDueDate, new DateValidator()),
                 Validator.extracting(
-                        Task ::getCategory, new CategoryValidator()),
+                        Task::getCategory, new CategoryValidator()),
                 Validator.extracting(
                         Task::getTimeUnit, new TimeUnitValidator())
         );

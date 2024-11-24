@@ -18,6 +18,7 @@ public final class ValidationResult {
     public static ValidationResult failed(String... validationErrors) {
         return new ValidationResult(Arrays.asList(validationErrors));
     }
+
     public static ValidationResult success() {
         return new ValidationResult();
     }

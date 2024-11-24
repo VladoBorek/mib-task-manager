@@ -8,7 +8,7 @@ public class statisticTableCell {
     private final int globalStatistic;
     private final int filteredStatistic;
 
-    public statisticTableCell(String name, int globalStatistic, int filteredStatistic){
+    public statisticTableCell(String name, int globalStatistic, int filteredStatistic) {
         this.name = name;
         this.globalStatistic = globalStatistic;
         this.filteredStatistic = filteredStatistic;
@@ -18,15 +18,15 @@ public class statisticTableCell {
 //        this. globalStatistic =  function;
 //    }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
-    public int getGlobalStatistic(){
+    public int getGlobalStatistic() {
         return this.globalStatistic;
     }
 
-    public int getFilteredStatistic(){
+    public int getFilteredStatistic() {
         return this.filteredStatistic;
     }
 }

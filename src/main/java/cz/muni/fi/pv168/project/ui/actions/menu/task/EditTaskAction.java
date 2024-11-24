@@ -1,8 +1,8 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.task;
 
+import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.DataManager;
-import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.AddTaskDialog;
@@ -41,10 +41,10 @@ public class EditTaskAction extends EntityBaseAction {
                     updateTask(task, newTask);
                     try {
                         taskTableModel.updateRow(task);
-                    } catch (ValidationException exception){
+                    } catch (ValidationException exception) {
                         PopUp.infoDialog(exception.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
                     }
-        }
+                }
         );
 
         // TODO: umh..

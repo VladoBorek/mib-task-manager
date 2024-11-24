@@ -36,13 +36,12 @@ public class EditTemplateAction extends EntityBaseAction {
         Template template;
         TemplateTableModel templateTableModel = (TemplateTableModel) data.getTemplateTable().getModel();
 
-        if (comboBox != null){
+        if (comboBox != null) {
             template = (Template) comboBox.getSelectedItem();
             if (template == null) {
                 return;
             }
-        }
-        else {
+        } else {
             var selectedRows = data.getTemplateTable().getSelectedRows();
             if (selectedRows.length != 1) {
                 throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
@@ -53,7 +52,7 @@ public class EditTemplateAction extends EntityBaseAction {
         }
 
         var templateDialog = new TemplateDialog(data, template);
-        templateDialog.show(comboBox, "Edit Template").ifPresent( newTemplate -> {
+        templateDialog.show(comboBox, "Edit Template").ifPresent(newTemplate -> {
                     updateTemplate(template, newTemplate);
                     try {
                         templateTableModel.updateRow(template);

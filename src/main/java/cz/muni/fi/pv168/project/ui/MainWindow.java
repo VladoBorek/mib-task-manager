@@ -1,7 +1,12 @@
 package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import cz.muni.fi.pv168.project.business.model.*;
+import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
+import cz.muni.fi.pv168.project.business.model.Task;
+import cz.muni.fi.pv168.project.business.model.Template;
+import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.repository.Repository;
 import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
@@ -9,17 +14,22 @@ import cz.muni.fi.pv168.project.business.service.export.ExportService;
 import cz.muni.fi.pv168.project.business.service.export.GenericExportService;
 import cz.muni.fi.pv168.project.business.service.export.GenericImportService;
 import cz.muni.fi.pv168.project.business.service.export.ImportService;
-import cz.muni.fi.pv168.project.business.service.validation.*;
+import cz.muni.fi.pv168.project.business.service.validation.CategoryValidator;
+import cz.muni.fi.pv168.project.business.service.validation.LogTimeInfoValidator;
+import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
+import cz.muni.fi.pv168.project.business.service.validation.TemplateValidator;
+import cz.muni.fi.pv168.project.business.service.validation.TimeUnitValidator;
+import cz.muni.fi.pv168.project.business.service.validation.Validator;
+import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.export.json.BatchJSONExporter;
 import cz.muni.fi.pv168.project.export.json.BatchJSONImporter;
+import cz.muni.fi.pv168.project.storage.InMemoryRepository;
+import cz.muni.fi.pv168.project.ui.actions.menu.ChooseTemplateAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.ResetFilterAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.category.ManageCategoriesAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.export.ExportAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.export.ImportAction;
-import cz.muni.fi.pv168.project.data.DemoDataGenerator;
-import cz.muni.fi.pv168.project.storage.InMemoryRepository;
-import cz.muni.fi.pv168.project.ui.actions.menu.*;
-import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.ManageAction;
-import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.DeleteTaskAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.EditTaskAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.InspectTaskAction;
@@ -33,14 +43,12 @@ import cz.muni.fi.pv168.project.ui.filters.TaskTableFilter;
 import cz.muni.fi.pv168.project.ui.filters.TemplateTableFilter;
 import cz.muni.fi.pv168.project.ui.filters.components.FilterComboboxBuilder;
 import cz.muni.fi.pv168.project.ui.filters.values.SpecialFilterCategoryValues;
-import cz.muni.fi.pv168.project.ui.model.abstracts.BaseListModel;
-import cz.muni.fi.pv168.project.ui.renderers.CategoryCellRenderer;
-
-import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
-
 import cz.muni.fi.pv168.project.ui.model.TaskProgressBar;
+import cz.muni.fi.pv168.project.ui.model.abstracts.BaseListModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
+import cz.muni.fi.pv168.project.ui.renderers.CategoryCellRenderer;
 import cz.muni.fi.pv168.project.ui.renderers.CategoryRenderer;
 import cz.muni.fi.pv168.project.ui.renderers.SpecialFilterCategoryValuesRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -82,7 +90,6 @@ public class MainWindow {
     private final ImportService importService;
 
 
-
     /**
      * Constructor for MainWindow.
      * Initializes the main frame, sets the background color, size, and adds the menu bar and filter bar.
@@ -118,7 +125,7 @@ public class MainWindow {
         templateTable.setComponentPopupMenu(createTemplateTablePopupMenu());
 
 
-        exportService = new GenericExportService(taskCrudService,categoryCrudService,
+        exportService = new GenericExportService(taskCrudService, categoryCrudService,
                 templateCrudService, timeUnitCrudService, List.of(new BatchJSONExporter()));
         importService = new GenericImportService(taskCrudService, categoryCrudService,
                 templateCrudService, timeUnitCrudService, List.of(new BatchJSONImporter()));
@@ -134,15 +141,11 @@ public class MainWindow {
         data.setStatisticsTable(statisticsTable);
 
 
-
         frame.setJMenuBar(createMenuBar());
 
         var taskToolBar = createTaskToolBar(taskTable, data);
         var templateToolBar = createTemplateToolBar(templateTable, data);
         frame.add(taskToolBar, BorderLayout.BEFORE_FIRST_LINE);
-
-
-
 
 
         var splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -283,7 +286,7 @@ public class MainWindow {
         var statusPanel = createStatusCheckboxesPanel(taskTableFilter);
         var categoryComboBox = createTaskCategoryFilter(taskTableFilter, data.getCategories());
         JPanel categoryPanel = createCategoryPanel(categoryComboBox);
-        var filterDatePanel  = createDateFilterPanel(taskTableFilter);
+        var filterDatePanel = createDateFilterPanel(taskTableFilter);
 
         Map<Boolean, List<JCheckBox>> resetValuesCheckboxes = Map.of(
                 true, List.of(filterToDo, filterInProgress, filterComplete, filterOnHold),
@@ -323,7 +326,7 @@ public class MainWindow {
         JPanel categoryPanel = createCategoryPanel(categoryComboBox);
 
         JButton newButton = createButton("New ", Icons.ADD_ICON,
-                    new AddTemplateAction(data));
+                new AddTemplateAction(data));
         JButton resetFiltersButton = createButton("Reset Filters ", Icons.RESET_ICON,
                 new ResetFilterAction(new HashMap<>(), categoryComboBox, List.of(fromDatePicker, toDatePicker)));
 
@@ -450,7 +453,7 @@ public class MainWindow {
         return table;
     }
 
-    private JTable createStatisticsTable(){
+    private JTable createStatisticsTable() {
         var model = new StatisticsTableModel(data);
         var table = new JTable(model);
 
@@ -512,10 +515,11 @@ public class MainWindow {
 
     /**
      * Sets up mouse listener to open task inspect window when double-clicking on task
+     *
      * @param taskMenu Table with content for inspect
      */
 
-    private void setUpTaskInspect(JTable taskMenu){
+    private void setUpTaskInspect(JTable taskMenu) {
         data.getTaskTable().addMouseListener(new MouseInputAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -529,6 +533,7 @@ public class MainWindow {
     }
 
     // TODO: het
+
     /**
      * @param buttonText Text to be shown on button
      * @param icon       Icon for the button

@@ -6,8 +6,8 @@ import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Maroš Pavlík
@@ -31,6 +31,7 @@ public abstract class BaseListModel<T extends Entity> extends AbstractListModel<
         crudService.deleteById(item.getId());
         items.remove(item);
     }
+
 
     public void update(T item) throws ValidationException {
         crudService.update(item).intoException();

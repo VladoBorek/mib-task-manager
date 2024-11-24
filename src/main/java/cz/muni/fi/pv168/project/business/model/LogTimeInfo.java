@@ -7,7 +7,6 @@ import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
  */
 public class LogTimeInfo extends Entity {
     private Integer loggedTime;
-
     private final User user;
     private final Long taskID;
 

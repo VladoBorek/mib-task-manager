@@ -14,6 +14,7 @@ public interface Validator<M> {
 
     /**
      * Chains this validator with given validator
+     *
      * @param other validator to chain this one with
      * @return New {@link Validator} that validates both the original and the other's conditions
      */

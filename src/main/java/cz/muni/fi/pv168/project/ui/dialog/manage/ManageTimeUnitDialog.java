@@ -7,9 +7,7 @@ import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.EditTimeUnitAction;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.ManageDialog;
 import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 
-
 import javax.swing.*;
-
 import java.awt.*;
 
 import static cz.muni.fi.pv168.project.ui.utils.UIElements.createActionsButtonPanel;

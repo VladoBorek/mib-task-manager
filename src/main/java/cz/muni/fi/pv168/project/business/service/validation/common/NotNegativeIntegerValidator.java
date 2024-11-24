@@ -2,12 +2,10 @@ package cz.muni.fi.pv168.project.business.service.validation.common;
 
 import cz.muni.fi.pv168.project.business.service.validation.ValidationResult;
 
-import java.time.LocalDate;
-
 /**
  * @author Maroš Pavlík
  */
-public class NotNegativeIntegerValidator extends PropertyValidator<Integer>  {
+public class NotNegativeIntegerValidator extends PropertyValidator<Integer> {
 
     public NotNegativeIntegerValidator(String name) {
         super(name);

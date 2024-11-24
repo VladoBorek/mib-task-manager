@@ -11,6 +11,7 @@ import java.util.Optional;
 
 /**
  * Generic implementation of {@link Repository} which persists entities in memory.
+ *
  * @param <T> entity type
  */
 public class InMemoryRepository<T extends Entity> implements Repository<T> {
@@ -36,8 +37,7 @@ public class InMemoryRepository<T extends Entity> implements Repository<T> {
 
     @Override
     public T create(T newEntity) {
-        if (newEntity.getId() == null)
-        {
+        if (newEntity.getId() == null) {
             //finds max id
             var newId = data.values().stream()
                     .map(Entity::getId)

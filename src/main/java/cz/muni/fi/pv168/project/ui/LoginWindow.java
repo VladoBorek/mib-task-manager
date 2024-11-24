@@ -2,7 +2,6 @@ package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.User;
-import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import net.miginfocom.swing.MigLayout;
@@ -19,6 +18,7 @@ public class LoginWindow {
     private final JFrame frame;
     private final JTextField usernameField;
     private final JIntegerTextField idField;
+
     public LoginWindow() {
         this.frame = new JFrame("Login");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,7 +80,7 @@ public class LoginWindow {
         loginButton.setPreferredSize(new Dimension(90, 30));
 
         loginButton.addActionListener(e -> {
-            if(login()) {
+            if (login()) {
                 frame.dispose();
             }
         });
@@ -117,7 +117,8 @@ public class LoginWindow {
         mainWindow.show();
         return true;
     }
-    public void show(){
+
+    public void show() {
         this.frame.setVisible(true);
     }
 

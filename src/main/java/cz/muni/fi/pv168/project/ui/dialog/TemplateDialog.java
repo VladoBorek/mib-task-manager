@@ -2,11 +2,11 @@ package cz.muni.fi.pv168.project.ui.dialog;
 
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.service.validation.TemplateValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.AddTimeUnitAction;
@@ -17,7 +17,6 @@ import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import java.awt.*;
 
 public class TemplateDialog extends EntityDialog<Template> {
@@ -55,7 +54,7 @@ public class TemplateDialog extends EntityDialog<Template> {
         }
     }
 
-    private void setupInfoPanel(){
+    private void setupInfoPanel() {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.X_AXIS));
         infoPanel.add(super.getLabelPanel());
         infoPanel.add(super.getComponentPanel());
@@ -63,7 +62,8 @@ public class TemplateDialog extends EntityDialog<Template> {
         setupCategoryPanel();
         addFields();
     }
-    private void setupCategoryPanel(){
+
+    private void setupCategoryPanel() {
         var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
                 new AddCategoryAction(data, categoryComboBox));
 
@@ -76,7 +76,7 @@ public class TemplateDialog extends EntityDialog<Template> {
         categoryPanel = createTwoPartPanel(categoryComboBox, addCategoryButton);
     }
 
-    private void setupTimePanel(){
+    private void setupTimePanel() {
         var addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
                 new AddTimeUnitAction(data, timeUnitComboBox));
 
@@ -106,8 +106,7 @@ public class TemplateDialog extends EntityDialog<Template> {
         return timeInfoPanel;
     }
 
-    private void setValues()
-    {
+    private void setValues() {
         nameField.setText(template.getName());
         templateNameField.setText(template.getTemplateName());
         categoryComboBox.setSelectedItem(template.getCategory());
@@ -115,7 +114,7 @@ public class TemplateDialog extends EntityDialog<Template> {
         timeUnitComboBox.setSelectedItem(template.getTimeUnit());
     }
 
-    private void addFields(){
+    private void addFields() {
         add("Template name", templateNameField);
         add("Task name", nameField);
         add("Category", categoryPanel);
@@ -151,7 +150,11 @@ public class TemplateDialog extends EntityDialog<Template> {
                 (TimeUnit) timeUnitComboBox.getSelectedItem(),
                 templateNameField.getText());
         var validation = templateValidator.validate(newTemplate);
-        if (!validation.isValid()){
+
+        if (!validateFields()) {
+            return null;
+        }
+        if (!validation.isValid()) {
             PopUp.infoDialog(
                     validation.getValidationErrors(),
                     "Input error",

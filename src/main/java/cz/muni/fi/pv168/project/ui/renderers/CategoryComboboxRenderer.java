@@ -22,7 +22,7 @@ public class CategoryComboboxRenderer extends DefaultListCellRenderer {
         return label;
     }
 
-    public static void setCategoryComboboxColor (JComboBox combobox) {
+    public static void setCategoryComboboxColor(JComboBox combobox) {
         Category category = (Category) combobox.getSelectedItem();
         if (category == null) {
             return;
