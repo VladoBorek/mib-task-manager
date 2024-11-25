@@ -15,6 +15,7 @@ public class TemplateTableModel extends BaseTableModel<Template> implements Enti
             Column.readonly("Template Name", String.class, Template::getTemplateName),
             Column.readonly("Task Name", String.class, Template::getName),
             Column.readonly("Category", Category.class, Template::getCategory),
+            Column.readonly("Assigned to", String.class, Template::getAssignedTo),
             Column.readonly("Allocated Time", String.class, Template::getAllocatedTimeString)
     );
 

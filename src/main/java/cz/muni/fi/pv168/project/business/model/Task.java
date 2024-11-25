@@ -22,7 +22,7 @@ public class Task extends TaskBase {
     }
 
     public Task(Template template) {
-        this(null, Status.TO_DO, "", template.getCategory(), "", template.getName(), null,
+        this(null, Status.TO_DO, template.getDescription(), template.getCategory(), "", template.getName(), template.getAssignedTo(),
                 0, template.getAllocatedTime(), template.getTimeUnit(), null);
     }
 
