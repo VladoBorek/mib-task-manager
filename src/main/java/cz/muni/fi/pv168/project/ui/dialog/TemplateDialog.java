@@ -37,25 +37,48 @@ public class TemplateDialog extends EntityDialog<Template> {
 
 
     public TemplateDialog(DataManager data, Template template) {
+        this.data = data;
+        this.template = template;
+
+        this.timeUnitComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits()));
+        this.categoryComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getCategories()));
+
+        setUpUI();
+
+        if (template != null) {
+            setValues();
+        }
+    }
+
+    private void setUpUI() {
         super.getPanel().setLayout(new BorderLayout());
         super.getPanel().add(infoPanel, BorderLayout.NORTH);
         super.getPanel().add(descriptionPanel, BorderLayout.CENTER);
         super.getPanel().add(timePanel, BorderLayout.SOUTH);
 
-        this.data = data;
-        this.timeUnitComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits()));
-        this.categoryComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getCategories()));
-
+        setupTwoPartPanels();
         setupInfoPanel();
         setupDescriptionPanel();
         setupTimePanel();
 
+        infoPanel.setBorder(new EmptyBorder(0, 0, 5, 0));
         descriptionPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
+        timePanel.setBorder(new EmptyBorder(5, 0, 0, 0));
+    }
 
-        this.template = template;
-        if (template != null) {
-            setValues();
-        }
+    private void setupTwoPartPanels() {
+        categoryComboBox.setRenderer(new CategoryComboboxRenderer());
+
+        var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
+                new AddCategoryAction(data, categoryComboBox));
+        var addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
+                new AddTimeUnitAction(data, timeUnitComboBox));
+
+        CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
+        categoryComboBox.addActionListener(e -> CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox));
+
+        categoryPanel = createTwoPartPanel(categoryComboBox, addCategoryButton);
+        timeUnitPanel = createTwoPartPanel(timeUnitComboBox, addTimeUnitButton);
     }
 
     private void setupInfoPanel() {
@@ -63,21 +86,7 @@ public class TemplateDialog extends EntityDialog<Template> {
         infoPanel.add(super.getLabelPanel());
         infoPanel.add(super.getComponentPanel());
 
-        setupCategoryPanel();
         addInfoFields();
-    }
-
-    private void setupCategoryPanel() {
-        var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddCategoryAction(data, categoryComboBox));
-
-        categoryComboBox.setRenderer(new CategoryComboboxRenderer());
-        categoryComboBox.addActionListener(e -> {
-            CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
-        });
-        CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
-
-        categoryPanel = createTwoPartPanel(categoryComboBox, addCategoryButton);
     }
 
     private void setupDescriptionPanel() {
@@ -101,11 +110,6 @@ public class TemplateDialog extends EntityDialog<Template> {
     }
 
     private void setupTimePanel() {
-        var addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddTimeUnitAction(data, timeUnitComboBox));
-
-        timeUnitPanel = createTwoPartPanel(timeUnitComboBox, addTimeUnitButton);
-
         timePanel.setLayout(new BorderLayout());
         timePanel.add(setupTimeTitlesPanel(), BorderLayout.NORTH);
         timePanel.add(setupTimeInfoPanel(), BorderLayout.SOUTH);

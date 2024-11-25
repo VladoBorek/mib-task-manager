@@ -33,8 +33,8 @@ public class AddTaskDialog extends EntityDialog<Task> {
     private JPanel timeUnitPanel;
     private JPanel categoryPanel;
     private final JComboBox<Status> statusComboBox = new JComboBox<>(Status.values());
-    private JComboBox<Category> categoryComboBox;
-    private JComboBox<TimeUnit> timeUnitsComboBox;
+    private final JComboBox<Category> categoryComboBox;
+    private final JComboBox<TimeUnit> timeUnitsComboBox;
     private final JIntegerTextField loggedTimeField = new JIntegerTextField();
     private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
     private final DatePicker datePicker = new DatePicker();
@@ -46,6 +46,9 @@ public class AddTaskDialog extends EntityDialog<Task> {
         this.task = task;
         this.data = data;
 
+        this.timeUnitsComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits()));
+        this.categoryComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getCategories()));
+
         setUpUI();
         if (task != null) {
             setValues();
@@ -54,17 +57,14 @@ public class AddTaskDialog extends EntityDialog<Task> {
 
     private void setUpUI() {
         super.getPanel().setLayout(new BorderLayout());
+        super.getPanel().add(infoPanel, BorderLayout.NORTH);
+        super.getPanel().add(descriptionPanel, BorderLayout.CENTER);
+        super.getPanel().add(timePanel, BorderLayout.SOUTH);
 
         setupTwoPartPanels();
-
         setupInfoPanel();
-        super.getPanel().add(infoPanel, BorderLayout.NORTH);
-
         setupDescriptionPanel();
-        super.getPanel().add(descriptionPanel, BorderLayout.CENTER);
-
         setupTimePanel();
-        super.getPanel().add(timePanel, BorderLayout.SOUTH);
 
         infoPanel.setBorder(new EmptyBorder(0, 0, 5, 0));
         descriptionPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
@@ -72,9 +72,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
     }
 
     private void setupTwoPartPanels() {
-        categoryComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getCategories()));
         categoryComboBox.setRenderer(new CategoryComboboxRenderer());
-        timeUnitsComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits()));
 
         var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
                 new AddCategoryAction(data, categoryComboBox));
@@ -94,7 +92,10 @@ public class AddTaskDialog extends EntityDialog<Task> {
         infoPanel.add(getComponentPanel());
 
         datePicker.setDateToToday();
+        addInfoFields();
+    }
 
+    private void addInfoFields() {
         add("Task name", taskNameField);
         add("Customer", customerField);
         add("Category", categoryPanel);
