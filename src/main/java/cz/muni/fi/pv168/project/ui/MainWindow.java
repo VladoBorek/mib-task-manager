@@ -23,7 +23,7 @@ import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.export.json.BatchJSONExporter;
 import cz.muni.fi.pv168.project.export.json.BatchJSONImporter;
-import cz.muni.fi.pv168.project.storage.InMemoryRepository;
+import cz.muni.fi.pv168.project.storage.memory.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.actions.menu.ChooseTemplateAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.ResetFilterAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
