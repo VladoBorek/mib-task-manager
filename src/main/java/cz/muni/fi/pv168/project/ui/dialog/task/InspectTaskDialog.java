@@ -61,7 +61,6 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         var col = cmodel.getColumn(0);
         cmodel.removeColumn(col);
 
-
         this.logTimeTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
         var idColumn = this.logTimeTable.getColumnModel().getColumn(0);
