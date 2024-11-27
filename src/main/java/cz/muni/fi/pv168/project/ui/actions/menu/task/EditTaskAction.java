@@ -1,6 +1,8 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.task;
 
+import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
 import cz.muni.fi.pv168.project.business.model.Task;
+import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
@@ -11,6 +13,7 @@ import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 /**
  * @author Marcel Nadzam
@@ -51,7 +54,7 @@ public class EditTaskAction extends EntityBaseAction {
         ((StatisticsTableModel) data.getStatisticsTable().getModel()).refreshStatistics();
     }
 
-    private static void updateTask(Task oldT, Task newT) {
+    private void updateTask(Task oldT, Task newT) {
         oldT.setName(newT.getName());
         oldT.setCustomer(newT.getCustomer());
         oldT.setAssignedTo(newT.getAssignedTo());
@@ -61,5 +64,30 @@ public class EditTaskAction extends EntityBaseAction {
         oldT.setDueDate(newT.getDueDate());
         oldT.setTimeUnit(newT.getTimeUnit());
         oldT.setDescription(newT.getDescription());
+
+        updateTaskLogs(oldT, newT);
+    }
+
+    private void updateTaskLogs(Task oldT, Task newT) {
+        var logTimeInfoService = data.getLogTimeInfoCrudService();
+        var taskLogs = findExistingLogs(oldT, logTimeInfoService);
+
+        taskLogs.forEach(taskLog -> {
+            try {
+                var actualNewTaskUnitTime = oldT.getLoggedTime() / newT.getTimeUnit().getRate();
+                taskLog.setLoggedTime(actualNewTaskUnitTime);
+                logTimeInfoService.update(taskLog).intoException();
+
+            } catch (ValidationException exception) {
+                PopUp.infoDialog(exception.getValidationErrors(), "Error validating time logs", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    }
+
+    private List<LogTimeInfo> findExistingLogs(Task task, CrudService<LogTimeInfo> logTimeInfoService) {
+        return logTimeInfoService
+                .findAll().stream()
+                .filter(log -> log.getTaskID().equals(task.getId()))
+                .toList();
     }
 }

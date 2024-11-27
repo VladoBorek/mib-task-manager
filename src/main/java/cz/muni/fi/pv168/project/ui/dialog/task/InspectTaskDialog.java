@@ -48,7 +48,7 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         SetupPanels();
     }
 
-    public JTable createLogTimeInfoTable() {
+    private JTable createLogTimeInfoTable() {
         this.model = new LogTimeInfoTableModel(data.getLogTimeInfoCrudService());
         TableRowSorter<LogTimeInfoTableModel> sorter = new TableRowSorter<>(this.model);
 
