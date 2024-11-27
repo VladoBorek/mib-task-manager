@@ -63,7 +63,6 @@ public class InspectTaskDialog extends EntityDialog<Task> {
 
 
         this.logTimeTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        //this.logTimeTable.setAutoCreateRowSorter(true);
 
         var idColumn = this.logTimeTable.getColumnModel().getColumn(0);
         var nameColumn = this.logTimeTable.getColumnModel().getColumn(1);
@@ -125,9 +124,6 @@ public class InspectTaskDialog extends EntityDialog<Task> {
 
         timeInfoPanel.setLayout(new GridLayout(1, 3));
         JButton addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON, new LogTimeAction(data, this, task));
-        //allocatedTime.setPreferredSize(new Dimension(200, 80));
-        //loggedTime.setPreferredSize(new Dimension(200, 80));
-        // addLogTimeButton.setPreferredSize(new Dimension(200, 80));
 
         timeInfoPanel.add(this.allocatedTime);
         timeInfoPanel.add(this.loggedTime);
@@ -139,11 +135,9 @@ public class InspectTaskDialog extends EntityDialog<Task> {
     private JPanel setupLogTablePanel() {
         JPanel logTablePanel = new JPanel();
         logTablePanel.setBackground(new Color(211, 211, 211));
-        //logTablePanel.setPreferredSize(new Dimension(300, 250));
         logTablePanel.add(new JLabel("LOG TIME TABLE"));
 
         JScrollPane scrollPane = new JScrollPane(logTimeTable);
-        //scrollPane.setPreferredSize(new Dimension(300, 250));
         scrollPane.setPreferredSize(new Dimension(230, 160));
         JPanel componentWrapper = new JPanel();
         componentWrapper.setLayout(new FlowLayout(FlowLayout.CENTER));

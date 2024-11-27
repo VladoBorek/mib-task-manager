@@ -152,7 +152,7 @@ public class MainWindow {
         splitPane.setDividerSize(10);
         splitPane.setTopComponent(new JScrollPane(taskTable));
         splitPane.setBottomComponent(new JScrollPane(statisticsTable));
-        splitPane.setResizeWeight(0.85);
+        splitPane.setResizeWeight(0.82);
 
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Tasks", splitPane);

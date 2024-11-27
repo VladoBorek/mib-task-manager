@@ -193,6 +193,8 @@ public class BatchJSONImporter implements BatchImporter {
      * @param templateName   {@link String} name of the template
      * @param taskName       {@link String} default name for {@link Task} created with this template
      * @param allocated_time {@link Integer} default allocated time of the template
+     * @param description    {@link String} description for the template
+     * @param assignedTo     {@link String} assigned person for the template
      * @return new {@link Template} with the provided values
      */
     private Template parseTemplate(HashMap<String, Template> templates,
@@ -200,14 +202,19 @@ public class BatchJSONImporter implements BatchImporter {
                                    TimeUnit timeUnit,
                                    String templateName,
                                    String taskName,
-                                   Integer allocated_time) {
+                                   Integer allocated_time,
+                                   String description,
+                                   String assignedTo) {
         return templates.computeIfAbsent(templateName,
                 template -> new Template(null,
                         taskName,
                         category,
                         allocated_time,
                         timeUnit,
-                        templateName));
+                        templateName,
+                        description,
+                        assignedTo
+                ));
     }
 
     /**
@@ -238,7 +245,10 @@ public class BatchJSONImporter implements BatchImporter {
                 timeUnit,
                 (String) values.get("template_name"),
                 (String) values.get("template_task_name"),
-                Integer.parseInt((String) values.get("allocated_time")));
+                Integer.parseInt((String) values.get("allocated_time")),
+                (String) values.get("description"),
+                (String) values.get("assigned_to"));
+        // TODO: possibly fix this cause I added assigned_to template and idk if this iis enough
     }
 
 

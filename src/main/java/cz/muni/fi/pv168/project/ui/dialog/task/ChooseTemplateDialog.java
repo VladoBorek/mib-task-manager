@@ -1,12 +1,14 @@
 package cz.muni.fi.pv168.project.ui.dialog.task;
 
-import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Template;
-import cz.muni.fi.pv168.project.ui.MainWindow;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.AddTaskAction;
 
 import javax.swing.*;
 import java.awt.*;
+
+import static cz.muni.fi.pv168.project.ui.utils.UIElements.createComboPanel;
+import static cz.muni.fi.pv168.project.ui.utils.UIElements.createDialogClosingButton;
 
 
 public class ChooseTemplateDialog extends JDialog {
@@ -15,34 +17,31 @@ public class ChooseTemplateDialog extends JDialog {
         super(parent, "Choose a template", true);
         setLayout(new BorderLayout());
 
-        var comboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getTemplates().toArray(new Template[0])));
-        var emptyTemplate = new Template();
-        comboBox.addItem(emptyTemplate);
-        comboBox.setSelectedItem(emptyTemplate);
-        var comboPanel = new JPanel();
+        var comboBox = setupComboBox(data);
+        var comboPanel = createComboPanel("Select a template:", comboBox);
+        var okButton = createDialogClosingButton("OK", new AddTaskAction(data, comboBox), this);
 
-        comboPanel.add(new JLabel("Select a template:"));
-        comboPanel.add(comboBox);
-
-        JButton okButton = createButton("OK",
-                new AddTaskAction(data, comboBox));
-
-        add(comboPanel, BorderLayout.NORTH);
-        add(okButton, BorderLayout.SOUTH);
-
-        pack();
-        setLocationRelativeTo(parent);
+        addComponents(comboPanel, okButton);
+        finalizeDialogSetup(parent);
     }
 
-    // TODO: het
-    private JButton createButton(String buttonText, Action a) {
-        var button = new JButton(buttonText);
-        button.addActionListener(e -> {
-            a.actionPerformed(e);
-            dispose();
-        });
-        button.setBackground(MainWindow.BUTTON_COLOR);
-        button.setFocusPainted(false);
-        return button;
+    private JComboBox<Template> setupComboBox(DataManager data) {
+        var comboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getTemplates().toArray(new Template[0])));
+        var emptyTemplate = new Template();
+
+        comboBox.addItem(emptyTemplate);
+        comboBox.setSelectedItem(emptyTemplate);
+
+        return comboBox;
+    }
+
+    private void addComponents(JPanel comboPanel, JButton okButton) {
+        add(comboPanel, BorderLayout.NORTH);
+        add(okButton, BorderLayout.SOUTH);
+    }
+
+    private void finalizeDialogSetup(JFrame parent) {
+        pack();
+        setLocationRelativeTo(parent);
     }
 }

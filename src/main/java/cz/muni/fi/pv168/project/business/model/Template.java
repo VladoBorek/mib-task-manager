@@ -16,17 +16,7 @@ public class Template extends TaskBase {
         super(id, category, name, allocatedTime, timeUnit, description, assignedTo);
         this.templateName = templateName;
     }
-
-    // TODO: Temporary constructor, remove after implementing description and assignedTo for templates
-    public Template(Long id,
-                    String name,
-                    Category category,
-                    Integer allocatedTime,
-                    TimeUnit timeUnit,
-                    String templateName) {
-        this(id, name, category, allocatedTime, timeUnit, templateName, null, null);
-    }
-
+    
     public Template() {
         this(null, null, null, -1, null,
                 "<Don't use a template>", null, null);

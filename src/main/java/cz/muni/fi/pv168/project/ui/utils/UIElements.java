@@ -9,7 +9,7 @@ import java.awt.*;
  * @author Marcel Nadzam
  */
 public class UIElements {
-    public static <E>JPanel createComboPanel(String text, JComboBox<E> comboBox) {
+    public static <E> JPanel createComboPanel(String text, JComboBox<E> comboBox) {
         var comboPanel = new JPanel();
         comboPanel.add(new JLabel(text));
         comboPanel.add(comboBox);
@@ -32,10 +32,22 @@ public class UIElements {
         return buttonsPanel;
     }
 
-    public static JButton createButton(String buttonText, Action a)
-    {
+    public static JButton createButton(String buttonText, Action a) {
         var button = new JButton(buttonText);
         button.addActionListener(a);
+        button.setBackground(MainWindow.BUTTON_COLOR);
+        button.setFocusPainted(false);
+        return button;
+    }
+
+    public static JButton createDialogClosingButton(String buttonText, Action a, Window parentWindow) {
+        var button = new JButton(buttonText);
+        button.addActionListener(e -> {
+            a.actionPerformed(e);
+            if (parentWindow != null) {
+                parentWindow.dispose();
+            }
+        });
         button.setBackground(MainWindow.BUTTON_COLOR);
         button.setFocusPainted(false);
         return button;

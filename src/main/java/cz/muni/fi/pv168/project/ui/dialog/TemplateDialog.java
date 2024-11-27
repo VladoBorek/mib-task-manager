@@ -20,8 +20,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class TemplateDialog extends EntityDialog<Template> {
-    private final JTextField nameField = new JTextField();
+    private final JTextField taskNameField = new JTextField();
     private final JTextField templateNameField = new JTextField();
+    private final JTextField assignedToField = new JTextField();
+    private final JTextArea descriptionArea = new JTextArea();
     private final DataManager data;
     private JPanel timeUnitPanel;
     private JPanel categoryPanel;
@@ -30,28 +32,53 @@ public class TemplateDialog extends EntityDialog<Template> {
     private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
     private final Template template;
     private final JPanel infoPanel = new JPanel();
+    private final JPanel descriptionPanel = new JPanel();
     private final JPanel timePanel = new JPanel();
 
 
     public TemplateDialog(DataManager data, Template template) {
-        super.getPanel().setLayout(new BorderLayout());
-        super.getPanel().add(infoPanel, BorderLayout.CENTER);
-        super.getPanel().add(timePanel, BorderLayout.SOUTH);
-
         this.data = data;
+        this.template = template;
+
         this.timeUnitComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits()));
         this.categoryComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getCategories()));
 
-        setupInfoPanel();
-        setupTimePanel();
+        setUpUI();
 
-        infoPanel.setBorder(new EmptyBorder(0, 0, 5, 0));
-        timePanel.setBorder(new EmptyBorder(5, 0, 0, 0));
-
-        this.template = template;
         if (template != null) {
             setValues();
         }
+    }
+
+    private void setUpUI() {
+        super.getPanel().setLayout(new BorderLayout());
+        super.getPanel().add(infoPanel, BorderLayout.NORTH);
+        super.getPanel().add(descriptionPanel, BorderLayout.CENTER);
+        super.getPanel().add(timePanel, BorderLayout.SOUTH);
+
+        setupTwoPartPanels();
+        setupInfoPanel();
+        setupDescriptionPanel();
+        setupTimePanel();
+
+        infoPanel.setBorder(new EmptyBorder(0, 0, 5, 0));
+        descriptionPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
+        timePanel.setBorder(new EmptyBorder(5, 0, 0, 0));
+    }
+
+    private void setupTwoPartPanels() {
+        categoryComboBox.setRenderer(new CategoryComboboxRenderer());
+
+        var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
+                new AddCategoryAction(data, categoryComboBox));
+        var addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
+                new AddTimeUnitAction(data, timeUnitComboBox));
+
+        CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
+        categoryComboBox.addActionListener(e -> CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox));
+
+        categoryPanel = createTwoPartPanel(categoryComboBox, addCategoryButton);
+        timeUnitPanel = createTwoPartPanel(timeUnitComboBox, addTimeUnitButton);
     }
 
     private void setupInfoPanel() {
@@ -59,29 +86,30 @@ public class TemplateDialog extends EntityDialog<Template> {
         infoPanel.add(super.getLabelPanel());
         infoPanel.add(super.getComponentPanel());
 
-        setupCategoryPanel();
-        addFields();
+        addInfoFields();
     }
 
-    private void setupCategoryPanel() {
-        var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddCategoryAction(data, categoryComboBox));
+    private void setupDescriptionPanel() {
+        descriptionPanel.setLayout(new BorderLayout());
 
-        categoryComboBox.setRenderer(new CategoryComboboxRenderer());
-        categoryComboBox.addActionListener(e -> {
-            CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
-        });
-        CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
+        JPanel titleDescriptionPanel = new JPanel(new BorderLayout());
+        titleDescriptionPanel.add(new JLabel("Description:"));
 
-        categoryPanel = createTwoPartPanel(categoryComboBox, addCategoryButton);
+        JPanel textDescriptionPanel = new JPanel(new BorderLayout());
+        textDescriptionPanel.add(new JScrollPane(descriptionArea));
+
+        descriptionPanel.add(titleDescriptionPanel, BorderLayout.NORTH);
+        descriptionPanel.add(textDescriptionPanel, BorderLayout.CENTER);
+
+        descriptionArea.setPreferredSize(new Dimension(200, 50));
+        descriptionArea.setMinimumSize(new Dimension(200, 50));
+        descriptionArea.setMaximumSize(new Dimension(200, 50));
+
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
     }
 
     private void setupTimePanel() {
-        var addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new AddTimeUnitAction(data, timeUnitComboBox));
-
-        timeUnitPanel = createTwoPartPanel(timeUnitComboBox, addTimeUnitButton);
-
         timePanel.setLayout(new BorderLayout());
         timePanel.add(setupTimeTitlesPanel(), BorderLayout.NORTH);
         timePanel.add(setupTimeInfoPanel(), BorderLayout.SOUTH);
@@ -107,23 +135,28 @@ public class TemplateDialog extends EntityDialog<Template> {
     }
 
     private void setValues() {
-        nameField.setText(template.getName());
+        taskNameField.setText(template.getName());
         templateNameField.setText(template.getTemplateName());
         categoryComboBox.setSelectedItem(template.getCategory());
+        assignedToField.setText(template.getAssignedTo());
+        descriptionArea.setText(template.getDescription());
         allocatedTimeField.setValue(template.getAllocatedTime());
         timeUnitComboBox.setSelectedItem(template.getTimeUnit());
     }
 
-    private void addFields() {
+    private void addInfoFields() {
         add("Template name", templateNameField);
-        add("Task name", nameField);
+        add("Task name", taskNameField);
         add("Category", categoryPanel);
+        add("Assigned to", assignedToField);
     }
 
     private boolean validateFields() {
-        if ((nameField.getText().trim().isEmpty())
+        if ((taskNameField.getText().trim().isEmpty())
                 || (templateNameField.getText().trim().isEmpty())
                 || (allocatedTimeField.getText().trim().isEmpty())
+                || (assignedToField.getText().trim().isEmpty())
+                // || (descriptionArea.getText().trim().isEmpty()) can be empty
                 || (categoryComboBox.getSelectedItem() == null)
                 || (timeUnitComboBox.getSelectedItem() == null)
 
@@ -144,11 +177,13 @@ public class TemplateDialog extends EntityDialog<Template> {
         }
 
         Validator<Template> templateValidator = new TemplateValidator();
-        var newTemplate = new Template(null, nameField.getText(),
+        var newTemplate = new Template(null, taskNameField.getText(),
                 (Category) categoryComboBox.getSelectedItem(),
                 allocatedTimeField.getValue(),
                 (TimeUnit) timeUnitComboBox.getSelectedItem(),
-                templateNameField.getText());
+                templateNameField.getText(),
+                descriptionArea.getText(),
+                assignedToField.getText());
         var validation = templateValidator.validate(newTemplate);
 
         if (!validateFields()) {
