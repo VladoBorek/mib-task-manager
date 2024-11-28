@@ -11,7 +11,7 @@ import cz.muni.fi.pv168.project.business.service.export.batch.BatchExporter;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
 import cz.muni.fi.pv168.project.business.service.export.format.FormatMapping;
-import cz.muni.fi.pv168.project.ui.utils.ActionType;
+import cz.muni.fi.pv168.project.util.ActionType;
 
 import java.util.Collection;
 
@@ -57,9 +57,9 @@ public class GenericExportService implements ExportService {
 
     private BatchExporter getExporter(String filePath) {
         var extension = filePath.substring(filePath.lastIndexOf('.') + 1);
-        var importer = exporters.findByExtension(extension);
-        if (importer == null)
+        var exporter = exporters.findByExtension(extension);
+        if (exporter == null)
             throw new BatchOperationException("Extension %s has no registered formatter".formatted(extension));
-        return importer;
+        return exporter;
     }
 }

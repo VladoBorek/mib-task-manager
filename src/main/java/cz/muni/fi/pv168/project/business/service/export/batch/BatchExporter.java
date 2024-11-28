@@ -2,7 +2,7 @@ package cz.muni.fi.pv168.project.business.service.export.batch;
 
 import cz.muni.fi.pv168.project.business.service.export.DataManipulationException;
 import cz.muni.fi.pv168.project.business.service.export.format.FileFormat;
-import cz.muni.fi.pv168.project.ui.utils.ActionType;
+import cz.muni.fi.pv168.project.util.ActionType;
 
 /**
  * Generic mechanism, allowing to export a {@link Batch} of entities to a file.

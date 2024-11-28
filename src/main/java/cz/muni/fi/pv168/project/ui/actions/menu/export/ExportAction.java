@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.export;
 
 import cz.muni.fi.pv168.project.business.service.export.ExportService;
-import cz.muni.fi.pv168.project.ui.utils.ActionType;
+import cz.muni.fi.pv168.project.util.ActionType;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.util.Filter;
@@ -37,13 +37,13 @@ public class ExportAction extends AbstractAction {
         exportService.getFormats().forEach(f -> fileChooser.setFileFilter(new Filter(f)));
         int dialogResult = fileChooser.showSaveDialog(null);
         if (dialogResult == JFileChooser.APPROVE_OPTION) {
-            String exportFile = fileChooser.getSelectedFile().getAbsolutePath();
+            String exportFilePath = fileChooser.getSelectedFile().getAbsolutePath();
             var filter = fileChooser.getFileFilter();
             if (filter instanceof Filter) {
-                exportFile = ((Filter) filter).decorate(exportFile);
+                exportFilePath = ((Filter) filter).decorate(exportFilePath);
             }
 
-            exportService.exportData(exportFile, exportOption);
+            exportService.exportData(exportFilePath, exportOption);
             PopUp.infoDialog("Export has successfully finished.",
                     "Export status",
                     JOptionPane.INFORMATION_MESSAGE);
