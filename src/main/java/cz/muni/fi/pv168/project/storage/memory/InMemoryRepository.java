@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project.storage;
+package cz.muni.fi.pv168.project.storage.memory;
 
 import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 import cz.muni.fi.pv168.project.business.repository.Repository;

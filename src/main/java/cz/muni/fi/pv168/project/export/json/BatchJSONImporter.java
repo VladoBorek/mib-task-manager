@@ -245,10 +245,9 @@ public class BatchJSONImporter implements BatchImporter {
                 timeUnit,
                 (String) values.get("template_name"),
                 (String) values.get("template_task_name"),
-                Integer.parseInt((String) values.get("allocated_time")),
-                (String) values.get("description"),
-                (String) values.get("assigned_to"));
-        // TODO: possibly fix this cause I added assigned_to template and idk if this iis enough
+                Integer.parseInt((String) values.get("template_allocated_time")),
+                (String) values.get("template_description"),
+                (String) values.get("template_assigned_to"));
     }
 
 

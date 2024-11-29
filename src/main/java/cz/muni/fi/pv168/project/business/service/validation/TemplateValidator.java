@@ -13,7 +13,11 @@ public class TemplateValidator implements Validator<Template> {
                 Validator.extracting(
                         Template::getTemplateName, new StringLengthValidator(1, 25, "Template name")),
                 Validator.extracting(
-                        Template::getName, new StringLengthValidator(1, 25, "Template task name"))
+                        Template::getName, new StringLengthValidator(1, 25, "Template task name")),
+                Validator.extracting(
+                        Template::getDescription, new StringLengthValidator(0, 500, "Description")),
+                Validator.extracting(
+                        Template::getAssignedTo, new StringLengthValidator(1, 25, "AssignedTo"))
         );
 
         return Validator.compose(validators).validate(template);
