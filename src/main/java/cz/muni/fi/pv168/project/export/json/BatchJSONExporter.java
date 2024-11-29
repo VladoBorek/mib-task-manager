@@ -103,7 +103,6 @@ public class BatchJSONExporter implements BatchExporter {
                 createJSONLine("due_date", task.getDueDate()),
                 createCategoryItem(task.getCategory()),
                 createTimeUnitItem(task.getTimeUnit())
-                //TODO add exporting log time table
         );
     }
 
@@ -130,8 +129,10 @@ public class BatchJSONExporter implements BatchExporter {
         var template = (Template) object;
         return String.join(",\n",
                 createJSONLine("template_name", template.getTemplateName()),
-                createJSONLine("allocated_time", template.getAllocatedTime()),
+                createJSONLine("template_assigned_to", template.getAssignedTo()),
+                createJSONLine("template_allocated_time", template.getAllocatedTime()),
                 createJSONLine("template_task_name", template.getName()),
+                createJSONLine("template_description", template.getDescription()),
                 createCategoryItem(template.getCategory()),
                 createTimeUnitItem(template.getTimeUnit())
         );
