@@ -15,7 +15,7 @@ public record TaskEntity(
         Long id,
         String name,
         String customer,
-        Category category,
+        long categoryId,
         String assignedTo,
         Status status,
         LocalDate dueDate,
@@ -28,7 +28,7 @@ public record TaskEntity(
             Long id,
             String name,
             String customer,
-            Category category,
+            long categoryId,
             String assignedTo,
             Status status,
             LocalDate dueDate,
@@ -39,7 +39,7 @@ public record TaskEntity(
         this.id = id;
         this.name = Objects.requireNonNull(name, "name must not be null");
         this.customer = Objects.requireNonNull(customer, "customer must not be null");
-        this.category = Objects.requireNonNull(category, "category must not be null");
+        this.categoryId = categoryId;
         this.assignedTo = Objects.requireNonNull(assignedTo, "assignedTo must not be null");
         this.status = Objects.requireNonNull(status, "status must not be null");
         this.dueDate = Objects.requireNonNull(dueDate, "dueDate must not be null");
@@ -52,7 +52,7 @@ public record TaskEntity(
     public TaskEntity(
             String name,
             String customer,
-            Category category,
+            long categoryId,
             String assignedTo,
             Status status,
             LocalDate dueDate,
@@ -60,7 +60,7 @@ public record TaskEntity(
             Integer allocatedTime,
             Integer loggedTime,
             long timeUnitId) {
-        this(null, name, customer, category, assignedTo, status, dueDate,
+        this(null, name, customer, categoryId, assignedTo, status, dueDate,
                 description, allocatedTime, loggedTime, timeUnitId
         );
     }
