@@ -3,7 +3,6 @@ package cz.muni.fi.pv168.project.storage.sql.entity.mapper;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.storage.sql.entity.TimeUnitEntity;
 
-import java.awt.*;
 
 /**
  * Mapper from the {@link TimeUnitEntity} to {@link TimeUnit}.

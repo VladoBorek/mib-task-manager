@@ -1,6 +1,5 @@
 package cz.muni.fi.pv168.project.storage.sql.entity;
 
-import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.Status;
 
 import java.time.LocalDate;

@@ -1,9 +1,5 @@
 package cz.muni.fi.pv168.project.storage.sql.entity;
 
-import cz.muni.fi.pv168.project.business.model.Status;
-
-import java.awt.*;
-import java.time.LocalDate;
 import java.util.Objects;
 
 /**
