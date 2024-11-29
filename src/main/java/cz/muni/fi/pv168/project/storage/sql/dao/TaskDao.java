@@ -18,6 +18,10 @@ import java.util.function.Supplier;
  *
  * @author Maroš Pavlík
  */
+
+    //TODO i triple checked but i might have made a mistake in the sql statements somewhere
+    //TODO or the statement.set methods
+
 public class TaskDao implements DataAccessObject<TaskEntity> {
 
     private final Supplier<ConnectionHandler> connections;
@@ -26,8 +30,6 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
         this.connections = connections;
     }
 
-    //TODO i might have made a mistake in the sql statements somewhere - check
-    //TODO or the statement.set methods - check
     @Override
     public TaskEntity create(TaskEntity newTask) {
         var sql = """
