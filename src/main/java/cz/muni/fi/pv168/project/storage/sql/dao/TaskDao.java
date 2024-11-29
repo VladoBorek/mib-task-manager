@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.storage.sql.dao;
 
 import cz.muni.fi.pv168.project.business.model.Status;
+import cz.muni.fi.pv168.project.storage.sql.db.ConnectionHandler;
 import cz.muni.fi.pv168.project.storage.sql.entity.TaskEntity;
 
 import java.sql.Date;
@@ -60,7 +61,7 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
             statement.setString(7, newTask.loggedTime().toString());
             statement.setString(8, newTask.allocatedTime().toString());
             statement.setLong(9, newTask.timeUnitId());
-            statement.setString(10, Date.valueOf(newTask.dueDate()));
+            statement.setDate(10, Date.valueOf(newTask.dueDate()));
 
 
             statement.executeUpdate();
@@ -181,7 +182,7 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
             statement.setString(7, entity.loggedTime().toString());
             statement.setString(8, entity.allocatedTime().toString());
             statement.setLong(9, entity.timeUnitId());
-            statement.setString(10, Date.valueOf(entity.dueDate()));
+            statement.setDate(10, Date.valueOf(entity.dueDate()));
             statement.setLong(11, entity.id());
             statement.executeUpdate();
 

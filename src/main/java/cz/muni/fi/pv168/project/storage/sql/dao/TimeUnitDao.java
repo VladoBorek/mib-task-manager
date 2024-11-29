@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.project.storage.sql.dao;
 
+import cz.muni.fi.pv168.project.storage.sql.db.ConnectionHandler;
 import cz.muni.fi.pv168.project.storage.sql.entity.CategoryEntity;
 import cz.muni.fi.pv168.project.storage.sql.entity.TimeUnitEntity;
 
