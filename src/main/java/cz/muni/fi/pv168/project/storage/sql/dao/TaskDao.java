@@ -96,8 +96,8 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
                     assignedTo,
                     loggedTime,
                     allocatedTime,
-                    timeUnitId
-                    dueDate,
+                    timeUnitId,
+                    dueDate
                 FROM Task
                 """;
         try (
@@ -131,7 +131,7 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
                     loggedTime,
                     allocatedTime,
                     timeUnitId
-                    dueDate,
+                    dueDate
                 FROM Task
                 WHERE id = ?
                 """;

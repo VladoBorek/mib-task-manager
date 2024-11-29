@@ -98,7 +98,6 @@ public class TaskMapper implements EntityMapper<TaskEntity, Task>{
 
         return new TaskEntity(
                 dbId,
-                entity.getId(),
                 entity.getStatus(),
                 entity.getDescription(),
                 categoryEntity.id(),
