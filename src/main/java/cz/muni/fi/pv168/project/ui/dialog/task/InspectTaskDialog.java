@@ -48,7 +48,7 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         SetupPanels();
     }
 
-    public JTable createLogTimeInfoTable() {
+    private JTable createLogTimeInfoTable() {
         this.model = new LogTimeInfoTableModel(data.getLogTimeInfoCrudService());
         TableRowSorter<LogTimeInfoTableModel> sorter = new TableRowSorter<>(this.model);
 
@@ -60,7 +60,6 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         var cmodel = logTimeTable.getColumnModel();
         var col = cmodel.getColumn(0);
         cmodel.removeColumn(col);
-
 
         this.logTimeTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
