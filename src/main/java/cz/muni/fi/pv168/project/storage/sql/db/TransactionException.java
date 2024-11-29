@@ -1,0 +1,18 @@
+package cz.muni.fi.pv168.project.storage.sql.db;
+
+import cz.muni.fi.pv168.project.storage.sql.dao.DataStorageException;
+
+/**
+ * @author Vladimir Borek
+ * Thrown if some transaction operation fails.
+ */
+public class TransactionException extends DataStorageException {
+
+    public TransactionException(String message) {
+        super(message);
+    }
+
+    public TransactionException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+}
