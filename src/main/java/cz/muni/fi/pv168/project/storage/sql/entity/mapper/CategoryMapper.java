@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.project.storage.sql.entity.CategoryEntity;
 import java.awt.*;
 
 /**
+ * Mapper from the {@link CategoryEntity} to {@link Category}.
  * @author Maroš Pavlík
  */
 public class CategoryMapper implements EntityMapper<CategoryEntity, Category>{
