@@ -31,72 +31,72 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
     }
 
     @Override
-    public Template mapToBusiness(TemplateEntity entity) {
+    public Template mapToBusiness(TemplateEntity dbTemplate) {
         var category = categoryDao
-                .findById(entity.categoryId())
+                .findById(dbTemplate.categoryId())
                 .map(categoryMapper::mapToBusiness)
                 .orElseThrow(() -> new DataStorageException("Category not found, id: " +
-                        entity.categoryId()));
+                        dbTemplate.categoryId()));
         var timeUnit = timeUnitDao
-                .findById(entity.timeUnitId())
+                .findById(dbTemplate.timeUnitId())
                 .map(timeUnitMapper::mapToBusiness)
                 .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
-                        entity.timeUnitId()));
+                        dbTemplate.timeUnitId()));
 
         return new Template(
-                entity.id(),
-                entity.taskName(),
+                dbTemplate.id(),
+                dbTemplate.taskName(),
                 category,
-                entity.allocatedTime(),
+                dbTemplate.allocatedTime(),
                 timeUnit,
-                entity.templateName(),
-                entity.description(),
-                entity.assignedTo()
+                dbTemplate.templateName(),
+                dbTemplate.description(),
+                dbTemplate.assignedTo()
         );
     }
 
     @Override
-    public TemplateEntity mapNewEntityToDatabase(Template entity) {
+    public TemplateEntity mapNewEntityToDatabase(Template businessTemplate) {
         var categoryEntity = categoryDao
-                .findById(entity.getCategory().getId())
+                .findById(businessTemplate.getCategory().getId())
                 .orElseThrow(() -> new DataStorageException("Category not found, id: " +
-                        entity.getCategory().getId()));
+                        businessTemplate.getCategory().getId()));
         var timeUnitEntity = timeUnitDao
-                .findById(entity.getTimeUnit().getId())
+                .findById(businessTemplate.getTimeUnit().getId())
                 .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
-                        entity.getTimeUnit().getId()));
+                        businessTemplate.getTimeUnit().getId()));
 
         return new TemplateEntity(
-                entity.getId(),
-                entity.getDescription(),
+                businessTemplate.getId(),
+                businessTemplate.getDescription(),
                 categoryEntity.id(),
-                entity.getTemplateName(),
-                entity.getName(),
-                entity.getAssignedTo(),
-                entity.getAllocatedTime(),
+                businessTemplate.getTemplateName(),
+                businessTemplate.getName(),
+                businessTemplate.getAssignedTo(),
+                businessTemplate.getAllocatedTime(),
                 timeUnitEntity.id()
         );
     }
 
     @Override
-    public TemplateEntity mapExistingEntityToDatabase(Template entity, Long dbId) {
+    public TemplateEntity mapExistingEntityToDatabase(Template businessTemplate, Long dbId) {
         var categoryEntity = categoryDao
-                .findById(entity.getCategory().getId())
+                .findById(businessTemplate.getCategory().getId())
                 .orElseThrow(() -> new DataStorageException("Category not found, id: " +
-                        entity.getCategory().getId()));
+                        businessTemplate.getCategory().getId()));
         var timeUnitEntity = timeUnitDao
-                .findById(entity.getTimeUnit().getId())
+                .findById(businessTemplate.getTimeUnit().getId())
                 .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
-                        entity.getTimeUnit().getId()));
+                        businessTemplate.getTimeUnit().getId()));
 
         return new TemplateEntity(
                 dbId,
-                entity.getDescription(),
+                businessTemplate.getDescription(),
                 categoryEntity.id(),
-                entity.getTemplateName(),
-                entity.getName(),
-                entity.getAssignedTo(),
-                entity.getAllocatedTime(),
+                businessTemplate.getTemplateName(),
+                businessTemplate.getName(),
+                businessTemplate.getAssignedTo(),
+                businessTemplate.getAllocatedTime(),
                 timeUnitEntity.id()
         );
     }

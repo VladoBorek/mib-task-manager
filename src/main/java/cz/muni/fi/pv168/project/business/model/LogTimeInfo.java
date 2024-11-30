@@ -17,6 +17,13 @@ public class LogTimeInfo extends Entity {
         this.taskID = taskID;
     }
 
+    public LogTimeInfo(Long id, Integer loggedTime, User user, Long taskID){
+        super(id);
+        this.loggedTime = loggedTime;
+        this.user = user;
+        this.taskID = taskID;
+    }
+
     public Integer getLoggedTime(){
         return this.loggedTime;
     }
