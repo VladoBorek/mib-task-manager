@@ -29,7 +29,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
         var sql = """
                 INSERT INTO Category(
                     name,
-                    color,
+                    color
                 )
                 VALUES (?, ?);
                 """;
