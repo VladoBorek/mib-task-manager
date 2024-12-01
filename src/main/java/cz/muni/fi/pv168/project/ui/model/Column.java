@@ -5,7 +5,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 /**
- *
  * code from the seminar
  */
 public class Column<E, T> {

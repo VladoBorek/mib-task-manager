@@ -20,6 +20,7 @@ public class TimeUnit extends Entity {
 
     /**
      * Creates a custom TimeUnit
+     *
      * @param name name of the unit
      * @param rate conversion rate to the base time unit
      */
@@ -29,7 +30,6 @@ public class TimeUnit extends Entity {
         this.shortName = shortName;
         this.rate = rate;
     }
-
 
 
     public static String getBaseUnit() {
@@ -60,5 +60,8 @@ public class TimeUnit extends Entity {
     public String getShortName() {
         return shortName;
     }
-    public void setShortName(String shortName) { this.shortName = shortName; }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
 }

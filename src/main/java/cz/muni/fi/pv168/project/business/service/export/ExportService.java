@@ -16,7 +16,6 @@ public interface ExportService {
      *
      * @param filePath absolute path of the export file (to be created or overwritten)
      * @param type     type of items to be exported
-     *
      * @throws BatchOperationException if the export cannot be done
      */
     void exportData(String filePath, ActionType type);

@@ -1,9 +1,6 @@
 package cz.muni.fi.pv168.project.ui.dialog.task;
 
-import cz.muni.fi.pv168.project.business.model.*;
-import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
-import cz.muni.fi.pv168.project.business.service.validation.LogTimeInfoValidator;
-import cz.muni.fi.pv168.project.storage.InMemoryRepository;
+import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.LogTimeAction;
@@ -16,8 +13,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class InspectTaskDialog extends EntityDialog<Task> {
 
@@ -28,7 +25,6 @@ public class InspectTaskDialog extends EntityDialog<Task> {
     private final JLabel customer = new JLabel();
     private final JLabel assignedTo = new JLabel();
     private final JLabel status = new JLabel();
-    private final JTable timeLogTable;
     private final JLabel category = new JLabel();
     private final JLabel loggedTime = new JLabel();
     private final JLabel allocatedTime = new JLabel();
@@ -45,29 +41,27 @@ public class InspectTaskDialog extends EntityDialog<Task> {
 
         this.data = data;
         this.task = task;
-        this.timeLogTable = createLogTimeInfoTable();
+        this.logTimeTable = createLogTimeInfoTable();
 
         setValues();
         FormatFields();
         SetupPanels();
     }
-    public JTable createLogTimeInfoTable(){
-        var val = new LogTimeInfoValidator();
-        var repo = new InMemoryRepository<LogTimeInfo>(new ArrayList<>());
-        var newCrud = new BaseCrudService<LogTimeInfo>(repo, val);
-        this.model = new LogTimeInfoTableModel(newCrud);
 
-        for (var log:data.getLogTimeInfoCrudService().findAll()) {
-            if (log.getTaskID() == task.getId()){
-                model.addRow(log);
-            }
-        }
+    private JTable createLogTimeInfoTable() {
+        this.model = new LogTimeInfoTableModel(data.getLogTimeInfoCrudService());
+        TableRowSorter<LogTimeInfoTableModel> sorter = new TableRowSorter<>(this.model);
+
         this.logTimeTable = new JTable(model);
 
+        sorter.setRowFilter(RowFilter.numberFilter(RowFilter.ComparisonType.EQUAL, task.getId(), 0));
+        logTimeTable.setRowSorter(sorter);
 
+        var cmodel = logTimeTable.getColumnModel();
+        var col = cmodel.getColumn(0);
+        cmodel.removeColumn(col);
 
         this.logTimeTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        this.logTimeTable.setAutoCreateRowSorter(true);
 
         var idColumn = this.logTimeTable.getColumnModel().getColumn(0);
         var nameColumn = this.logTimeTable.getColumnModel().getColumn(1);
@@ -82,7 +76,6 @@ public class InspectTaskDialog extends EntityDialog<Task> {
 
         return this.logTimeTable;
     }
-
 
 
     private void SetupPanels() {
@@ -129,11 +122,7 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         JPanel timeInfoPanel = new JPanel();
 
         timeInfoPanel.setLayout(new GridLayout(1, 3));
-        JButton addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON,
-                new LogTimeAction(data, this, task));
-        //allocatedTime.setPreferredSize(new Dimension(200, 80));
-        //loggedTime.setPreferredSize(new Dimension(200, 80));
-        // addLogTimeButton.setPreferredSize(new Dimension(200, 80));
+        JButton addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON, new LogTimeAction(data, this, task));
 
         timeInfoPanel.add(this.allocatedTime);
         timeInfoPanel.add(this.loggedTime);
@@ -145,11 +134,9 @@ public class InspectTaskDialog extends EntityDialog<Task> {
     private JPanel setupLogTablePanel() {
         JPanel logTablePanel = new JPanel();
         logTablePanel.setBackground(new Color(211, 211, 211));
-        //logTablePanel.setPreferredSize(new Dimension(300, 250));
         logTablePanel.add(new JLabel("LOG TIME TABLE"));
 
-        JScrollPane scrollPane = new JScrollPane(timeLogTable);
-        //scrollPane.setPreferredSize(new Dimension(300, 250));
+        JScrollPane scrollPane = new JScrollPane(logTimeTable);
         scrollPane.setPreferredSize(new Dimension(230, 160));
         JPanel componentWrapper = new JPanel();
         componentWrapper.setLayout(new FlowLayout(FlowLayout.CENTER));

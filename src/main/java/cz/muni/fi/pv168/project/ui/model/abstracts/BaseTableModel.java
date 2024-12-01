@@ -3,9 +3,7 @@ package cz.muni.fi.pv168.project.ui.model.abstracts;
 import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
-import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 
-import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,32 +24,21 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
     }
 
 
-
     public T getEntity(int rowIndex) {
         return items.get(rowIndex);
     }
 
-    public void updateRow(T task) {
-        try {
-            crudService.update(task)
-                    .intoException();
-        } catch (ValidationException e){
-            PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+
+    public void updateRow(T task) throws ValidationException {
+        crudService.update(task).intoException();
         int rowIndex = items.indexOf(task);
         fireTableRowsUpdated(rowIndex, rowIndex);
     }
 
-    public void addRow(T task){
+
+    public void addRow(T task) throws ValidationException {
         int newRowIndex = items.size();
-        try {
-            crudService.create(task)
-                    .intoException();
-        } catch (ValidationException e){
-            PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        crudService.create(task).intoException();
         items.add(task);
         fireTableRowsInserted(newRowIndex, newRowIndex);
     }
@@ -67,7 +54,7 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
         return items;
     }
 
-    public void deleteAllRows(){
+    public void deleteAllRows() {
         var totalRows = getRowCount();
         for (int i = 0; i < totalRows; i++) {
             deleteRow(0);

@@ -7,7 +7,6 @@ import java.util.Optional;
 import static javax.swing.JOptionPane.*;
 
 public abstract class EntityDialog<E> {
-
     private final JPanel panel = new JPanel();
     private final JPanel labelPanel = new JPanel();
     private final JPanel componentPanel = new JPanel();
@@ -18,7 +17,7 @@ public abstract class EntityDialog<E> {
         componentPanel.setLayout(new GridLayout(0, 1, 0, 8));
     }
 
-    public EntityDialog(int width, int height){
+    public EntityDialog(int width, int height) {
         panel.setPreferredSize(new Dimension(width, height));
     }
 
@@ -33,16 +32,16 @@ public abstract class EntityDialog<E> {
         return panel;
     }
 
-    public JPanel getLabelPanel(){
+    public JPanel getLabelPanel() {
         return this.labelPanel;
     }
 
-    public JPanel getComponentPanel(){
+    public JPanel getComponentPanel() {
         return this.componentPanel;
     }
 
 
-    public void setPanel(){
+    public void setPanel() {
         panel.add(labelPanel);
         panel.add(componentPanel);
     }
@@ -72,7 +71,7 @@ public abstract class EntityDialog<E> {
     public abstract E getEntity();
 
     public Optional<E> show(JComponent parentComponent, String title) {
-        while (true){
+        while (true) {
             int result = JOptionPane.showOptionDialog(parentComponent, panel, title,
                     OK_CANCEL_OPTION, PLAIN_MESSAGE, null, null, null);
             if (result == OK_OPTION) {

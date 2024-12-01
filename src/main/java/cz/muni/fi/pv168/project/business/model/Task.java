@@ -2,10 +2,7 @@ package cz.muni.fi.pv168.project.business.model;
 
 import cz.muni.fi.pv168.project.business.model.abstracts.TaskBase;
 
-import javax.swing.*;
 import java.time.LocalDate;
-
-import static java.lang.Math.round;
 
 public class Task extends TaskBase {
     private Status status;
@@ -15,7 +12,7 @@ public class Task extends TaskBase {
     private Integer loggedTime;
     private LocalDate dueDate;
 
-    public Task(Long id, Status status, String description, Category category, String customer,String name,
+    public Task(Long id, Status status, String description, Category category, String customer, String name,
                 String assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
         super(id, category, name, allocatedTime, timeUnit, description, assignedTo);
         this.status = status;
@@ -25,7 +22,7 @@ public class Task extends TaskBase {
     }
 
     public Task(Template template) {
-        this(null, Status.TO_DO, "", template.getCategory(), "", template.getName(), null,
+        this(null, Status.TO_DO, template.getDescription(), template.getCategory(), "", template.getName(), template.getAssignedTo(),
                 0, template.getAllocatedTime(), template.getTimeUnit(), null);
     }
 
@@ -74,10 +71,10 @@ public class Task extends TaskBase {
     }
 
     // TODO: Vague name
-    public Float getPercentage()
-    {   if (loggedTime == 0) {
+    public Float getPercentage() {
+        if (loggedTime == 0) {
             return 0.0F;
         }
-        return ((float)getLoggedTime()/(float)getAllocatedTime()) * 100;
+        return ((float) getLoggedTime() / (float) getAllocatedTime()) * 100;
     }
 }

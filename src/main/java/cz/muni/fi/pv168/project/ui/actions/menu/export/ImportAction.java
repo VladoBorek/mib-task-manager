@@ -1,9 +1,9 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.export;
 
 import cz.muni.fi.pv168.project.business.service.export.ImportService;
-import cz.muni.fi.pv168.project.util.ActionType;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.ui.utils.ActionType;
 import cz.muni.fi.pv168.project.util.Filter;
 
 import javax.swing.*;
@@ -17,7 +17,7 @@ public class ImportAction extends AbstractAction {
     private final ImportService importService;
     private final Runnable callback;
 
-    public ImportAction(ImportService importService, Runnable callback){
+    public ImportAction(ImportService importService, Runnable callback) {
         super("Import application data", Icons.IMPORT_ICON);
         this.importService = importService;
         this.callback = callback;
@@ -29,7 +29,7 @@ public class ImportAction extends AbstractAction {
         var userChoice = PopUp.optionDialog(
                 "Select items to import",
                 "Import Options",
-                new String[]{"Tasks", "Categories", "Template","Time Units"});
+                new String[]{"Tasks", "Categories", "Template", "Time Units"});
         if (userChoice < 0 || userChoice > 3) {
             return;
         }

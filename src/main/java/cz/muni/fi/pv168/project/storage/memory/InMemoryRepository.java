@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project.storage;
+package cz.muni.fi.pv168.project.storage.memory;
 
 import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 import cz.muni.fi.pv168.project.business.repository.Repository;
@@ -11,6 +11,7 @@ import java.util.Optional;
 
 /**
  * Generic implementation of {@link Repository} which persists entities in memory.
+ *
  * @param <T> entity type
  */
 public class InMemoryRepository<T extends Entity> implements Repository<T> {
@@ -36,8 +37,7 @@ public class InMemoryRepository<T extends Entity> implements Repository<T> {
 
     @Override
     public T create(T newEntity) {
-        if (newEntity.getId() == null)
-        {
+        if (newEntity.getId() == null) {
             //finds max id
             var newId = data.values().stream()
                     .map(Entity::getId)
@@ -46,9 +46,6 @@ public class InMemoryRepository<T extends Entity> implements Repository<T> {
             newEntity.setId(newId);
         }
         data.put(newEntity.getId(), newEntity);
-
-//        System.out.println("[InMemoryStorage] Created entity: " + newEntity);
-
         return newEntity;
     }
 
@@ -59,8 +56,6 @@ public class InMemoryRepository<T extends Entity> implements Repository<T> {
             throw new IllegalArgumentException("No existing entity found with given id: " + entity.getId());
         }
         data.put(entity.getId(), entity);
-
-//        System.out.println("[InMemoryStorage] Updated entity: " + entity);
     }
 
     @Override
@@ -69,8 +64,6 @@ public class InMemoryRepository<T extends Entity> implements Repository<T> {
             throw new IllegalArgumentException("Id cannot be null.");
         }
         data.remove(id);
-
-//        System.out.println("[InMemoryStorage] Deleted entity with id: " + id);
     }
 
     @Override

@@ -1,9 +1,9 @@
 package cz.muni.fi.pv168.project.ui.dialog.task;
 
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
-import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 

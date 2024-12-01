@@ -1,8 +1,10 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.template;
 
 import cz.muni.fi.pv168.project.business.model.Template;
+import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
+import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -36,7 +38,13 @@ public class AddTemplateAction extends EntityBaseAction {
         TemplateDialog dialog = new TemplateDialog(data, null);
 
         dialog.show(data.getTaskTable(), "Add new Template").ifPresent(newTemplate -> {
-            templateTableModel.addRow(newTemplate);
+            try {
+                templateTableModel.addRow(newTemplate);
+            } catch (ValidationException exception) {
+                PopUp.infoDialog(exception.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             // TODO: Hmm
             if (comboBox != null) {
                 DefaultComboBoxModel<Template> model = (DefaultComboBoxModel<Template>) comboBox.getModel();

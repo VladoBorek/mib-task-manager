@@ -4,11 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- *
  * @author Vladimir Borek
  */
 public abstract class ManageDialog extends JDialog {
-    public ManageDialog(JFrame parent, String text){
+    public ManageDialog(JFrame parent, String text) {
         super(parent, text, true);
         setLayout(new BorderLayout());
     }

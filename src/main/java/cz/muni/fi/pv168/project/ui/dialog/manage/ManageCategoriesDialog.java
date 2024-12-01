@@ -10,7 +10,6 @@ import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 import cz.muni.fi.pv168.project.ui.renderers.CategoryComboboxRenderer;
 
 import javax.swing.*;
-
 import java.awt.*;
 
 import static cz.muni.fi.pv168.project.ui.utils.UIElements.createActionsButtonPanel;
@@ -18,7 +17,7 @@ import static cz.muni.fi.pv168.project.ui.utils.UIElements.createComboPanel;
 
 public class ManageCategoriesDialog extends ManageDialog {
     public ManageCategoriesDialog(JFrame parent, DataManager data) {
-        super(parent,  "Manage categories");
+        super(parent, "Manage categories");
         var comboBox = categoriesCombobox(data);
         add(createComboPanel("Select a Category: ", comboBox), BorderLayout.NORTH);
         add(createActionsButtonPanel(new AddCategoryAction(data, comboBox),

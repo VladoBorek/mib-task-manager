@@ -51,8 +51,7 @@ public final class CustomValuesModelDecorator {
         public Either<T, E> getElementAt(int index) {
             if (0 <= index && index < enumerationSize) {
                 return Either.left(clazz.getEnumConstants()[index]);
-            }
-            else {
+            } else {
                 return Either.right(decoratedModel.getElementAt(index - enumerationSize));
             }
         }
