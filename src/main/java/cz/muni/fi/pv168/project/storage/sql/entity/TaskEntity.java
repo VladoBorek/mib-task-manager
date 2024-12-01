@@ -42,7 +42,7 @@ public record TaskEntity(
         this.customer = Objects.requireNonNull(customer, "customer must not be null");
         this.name = Objects.requireNonNull(name, "name must not be null");
         this.assignedTo = Objects.requireNonNull(assignedTo, "assignedTo must not be null");
-        this.loggedTime = Objects.requireNonNull(loggedTime, "loggedTime must not be null");;
+        this.loggedTime = Objects.requireNonNull(loggedTime, "loggedTime must not be null");
         this.allocatedTime = Objects.requireNonNull(allocatedTime, "allocatedTime must not be null");
         this.timeUnitId = timeUnitId;
         this.dueDate = Objects.requireNonNull(dueDate, "dueDate must not be null");
