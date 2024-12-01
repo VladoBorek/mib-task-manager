@@ -66,7 +66,7 @@ public class DatabaseManager {
     }
 
     public void destroySchema() {
-        sqlFileExecutor.execute("drop.sql");
+        sqlFileExecutor.execute("storage.sql.db/drop.sql");
     }
 
     public void initSchema() {

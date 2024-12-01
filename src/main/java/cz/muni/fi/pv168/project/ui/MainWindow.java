@@ -2,28 +2,11 @@ package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
-import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.model.User;
-import cz.muni.fi.pv168.project.business.repository.Repository;
-import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
-import cz.muni.fi.pv168.project.business.service.export.ExportService;
-import cz.muni.fi.pv168.project.business.service.export.GenericExportService;
-import cz.muni.fi.pv168.project.business.service.export.GenericImportService;
-import cz.muni.fi.pv168.project.business.service.export.ImportService;
-import cz.muni.fi.pv168.project.business.service.validation.CategoryValidator;
-import cz.muni.fi.pv168.project.business.service.validation.LogTimeInfoValidator;
-import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
-import cz.muni.fi.pv168.project.business.service.validation.TemplateValidator;
-import cz.muni.fi.pv168.project.business.service.validation.TimeUnitValidator;
-import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.data.DemoDataGenerator;
-import cz.muni.fi.pv168.project.export.json.BatchJSONExporter;
-import cz.muni.fi.pv168.project.export.json.BatchJSONImporter;
-import cz.muni.fi.pv168.project.storage.memory.InMemoryRepository;
 import cz.muni.fi.pv168.project.ui.actions.menu.ChooseTemplateAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.ResetFilterAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
@@ -53,6 +36,7 @@ import cz.muni.fi.pv168.project.ui.renderers.CategoryRenderer;
 import cz.muni.fi.pv168.project.ui.renderers.SpecialFilterCategoryValuesRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.util.Either;
+import cz.muni.fi.pv168.project.wiring.DependencyProvider;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -60,7 +44,6 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +60,7 @@ public class MainWindow {
 
     private final JFrame frame;
     private final DataManager data;
+    private final DependencyProvider dependencyProvider;
 
     private JCheckBox filterToDo;
     private JCheckBox filterComplete;
@@ -86,56 +70,32 @@ public class MainWindow {
     private DatePicker fromDatePicker;
     private DatePicker toDatePicker;
 
-    private final ExportService exportService;
-    private final ImportService importService;
+//    private final ExportService exportService;
+//    private final ImportService importService;
 
 
     /**
      * Constructor for MainWindow.
      * Initializes the main frame, sets the background color, size, and adds the menu bar and filter bar.
      */
-    public MainWindow(User loggedUser) {
+    public MainWindow(User loggedUser, DependencyProvider dependencyProvider) {
         data = new DataManager(loggedUser);
         frame = createFrame();
 
-        Validator<Task> taskValidator = new TaskValidator();
-        Repository<Task> taskRepository = new InMemoryRepository<>(DEMO_DATA.getTasks());
-        CrudService<Task> taskCrudService = new BaseCrudService<>(taskRepository, taskValidator);
+        this.dependencyProvider = dependencyProvider;
+        setInitialRepositoryEntities(dependencyProvider);
 
-        Validator<Category> categoryValidator = new CategoryValidator();
-        Repository<Category> categoryRepository = new InMemoryRepository<>(DEMO_DATA.getCategories());
-        CrudService<Category> categoryCrudService = new BaseCrudService<>(categoryRepository, categoryValidator);
-
-        Validator<Template> templateValidator = new TemplateValidator();
-        Repository<Template> templateRepository = new InMemoryRepository<>(new ArrayList<>());
-        CrudService<Template> templateCrudService = new BaseCrudService<>(templateRepository, templateValidator);
-
-        Validator<TimeUnit> timeUnitValidator = new TimeUnitValidator();
-        Repository<TimeUnit> timeUnitRepository = new InMemoryRepository<>(DEMO_DATA.getTimeUnits());
-        CrudService<TimeUnit> timeUnitCrudService = new BaseCrudService<>(timeUnitRepository, timeUnitValidator);
-
-        Validator<LogTimeInfo> logTimeInfoValidator = new LogTimeInfoValidator();
-        Repository<LogTimeInfo> logTimeInfoRepository = new InMemoryRepository<>(DEMO_DATA.getLogs());
-        CrudService<LogTimeInfo> logTimeInfoCrudService = new BaseCrudService<>(logTimeInfoRepository, logTimeInfoValidator);
-
-        var taskTable = createTaskTable(taskCrudService);
+        var taskTable = createTaskTable(dependencyProvider.getTaskCrudService());
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu());
 
-        var templateTable = createTemplateTable(templateCrudService);
+        var templateTable = createTemplateTable(dependencyProvider.getTemplateCrudService());
         templateTable.setComponentPopupMenu(createTemplateTablePopupMenu());
-
-
-        exportService = new GenericExportService(taskCrudService, categoryCrudService,
-                templateCrudService, timeUnitCrudService, List.of(new BatchJSONExporter()));
-        importService = new GenericImportService(taskCrudService, categoryCrudService,
-                templateCrudService, timeUnitCrudService, List.of(new BatchJSONImporter()));
-
 
         data.setTaskTable(taskTable);
         data.setTemplateTable(templateTable);
-        data.setCategories(categoryCrudService);
-        data.setTimeUnits(timeUnitCrudService);
-        data.setLogInfo(logTimeInfoCrudService);
+        data.setCategories(dependencyProvider.getCategoryCrudService());
+        data.setTimeUnits(dependencyProvider.getTimeUnitCrudService());
+        data.setLogInfo(dependencyProvider.getLogTimeInfoCrudService());
 
         var statisticsTable = createStatisticsTable();
         data.setStatisticsTable(statisticsTable);
@@ -168,6 +128,15 @@ public class MainWindow {
         frame.pack();
         // This has to be here idk why
         frame.setSize(1024, 768);
+    }
+
+    private void setInitialRepositoryEntities(DependencyProvider dependencyProvider) {
+        dependencyProvider.getCategoryRepository().setInitEntities(DEMO_DATA.getCategories());
+        dependencyProvider.getLogTimeInfoRepository().setInitEntities(DEMO_DATA.getLogs());
+        dependencyProvider.getTaskRepository().setInitEntities(DEMO_DATA.getTasks());
+        // missing initial templates
+        // dependencyProvider.getTemplateRepository().setInitEntities(DEMO_DATA.getTemplates());
+        dependencyProvider.getTimeUnitRepository().setInitEntities(DEMO_DATA.getTimeUnits());
     }
 
     private void updateToolBarForSelectedTab(JTabbedPane tabbedPane,
@@ -216,7 +185,8 @@ public class MainWindow {
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(new Color(240, 240, 240));
 
-        menuBar.add(createJMenu("File", new ImportAction(importService, this::refresh), new ExportAction(exportService)));
+        menuBar.add(createJMenu("File", new ImportAction(dependencyProvider.getImportService(), this::refresh)
+                , new ExportAction(dependencyProvider.getExportService())));
         menuBar.add(createJMenu("Template",
                 new AddTemplateAction(data),
                 new ManageTemplatesAction(data, frame)));
