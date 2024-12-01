@@ -23,7 +23,7 @@ public class TransactionalImportService implements ImportService {
     //TODO: just temporary implementation
     @Override
     public void importData(String filePath, ActionType type, boolean deleteData) {
-        transactionExecutor.executeInTransaction(() -> importService.importData(filePath, null, false));
+        transactionExecutor.executeInTransaction(() -> importService.importData(filePath, type, deleteData));
     }
 
     @Override
