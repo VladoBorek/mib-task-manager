@@ -3,20 +3,9 @@ package cz.muni.fi.pv168.project.business.model;
 import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 
 public class TimeUnit extends Entity {
-    public static final String BASE_UNIT = "Minute";
-    public static final String BASE_UNIT_SHORT = "min";
-
     private String name;
     private String shortName;
     private Integer rate;
-
-
-    /**
-     * Creates a new instance of base time unit
-     */
-    public TimeUnit() {
-        this(0L, BASE_UNIT, BASE_UNIT_SHORT, 1);
-    }
 
     /**
      * Creates a custom TimeUnit
@@ -29,11 +18,6 @@ public class TimeUnit extends Entity {
         this.name = name;
         this.shortName = shortName;
         this.rate = rate;
-    }
-
-
-    public static String getBaseUnit() {
-        return BASE_UNIT;
     }
 
     public String getName() {
