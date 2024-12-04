@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.export;
 
 import cz.muni.fi.pv168.project.business.service.export.ImportService;
+import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.ui.utils.ActionType;
@@ -29,8 +30,8 @@ public class ImportAction extends AbstractAction {
         var userChoice = PopUp.optionDialog(
                 "Select items to import",
                 "Import Options",
-                new String[]{"Tasks", "Categories", "Template", "Time Units"});
-        if (userChoice < 0 || userChoice > 3) {
+                new String[]{"Tasks", "Categories", "Template","Time Units", "Work Logs"});
+        if (userChoice < 0 || userChoice > 4) {
             return;
         }
 
@@ -46,7 +47,17 @@ public class ImportAction extends AbstractAction {
         int dialogResult = fileChooser.showOpenDialog(null);
         if (dialogResult == JFileChooser.APPROVE_OPTION) {
             File importFile = fileChooser.getSelectedFile();
-            importService.importData(importFile.getAbsolutePath(), importOption, deleteData);
+
+            try {
+
+                importService.importData(importFile.getAbsolutePath(), importOption, deleteData);
+
+            } catch (BatchOperationException ex){
+                PopUp.infoDialog("Import has failed:\n" + ex.getMessage() + "\nNo items were imported.",
+                        "Import status",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             PopUp.infoDialog("Import has successfully finished.",
                     "Import status",
