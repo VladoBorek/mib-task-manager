@@ -74,4 +74,26 @@ public class UIElements {
 
         return newPanel;
     }
+
+    public static JPanel createDescriptionPanel(JTextArea descriptionArea, int width, int height) {
+        JPanel descriptionLabelPanel = new JPanel(new BorderLayout());
+
+        JPanel titleDescriptionPanel = new JPanel(new BorderLayout());
+        titleDescriptionPanel.add(new JLabel("Description:"));
+
+        JPanel textDescriptionPanel = new JPanel(new BorderLayout());
+        textDescriptionPanel.add(descriptionArea);
+
+        descriptionLabelPanel.add(titleDescriptionPanel, BorderLayout.NORTH);
+        descriptionLabelPanel.add(textDescriptionPanel, BorderLayout.CENTER);
+
+        descriptionArea.setPreferredSize(new Dimension(width, height));
+        descriptionArea.setMinimumSize(new Dimension(width, height));
+        descriptionArea.setMaximumSize(new Dimension(width, height));
+
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+
+        return descriptionLabelPanel;
+    }
 }
