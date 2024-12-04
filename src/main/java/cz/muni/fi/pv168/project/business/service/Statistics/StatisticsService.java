@@ -13,36 +13,19 @@ import java.time.LocalDate;
  */
 public class StatisticsService {
     public static Statistic calculateGlobalStatistics(TaskTableModel taskTableModel) {
-        int total = taskTableModel.getRowCount();
-        int completed = 0, inProgress = 0, overdue = 0, logged = 0, allocated = 0;
-
-        for (int i = 0; i < total; i++) {
-            Task task = taskTableModel.getEntity(i);
-
-            logged += task.getLoggedTime();
-            allocated += task.getAllocatedTime();
-
-            if (task.getStatus() == Status.COMPLETED) {
-                completed++;
-            } else {
-                inProgress++;
-            }
-
-            LocalDate dueDate = task.getDueDate();
-            if (dueDate != null && LocalDate.now().isAfter(dueDate)) {
-                overdue++;
-            }
-        }
-
-        return new Statistic(total, completed, overdue, inProgress, logged, allocated);
+        return calculateStatistics(taskTableModel, null);
     }
 
     public static Statistic calculateFilteredStatistics(TaskTableModel taskTableModel, TableRowSorter<TaskTableModel> sorter) {
-        int total = sorter.getViewRowCount();
+        return calculateStatistics(taskTableModel, sorter);
+    }
+
+    private static Statistic calculateStatistics(TaskTableModel taskTableModel, TableRowSorter<TaskTableModel> sorter) {
+        int total = (sorter == null) ? taskTableModel.getRowCount() : sorter.getViewRowCount();
         int completed = 0, inProgress = 0, overdue = 0, logged = 0, allocated = 0;
 
         for (int i = 0; i < total; i++) {
-            int modelIndex = sorter.convertRowIndexToModel(i);
+            int modelIndex = (sorter == null) ? i : sorter.convertRowIndexToModel(i);
             Task task = taskTableModel.getEntity(modelIndex);
 
             logged += task.getLoggedTime();
