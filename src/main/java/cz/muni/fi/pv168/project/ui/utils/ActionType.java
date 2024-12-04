@@ -8,6 +8,7 @@ public enum ActionType {
     CATEGORY,
     TEMPLATE,
     TIME_UNIT,
+    WORK_LOG,
     FILTER,
     INSPECT
 }

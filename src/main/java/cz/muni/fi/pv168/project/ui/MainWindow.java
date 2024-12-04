@@ -126,9 +126,9 @@ public class MainWindow {
 
 
         exportService = new GenericExportService(taskCrudService, categoryCrudService,
-                templateCrudService, timeUnitCrudService, List.of(new BatchJSONExporter()));
+                templateCrudService, timeUnitCrudService, logTimeInfoCrudService, List.of(new BatchJSONExporter()));
         importService = new GenericImportService(taskCrudService, categoryCrudService,
-                templateCrudService, timeUnitCrudService, List.of(new BatchJSONImporter()));
+                templateCrudService, timeUnitCrudService, logTimeInfoCrudService,List.of(new BatchJSONImporter()));
 
 
         data.setTaskTable(taskTable);
