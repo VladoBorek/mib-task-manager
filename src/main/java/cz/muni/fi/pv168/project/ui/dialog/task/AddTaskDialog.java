@@ -23,6 +23,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Objects;
 
+import static cz.muni.fi.pv168.project.ui.utils.UIElements.createTwoPartPanel;
+
 public class AddTaskDialog extends EntityDialog<Task> {
     private Task task;
     private final DataManager data;

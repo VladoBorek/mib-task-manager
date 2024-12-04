@@ -19,6 +19,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+import static cz.muni.fi.pv168.project.ui.utils.UIElements.createTwoPartPanel;
+
 public class TemplateDialog extends EntityDialog<Template> {
     private final JTextField taskNameField = new JTextField();
     private final JTextField templateNameField = new JTextField();
