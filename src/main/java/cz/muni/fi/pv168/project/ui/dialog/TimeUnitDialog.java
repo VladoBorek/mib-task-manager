@@ -20,9 +20,7 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
     public TimeUnitDialog() {
         conversionRateField.setValue(1);
 
-        add("Time unit name", timeUnitNameField);
-        add("Time unit short name", shortNameField);
-        add("Conversion rate to " + TimeUnit.getBaseUnit() + "  ", conversionRateField);
+        addTimeUnitFields();
         setPanel();
     }
 
@@ -31,11 +29,14 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
         shortNameField.setText(unit.getShortName());
         conversionRateField.setValue(unit.getRate());
 
+        addTimeUnitFields();
+        setPanel();
+    }
 
+    private void addTimeUnitFields() {
         add("Time unit name", timeUnitNameField);
         add("Time unit short name", shortNameField);
         add("Conversion rate to " + TimeUnit.getBaseUnit() + "  ", conversionRateField);
-        setPanel();
     }
 
     @Override
