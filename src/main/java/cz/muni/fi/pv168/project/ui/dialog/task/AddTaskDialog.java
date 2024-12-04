@@ -9,7 +9,6 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.DataManager;
-import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.AddTimeUnitAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
@@ -23,8 +22,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Objects;
 
-import static cz.muni.fi.pv168.project.ui.utils.UIElements.createDescriptionPanel;
-import static cz.muni.fi.pv168.project.ui.utils.UIElements.createTwoPartPanel;
+import static cz.muni.fi.pv168.project.ui.utils.UIElements.*;
 
 public class AddTaskDialog extends EntityDialog<Task> {
     private Task task;
@@ -78,9 +76,9 @@ public class AddTaskDialog extends EntityDialog<Task> {
     private void setupTwoPartPanels() {
         categoryComboBox.setRenderer(new CategoryComboboxRenderer());
 
-        var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
+        var addCategoryButton = createButton("", Icons.ADD_ICON,
                 new AddCategoryAction(data, categoryComboBox));
-        var addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
+        var addTimeUnitButton = createButton("", Icons.ADD_ICON,
                 new AddTimeUnitAction(data, timeUnitsComboBox));
 
         CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);

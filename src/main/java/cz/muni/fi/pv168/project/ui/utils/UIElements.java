@@ -32,8 +32,27 @@ public class UIElements {
         return buttonsPanel;
     }
 
+    /**
+     * @param buttonText Text to be shown on button
+     * @param a          Action to be performed
+     * @return Button with input characteristics
+     */
     public static JButton createButton(String buttonText, Action a) {
         var button = new JButton(buttonText);
+        button.addActionListener(a);
+        button.setBackground(MainWindow.BUTTON_COLOR);
+        button.setFocusPainted(false);
+        return button;
+    }
+
+    /**
+     * @param buttonText Text to be shown on button
+     * @param icon       Icon for the button
+     * @param a          Action to be performed
+     * @return Button with input characteristics
+     */
+    public static JButton createButton(String buttonText, Icon icon, Action a) {
+        var button = new JButton(buttonText, icon);
         button.addActionListener(a);
         button.setBackground(MainWindow.BUTTON_COLOR);
         button.setFocusPainted(false);

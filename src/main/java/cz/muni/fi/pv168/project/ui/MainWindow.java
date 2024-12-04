@@ -49,6 +49,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static cz.muni.fi.pv168.project.ui.utils.UIElements.createButton;
+
 /**
  * Main application window for the MIB Task Manager.
  * Handles the creation and layout of the main frame.
@@ -500,22 +502,6 @@ public class MainWindow {
             }
         });
 
-    }
-
-    // TODO: het
-
-    /**
-     * @param buttonText Text to be shown on button
-     * @param icon       Icon for the button
-     * @param a          Action to be performed
-     * @return Button with input characteristics
-     */
-    public static JButton createButton(String buttonText, Icon icon, Action a) {
-        var button = new JButton(buttonText, icon);
-        button.addActionListener(a);
-        button.setBackground(BUTTON_COLOR);
-        button.setFocusPainted(false);
-        return button;
     }
 
     private void refresh() {

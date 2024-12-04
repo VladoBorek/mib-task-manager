@@ -2,7 +2,6 @@ package cz.muni.fi.pv168.project.ui.dialog.task;
 
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.ui.DataManager;
-import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.LogTimeAction;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.CellPanel;
@@ -16,6 +15,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+
+import static cz.muni.fi.pv168.project.ui.utils.UIElements.createButton;
 
 public class InspectTaskDialog extends EntityDialog<Task> {
 
@@ -123,7 +124,7 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         JPanel timeInfoPanel = new JPanel();
 
         timeInfoPanel.setLayout(new GridLayout(1, 3));
-        JButton addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON, new LogTimeAction(data, this, task));
+        JButton addLogTimeButton = createButton("", Icons.ADD_ICON, new LogTimeAction(data, this, task));
 
         timeInfoPanel.add(this.allocatedTime);
         timeInfoPanel.add(this.loggedTime);
