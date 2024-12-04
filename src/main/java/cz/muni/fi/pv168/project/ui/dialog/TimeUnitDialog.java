@@ -42,11 +42,13 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
     @Override
     public TimeUnit getEntity() {
         Validator<TimeUnit> timeUnitValidator = new TimeUnitValidator();
-        var validation = timeUnitValidator.validate(new TimeUnit(
+        TimeUnit newTimeUnit = new TimeUnit(
                 null,
                 timeUnitNameField.getText(),
                 shortNameField.getText(),
-                conversionRateField.getValue()));
+                conversionRateField.getValue());
+
+        var validation = timeUnitValidator.validate(newTimeUnit);
         if (!validation.isValid()) {
             PopUp.infoDialog(
                     validation.getValidationErrors(),
@@ -54,10 +56,6 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
                     JOptionPane.ERROR_MESSAGE);
             return null;
         }
-        return new TimeUnit(
-                null,
-                timeUnitNameField.getText(),
-                shortNameField.getText(),
-                conversionRateField.getValue());
+        return newTimeUnit;
     }
 }
