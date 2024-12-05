@@ -12,7 +12,7 @@ import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationExce
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
 import cz.muni.fi.pv168.project.business.service.export.format.FormatMapping;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
-import cz.muni.fi.pv168.project.ui.utils.ActionType;
+import cz.muni.fi.pv168.project.util.ActionType;
 
 import java.util.Collection;
 
