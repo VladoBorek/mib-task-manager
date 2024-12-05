@@ -50,7 +50,7 @@ public class ResetFilterAction extends AbstractAction {
 
     private void resetDatePickers() {
         for (DatePicker datePicker : datePickers) {
-            datePicker.setDateToToday();
+            datePicker.setDate(null);
         }
     }
 }

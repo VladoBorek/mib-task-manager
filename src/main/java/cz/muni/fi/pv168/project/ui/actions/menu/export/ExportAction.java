@@ -25,8 +25,8 @@ public class ExportAction extends AbstractAction {
         var userChoice = PopUp.optionDialog(
                 "Select items to export",
                 "Export Options",
-                new String[]{"Tasks", "Categories", "Template","Time Units"});
-        if (userChoice < 0 || userChoice > 3) {
+                new String[]{"Tasks", "Categories", "Template","Time Units", "Work Logs"});
+        if (userChoice < 0 || userChoice > 4) {
             return;
         }
 

@@ -2,7 +2,9 @@ package cz.muni.fi.pv168.project.business.repository;
 
 import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents a repository for any entity.
@@ -37,4 +39,10 @@ public interface Repository<T extends Entity> {
      * Delete all entities.
      */
     void deleteAll();
+
+    Optional<T> findById(Long id);
+
+    public default void setInitEntities(Collection<T> initEntities) {
+        initEntities.forEach(this::create);
+    }
 }

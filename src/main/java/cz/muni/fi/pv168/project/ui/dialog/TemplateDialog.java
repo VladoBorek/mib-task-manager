@@ -7,7 +7,6 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.service.validation.TemplateValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.DataManager;
-import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.AddTimeUnitAction;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
@@ -18,6 +17,8 @@ import cz.muni.fi.pv168.project.ui.resources.Icons;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+
+import static cz.muni.fi.pv168.project.ui.utils.UIElements.*;
 
 public class TemplateDialog extends EntityDialog<Template> {
     private final JTextField taskNameField = new JTextField();
@@ -32,7 +33,7 @@ public class TemplateDialog extends EntityDialog<Template> {
     private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
     private final Template template;
     private final JPanel infoPanel = new JPanel();
-    private final JPanel descriptionPanel = new JPanel();
+    private JPanel descriptionPanel;
     private final JPanel timePanel = new JPanel();
 
 
@@ -58,7 +59,7 @@ public class TemplateDialog extends EntityDialog<Template> {
 
         setupTwoPartPanels();
         setupInfoPanel();
-        setupDescriptionPanel();
+        this.descriptionPanel = createDescriptionPanel(descriptionArea, 200, 50);
         setupTimePanel();
 
         infoPanel.setBorder(new EmptyBorder(0, 0, 5, 0));
@@ -69,9 +70,9 @@ public class TemplateDialog extends EntityDialog<Template> {
     private void setupTwoPartPanels() {
         categoryComboBox.setRenderer(new CategoryComboboxRenderer());
 
-        var addCategoryButton = MainWindow.createButton("", Icons.ADD_ICON,
+        var addCategoryButton = createButton("", Icons.ADD_ICON,
                 new AddCategoryAction(data, categoryComboBox));
-        var addTimeUnitButton = MainWindow.createButton("", Icons.ADD_ICON,
+        var addTimeUnitButton = createButton("", Icons.ADD_ICON,
                 new AddTimeUnitAction(data, timeUnitComboBox));
 
         CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
@@ -87,26 +88,6 @@ public class TemplateDialog extends EntityDialog<Template> {
         infoPanel.add(super.getComponentPanel());
 
         addInfoFields();
-    }
-
-    private void setupDescriptionPanel() {
-        descriptionPanel.setLayout(new BorderLayout());
-
-        JPanel titleDescriptionPanel = new JPanel(new BorderLayout());
-        titleDescriptionPanel.add(new JLabel("Description:"));
-
-        JPanel textDescriptionPanel = new JPanel(new BorderLayout());
-        textDescriptionPanel.add(new JScrollPane(descriptionArea));
-
-        descriptionPanel.add(titleDescriptionPanel, BorderLayout.NORTH);
-        descriptionPanel.add(textDescriptionPanel, BorderLayout.CENTER);
-
-        descriptionArea.setPreferredSize(new Dimension(200, 50));
-        descriptionArea.setMinimumSize(new Dimension(200, 50));
-        descriptionArea.setMaximumSize(new Dimension(200, 50));
-
-        descriptionArea.setLineWrap(true);
-        descriptionArea.setWrapStyleWord(true);
     }
 
     private void setupTimePanel() {

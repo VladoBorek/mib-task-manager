@@ -46,28 +46,6 @@ public abstract class EntityDialog<E> {
         panel.add(componentPanel);
     }
 
-    // TODO: do util
-    public static JPanel createTwoPartPanel(JComponent comboBox, JComponent button) {
-        var newPanel = new JPanel(new GridBagLayout());
-        var constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.BOTH;
-        constraints.weightx = 1.0;
-        constraints.weighty = 1.0;
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        newPanel.add(comboBox, constraints);
-
-        constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.VERTICAL;
-        constraints.gridx = 1;
-        constraints.gridy = 0;
-        constraints.weightx = 0;
-        constraints.weighty = 1.0;
-        newPanel.add(button, constraints);
-
-        return newPanel;
-    }
-
     public abstract E getEntity();
 
     public Optional<E> show(JComponent parentComponent, String title) {

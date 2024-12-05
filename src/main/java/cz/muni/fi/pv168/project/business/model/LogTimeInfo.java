@@ -42,4 +42,15 @@ public class LogTimeInfo extends Entity {
     public String getUsername(){
         return user.username();
     }
+
+    @Override
+    public String toString() {
+        var nonNullID = id == null ? 691 : id;
+        return "LogTimeInfo{" +
+                "id=" + id +
+                "taskID=" + taskID +
+                "user=" + user +
+                "uniqueNumber=" + taskID * getUserId() * getLoggedTime() *  nonNullID + 5351 + this.hashCode()+ this.loggedTime+
+                '}';
+    }
 }

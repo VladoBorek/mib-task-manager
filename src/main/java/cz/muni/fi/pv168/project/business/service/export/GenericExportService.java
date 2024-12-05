@@ -2,6 +2,7 @@ package cz.muni.fi.pv168.project.business.service.export;
 
 
 import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
@@ -24,6 +25,8 @@ public class GenericExportService implements ExportService {
     private final CrudService<Category> categoryCrudService;
     private final CrudService<Template> templateCrudService;
     private final CrudService<TimeUnit> timeUnitCrudService;
+    private final CrudService<LogTimeInfo> logTimeInfoCrudService;
+
     private final FormatMapping<BatchExporter> exporters;
 
     public GenericExportService(
@@ -31,12 +34,14 @@ public class GenericExportService implements ExportService {
             CrudService<Category> categoryCrudService,
             CrudService<Template> templateCrudService,
             CrudService<TimeUnit> timeUnitCrudService,
+            CrudService<LogTimeInfo> logTimeInfoCrudService,
             Collection<BatchExporter> exporters
     ) {
         this.taskCrudService = taskCrudService;
         this.categoryCrudService = categoryCrudService;
         this.templateCrudService = templateCrudService;
         this.timeUnitCrudService = timeUnitCrudService;
+        this.logTimeInfoCrudService = logTimeInfoCrudService;
         this.exporters = new FormatMapping<>(exporters);
     }
 
@@ -51,7 +56,8 @@ public class GenericExportService implements ExportService {
         var batch = new Batch(taskCrudService.findAll(),
                 categoryCrudService.findAll(),
                 templateCrudService.findAll(),
-                timeUnitCrudService.findAll());
+                timeUnitCrudService.findAll(),
+                logTimeInfoCrudService.findAll());
         exporter.exportBatch(batch, filePath, type);
     }
 
