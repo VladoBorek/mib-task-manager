@@ -2,6 +2,8 @@ package cz.muni.fi.pv168.project.business.model;
 
 import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 
+import java.util.Objects;
+
 public class TimeUnit extends Entity {
     private String name;
     private String shortName;
@@ -36,16 +38,24 @@ public class TimeUnit extends Entity {
         this.rate = rate;
     }
 
-    @Override
-    public String toString() {
-        return name;
-    }
-
     public String getShortName() {
         return shortName;
     }
 
     public void setShortName(String shortName) {
         this.shortName = shortName;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TimeUnit category = (TimeUnit) o;
+        return Objects.equals(id, category.id);
     }
 }

@@ -28,7 +28,6 @@ public class TaskTableModel extends BaseTableModel<Task> implements EntityTableM
         super(taskCrudService);
     }
 
-
     @Override
     public int getColumnCount() {
         return columns.size();

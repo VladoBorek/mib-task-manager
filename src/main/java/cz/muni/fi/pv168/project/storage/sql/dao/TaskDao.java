@@ -43,8 +43,8 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
                     assignedTo,
                     loggedTime,
                     allocatedTime,
-                    timeUnitId
-                    dueDate,
+                    timeUnitId,
+                    dueDate
                 )
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
                 """;
@@ -88,7 +88,8 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
     @Override
     public Collection<TaskEntity> findAll() {
         var sql = """
-                SELECT name,
+                SELECT id,
+                    name,
                     status,
                     description,
                     categoryId,
@@ -123,7 +124,9 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
     @Override
     public Optional<TaskEntity> findById(Long id) {
         var sql = """
-                SELECT status,
+                SELECT id,
+                    name,
+                    status,
                     description,
                     categoryId,
                     customer,
@@ -131,7 +134,7 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
                     assignedTo,
                     loggedTime,
                     allocatedTime,
-                    timeUnitId
+                    timeUnitId,
                     dueDate
                 FROM Task
                 WHERE id = ?
@@ -246,7 +249,7 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
                 resultSet.getInt("loggedTime"),
                 resultSet.getInt("allocatedTime"),
                 resultSet.getLong("timeUnitId"),
-                resultSet.getTimestamp("dueDate").toLocalDateTime().toLocalDate() //TODO might be wrong
+                resultSet.getDate("dueDate").toLocalDate()
                 );
     }
 }

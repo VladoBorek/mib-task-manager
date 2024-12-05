@@ -13,6 +13,6 @@ public class EntityCategoryMatcher<T extends TaskBase> extends EntityMatcher<T> 
 
     @Override
     public boolean evaluate(T entity) {
-        return entity.getCategory() == category;
+        return entity.getCategory().equals(category);
     }
 }

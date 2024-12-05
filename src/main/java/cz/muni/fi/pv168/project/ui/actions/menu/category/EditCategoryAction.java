@@ -43,5 +43,7 @@ public class EditCategoryAction extends EntityBaseAction {
             PopUp.infoDialog(exception.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
         }
         comboBox.setSelectedIndex(0);
+        data.getTemplateTableModel().refresh();
+        data.getTaskTableModel().refresh();
     }
 }

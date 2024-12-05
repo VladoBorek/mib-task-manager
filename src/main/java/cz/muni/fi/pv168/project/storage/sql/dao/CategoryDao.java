@@ -64,7 +64,8 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
     @Override
     public Collection<CategoryEntity> findAll() {
         var sql = """
-                SELECT name,
+                SELECT id,
+                    name,
                     color
                 FROM Category
                 """;
@@ -83,6 +84,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
 
             return categories;
         } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
             throw new DataStorageException("Failed to load all categories", ex);
         }
     }
@@ -90,7 +92,8 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
     @Override
     public Optional<CategoryEntity> findById(Long id) {
         var sql = """
-                SELECT name,
+                SELECT id,
+                    name,
                     color
                 FROM Category
                 WHERE id = ?

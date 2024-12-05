@@ -43,6 +43,52 @@ public class LoginWindow {
         addEnterKeyListener(idField);
     }
 
+    private boolean login() {
+        if (usernameField.getText().isEmpty()) {
+            PopUp.infoDialog(
+                    "Please fill all login information.",
+                    "Missing credentials",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        try {
+            MainWindow mainWindow = new MainWindow(
+                    new User(usernameField.getText(), (long) idField.getValue()),
+                    new ProductionDependencyProvider());
+            mainWindow.show();
+        } catch (Exception ex) {
+            // TODO
+            // showInitializationFailedDialog(ex);
+            throw new RuntimeException(ex);
+        }
+        return true;
+    }
+
+    public void show() {
+        this.frame.setVisible(true);
+    }
+
+//    private static void showInitializationFailedDialog(Exception ex) {
+//        EventQueue.invokeLater(() -> {
+//            ex.printStackTrace();
+//            Object[] options = {
+//                    new JButton(new QuitAction()),
+//                    new JButton(new NuclearQuitAction())
+//            };
+//            JOptionPane.showOptionDialog(
+//                    null,
+//                    "Application initialization failed.\nWhat do you want to do?",
+//                    "Initialization Error",
+//                    JOptionPane.DEFAULT_OPTION,
+//                    JOptionPane.ERROR_MESSAGE,
+//                    null,
+//                    options,
+//                    options[0]
+//            );
+//        });
+//    }
+
+    // TODO het
     private JPanel createTitlePanel() {
         JPanel titlePanel = new JPanel();
 
@@ -104,47 +150,4 @@ public class LoginWindow {
             }
         });
     }
-
-    private boolean login() {
-        if (usernameField.getText().isEmpty() || idField.getValue() == 0) {
-            PopUp.infoDialog(
-                    "Please fill all login information.",
-                    "Missing credentials",
-                    JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        try {
-            MainWindow mainWindow = new MainWindow(new User(usernameField.getText(), (long) idField.getValue()),
-                    new ProductionDependencyProvider());
-            mainWindow.show();
-        } catch (Exception ex) {
-            //showInitializationFailedDialog(ex);
-            throw new RuntimeException(ex);
-        }
-        return true;
-    }
-
-    public void show() {
-        this.frame.setVisible(true);
-    }
-
-//    private static void showInitializationFailedDialog(Exception ex) {
-//        EventQueue.invokeLater(() -> {
-//            ex.printStackTrace();
-//            Object[] options = {
-//                    new JButton(new QuitAction()),
-//                    new JButton(new NuclearQuitAction())
-//            };
-//            JOptionPane.showOptionDialog(
-//                    null,
-//                    "Application initialization failed.\nWhat do you want to do?",
-//                    "Initialization Error",
-//                    JOptionPane.DEFAULT_OPTION,
-//                    JOptionPane.ERROR_MESSAGE,
-//                    null,
-//                    options,
-//                    options[0]
-//            );
-//        });
-//    }
 }

@@ -18,6 +18,23 @@ public class ComboBoxModelAdapter<E> extends AbstractListModel<E> implements Com
 
     public ComboBoxModelAdapter(ListModel<E> listModel) {
         this.listModel = listModel;
+
+        this.listModel.addListDataListener(new ListDataListener() {
+            @Override
+            public void intervalAdded(javax.swing.event.ListDataEvent e) {
+                fireContentsChanged(this, e.getIndex0(), e.getIndex1());
+            }
+
+            @Override
+            public void intervalRemoved(javax.swing.event.ListDataEvent e) {
+                fireContentsChanged(this, e.getIndex0(), e.getIndex1());
+            }
+
+            @Override
+            public void contentsChanged(javax.swing.event.ListDataEvent e) {
+                fireContentsChanged(this, 0, getSize() - 1);
+            }
+        });
     }
 
     @Override

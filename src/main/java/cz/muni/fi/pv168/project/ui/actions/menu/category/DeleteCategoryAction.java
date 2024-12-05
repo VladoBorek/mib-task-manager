@@ -30,6 +30,6 @@ public class DeleteCategoryAction extends EntityBaseAction {
             return;
         }
         data.getCategories().remove(category);
-        comboBox.removeItem(category);
+        comboBox.setSelectedItem(null);
     }
 }
