@@ -114,14 +114,12 @@ public class LoginWindow {
             return false;
         }
         try {
-            System.out.println("BRUUH");
             MainWindow mainWindow = new MainWindow(new User(usernameField.getText(), (long) idField.getValue()),
                     new ProductionDependencyProvider());
-            System.out.println("logged as: " + usernameField.getText());
             mainWindow.show();
         } catch (Exception ex) {
             //showInitializationFailedDialog(ex);
-            System.exit(0);
+            throw new RuntimeException(ex);
         }
         return true;
     }

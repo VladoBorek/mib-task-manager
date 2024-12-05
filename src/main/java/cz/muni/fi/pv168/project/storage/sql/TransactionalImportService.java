@@ -3,7 +3,7 @@ package cz.muni.fi.pv168.project.storage.sql;
 import cz.muni.fi.pv168.project.business.service.export.ImportService;
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
 import cz.muni.fi.pv168.project.storage.sql.db.TransactionExecutor;
-import cz.muni.fi.pv168.project.ui.utils.ActionType;
+import cz.muni.fi.pv168.project.util.ActionType;
 
 import java.util.Collection;
 
