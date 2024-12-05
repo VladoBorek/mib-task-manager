@@ -41,9 +41,9 @@ public class AddTimeUnitAction extends EntityBaseAction {
                 PopUp.infoDialog(exception.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            DefaultComboBoxModel<TimeUnit> model = (DefaultComboBoxModel<TimeUnit>) comboBox.getModel();
-            model.addElement(newTimeUnit);
-            comboBox.setSelectedItem(newTimeUnit);
+            if (comboBox != null) {
+                comboBox.setSelectedItem(newTimeUnit);;
+            }
         });
     }
 }

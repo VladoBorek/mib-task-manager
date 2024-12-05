@@ -40,6 +40,6 @@ public class DeleteTimeUnitAction extends EntityBaseAction {
         }
 
         data.getTimeUnits().remove(timeUnit);
-        comboBox.removeItem(timeUnit);
+        comboBox.setSelectedItem(null);
     }
 }

@@ -51,7 +51,6 @@ public class AddTaskAction extends EntityBaseAction {
             }
         });
 
-        // TODO: umh..
         ((StatisticsTableModel) data.getStatisticsTable().getModel()).refreshStatistics();
     }
 }

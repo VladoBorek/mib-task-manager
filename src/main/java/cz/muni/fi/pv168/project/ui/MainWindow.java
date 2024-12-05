@@ -6,7 +6,6 @@ import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
-import cz.muni.fi.pv168.project.data.DemoDataGenerator;
 import cz.muni.fi.pv168.project.ui.actions.menu.ChooseTemplateAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.ResetFilterAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
@@ -57,7 +56,6 @@ import static cz.muni.fi.pv168.project.ui.utils.UIElements.createButton;
  */
 public class MainWindow {
     public static final Color BUTTON_COLOR = new Color(220, 220, 220);
-    public static final DemoDataGenerator DEMO_DATA = new DemoDataGenerator();
 
     private final JFrame frame;
     private final DataManager data;
@@ -71,10 +69,6 @@ public class MainWindow {
     private DatePicker fromDatePicker;
     private DatePicker toDatePicker;
 
-//    private final ExportService exportService;
-//    private final ImportService importService;
-
-
     /**
      * Constructor for MainWindow.
      * Initializes the main frame, sets the background color, size, and adds the menu bar and filter bar.
@@ -84,7 +78,6 @@ public class MainWindow {
         frame = createFrame();
 
         this.dependencyProvider = dependencyProvider;
-        setInitialRepositoryEntities(dependencyProvider);
 
         var taskTable = createTaskTable(dependencyProvider.getTaskCrudService());
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu());
@@ -94,6 +87,7 @@ public class MainWindow {
 
         data.setTaskTable(taskTable);
         data.setTemplateTable(templateTable);
+        // TODO Bruh
         data.setCategories(dependencyProvider.getCategoryCrudService());
         data.setTimeUnits(dependencyProvider.getTimeUnitCrudService());
         data.setLogInfo(dependencyProvider.getLogTimeInfoCrudService());
@@ -101,13 +95,11 @@ public class MainWindow {
         var statisticsTable = createStatisticsTable();
         data.setStatisticsTable(statisticsTable);
 
-
         frame.setJMenuBar(createMenuBar());
 
         var taskToolBar = createTaskToolBar(taskTable, data);
         var templateToolBar = createTemplateToolBar(templateTable, data);
         frame.add(taskToolBar, BorderLayout.BEFORE_FIRST_LINE);
-
 
         var splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         splitPane.setDividerSize(10);
@@ -125,17 +117,8 @@ public class MainWindow {
 
         frame.setLocationRelativeTo(null);
         frame.pack();
-        // This has to be here idk why
+        // This has to be here IDK why
         frame.setSize(1024, 768);
-    }
-
-    private void setInitialRepositoryEntities(DependencyProvider dependencyProvider) {
-        dependencyProvider.getCategoryRepository().setInitEntities(DEMO_DATA.getCategories());
-        dependencyProvider.getLogTimeInfoRepository().setInitEntities(DEMO_DATA.getLogs());
-        dependencyProvider.getTaskRepository().setInitEntities(DEMO_DATA.getTasks());
-        // missing initial templates
-        // dependencyProvider.getTemplateRepository().setInitEntities(DEMO_DATA.getTemplates());
-        dependencyProvider.getTimeUnitRepository().setInitEntities(DEMO_DATA.getTimeUnits());
     }
 
     private void updateToolBarForSelectedTab(JTabbedPane tabbedPane,
@@ -346,10 +329,10 @@ public class MainWindow {
     }
 
     private JPanel createStatusCheckboxesPanel(TaskTableFilter taskTableFilter) {
-        filterToDo = createFilterCheckbox("To-Do", true);
-        filterInProgress = createFilterCheckbox("In-Progress", true);
-        filterComplete = createFilterCheckbox("Completed", true);
-        filterOnHold = createFilterCheckbox("On-Hold", true);
+        filterToDo = createFilterCheckbox("To-Do");
+        filterInProgress = createFilterCheckbox("In-Progress");
+        filterComplete = createFilterCheckbox("Completed");
+        filterOnHold = createFilterCheckbox("On-Hold");
 
         filterToDo.addActionListener(e -> applyStatusFilter(taskTableFilter));
         filterInProgress.addActionListener(e -> applyStatusFilter(taskTableFilter));
@@ -398,13 +381,12 @@ public class MainWindow {
      * Creates a custom JCheckBox
      *
      * @param checkBoxText Text of the checkbox
-     * @param setSelected  Default state of the checkbox
      * @return checkBox
      */
-    private JCheckBox createFilterCheckbox(String checkBoxText, Boolean setSelected) {
+    private JCheckBox createFilterCheckbox(String checkBoxText) {
         JCheckBox checkBox = new JCheckBox();
         checkBox.setText(checkBoxText);
-        checkBox.setSelected(setSelected);
+        checkBox.setSelected(true);
         checkBox.setFocusPainted(false);
         return checkBox;
     }

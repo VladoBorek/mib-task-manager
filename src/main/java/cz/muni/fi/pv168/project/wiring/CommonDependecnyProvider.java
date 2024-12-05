@@ -102,7 +102,6 @@ public class CommonDependecnyProvider implements DependencyProvider {
         this.templates = new TemplateSqlRepository(templateDao, templateMapper);
         this.timeUnits = new TimeUnitSqlRepository(timeUnitDao, timeUnitMapper);
 
-
         // SETUP CRUD SERVICES
         this.categoryCrudService = new BaseCrudService<>(this.categories, this.categoryValidator);
         this.logTimeInfoCrudService = new BaseCrudService<>(this.logTimeInfos, this.logTimeInfoValidator);

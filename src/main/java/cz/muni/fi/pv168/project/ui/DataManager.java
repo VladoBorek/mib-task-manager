@@ -15,8 +15,6 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cz.muni.fi.pv168.project.ui.MainWindow.DEMO_DATA;
-
 /**
  * Object for holding and managing data
  *

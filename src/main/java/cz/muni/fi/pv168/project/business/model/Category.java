@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.project.business.model;
 import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 
 import java.awt.*;
+import java.util.Objects;
 
 /**
  * The Category class represents a task category with a name and a color.
@@ -42,5 +43,13 @@ public class Category extends Entity {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return Objects.equals(id, category.id);
     }
 }

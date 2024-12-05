@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
+import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -45,10 +46,7 @@ public class AddTemplateAction extends EntityBaseAction {
                 return;
             }
 
-            // TODO: Hmm
             if (comboBox != null) {
-                DefaultComboBoxModel<Template> model = (DefaultComboBoxModel<Template>) comboBox.getModel();
-                model.addElement(newTemplate);
                 comboBox.setSelectedItem(newTemplate);
             }
         });

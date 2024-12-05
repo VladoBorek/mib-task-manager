@@ -29,10 +29,11 @@ public class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
                 INSERT INTO TimeUnit(
                     name,
                     shortName,
-                    rate,
+                    rate
                 )
                 VALUES (?, ?, ?);
                 """;
+
         try (
                 var connection = connections.get();
                 var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
@@ -65,7 +66,8 @@ public class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
     @Override
     public Collection<TimeUnitEntity> findAll() {
         var sql = """
-                SELECT name,
+                SELECT id,
+                    name,
                     shortName,
                     rate
                 FROM TimeUnit
@@ -92,7 +94,8 @@ public class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
     @Override
     public Optional<TimeUnitEntity> findById(Long id) {
         var sql = """
-                SELECT name,
+                SELECT id,
+                    name,
                     shortName,
                     rate
                 FROM TimeUnit

@@ -78,7 +78,8 @@ public class TemplateDao implements DataAccessObject<TemplateEntity> {
     @Override
     public Collection<TemplateEntity> findAll() {
         var sql = """
-                SELECT description,
+                SELECT id,
+                    description,
                     categoryId,
                     templateName,
                     taskName,
@@ -109,7 +110,8 @@ public class TemplateDao implements DataAccessObject<TemplateEntity> {
     @Override
     public Optional<TemplateEntity> findById(Long id) {
         var sql = """
-                SELECT description,
+                SELECT id,
+                    description,
                     categoryId,
                     templateName,
                     taskName,

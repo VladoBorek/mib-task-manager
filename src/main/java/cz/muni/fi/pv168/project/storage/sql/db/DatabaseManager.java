@@ -16,7 +16,7 @@ import java.sql.SQLException;
  * The class is responsible for managing H2 database connection and schemas
  */
 public class DatabaseManager {
-    private static final String PROJECT_NAME = "pv-168-task-manager";
+    private static final String PROJECT_NAME = "pv168-task-manager";
     private static final String DB_PROPERTIES_STRING = "DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false";
 
     private final DataSource dataSource;
@@ -66,7 +66,7 @@ public class DatabaseManager {
     }
 
     public void destroySchema() {
-        sqlFileExecutor.execute("storage.sql.db/drop.sql");
+        sqlFileExecutor.execute("drop.sql");
     }
 
     public void initSchema() {

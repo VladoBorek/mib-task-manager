@@ -25,7 +25,7 @@ import java.util.Objects;
 import static cz.muni.fi.pv168.project.ui.utils.UIElements.*;
 
 public class AddTaskDialog extends EntityDialog<Task> {
-    private Task task;
+    private final Task task;
     private final DataManager data;
     private final JTextField taskNameField = new JTextField();
     private final JTextField customerField = new JTextField();
@@ -40,7 +40,6 @@ public class AddTaskDialog extends EntityDialog<Task> {
     private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
     private final DatePicker datePicker = new DatePicker();
     private final JPanel infoPanel = new JPanel();
-    private JPanel descriptionPanel;
     private final JPanel timePanel = new JPanel();
 
     public AddTaskDialog(Task task, DataManager data) {
@@ -57,7 +56,10 @@ public class AddTaskDialog extends EntityDialog<Task> {
         }
     }
 
+    //TODO presne take iste jak v TemplateDialog
     private void setUpUI() {
+        JPanel descriptionPanel = createDescriptionPanel(descriptionArea, 200, 50);
+
         super.getPanel().setLayout(new BorderLayout());
         super.getPanel().add(infoPanel, BorderLayout.NORTH);
         super.getPanel().add(descriptionPanel, BorderLayout.CENTER);
@@ -65,7 +67,6 @@ public class AddTaskDialog extends EntityDialog<Task> {
 
         setupTwoPartPanels();
         setupInfoPanel();
-        this.descriptionPanel = createDescriptionPanel(descriptionArea, 200, 50);
         setupTimePanel();
 
         infoPanel.setBorder(new EmptyBorder(0, 0, 5, 0));
@@ -162,7 +163,6 @@ public class AddTaskDialog extends EntityDialog<Task> {
         }
         return true;
     }
-
 
     @Override
     public Task getEntity() {

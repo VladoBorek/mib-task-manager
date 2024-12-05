@@ -33,7 +33,6 @@ public class TemplateDialog extends EntityDialog<Template> {
     private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
     private final Template template;
     private final JPanel infoPanel = new JPanel();
-    private JPanel descriptionPanel;
     private final JPanel timePanel = new JPanel();
 
 
@@ -52,6 +51,8 @@ public class TemplateDialog extends EntityDialog<Template> {
     }
 
     private void setUpUI() {
+        JPanel descriptionPanel = createDescriptionPanel(descriptionArea, 200, 50);
+
         super.getPanel().setLayout(new BorderLayout());
         super.getPanel().add(infoPanel, BorderLayout.NORTH);
         super.getPanel().add(descriptionPanel, BorderLayout.CENTER);
@@ -59,7 +60,6 @@ public class TemplateDialog extends EntityDialog<Template> {
 
         setupTwoPartPanels();
         setupInfoPanel();
-        this.descriptionPanel = createDescriptionPanel(descriptionArea, 200, 50);
         setupTimePanel();
 
         infoPanel.setBorder(new EmptyBorder(0, 0, 5, 0));
@@ -137,7 +137,6 @@ public class TemplateDialog extends EntityDialog<Template> {
                 || (templateNameField.getText().trim().isEmpty())
                 || (allocatedTimeField.getText().trim().isEmpty())
                 || (assignedToField.getText().trim().isEmpty())
-                // || (descriptionArea.getText().trim().isEmpty()) can be empty
                 || (categoryComboBox.getSelectedItem() == null)
                 || (timeUnitComboBox.getSelectedItem() == null)
 

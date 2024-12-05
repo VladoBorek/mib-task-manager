@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
+import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
@@ -43,8 +44,6 @@ public class AddCategoryAction extends EntityBaseAction {
             }
 
             if (comboBox != null) {
-                DefaultComboBoxModel<Category> model = (DefaultComboBoxModel<Category>) comboBox.getModel();
-                model.addElement(newCategory);
                 comboBox.setSelectedItem(newCategory);
             }
         });

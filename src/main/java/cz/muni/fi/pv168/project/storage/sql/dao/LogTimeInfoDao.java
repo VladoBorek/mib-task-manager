@@ -69,7 +69,8 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
     @Override
     public Collection<LogTimeInfoEntity> findAll() {
         var sql = """
-                SELECT loggedTime,
+                SELECT id,
+                    loggedTime,
                     userName,
                     userId,
                     taskId
@@ -97,7 +98,8 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
     @Override
     public Optional<LogTimeInfoEntity> findById(Long id) {
         var sql = """
-                SELECT loggedTime,
+                SELECT id,
+                    loggedTime,
                     userName,
                     userId,
                     taskId

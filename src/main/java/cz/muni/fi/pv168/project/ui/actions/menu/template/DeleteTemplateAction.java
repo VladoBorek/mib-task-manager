@@ -39,7 +39,7 @@ public class DeleteTemplateAction extends EntityBaseAction {
                 return;
             }
             data.getTemplateTableModel().remove(template);
-            comboBox.removeItem(template);
+            comboBox.setSelectedItem(null);
             return;
         }
 
