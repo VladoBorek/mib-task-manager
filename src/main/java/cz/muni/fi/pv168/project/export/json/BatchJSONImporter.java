@@ -1,17 +1,19 @@
 package cz.muni.fi.pv168.project.export.json;
 
 import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
 import cz.muni.fi.pv168.project.business.model.Status;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.service.export.DataManipulationException;
 import cz.muni.fi.pv168.project.business.service.export.batch.Batch;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchImporter;
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
 import cz.muni.fi.pv168.project.ui.utils.ActionType;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -37,9 +39,11 @@ public class BatchJSONImporter implements BatchImporter {
         var categories = new HashMap<String, Category>();
         var templates = new HashMap<String, Template>();
         var timeUnits = new HashMap<String, TimeUnit>();
+        var workLogs = new HashMap<String, LogTimeInfo>();
 
         currentData.categories().forEach(category -> categories.put(category.getName(), category));
         currentData.timeUnits().forEach(timeUnit -> timeUnits.put(timeUnit.getName(), timeUnit));
+        currentData.logTimeInfos().forEach(workLog -> workLogs.put(workLog.toString(), workLog));
 
         try (var reader = Files.newBufferedReader(Path.of(filePath))) {
             var stringArrayList = readFile(reader);
@@ -47,17 +51,23 @@ public class BatchJSONImporter implements BatchImporter {
 
             for (var item : imported) {
                 switch (type) {
-                    case TASK -> tasks.put(item.toString(), parseTask(categories, timeUnits, item));
+                    case TASK ->
+                            tasks.put(item.toString(),parseTask(categories, timeUnits, workLogs,item, currentData.tasks().size()));
                     case CATEGORY -> categories.put(item.toString(), parseCategory(categories, item));
                     case TEMPLATE ->
-                            templates.put(item.toString(), parseTemplate(templates, categories, timeUnits, item));
-                    case TIME_UNIT -> timeUnits.put(item.toString(), parseTimeUnit(timeUnits, item));
+                            templates.put(item.toString(),parseTemplate(templates, categories, timeUnits, item));
+                    case TIME_UNIT -> timeUnits.put(item.toString(),parseTimeUnit(timeUnits, item));
+                    case WORK_LOG -> workLogs.put(item.toString(),parseWorkLog(workLogs, item, null, 0));
                 }
             }
-            return new Batch(tasks.values(), categories.values(), templates.values(), timeUnits.values());
+            return new Batch(tasks.values(), categories.values(), templates.values(), timeUnits.values(), workLogs.values());
         } catch (IOException e) {
-            throw new DataManipulationException("Unable to read file", e);
-        }
+            throw new DataManipulationException("Unable to read file\n" + e.getMessage());
+        } catch (DataManipulationException e) {
+            throw new DataManipulationException("Failed to import items\n" + e.getMessage());
+        } catch (Exception e) {
+        throw new DataManipulationException("Failed to process items\n" + e.getMessage());
+    }
     }
 
     /**
@@ -68,25 +78,49 @@ public class BatchJSONImporter implements BatchImporter {
      * @throws IOException if something goes wrong with reader
      */
     private static ArrayList<String> readFile(BufferedReader reader) throws IOException {
-        var array = new ArrayList<String>();
-        StringBuilder fileContent = new StringBuilder();
+        var importStringArray = new ArrayList<String>();
+        StringBuilder singleStringImportObject = new StringBuilder();
         String line;
+        int lineIndex = 0;
+        String lastLine = null;
         boolean addChar = false;
         while ((line = reader.readLine()) != null) {
+            if (lineIndex == 0 && !line.equals("[")){
+                throw new DataManipulationException("First line of imported file not in required format");
+            }
             if (line.contains("}")) {
-                fileContent.append("\n");
-                array.add(fileContent.toString());
-                fileContent.setLength(0);
+                if (line.chars().filter(c -> c == '}').count() != 1){
+                    throw new DataManipulationException("Line in file missing EOL, line index (starting with 0) " + lineIndex);
+                }
+                singleStringImportObject.append("\n");
+                importStringArray.add(singleStringImportObject.toString());
+                singleStringImportObject.setLength(0);
                 addChar = false;
             }
             if (addChar) {
-                fileContent.append(line);
+                if (!line.contains(":")){
+                    throw new DataManipulationException("Line in file missing separator (:), line index (starting with 0) " + lineIndex);
+                }
+                singleStringImportObject.append(line);
             }
             if (line.contains("{")) {
+                if (line.chars().filter(c -> c == '{').count() != 1){
+                    throw new DataManipulationException("Line in file missing EOL, line index (starting with 0) " + lineIndex);
+                }
                 addChar = true;
             }
+            if (!addChar && !(line.contains("{") || line.contains("}") ||
+                line.contains("[") || line.contains("]"))){
+                throw new DataManipulationException("Line in file not in required format, line index (starting with 0) " + lineIndex);
+            }
+            lineIndex++;
+            lastLine = line;
         }
-        return array;
+
+        if (lastLine == null || !lastLine.equals("]")){
+            throw new DataManipulationException("Last line of imported file not in required format");
+        }
+        return importStringArray;
     }
 
     /**
@@ -125,14 +159,18 @@ public class BatchJSONImporter implements BatchImporter {
     /**
      * Parses {@link Task} from provided values
      *
-     * @param categories Map of {@link Category} from this import
-     * @param timeUnits  Map of {@link TimeUnit} from this import
-     * @param values     Values for the parsing Task
+     * @param categories   Map of {@link Category} from this import
+     * @param timeUnits    Map of {@link TimeUnit} from this import
+     * @param workLogs     Map of {@link LogTimeInfo} from this import
+     * @param values       Values for the parsing Task
+     * @param taskIDOffset offset of already stored tasks, so new {@link LogTimeInfo} is paired with correct Task
      * @return {@link Task} with provided values
      */
     private Task parseTask(HashMap<String, Category> categories,
                            HashMap<String, TimeUnit> timeUnits,
-                           HashMap<String, Object> values) {
+                           HashMap<String, LogTimeInfo> workLogs,
+                           HashMap<String, Object> values,
+                           int taskIDOffset) {
         var category = parseCategory(categories,
                 (String) values.get("category_name"),
                 Integer.parseInt((String) values.get("category_color")));
@@ -141,8 +179,11 @@ public class BatchJSONImporter implements BatchImporter {
                 (String) values.get("time_unit_name"),
                 (String) values.get("time_unit_short_name"),
                 Integer.parseInt((String) values.get("time_unit_rate")));
-        //TODO add importing log time table
 
+        var workLogCount =  Integer.parseInt((String) values.get("work_logs_count"));
+        for (int i = 0; i < workLogCount; i++) {
+            parseWorkLog(workLogs, values, i, taskIDOffset);
+        }
         return new Task(null,
                 Status.valueOf((String) values.get("status")),
                 (String) values.get("description"),
@@ -280,6 +321,58 @@ public class BatchJSONImporter implements BatchImporter {
                 (String) values.get("time_unit_name"),
                 (String) values.get("time_unit_short_name"),
                 Integer.parseInt((String) values.get("time_unit_rate")));
+    }
+
+    /**
+     * Parse  {@link LogTimeInfo} from provided values
+     *
+     * @param workLogs     Map of {@link LogTimeInfo} from this import
+     * @param loggedTime   value of logged time
+     * @param user         {@link User} user associated with the {@link LogTimeInfo}
+     * @param taskID       ID of associated new {@link Task}
+     * @param taskIDOffset offset of already stored tasks, so new {@link LogTimeInfo} is paired with correct Task
+     * @return new {@link TimeUnit} with the provided values
+     */
+    private LogTimeInfo parseWorkLog(HashMap<String, LogTimeInfo> workLogs,
+                                     Integer loggedTime,
+                                     User user,
+                                     Long taskID,
+                                     int taskIDOffset)
+    {
+        LogTimeInfo logTimeInfo = new LogTimeInfo(loggedTime, user, taskID + taskIDOffset);
+        return workLogs.computeIfAbsent(logTimeInfo.toString(), log -> logTimeInfo);
+    }
+
+    /**
+     * Parse {@link LogTimeInfo} from provided values
+     *
+     * @param workLogs     Map of {@link LogTimeInfo} from this import
+     * @param values       Map containing values for the time unit
+     * @param order        order of LogTimeInfo when exporting inside of {@link #parseTask}
+     * @param taskIDOffset offset of already stored tasks, so new {@link LogTimeInfo} is paired with correct Task
+     * @return new {@link TimeUnit} with the provided values
+     */
+    private LogTimeInfo parseWorkLog(HashMap<String, LogTimeInfo> workLogs,
+                                     HashMap<String, Object> values,
+                                     Integer order,
+                                     int taskIDOffset)
+    {
+        String stringOrder;
+        if (order == null){
+            stringOrder = "";
+        } else {
+            stringOrder = order.toString();
+        }
+        User user = new User(
+                (String) values.get("work_log_user_name" + stringOrder),
+                Long.parseLong((String) values.get("work_log_user_id" + stringOrder)));
+
+        return parseWorkLog(workLogs,
+                Integer.parseInt((String) values.get("work_log_logged_time" + stringOrder)),
+                user,
+                Long.parseLong((String) values.get("work_log_task_id" + stringOrder)),
+                taskIDOffset
+        );
     }
 
     @Override
