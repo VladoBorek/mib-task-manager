@@ -22,7 +22,7 @@ public class InMemoryRepository<T extends Entity> implements Repository<T> {
         initEntities.forEach(this::create);
     }
 
-    private Optional<T> findById(Long id) {
+    public Optional<T> findById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("Id cannot be null.");
         }

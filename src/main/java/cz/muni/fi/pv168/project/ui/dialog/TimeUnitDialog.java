@@ -20,9 +20,7 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
     public TimeUnitDialog() {
         conversionRateField.setValue(1);
 
-        add("Time unit name", timeUnitNameField);
-        add("Time unit short name", shortNameField);
-        add("Conversion rate to " + TimeUnit.getBaseUnit() + "  ", conversionRateField);
+        addTimeUnitFields();
         setPanel();
     }
 
@@ -31,21 +29,26 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
         shortNameField.setText(unit.getShortName());
         conversionRateField.setValue(unit.getRate());
 
+        addTimeUnitFields();
+        setPanel();
+    }
 
+    private void addTimeUnitFields() {
         add("Time unit name", timeUnitNameField);
         add("Time unit short name", shortNameField);
         add("Conversion rate to " + TimeUnit.getBaseUnit() + "  ", conversionRateField);
-        setPanel();
     }
 
     @Override
     public TimeUnit getEntity() {
         Validator<TimeUnit> timeUnitValidator = new TimeUnitValidator();
-        var validation = timeUnitValidator.validate(new TimeUnit(
+        TimeUnit newTimeUnit = new TimeUnit(
                 null,
                 timeUnitNameField.getText(),
                 shortNameField.getText(),
-                conversionRateField.getValue()));
+                conversionRateField.getValue());
+
+        var validation = timeUnitValidator.validate(newTimeUnit);
         if (!validation.isValid()) {
             PopUp.infoDialog(
                     validation.getValidationErrors(),
@@ -53,10 +56,6 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
                     JOptionPane.ERROR_MESSAGE);
             return null;
         }
-        return new TimeUnit(
-                null,
-                timeUnitNameField.getText(),
-                shortNameField.getText(),
-                conversionRateField.getValue());
+        return newTimeUnit;
     }
 }

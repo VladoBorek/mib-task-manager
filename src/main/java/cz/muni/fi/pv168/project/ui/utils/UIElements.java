@@ -32,8 +32,27 @@ public class UIElements {
         return buttonsPanel;
     }
 
+    /**
+     * @param buttonText Text to be shown on button
+     * @param a          Action to be performed
+     * @return Button with input characteristics
+     */
     public static JButton createButton(String buttonText, Action a) {
         var button = new JButton(buttonText);
+        button.addActionListener(a);
+        button.setBackground(MainWindow.BUTTON_COLOR);
+        button.setFocusPainted(false);
+        return button;
+    }
+
+    /**
+     * @param buttonText Text to be shown on button
+     * @param icon       Icon for the button
+     * @param a          Action to be performed
+     * @return Button with input characteristics
+     */
+    public static JButton createButton(String buttonText, Icon icon, Action a) {
+        var button = new JButton(buttonText, icon);
         button.addActionListener(a);
         button.setBackground(MainWindow.BUTTON_COLOR);
         button.setFocusPainted(false);
@@ -51,5 +70,49 @@ public class UIElements {
         button.setBackground(MainWindow.BUTTON_COLOR);
         button.setFocusPainted(false);
         return button;
+    }
+
+    public static JPanel createTwoPartPanel(JComponent comboBox, JComponent button) {
+        var newPanel = new JPanel(new GridBagLayout());
+        var constraints = new GridBagConstraints();
+
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        newPanel.add(comboBox, constraints);
+
+        constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.VERTICAL;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.weightx = 0;
+        constraints.weighty = 1.0;
+        newPanel.add(button, constraints);
+
+        return newPanel;
+    }
+
+    public static JPanel createDescriptionPanel(JTextArea descriptionArea, int width, int height) {
+        JPanel descriptionLabelPanel = new JPanel(new BorderLayout());
+
+        JPanel titleDescriptionPanel = new JPanel(new BorderLayout());
+        titleDescriptionPanel.add(new JLabel("Description:"));
+
+        JPanel textDescriptionPanel = new JPanel(new BorderLayout());
+        textDescriptionPanel.add(descriptionArea);
+
+        descriptionLabelPanel.add(titleDescriptionPanel, BorderLayout.NORTH);
+        descriptionLabelPanel.add(textDescriptionPanel, BorderLayout.CENTER);
+
+        descriptionArea.setPreferredSize(new Dimension(width, height));
+        descriptionArea.setMinimumSize(new Dimension(width, height));
+        descriptionArea.setMaximumSize(new Dimension(width, height));
+
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+
+        return descriptionLabelPanel;
     }
 }

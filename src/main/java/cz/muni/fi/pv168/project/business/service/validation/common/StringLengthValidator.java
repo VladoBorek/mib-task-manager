@@ -10,10 +10,6 @@ public final class StringLengthValidator extends PropertyValidator<String> {
     private final int min;
     private final int max;
 
-    public StringLengthValidator(int min, int max) {
-        this(min, max, null);
-    }
-
     public StringLengthValidator(int min, int max, String name) {
         super(name);
         this.min = min;

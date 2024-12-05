@@ -2,12 +2,12 @@ package cz.muni.fi.pv168.project.ui.dialog.task;
 
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.ui.DataManager;
-import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.LogTimeAction;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.CellPanel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.LogTimeInfoTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.ui.utils.UIElements;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -15,6 +15,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+
+import static cz.muni.fi.pv168.project.ui.utils.UIElements.createButton;
 
 public class InspectTaskDialog extends EntityDialog<Task> {
 
@@ -93,7 +95,7 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         super.getPanel().add(rightPanel);
 
         leftPanel.add(setupInfoPanel());
-        leftPanel.add(setupDescriptionPanel(), BorderLayout.SOUTH);
+        leftPanel.add(createDescriptionPanel(), BorderLayout.SOUTH);
 
         rightPanel.add(setupLogTablePanel(), BorderLayout.CENTER);
         rightPanel.add(setupBottomPanel(), BorderLayout.SOUTH);
@@ -122,7 +124,7 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         JPanel timeInfoPanel = new JPanel();
 
         timeInfoPanel.setLayout(new GridLayout(1, 3));
-        JButton addLogTimeButton = MainWindow.createButton("", Icons.ADD_ICON, new LogTimeAction(data, this, task));
+        JButton addLogTimeButton = createButton("", Icons.ADD_ICON, new LogTimeAction(data, this, task));
 
         timeInfoPanel.add(this.allocatedTime);
         timeInfoPanel.add(this.loggedTime);
@@ -159,28 +161,10 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         return infoLabelsPanel;
     }
 
-    private JPanel setupDescriptionPanel() {
-        JPanel descriptionLabelPanel = new JPanel(new BorderLayout());
-
-        JPanel titleDescriptionPanel = new JPanel(new BorderLayout());
-        titleDescriptionPanel.add(new JLabel("Description:"));
-
-        JPanel textDescriptionPanel = new JPanel(new BorderLayout());
-        textDescriptionPanel.add(description);
-
-        descriptionLabelPanel.add(titleDescriptionPanel, BorderLayout.NORTH);
-        descriptionLabelPanel.add(textDescriptionPanel, BorderLayout.CENTER);
-
-        description.setPreferredSize(new Dimension(200, 100));
-        description.setMinimumSize(new Dimension(200, 100));
-        description.setMaximumSize(new Dimension(200, 100));
-
-        description.setLineWrap(true);
-        description.setWrapStyleWord(true);
+    private JPanel createDescriptionPanel() {
         description.setEditable(false);
         description.setOpaque(false);
-
-        return descriptionLabelPanel;
+        return UIElements.createDescriptionPanel(description, 200, 100);
     }
 
     private void FormatFields() {
