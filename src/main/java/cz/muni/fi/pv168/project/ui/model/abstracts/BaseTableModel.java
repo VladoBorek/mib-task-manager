@@ -54,13 +54,6 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
         return items;
     }
 
-    public void deleteAllRows() {
-        var totalRows = getRowCount();
-        for (int i = 0; i < totalRows; i++) {
-            deleteRow(0);
-        }
-    }
-
     public void refresh() {
         this.items = new ArrayList<>(crudService.findAll());
         fireTableDataChanged();

@@ -46,5 +46,8 @@ public class EditTimeUnitAction extends EntityBaseAction {
         }
 
         comboBox.setSelectedIndex(0);
+
+        data.getTemplateTableModel().refresh();
+        data.getTaskTableModel().refresh();
     }
 }
