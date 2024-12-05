@@ -5,6 +5,7 @@ import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.util.Constants;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -30,10 +31,9 @@ public class DeleteTimeUnitAction extends EntityBaseAction {
         var timeUnit = (TimeUnit) comboBox.getSelectedItem();
         assert timeUnit != null;
 
-        // TODO: hmm
-        if (Objects.equals(timeUnit.getName(), TimeUnit.getBaseUnit())) {
+        if (Objects.equals(timeUnit.getName(), Constants.BASE_TIME_UNIT)) {
             PopUp.infoDialog(
-                    "You cannot delete " + TimeUnit.getBaseUnit() + " Time Unit!",
+                    "You cannot delete " + Constants.BASE_TIME_UNIT + " Time Unit!",
                     "Forbidden action",
                     JOptionPane.ERROR_MESSAGE);
             return;

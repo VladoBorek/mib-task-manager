@@ -56,7 +56,6 @@ import static cz.muni.fi.pv168.project.ui.utils.UIElements.createButton;
  * Handles the creation and layout of the main frame.
  */
 public class MainWindow {
-
     public static final Color BUTTON_COLOR = new Color(220, 220, 220);
     public static final DemoDataGenerator DEMO_DATA = new DemoDataGenerator();
 
@@ -119,12 +118,10 @@ public class MainWindow {
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Tasks", splitPane);
         tabbedPane.addTab("Templates", new JScrollPane(templateTable));
-        tabbedPane.addChangeListener(e -> {
-            updateToolBarForSelectedTab(tabbedPane, taskToolBar, templateToolBar, frame);
-        });
+        tabbedPane.addChangeListener(e -> updateToolBarForSelectedTab(tabbedPane, taskToolBar, templateToolBar, frame));
         frame.add(tabbedPane, BorderLayout.CENTER);
 
-        setUpTaskInspect(taskTable);
+        setUpTaskInspect();
 
         frame.setLocationRelativeTo(null);
         frame.pack();
@@ -434,37 +431,6 @@ public class MainWindow {
     }
 
     /**
-     * Creates a custom JComboBox
-     *
-     * @param items           Items for the comboBox
-     * @param placeholderText Placeholder text to be shown
-     * @return comboBox with input parameters
-     */
-    private JComboBox<Object> createFilterComboBox(Object[] items, String placeholderText) {
-        JComboBox<Object> comboBox = new JComboBox<>(items);
-        comboBox.setEditable(true);
-        comboBox.setSelectedItem(placeholderText);
-        comboBox.setEditable(false);
-        comboBox.setMinimumSize(new Dimension(150, 400));
-        comboBox.setMaximumSize(new Dimension(150, 100));
-        return comboBox;
-    }
-
-    /**
-     * Creates a new DatePicker for filtering overdue tasks
-     *
-     * @return new {@link DatePicker}
-     */
-    private DatePicker createDatePicker() {
-        DatePicker datePicker = new DatePicker();
-        datePicker.setPreferredSize(new Dimension(100, 30));
-        datePicker.getComponentToggleCalendarButton().setPreferredSize(new Dimension(15, 15));
-        datePicker.getComponentDateTextField().setPreferredSize(new Dimension(100, 25));
-        datePicker.setDateToToday();
-        return datePicker;
-    }
-
-    /**
      * Creates pop up menu for the task table
      *
      * @return created menu
@@ -487,11 +453,9 @@ public class MainWindow {
 
     /**
      * Sets up mouse listener to open task inspect window when double-clicking on task
-     *
-     * @param taskMenu Table with content for inspect
      */
 
-    private void setUpTaskInspect(JTable taskMenu) {
+    private void setUpTaskInspect() {
         data.getTaskTable().addMouseListener(new MouseInputAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

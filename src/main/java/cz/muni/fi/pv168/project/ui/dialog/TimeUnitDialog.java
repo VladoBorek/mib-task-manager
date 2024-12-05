@@ -5,6 +5,7 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.service.validation.TimeUnitValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
+import cz.muni.fi.pv168.project.util.Constants;
 
 import javax.swing.*;
 
@@ -36,7 +37,8 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
     private void addTimeUnitFields() {
         add("Time unit name", timeUnitNameField);
         add("Time unit short name", shortNameField);
-        add("Conversion rate to " + TimeUnit.getBaseUnit() + "  ", conversionRateField);
+        add("Conversion rate to " + Constants.BASE_TIME_UNIT + "  ", conversionRateField);
+        setPanel();
     }
 
     @Override

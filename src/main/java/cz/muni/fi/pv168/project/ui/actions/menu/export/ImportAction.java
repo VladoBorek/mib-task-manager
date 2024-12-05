@@ -4,7 +4,7 @@ import cz.muni.fi.pv168.project.business.service.export.ImportService;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
-import cz.muni.fi.pv168.project.ui.utils.ActionType;
+import cz.muni.fi.pv168.project.util.ActionType;
 import cz.muni.fi.pv168.project.util.Filter;
 
 import javax.swing.*;

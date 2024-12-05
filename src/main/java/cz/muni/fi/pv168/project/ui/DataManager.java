@@ -39,14 +39,13 @@ public class DataManager {
         this.loggedUser = loggedUser;
     }
 
-    //TODO provisional solution
     public void setCategories(CrudService<Category> categoryCrudService) {
-        this.categories = new BaseListModel<>(new ArrayList<>(DEMO_DATA.getCategories()), categoryCrudService) {
+        this.categories = new BaseListModel<>(new ArrayList<>(categoryCrudService.findAll()), categoryCrudService) {
         };
     }
 
     public void setTimeUnits(CrudService<TimeUnit> timeUnitCrudService) {
-        this.timeUnits = new BaseListModel<>(new ArrayList<>(DEMO_DATA.getTimeUnits()), timeUnitCrudService) {
+        this.timeUnits = new BaseListModel<>(new ArrayList<>(timeUnitCrudService.findAll()), timeUnitCrudService) {
         };
     }
 

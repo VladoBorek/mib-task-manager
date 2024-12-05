@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.project.business.model.Status;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.model.User;
+import cz.muni.fi.pv168.project.util.Constants;
 
 import java.awt.*;
 import java.time.LocalDate;
@@ -26,7 +27,7 @@ public class DemoDataGenerator {
     );
 
     private static final List<TimeUnit> TIME_UNITS = List.of(
-            new TimeUnit(),
+            new TimeUnit(null, Constants.BASE_TIME_UNIT, Constants.BASE_TIME_UNIT_SHORT, 1),
             new TimeUnit(null, "Hour", "h", 60),
             new TimeUnit(null, "Day", "d", 1440)
     );
