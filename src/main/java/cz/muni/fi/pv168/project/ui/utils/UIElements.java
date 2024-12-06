@@ -1,8 +1,19 @@
 package cz.muni.fi.pv168.project.ui.utils;
 
+import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.business.model.Task;
+import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.MainWindow;
+import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.AddTimeUnitAction;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.LogTimeInfoTableModel;
+import cz.muni.fi.pv168.project.ui.renderers.CategoryComboboxRenderer;
+import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 
 /**
@@ -114,5 +125,51 @@ public class UIElements {
         descriptionArea.setWrapStyleWord(true);
 
         return descriptionLabelPanel;
+    }
+
+    public static JTable createLogTimeInfoTable(LogTimeInfoTableModel model, Task task) {
+        TableRowSorter<LogTimeInfoTableModel> sorter = new TableRowSorter<>(model);
+
+        JTable logTimeTable = new JTable(model);
+
+        sorter.setRowFilter(RowFilter.numberFilter(RowFilter.ComparisonType.EQUAL, task.getId(), 0));
+        logTimeTable.setRowSorter(sorter);
+
+        var cmodel = logTimeTable.getColumnModel();
+        var col = cmodel.getColumn(0);
+        cmodel.removeColumn(col);
+
+        logTimeTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+
+        var idColumn = logTimeTable.getColumnModel().getColumn(0);
+        var nameColumn = logTimeTable.getColumnModel().getColumn(1);
+        var timeColumn = logTimeTable.getColumnModel().getColumn(2);
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        idColumn.setCellRenderer(centerRenderer);
+        nameColumn.setCellRenderer(centerRenderer);
+        timeColumn.setCellRenderer(centerRenderer);
+
+        return logTimeTable;
+    }
+
+    public static JPanel setupCategoryTwoPartPanel(JComboBox<Category> categoryComboBox, DataManager data) {
+        categoryComboBox.setRenderer(new CategoryComboboxRenderer());
+
+        var addCategoryButton = createButton("", Icons.ADD_ICON,
+                new AddCategoryAction(data, categoryComboBox));
+
+        CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
+        categoryComboBox.addActionListener(e -> CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox));
+
+        return createTwoPartPanel(categoryComboBox, addCategoryButton);
+    }
+
+    public static JPanel setupTimeUnitTwoPartPanel(JComboBox<TimeUnit> timeUnitComboBox, DataManager data) {
+        var addTimeUnitButton = createButton("", Icons.ADD_ICON,
+                new AddTimeUnitAction(data, timeUnitComboBox));
+        return createTwoPartPanel(timeUnitComboBox, addTimeUnitButton);
     }
 }

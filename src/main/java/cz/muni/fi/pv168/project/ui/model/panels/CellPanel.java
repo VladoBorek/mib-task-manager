@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project.ui.model;
+package cz.muni.fi.pv168.project.ui.model.panels;
 
 import javax.swing.*;
 import java.awt.*;

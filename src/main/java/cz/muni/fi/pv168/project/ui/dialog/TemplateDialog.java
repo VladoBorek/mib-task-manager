@@ -7,12 +7,10 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.service.validation.TemplateValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.DataManager;
-import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
-import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.AddTimeUnitAction;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
-import cz.muni.fi.pv168.project.ui.renderers.CategoryComboboxRenderer;
-import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.ui.model.panels.panelFactories.InfoPanelFactory;
+import cz.muni.fi.pv168.project.ui.model.panels.panelFactories.TimePanelFactory;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -20,21 +18,19 @@ import java.awt.*;
 
 import static cz.muni.fi.pv168.project.ui.utils.UIElements.*;
 
+/**
+ * Dialog for adding and editing templates
+ */
 public class TemplateDialog extends EntityDialog<Template> {
     private final JTextField taskNameField = new JTextField();
     private final JTextField templateNameField = new JTextField();
     private final JTextField assignedToField = new JTextField();
     private final JTextArea descriptionArea = new JTextArea();
     private final DataManager data;
-    private JPanel timeUnitPanel;
-    private JPanel categoryPanel;
     private final JComboBox<Category> categoryComboBox;
     private final JComboBox<TimeUnit> timeUnitComboBox;
     private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
     private final Template template;
-    private final JPanel infoPanel = new JPanel();
-    private final JPanel timePanel = new JPanel();
-
 
     public TemplateDialog(DataManager data, Template template) {
         this.data = data;
@@ -52,67 +48,20 @@ public class TemplateDialog extends EntityDialog<Template> {
 
     private void setUpUI() {
         JPanel descriptionPanel = createDescriptionPanel(descriptionArea, 200, 50);
+        JPanel timePanel = TimePanelFactory.createPanel(allocatedTimeField,
+                setupTimeUnitTwoPartPanel(timeUnitComboBox, data));
+        JPanel infoPanel = InfoPanelFactory.createPanel(taskNameField, templateNameField, assignedToField,
+                setupCategoryTwoPartPanel(categoryComboBox, data));
 
         super.getPanel().setLayout(new BorderLayout());
         super.getPanel().add(infoPanel, BorderLayout.NORTH);
         super.getPanel().add(descriptionPanel, BorderLayout.CENTER);
         super.getPanel().add(timePanel, BorderLayout.SOUTH);
 
-        setupTwoPartPanels();
-        setupInfoPanel();
-        setupTimePanel();
 
         infoPanel.setBorder(new EmptyBorder(0, 0, 5, 0));
         descriptionPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
         timePanel.setBorder(new EmptyBorder(5, 0, 0, 0));
-    }
-
-    private void setupTwoPartPanels() {
-        categoryComboBox.setRenderer(new CategoryComboboxRenderer());
-
-        var addCategoryButton = createButton("", Icons.ADD_ICON,
-                new AddCategoryAction(data, categoryComboBox));
-        var addTimeUnitButton = createButton("", Icons.ADD_ICON,
-                new AddTimeUnitAction(data, timeUnitComboBox));
-
-        CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
-        categoryComboBox.addActionListener(e -> CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox));
-
-        categoryPanel = createTwoPartPanel(categoryComboBox, addCategoryButton);
-        timeUnitPanel = createTwoPartPanel(timeUnitComboBox, addTimeUnitButton);
-    }
-
-    private void setupInfoPanel() {
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.X_AXIS));
-        infoPanel.add(super.getLabelPanel());
-        infoPanel.add(super.getComponentPanel());
-
-        addInfoFields();
-    }
-
-    private void setupTimePanel() {
-        timePanel.setLayout(new BorderLayout());
-        timePanel.add(setupTimeTitlesPanel(), BorderLayout.NORTH);
-        timePanel.add(setupTimeInfoPanel(), BorderLayout.SOUTH);
-    }
-
-    private JPanel setupTimeTitlesPanel() {
-        JPanel timeTitlesPanel = new JPanel(new GridLayout(1, 2));
-
-        timeTitlesPanel.add(new JLabel("Allocated time"));
-        timeTitlesPanel.add(new JLabel("Time unit"));
-
-        return timeTitlesPanel;
-    }
-
-    private JPanel setupTimeInfoPanel() {
-        JPanel timeInfoPanel = new JPanel();
-
-        timeInfoPanel.setLayout(new GridLayout(1, 2));
-        timeInfoPanel.add(this.allocatedTimeField);
-        timeInfoPanel.add(timeUnitPanel);
-
-        return timeInfoPanel;
     }
 
     private void setValues() {
@@ -125,12 +74,7 @@ public class TemplateDialog extends EntityDialog<Template> {
         timeUnitComboBox.setSelectedItem(template.getTimeUnit());
     }
 
-    private void addInfoFields() {
-        add("Template name", templateNameField);
-        add("Task name", taskNameField);
-        add("Category", categoryPanel);
-        add("Assigned to", assignedToField);
-    }
+    // TODO: zbavit sa validateFields a implementovat to nejak vo validatore tu aj v Tasku
 
     private boolean validateFields() {
         if ((taskNameField.getText().trim().isEmpty())
@@ -164,6 +108,7 @@ public class TemplateDialog extends EntityDialog<Template> {
                 templateNameField.getText(),
                 descriptionArea.getText(),
                 assignedToField.getText());
+
         var validation = templateValidator.validate(newTemplate);
 
         if (!validateFields()) {
