@@ -9,13 +9,11 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.DataManager;
-import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
-import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.AddTimeUnitAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
-import cz.muni.fi.pv168.project.ui.renderers.CategoryComboboxRenderer;
-import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.ui.model.panels.panelFactories.InfoPanelFactory;
+import cz.muni.fi.pv168.project.ui.model.panels.panelFactories.TimePanelFactory;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -24,6 +22,9 @@ import java.util.Objects;
 
 import static cz.muni.fi.pv168.project.ui.utils.UIElements.*;
 
+/**
+ * Dialog for adding and editing tasks
+ */
 public class AddTaskDialog extends EntityDialog<Task> {
     private final Task task;
     private final DataManager data;
@@ -31,16 +32,12 @@ public class AddTaskDialog extends EntityDialog<Task> {
     private final JTextField customerField = new JTextField();
     private final JTextArea descriptionArea = new JTextArea();
     private final JTextField assignedToName = new JTextField();
-    private JPanel timeUnitPanel;
-    private JPanel categoryPanel;
     private final JComboBox<Status> statusComboBox = new JComboBox<>(Status.values());
     private final JComboBox<Category> categoryComboBox;
     private final JComboBox<TimeUnit> timeUnitsComboBox;
     private final JIntegerTextField loggedTimeField = new JIntegerTextField();
     private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
     private final DatePicker datePicker = new DatePicker();
-    private final JPanel infoPanel = new JPanel();
-    private final JPanel timePanel = new JPanel();
 
     public AddTaskDialog(Task task, DataManager data) {
         this.task = task;
@@ -49,6 +46,8 @@ public class AddTaskDialog extends EntityDialog<Task> {
         this.timeUnitsComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits()));
         this.categoryComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getCategories()));
 
+        datePicker.setDateToToday();
+
         setUpUI();
 
         if (task != null) {
@@ -56,80 +55,21 @@ public class AddTaskDialog extends EntityDialog<Task> {
         }
     }
 
-    //TODO presne take iste jak v TemplateDialog
     private void setUpUI() {
         JPanel descriptionPanel = createDescriptionPanel(descriptionArea, 200, 50);
+        JPanel timePanel = TimePanelFactory.createPanel(allocatedTimeField,
+                setupTimeUnitTwoPartPanel(timeUnitsComboBox, data));
+        JPanel infoPanel = InfoPanelFactory.createPanel(taskNameField, customerField,
+                setupCategoryTwoPartPanel(categoryComboBox, data), assignedToName, statusComboBox, datePicker);
 
         super.getPanel().setLayout(new BorderLayout());
         super.getPanel().add(infoPanel, BorderLayout.NORTH);
         super.getPanel().add(descriptionPanel, BorderLayout.CENTER);
         super.getPanel().add(timePanel, BorderLayout.SOUTH);
 
-        setupTwoPartPanels();
-        setupInfoPanel();
-        setupTimePanel();
-
         infoPanel.setBorder(new EmptyBorder(0, 0, 5, 0));
         descriptionPanel.setBorder(new EmptyBorder(5, 0, 5, 0));
         timePanel.setBorder(new EmptyBorder(5, 0, 0, 0));
-    }
-
-    private void setupTwoPartPanels() {
-        categoryComboBox.setRenderer(new CategoryComboboxRenderer());
-
-        var addCategoryButton = createButton("", Icons.ADD_ICON,
-                new AddCategoryAction(data, categoryComboBox));
-        var addTimeUnitButton = createButton("", Icons.ADD_ICON,
-                new AddTimeUnitAction(data, timeUnitsComboBox));
-
-        CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox);
-        categoryComboBox.addActionListener(e -> CategoryComboboxRenderer.setCategoryComboboxColor(categoryComboBox));
-
-        categoryPanel = createTwoPartPanel(categoryComboBox, addCategoryButton);
-        timeUnitPanel = createTwoPartPanel(timeUnitsComboBox, addTimeUnitButton);
-    }
-
-    private void setupInfoPanel() {
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.X_AXIS));
-        infoPanel.add(getLabelPanel());
-        infoPanel.add(getComponentPanel());
-
-        datePicker.setDateToToday();
-        addInfoFields();
-    }
-
-    private void addInfoFields() {
-        add("Task name", taskNameField);
-        add("Customer", customerField);
-        add("Category", categoryPanel);
-        add("Assigned to Name", assignedToName);
-        add("Status", statusComboBox);
-        add("Due date", datePicker);
-    }
-
-    private void setupTimePanel() {
-        timePanel.setLayout(new BorderLayout());
-        timePanel.add(setupTimeTitlesPanel(), BorderLayout.NORTH);
-        timePanel.add(setupTimeInfoPanel(), BorderLayout.SOUTH);
-    }
-
-    private JPanel setupTimeTitlesPanel() {
-        JPanel timeTitlesPanel = new JPanel(new GridLayout(1, 2));
-
-        timeTitlesPanel.add(new JLabel("Allocated time"));
-        timeTitlesPanel.add(new JLabel("Time unit"));
-
-        return timeTitlesPanel;
-    }
-
-    private JPanel setupTimeInfoPanel() {
-        JPanel timeInfoPanel = new JPanel();
-
-        timeInfoPanel.setLayout(new GridLayout(1, 2));
-        timeInfoPanel.add(this.allocatedTimeField);
-        timeInfoPanel.add(timeUnitPanel);
-
-        return timeInfoPanel;
     }
 
     private void setValues() {
@@ -144,6 +84,8 @@ public class AddTaskDialog extends EntityDialog<Task> {
         datePicker.setDate(task.getDueDate());
         timeUnitsComboBox.setSelectedItem(task.getTimeUnit());
     }
+
+    // TODO: zbavit sa validateFields a implementovat to nejak vo validatore tu aj v Tasku
 
     private boolean validateFields() {
         if ((taskNameField.getText().trim().isEmpty())
@@ -173,6 +115,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
         var newTask = new Task(
                 null, (Status) statusComboBox.getSelectedItem(),
                 this.descriptionArea.getText(),
+                //(Category) Objects.requireNonNull(categoryComboBox.getSelectedItem()),
                 (Category) categoryComboBox.getSelectedItem(),
                 customerField.getText(),
                 taskNameField.getText(),
@@ -180,6 +123,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
                 loggedTimeField.getValue(),
                 allocatedTimeField.getValue(),
                 (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem()),
+                //(TimeUnit) timeUnitsComboBox.getSelectedItem(),
                 datePicker.getDate());
         var validation = taskValidator.validate(newTask);
 

@@ -10,6 +10,10 @@ import java.util.List;
 public class TimeUnitValidator implements Validator<TimeUnit> {
     @Override
     public ValidationResult validate(TimeUnit unit) {
+        if (unit == null) {
+            return ValidationResult.failed("Category must not be empty");
+        }
+
         var validators = List.of(
                 Validator.extracting(
                         TimeUnit::getName, new StringLengthValidator(1, 10, "Time unit name")),

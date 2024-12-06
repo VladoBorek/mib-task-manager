@@ -4,7 +4,8 @@ import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.ui.DataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.LogTimeAction;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
-import cz.muni.fi.pv168.project.ui.model.CellPanel;
+import cz.muni.fi.pv168.project.ui.model.panels.panelFactories.InfoPanelFactory;
+import cz.muni.fi.pv168.project.ui.model.panels.panelFactories.TimePanelFactory;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.LogTimeInfoTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.ui.utils.UIElements;
@@ -12,11 +13,10 @@ import cz.muni.fi.pv168.project.ui.utils.UIElements;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableRowSorter;
 import java.awt.*;
 
 import static cz.muni.fi.pv168.project.ui.utils.UIElements.createButton;
+import static cz.muni.fi.pv168.project.ui.utils.UIElements.createLogTimeInfoTable;
 
 public class InspectTaskDialog extends EntityDialog<Task> {
 
@@ -32,55 +32,26 @@ public class InspectTaskDialog extends EntityDialog<Task> {
     private final JLabel allocatedTime = new JLabel();
     private final JLabel date = new JLabel();
     private final DataManager data;
-    private final JPanel leftPanel = new JPanel();
-    private final JPanel rightPanel = new JPanel();
-
-    private LogTimeInfoTableModel model = null;
-    private JTable logTimeTable;
+    private final LogTimeInfoTableModel model;
+    private final JTable logTimeTable;
 
     public InspectTaskDialog(Task task, DataManager data) {
         super(550, 250);
 
         this.data = data;
         this.task = task;
-        this.logTimeTable = createLogTimeInfoTable();
+        this.model = new LogTimeInfoTableModel(data.getLogTimeInfoCrudService());
+        this.logTimeTable = createLogTimeInfoTable(this.model, this.task);
 
         setValues();
         FormatFields();
         SetupPanels();
     }
 
-    private JTable createLogTimeInfoTable() {
-        this.model = new LogTimeInfoTableModel(data.getLogTimeInfoCrudService());
-        TableRowSorter<LogTimeInfoTableModel> sorter = new TableRowSorter<>(this.model);
-
-        this.logTimeTable = new JTable(model);
-
-        sorter.setRowFilter(RowFilter.numberFilter(RowFilter.ComparisonType.EQUAL, task.getId(), 0));
-        logTimeTable.setRowSorter(sorter);
-
-        var cmodel = logTimeTable.getColumnModel();
-        var col = cmodel.getColumn(0);
-        cmodel.removeColumn(col);
-
-        this.logTimeTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-
-        var idColumn = this.logTimeTable.getColumnModel().getColumn(0);
-        var nameColumn = this.logTimeTable.getColumnModel().getColumn(1);
-        var timeColumn = this.logTimeTable.getColumnModel().getColumn(2);
-
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-
-        idColumn.setCellRenderer(centerRenderer);
-        nameColumn.setCellRenderer(centerRenderer);
-        timeColumn.setCellRenderer(centerRenderer);
-
-        return this.logTimeTable;
-    }
-
-
     private void SetupPanels() {
+        JPanel leftPanel = new JPanel();
+        JPanel rightPanel = new JPanel();
+
         super.getPanel().setLayout(new GridLayout(1, 2));
         leftPanel.setLayout(new BorderLayout());
         rightPanel.setLayout(new BorderLayout());
@@ -98,39 +69,24 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         leftPanel.add(createDescriptionPanel(), BorderLayout.SOUTH);
 
         rightPanel.add(setupLogTablePanel(), BorderLayout.CENTER);
-        rightPanel.add(setupBottomPanel(), BorderLayout.SOUTH);
+        rightPanel.add(setupTimePanel(), BorderLayout.SOUTH);
     }
 
-    private JPanel setupBottomPanel() {
-        JPanel bottomPanel = new JPanel(new BorderLayout());
-
-        bottomPanel.add(setupTimeTitlesPanel(), BorderLayout.NORTH);
-        bottomPanel.add(setupTimeInfoPanel(), BorderLayout.SOUTH);
-
-        return bottomPanel;
+    private JPanel setupTimePanel() {
+        return TimePanelFactory.createPanel(
+                allocatedTime,
+                loggedTime,
+                createButton("", Icons.ADD_ICON, new LogTimeAction(data, this, task)));
     }
 
-    private JPanel setupTimeTitlesPanel() {
-        JPanel timeTitlesPanel = new JPanel(new GridLayout(1, 3));
-
-        timeTitlesPanel.add(new JLabel("Allocated time", SwingConstants.CENTER));
-        timeTitlesPanel.add(new JLabel("Total logged", SwingConstants.CENTER));
-        timeTitlesPanel.add(new JLabel("Log time", SwingConstants.CENTER));
-
-        return timeTitlesPanel;
+    private JPanel setupInfoPanel() {
+        return InfoPanelFactory.createPanel(taskName, customer, category, assignedTo, status, date);
     }
 
-    private JPanel setupTimeInfoPanel() {
-        JPanel timeInfoPanel = new JPanel();
-
-        timeInfoPanel.setLayout(new GridLayout(1, 3));
-        JButton addLogTimeButton = createButton("", Icons.ADD_ICON, new LogTimeAction(data, this, task));
-
-        timeInfoPanel.add(this.allocatedTime);
-        timeInfoPanel.add(this.loggedTime);
-        timeInfoPanel.add(addLogTimeButton);
-
-        return timeInfoPanel;
+    private JPanel createDescriptionPanel() {
+        description.setEditable(false);
+        description.setOpaque(false);
+        return UIElements.createDescriptionPanel(description, 200, 100);
     }
 
     private JPanel setupLogTablePanel() {
@@ -146,25 +102,6 @@ public class InspectTaskDialog extends EntityDialog<Task> {
 
         logTablePanel.add(scrollPane);
         return logTablePanel;
-    }
-
-    private JPanel setupInfoPanel() {
-        JPanel infoLabelsPanel = new JPanel(new GridLayout(3, 2));
-
-        infoLabelsPanel.add(new CellPanel("Task-name:", taskName));
-        infoLabelsPanel.add(new CellPanel("Customer:", customer));
-        infoLabelsPanel.add(new CellPanel("Category:", category));
-        infoLabelsPanel.add(new CellPanel("Assigned to:", assignedTo));
-        infoLabelsPanel.add(new CellPanel("Status:", status));
-        infoLabelsPanel.add(new CellPanel("Due date:", date));
-
-        return infoLabelsPanel;
-    }
-
-    private JPanel createDescriptionPanel() {
-        description.setEditable(false);
-        description.setOpaque(false);
-        return UIElements.createDescriptionPanel(description, 200, 100);
     }
 
     private void FormatFields() {
