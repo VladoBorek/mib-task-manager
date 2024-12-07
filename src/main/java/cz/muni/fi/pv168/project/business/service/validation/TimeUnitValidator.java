@@ -11,7 +11,7 @@ public class TimeUnitValidator implements Validator<TimeUnit> {
     @Override
     public ValidationResult validate(TimeUnit unit) {
         if (unit == null) {
-            return ValidationResult.failed("Category must not be empty");
+            return ValidationResult.failed("Time unit must not be empty");
         }
 
         var validators = List.of(

@@ -8,6 +8,7 @@ import cz.muni.fi.pv168.project.storage.sql.dao.DataStorageException;
 import cz.muni.fi.pv168.project.storage.sql.entity.CategoryEntity;
 import cz.muni.fi.pv168.project.storage.sql.entity.TaskEntity;
 import cz.muni.fi.pv168.project.storage.sql.entity.TimeUnitEntity;
+import cz.muni.fi.pv168.project.util.Constants;
 
 /**
  * Mapper from the {@link TaskEntity} to {@link Task}.
@@ -38,11 +39,17 @@ public class TaskMapper implements EntityMapper<TaskEntity, Task>{
                 .map(categoryMapper::mapToBusiness)
                 .orElseThrow(() -> new DataStorageException("Category not found, id: " +
                         entity.categoryId()));
-        var timeUnit = timeUnitDao
-                .findById(entity.timeUnitId())
-                .map(timeUnitMapper::mapToBusiness)
-                .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
-                        entity.timeUnitId()));
+
+        TimeUnit timeUnit;
+        if (entity.timeUnitId() == null) {
+            timeUnit = Constants.BASE_TIME_UNIT;
+        } else {
+            timeUnit = timeUnitDao
+                    .findById(entity.timeUnitId())
+                    .map(timeUnitMapper::mapToBusiness)
+                    .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
+                            entity.timeUnitId()));
+        }
 
         return new Task(
                 entity.id(),
@@ -65,10 +72,17 @@ public class TaskMapper implements EntityMapper<TaskEntity, Task>{
                 .findById(entity.getCategory().getId())
                 .orElseThrow(() -> new DataStorageException("Category not found, id: " +
                         entity.getCategory().getId()));
-        var timeUnitEntity = timeUnitDao
-                .findById(entity.getTimeUnit().getId())
-                .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
-                        entity.getTimeUnit().getId()));
+
+        Long timeUnitId;
+        if (entity.getTimeUnit().equals(Constants.BASE_TIME_UNIT)) {
+            timeUnitId = null;
+        } else {
+            var timeUnitEntity = timeUnitDao
+                    .findById(entity.getTimeUnit().getId())
+                    .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
+                            entity.getTimeUnit().getId()));
+            timeUnitId = timeUnitEntity.id();
+        }
 
         return new TaskEntity(
                 entity.getId(),
@@ -80,21 +94,29 @@ public class TaskMapper implements EntityMapper<TaskEntity, Task>{
                 entity.getAssignedTo(),
                 entity.getLoggedTime(),
                 entity.getAllocatedTime(),
-                timeUnitEntity.id(),
+                timeUnitId,
                 entity.getDueDate()
         );
     }
 
+    // TODO: duplication
     @Override
     public TaskEntity mapExistingEntityToDatabase(Task entity, Long dbId) {
         var categoryEntity = categoryDao
                 .findById(entity.getCategory().getId())
                 .orElseThrow(() -> new DataStorageException("Category not found, id: " +
                         entity.getCategory().getId()));
-        var timeUnitEntity = timeUnitDao
-                .findById(entity.getTimeUnit().getId())
-                .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
-                        entity.getTimeUnit().getId()));
+
+        Long timeUnitId;
+        if (entity.getTimeUnit().equals(Constants.BASE_TIME_UNIT)) {
+            timeUnitId = null;
+        } else {
+            var timeUnitEntity = timeUnitDao
+                    .findById(entity.getTimeUnit().getId())
+                    .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
+                            entity.getTimeUnit().getId()));
+            timeUnitId = timeUnitEntity.id();
+        }
 
         return new TaskEntity(
                 dbId,
@@ -106,7 +128,7 @@ public class TaskMapper implements EntityMapper<TaskEntity, Task>{
                 entity.getAssignedTo(),
                 entity.getLoggedTime(),
                 entity.getAllocatedTime(),
-                timeUnitEntity.id(),
+                timeUnitId,
                 entity.getDueDate()
         );
     }

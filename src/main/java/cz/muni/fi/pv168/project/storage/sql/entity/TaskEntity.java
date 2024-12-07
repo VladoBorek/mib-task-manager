@@ -14,26 +14,26 @@ public record TaskEntity(
         Long id,
         Status status,
         String description,
-        long categoryId,
+        Long categoryId,
         String customer,
         String name,
         String assignedTo,
         Integer loggedTime,
         Integer allocatedTime,
-        long timeUnitId,
+        Long timeUnitId,
         LocalDate dueDate
 ) {
     public TaskEntity(
             Long id,
             Status status,
             String description,
-            long categoryId,
+            Long categoryId,
             String customer,
             String name,
             String assignedTo,
             Integer loggedTime,
             Integer allocatedTime,
-            long timeUnitId,
+            Long timeUnitId,
             LocalDate dueDate) {
         this.id = id;
         this.status = Objects.requireNonNull(status, "status must not be null");
@@ -51,13 +51,13 @@ public record TaskEntity(
     public TaskEntity(
             Status status,
             String description,
-            long categoryId,
+            Long categoryId,
             String customer,
             String name,
             String assignedTo,
             Integer loggedTime,
             Integer allocatedTime,
-            long timeUnitId,
+            Long timeUnitId,
             LocalDate dueDate) {
         this(null, status, description, categoryId, customer, name, assignedTo,
                 loggedTime, allocatedTime, timeUnitId, dueDate

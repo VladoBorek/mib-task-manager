@@ -2,6 +2,7 @@ package cz.muni.fi.pv168.project.storage.sql.entity.mapper;
 
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.storage.sql.entity.TimeUnitEntity;
+import cz.muni.fi.pv168.project.util.Constants;
 
 
 /**
@@ -11,6 +12,10 @@ import cz.muni.fi.pv168.project.storage.sql.entity.TimeUnitEntity;
 public class TimeUnitMapper implements EntityMapper<TimeUnitEntity, TimeUnit>{
     @Override
     public TimeUnit mapToBusiness(TimeUnitEntity dbTimeUnit) {
+        if (dbTimeUnit == null) {
+            return Constants.BASE_TIME_UNIT;
+        }
+
         return new TimeUnit(
                 dbTimeUnit.id(),
                 dbTimeUnit.name(),
@@ -20,6 +25,10 @@ public class TimeUnitMapper implements EntityMapper<TimeUnitEntity, TimeUnit>{
 
     @Override
     public TimeUnitEntity mapNewEntityToDatabase(TimeUnit businessTimeUnit) {
+        if (businessTimeUnit.equals(Constants.BASE_TIME_UNIT)) {
+            return null;
+        }
+
         return new TimeUnitEntity(null,
                 businessTimeUnit.getName(),
                 businessTimeUnit.getShortName(),
@@ -28,6 +37,10 @@ public class TimeUnitMapper implements EntityMapper<TimeUnitEntity, TimeUnit>{
 
     @Override
     public TimeUnitEntity mapExistingEntityToDatabase(TimeUnit businessTimeUnit, Long dbId) {
+        if (businessTimeUnit.equals(Constants.BASE_TIME_UNIT)) {
+            return null;
+        }
+
         return new TimeUnitEntity(dbId,
                 businessTimeUnit.getName(),
                 businessTimeUnit.getShortName(),

@@ -1,11 +1,8 @@
 package cz.muni.fi.pv168.project.storage.sql.dao;
 
-import cz.muni.fi.pv168.project.business.model.Status;
 import cz.muni.fi.pv168.project.storage.sql.db.ConnectionHandler;
-import cz.muni.fi.pv168.project.storage.sql.entity.TaskEntity;
 import cz.muni.fi.pv168.project.storage.sql.entity.TemplateEntity;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -52,7 +49,11 @@ public class TemplateDao implements DataAccessObject<TemplateEntity> {
             statement.setString(4, entity.taskName());
             statement.setString(5, entity.assignedTo());
             statement.setInt(6, entity.allocatedTime());
-            statement.setLong(7, entity.timeUnitId());
+            if (entity.timeUnitId() == null) {
+                statement.setNull(7, java.sql.Types.BIGINT);
+            } else {
+                statement.setObject(7, entity.timeUnitId(), java.sql.Types.BIGINT);
+            }
 
             statement.executeUpdate();
 
@@ -161,7 +162,13 @@ public class TemplateDao implements DataAccessObject<TemplateEntity> {
             statement.setString(4, entity.taskName());
             statement.setString(5, entity.assignedTo());
             statement.setInt(6, entity.allocatedTime());
-            statement.setLong(7, entity.timeUnitId());
+
+            if (entity.timeUnitId() == null) {
+                statement.setNull(7, java.sql.Types.BIGINT);
+            } else {
+                statement.setObject(7, entity.timeUnitId(), java.sql.Types.BIGINT);
+            }
+
             statement.setLong(8, entity.id());
             statement.executeUpdate();
 
@@ -222,7 +229,7 @@ public class TemplateDao implements DataAccessObject<TemplateEntity> {
                 resultSet.getString("taskName"),
                 resultSet.getString("assignedTo"),
                 resultSet.getInt("allocatedTime"),
-                resultSet.getLong("timeUnitId")
+                (Long) resultSet.getObject("timeUnitId")
         );
     }
 }

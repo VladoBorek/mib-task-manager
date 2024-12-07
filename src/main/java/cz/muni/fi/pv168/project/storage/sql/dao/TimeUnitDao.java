@@ -78,6 +78,7 @@ public class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
         ) {
 
             List<TimeUnitEntity> timeUnits = new ArrayList<>();
+            timeUnits.add(null);
             try (var resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     var timeUnit = timeUnitFromResultSet(resultSet);

@@ -19,10 +19,6 @@ import java.util.function.Supplier;
  *
  * @author Maroš Pavlík
  */
-
-    //TODO i triple checked but i might have made a mistake in the sql statements somewhere
-    //TODO or the statement.set methods
-
 public class TaskDao implements DataAccessObject<TaskEntity> {
 
     private final Supplier<ConnectionHandler> connections;
@@ -60,7 +56,11 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
             statement.setString(6, newTask.assignedTo());
             statement.setString(7, newTask.loggedTime().toString());
             statement.setString(8, newTask.allocatedTime().toString());
-            statement.setLong(9, newTask.timeUnitId());
+            if (newTask.timeUnitId() == null) {
+                statement.setNull(9, java.sql.Types.BIGINT);
+            } else {
+                statement.setObject(9, newTask.timeUnitId(), java.sql.Types.BIGINT);
+            }
             statement.setDate(10, Date.valueOf(newTask.dueDate()));
 
 
@@ -184,7 +184,13 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
             statement.setString(6, entity.assignedTo());
             statement.setString(7, entity.loggedTime().toString());
             statement.setString(8, entity.allocatedTime().toString());
-            statement.setLong(9, entity.timeUnitId());
+
+            if (entity.timeUnitId() == null) {
+                statement.setNull(9, java.sql.Types.BIGINT);
+            } else {
+                statement.setObject(9, entity.timeUnitId(), java.sql.Types.BIGINT);
+            }
+
             statement.setDate(10, Date.valueOf(entity.dueDate()));
             statement.setLong(11, entity.id());
             statement.executeUpdate();
@@ -248,7 +254,7 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
                 resultSet.getString("assignedTo"),
                 resultSet.getInt("loggedTime"),
                 resultSet.getInt("allocatedTime"),
-                resultSet.getLong("timeUnitId"),
+                (Long) resultSet.getObject("timeUnitId"),
                 resultSet.getDate("dueDate").toLocalDate()
                 );
     }
