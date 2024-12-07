@@ -44,7 +44,11 @@ public class EditTemplateAction extends EntityBaseAction {
         } else {
             var selectedRows = data.getTemplateTable().getSelectedRows();
             if (selectedRows.length != 1) {
-                throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
+                //throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
+                PopUp.infoDialog("To edit template, please select exactly one (1) template.",
+                        "Invalid selected rows",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
             int model = data.getTemplateTable().convertRowIndexToModel(selectedRows[0]);
