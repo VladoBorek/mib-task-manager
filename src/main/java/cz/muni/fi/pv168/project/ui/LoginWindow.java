@@ -60,6 +60,8 @@ public class LoginWindow {
             Logger.info("Logged as " + usernameField.getText() + "with ID: " + (long) idField.getValue());
             mainWindow.show();
         } catch (Exception ex) {
+            //TODO
+            // showInitializationFailedDialog(ex);
             Logger.error("Fatal application error" + ex.getMessage());
             PopUp.infoDialog(
                     "Application initialization failed.\n" + ex.getMessage(),
@@ -73,6 +75,28 @@ public class LoginWindow {
     public void show() {
         this.frame.setVisible(true);
     }
+
+//    private static void showInitializationFailedDialog(Exception ex) {
+//        EventQueue.invokeLater(() -> {
+//            ex.printStackTrace();
+//            Object[] options = {
+//                    new JButton(new QuitAction()),
+//                    new JButton(new NuclearQuitAction())
+//            };
+//            JOptionPane.showOptionDialog(
+//                    null,
+//                    "Application initialization failed.\nWhat do you want to do?",
+//                    "Initialization Error",
+//                    JOptionPane.DEFAULT_OPTION,
+//                    JOptionPane.ERROR_MESSAGE,
+//                    null,
+//                    options,
+//                    options[0]
+//            );
+//        });
+//    }
+
+    // TODO het
 
     private JPanel createTitlePanel() {
         JPanel titlePanel = new JPanel();
