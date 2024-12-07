@@ -28,20 +28,10 @@ public class ImportAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var userChoice = PopUp.optionDialog(
-                "Select items to import",
-                "Import Options",
-                new String[]{"Tasks", "Categories", "Template","Time Units", "Work Logs"});
-        if (userChoice < 0 || userChoice > 4) {
-            return;
-        }
+        var importOption = getItemsToExport();
+        if (importOption == null) return;
 
-        ActionType importOption = ActionType.values()[userChoice];
-
-        int importChoice = PopUp.optionDialog("Do you want to override existing items or add new ones?",
-                "Import Options",
-                new String[]{"Override", "Add"});
-        boolean deleteData = importChoice == 0;
+        boolean deleteData = getDataOverride();
 
         var fileChooser = new JFileChooser();
         importService.getFormats().forEach(f -> fileChooser.setFileFilter(new Filter(f)));
@@ -61,12 +51,29 @@ public class ImportAction extends AbstractAction {
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            Logger.info("Import of " + importFile.getAbsolutePath() + " has finished.");
+            Logger.info("Import of " + importFile.getAbsolutePath() + " has finished. Original data overwritten: " + deleteData);
             PopUp.infoDialog(
                     "Import has successfully finished.",
                     "Import status",
                     JOptionPane.INFORMATION_MESSAGE);
             callback.run();
         }
+    }
+
+    private static ActionType getItemsToExport() {
+        var userChoice = PopUp.optionDialog(
+                "Select items to import",
+                "Import Options",
+                new String[]{"Tasks", "Categories", "Template","Time Units", "Work Logs"});
+        if (userChoice < 0 || userChoice > 4) {
+            return null;
+        }
+        return ActionType.values()[userChoice];
+    }
+
+    private static boolean getDataOverride(){
+        return 0 == PopUp.optionDialog("Do you want to override existing items or add new ones?",
+                "Import Options",
+                new String[]{"Override", "Add"});
     }
 }
