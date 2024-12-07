@@ -23,7 +23,11 @@ public class InspectTaskAction extends EntityBaseAction {
     public void actionPerformed(ActionEvent e) {
         var selectedRows = data.getTaskTable().getSelectedRows();
         if (selectedRows.length != 1) {
-            throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
+            //throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
+            PopUp.infoDialog("To inspect task, please select only one (1) task.",
+                            "Invalid selected rows",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
         }
         var taskTableModel = data.getTaskTableModel();
         int modelRow = data.getTaskTable().convertRowIndexToModel(selectedRows[0]);
