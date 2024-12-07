@@ -6,7 +6,7 @@ import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.service.validation.TemplateValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 import cz.muni.fi.pv168.project.ui.model.panels.panelFactories.InfoPanelFactory;
@@ -26,18 +26,18 @@ public class TemplateDialog extends EntityDialog<Template> {
     private final JTextField templateNameField = new JTextField();
     private final JTextField assignedToField = new JTextField();
     private final JTextArea descriptionArea = new JTextArea();
-    private final DataManager data;
+    private final UIDataManager data;
     private final JComboBox<Category> categoryComboBox;
     private final JComboBox<TimeUnit> timeUnitComboBox;
     private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
     private final Template template;
 
-    public TemplateDialog(DataManager data, Template template) {
+    public TemplateDialog(UIDataManager data, Template template) {
         this.data = data;
         this.template = template;
 
-        this.timeUnitComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits()));
-        this.categoryComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getCategories()));
+        this.timeUnitComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnitListModel()));
+        this.categoryComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getCategoryListModel()));
 
         setUpUI();
 

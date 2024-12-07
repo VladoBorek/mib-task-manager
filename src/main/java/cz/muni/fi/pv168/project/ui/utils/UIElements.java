@@ -3,7 +3,7 @@ package cz.muni.fi.pv168.project.ui.utils;
 import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.MainWindow;
 import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.AddTimeUnitAction;
@@ -155,7 +155,7 @@ public class UIElements {
         return logTimeTable;
     }
 
-    public static JPanel setupCategoryTwoPartPanel(JComboBox<Category> categoryComboBox, DataManager data) {
+    public static JPanel setupCategoryTwoPartPanel(JComboBox<Category> categoryComboBox, UIDataManager data) {
         categoryComboBox.setRenderer(new CategoryComboboxRenderer());
 
         var addCategoryButton = createButton("", Icons.ADD_ICON,
@@ -167,7 +167,7 @@ public class UIElements {
         return createTwoPartPanel(categoryComboBox, addCategoryButton);
     }
 
-    public static JPanel setupTimeUnitTwoPartPanel(JComboBox<TimeUnit> timeUnitComboBox, DataManager data) {
+    public static JPanel setupTimeUnitTwoPartPanel(JComboBox<TimeUnit> timeUnitComboBox, UIDataManager data) {
         var addTimeUnitButton = createButton("", Icons.ADD_ICON,
                 new AddTimeUnitAction(data, timeUnitComboBox));
         return createTwoPartPanel(timeUnitComboBox, addTimeUnitButton);

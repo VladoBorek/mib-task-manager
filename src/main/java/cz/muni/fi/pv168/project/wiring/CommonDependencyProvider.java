@@ -48,7 +48,7 @@ import java.util.List;
 /**
  * @author Vladimir Borek
  */
-public class CommonDependecnyProvider implements DependencyProvider {
+public class CommonDependencyProvider implements DependencyProvider {
     private final DatabaseManager databaseManager;
     private final TransactionExecutor transactionExecutor;
     private final ImportService importService;
@@ -73,7 +73,7 @@ public class CommonDependecnyProvider implements DependencyProvider {
     private final Validator<TimeUnit> timeUnitValidator = new TimeUnitValidator();
 
 
-    CommonDependecnyProvider(DatabaseManager databaseManager) {
+    CommonDependencyProvider(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
 
         var transactionManager = new TransactionManagerImpl(databaseManager);

@@ -2,7 +2,7 @@ package cz.muni.fi.pv168.project.ui.model.storagemodels;
 
 import cz.muni.fi.pv168.project.business.model.Statistic;
 import cz.muni.fi.pv168.project.business.service.Statistics.StatisticsService;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.model.statisticTableCell;
 
 import javax.swing.table.AbstractTableModel;
@@ -18,11 +18,11 @@ import static cz.muni.fi.pv168.project.business.service.Statistics.StatisticsSer
 public class StatisticsTableModel extends AbstractTableModel {
     private final String[] columnNames = {"Statistic Name", "Global Statistic", "Filtered Statistic"};
     private final List<statisticTableCell> statisticsData = new ArrayList<>();
-    private final DataManager data;
+    private final UIDataManager data;
     private Statistic globalStatistics;
     private Statistic filteredStatistics;
 
-    public StatisticsTableModel(DataManager data) {
+    public StatisticsTableModel(UIDataManager data) {
         this.data = data;
         refreshStatistics();
     }

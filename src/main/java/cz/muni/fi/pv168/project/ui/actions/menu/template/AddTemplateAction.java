@@ -2,11 +2,10 @@ package cz.muni.fi.pv168.project.ui.actions.menu.template;
 
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
-import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -20,12 +19,12 @@ public class AddTemplateAction extends EntityBaseAction {
 
     private final JComboBox<Template> comboBox;
 
-    public AddTemplateAction(DataManager data, JComboBox<Template> comboBox) {
+    public AddTemplateAction(UIDataManager data, JComboBox<Template> comboBox) {
         super("Add Template", Icons.ADD_ICON, data);
         this.comboBox = comboBox;
     }
 
-    public AddTemplateAction(DataManager data) {
+    public AddTemplateAction(UIDataManager data) {
         this(data, null);
     }
 

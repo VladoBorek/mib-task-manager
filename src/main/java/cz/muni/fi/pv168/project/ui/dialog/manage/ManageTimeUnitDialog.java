@@ -1,6 +1,6 @@
 package cz.muni.fi.pv168.project.ui.dialog.manage;
 
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.AddTimeUnitAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.DeleteTimeUnitAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.EditTimeUnitAction;
@@ -20,9 +20,9 @@ import static cz.muni.fi.pv168.project.ui.utils.UIElements.createComboPanel;
  */
 public class ManageTimeUnitDialog extends ManageDialog {
 
-    public ManageTimeUnitDialog(JFrame parent, DataManager data) {
+    public ManageTimeUnitDialog(JFrame parent, UIDataManager data) {
         super(parent, "Manage time units");
-        var comboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits()));
+        var comboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnitListModel()));
         add(createComboPanel("Select a TimeUnit: ", comboBox), BorderLayout.NORTH);
         add(createActionsButtonPanel(new AddTimeUnitAction(data, comboBox),
                 new EditTimeUnitAction(data, comboBox),

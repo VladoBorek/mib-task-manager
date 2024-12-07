@@ -2,9 +2,8 @@ package cz.muni.fi.pv168.project.ui.actions.menu.task;
 
 import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
 import cz.muni.fi.pv168.project.business.model.Task;
-import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.AddTaskDialog;
@@ -20,7 +19,7 @@ import java.util.List;
  */
 public class EditTaskAction extends EntityBaseAction {
 
-    public EditTaskAction(DataManager data) {
+    public EditTaskAction(UIDataManager data) {
         super("Edit Task", Icons.MANAGE_ICON, data);
     }
 
@@ -32,7 +31,11 @@ public class EditTaskAction extends EntityBaseAction {
     private void editTask() {
         var selectedRows = data.getTaskTable().getSelectedRows();
         if (selectedRows.length != 1) {
-            throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
+            //throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
+            PopUp.infoDialog("To edit task, please select exactly one (1) task.",
+                    "Invalid selected rows",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         var taskTableModel = data.getTaskTableModel();
@@ -69,14 +72,14 @@ public class EditTaskAction extends EntityBaseAction {
     }
 
     private void updateTaskLogs(Task oldT, Task newT) {
-        var logTimeInfoService = data.getLogTimeInfoCrudService();
-        var taskLogs = findExistingLogs(oldT, logTimeInfoService);
+        var logTimeTableModel = data.getLogTimeInfoTableModel();
+        var taskLogs = findExistingLogs(oldT);
 
         taskLogs.forEach(taskLog -> {
             try {
                 var actualNewTaskUnitTime = oldT.getLoggedTime() / newT.getTimeUnit().getRate();
                 taskLog.setLoggedTime(actualNewTaskUnitTime);
-                logTimeInfoService.update(taskLog).intoException();
+                logTimeTableModel.updateRow(taskLog);
 
             } catch (ValidationException exception) {
                 PopUp.infoDialog(exception.getValidationErrors(), "Error validating time logs", JOptionPane.ERROR_MESSAGE);
@@ -84,9 +87,9 @@ public class EditTaskAction extends EntityBaseAction {
         });
     }
 
-    private List<LogTimeInfo> findExistingLogs(Task task, CrudService<LogTimeInfo> logTimeInfoService) {
-        return logTimeInfoService
-                .findAll().stream()
+    private List<LogTimeInfo> findExistingLogs(Task task) {
+        return data.getLogTimeInfoTableModel()
+                .getAllRows().stream()
                 .filter(log -> log.getTaskID().equals(task.getId()))
                 .toList();
     }

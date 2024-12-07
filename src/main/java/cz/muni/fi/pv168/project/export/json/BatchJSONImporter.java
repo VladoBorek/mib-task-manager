@@ -298,7 +298,7 @@ public class BatchJSONImporter implements BatchImporter {
      * @param timeUnits Map of {@link TimeUnit} from this import
      * @param name      {@link String} name of the time unit
      * @param shortName {@link String} short name of the time unit
-     * @param rate      {@link Integer} conversion rate of time unit to {@link TimeUnit#BASE_UNIT}
+     * @param rate      {@link Integer} conversion rate of time unit to {@link TimeUnit}
      * @return new {@link TimeUnit} with the provided values
      */
     private TimeUnit parseTimeUnit(HashMap<String, TimeUnit> timeUnits,
