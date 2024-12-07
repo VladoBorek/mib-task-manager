@@ -74,32 +74,8 @@ public class TemplateDialog extends EntityDialog<Template> {
         timeUnitComboBox.setSelectedItem(template.getTimeUnit());
     }
 
-    // TODO: zbavit sa validateFields a implementovat to nejak vo validatore tu aj v Tasku
-
-    private boolean validateFields() {
-        if ((taskNameField.getText().trim().isEmpty())
-                || (templateNameField.getText().trim().isEmpty())
-                || (allocatedTimeField.getText().trim().isEmpty())
-                || (assignedToField.getText().trim().isEmpty())
-                || (categoryComboBox.getSelectedItem() == null)
-                || (timeUnitComboBox.getSelectedItem() == null)
-
-        ) {
-            PopUp.infoDialog(
-                    "Please fill all information",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public Template getEntity() {
-        if (!validateFields()) {
-            return null;
-        }
-
         Validator<Template> templateValidator = new TemplateValidator();
         var newTemplate = new Template(null, taskNameField.getText(),
                 (Category) categoryComboBox.getSelectedItem(),
@@ -110,10 +86,6 @@ public class TemplateDialog extends EntityDialog<Template> {
                 assignedToField.getText());
 
         var validation = templateValidator.validate(newTemplate);
-
-        if (!validateFields()) {
-            return null;
-        }
         if (!validation.isValid()) {
             PopUp.infoDialog(
                     validation.getValidationErrors(),

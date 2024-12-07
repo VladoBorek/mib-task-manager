@@ -85,51 +85,23 @@ public class AddTaskDialog extends EntityDialog<Task> {
         timeUnitsComboBox.setSelectedItem(task.getTimeUnit());
     }
 
-    // TODO: zbavit sa validateFields a implementovat to nejak vo validatore tu aj v Tasku
-
-    private boolean validateFields() {
-        if ((taskNameField.getText().trim().isEmpty())
-                || (customerField.getText().trim().isEmpty())
-                || (assignedToName.getText().trim().isEmpty())
-                || (categoryComboBox.getSelectedItem() == null)
-                || (statusComboBox.getSelectedItem() == null)
-                || (timeUnitsComboBox.getSelectedItem() == null)
-                || (allocatedTimeField.getText().trim().isEmpty())
-                || (loggedTimeField.getText().trim().isEmpty())
-        ) {
-            PopUp.infoDialog(
-                    "Please fill all information",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public Task getEntity() {
-        if (!validateFields()) {
-            return null;
-        }
         Validator<Task> taskValidator = new TaskValidator();
         var newTask = new Task(
                 null, (Status) statusComboBox.getSelectedItem(),
                 this.descriptionArea.getText(),
-                //(Category) Objects.requireNonNull(categoryComboBox.getSelectedItem()),
                 (Category) categoryComboBox.getSelectedItem(),
                 customerField.getText(),
                 taskNameField.getText(),
                 assignedToName.getText(),
                 loggedTimeField.getValue(),
                 allocatedTimeField.getValue(),
-                (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem()),
-                //(TimeUnit) timeUnitsComboBox.getSelectedItem(),
+                (TimeUnit) timeUnitsComboBox.getSelectedItem(),
+//                (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem()),
                 datePicker.getDate());
         var validation = taskValidator.validate(newTask);
 
-        if (!validateFields()) {
-            return null;
-        }
         if (!validation.isValid()) {
             PopUp.infoDialog(
                     validation.getValidationErrors(),
