@@ -73,14 +73,14 @@ public class EditTaskAction extends EntityBaseAction {
     }
 
     private void updateTaskLogs(Task oldT, Task newT) {
-        var logTimeInfoService = data.getLogTimeInfoCrudService();
-        var taskLogs = findExistingLogs(oldT, logTimeInfoService);
+        var logTimeTableModel = data.getLogTimeInfoTableModel();
+        var taskLogs = findExistingLogs(oldT);
 
         taskLogs.forEach(taskLog -> {
             try {
                 var actualNewTaskUnitTime = oldT.getLoggedTime() / newT.getTimeUnit().getRate();
                 taskLog.setLoggedTime(actualNewTaskUnitTime);
-                logTimeInfoService.update(taskLog).intoException();
+                logTimeTableModel.updateRow(taskLog);
 
             } catch (ValidationException exception) {
                 PopUp.infoDialog(exception.getValidationErrors(), "Error validating time logs", JOptionPane.ERROR_MESSAGE);
@@ -88,9 +88,9 @@ public class EditTaskAction extends EntityBaseAction {
         });
     }
 
-    private List<LogTimeInfo> findExistingLogs(Task task, CrudService<LogTimeInfo> logTimeInfoService) {
-        return logTimeInfoService
-                .findAll().stream()
+    private List<LogTimeInfo> findExistingLogs(Task task) {
+        return data.getLogTimeInfoTableModel()
+                .getAllRows().stream()
                 .filter(log -> log.getTaskID().equals(task.getId()))
                 .toList();
     }
