@@ -3,7 +3,7 @@ package cz.muni.fi.pv168.project.ui.filters;
 import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.Status;
 import cz.muni.fi.pv168.project.business.model.Task;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.filters.matchers.EntityMatcher;
 import cz.muni.fi.pv168.project.ui.filters.matchers.EntityMatchers;
 import cz.muni.fi.pv168.project.ui.filters.matchers.entityWithCategory.EntityCategoryMatcher;
@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 public final class TaskTableFilter {
     private final TaskCompoundMatcher taskCompoundMatcher;
 
-    public TaskTableFilter(TableRowSorter<TaskTableModel> rowSorter, DataManager data) {
+    public TaskTableFilter(TableRowSorter<TaskTableModel> rowSorter, UIDataManager data) {
         taskCompoundMatcher = new TaskCompoundMatcher(rowSorter, data);
         rowSorter.setRowFilter(taskCompoundMatcher);
     }
@@ -66,7 +66,7 @@ public final class TaskTableFilter {
 
         private final StatisticsTableModel statisticsTableModel;
 
-        private TaskCompoundMatcher(TableRowSorter<TaskTableModel> rowSorter, DataManager data) {
+        private TaskCompoundMatcher(TableRowSorter<TaskTableModel> rowSorter, UIDataManager data) {
             this.rowSorter = rowSorter;
             this.statisticsTableModel = (StatisticsTableModel) data.getStatisticsTable().getModel();
         }

@@ -1,6 +1,6 @@
 package cz.muni.fi.pv168.project.ui.actions.menu;
 
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.dialog.task.ChooseTemplateDialog;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -9,11 +9,11 @@ import java.awt.event.ActionEvent;
 
 public class ChooseTemplateAction extends AbstractAction {
 
-    private final DataManager data;
+    private final UIDataManager data;
 
     private final JFrame frame;
 
-    public ChooseTemplateAction(DataManager data,
+    public ChooseTemplateAction(UIDataManager data,
                                 JFrame frame) {
         super("Choose a template", Icons.ADD_ICON);
         this.data = data;

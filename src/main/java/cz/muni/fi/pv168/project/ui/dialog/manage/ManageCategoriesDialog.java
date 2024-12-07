@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.project.ui.dialog.manage;
 
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.category.DeleteCategoryAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.category.EditCategoryAction;
@@ -16,7 +16,7 @@ import static cz.muni.fi.pv168.project.ui.utils.UIElements.createActionsButtonPa
 import static cz.muni.fi.pv168.project.ui.utils.UIElements.createComboPanel;
 
 public class ManageCategoriesDialog extends ManageDialog {
-    public ManageCategoriesDialog(JFrame parent, DataManager data) {
+    public ManageCategoriesDialog(JFrame parent, UIDataManager data) {
         super(parent, "Manage categories");
         var comboBox = categoriesCombobox(data);
         add(createComboPanel("Select a Category: ", comboBox), BorderLayout.NORTH);
@@ -26,8 +26,8 @@ public class ManageCategoriesDialog extends ManageDialog {
         set();
     }
 
-    private static JComboBox<Category> categoriesCombobox(DataManager data) {
-        var comboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getCategories()));
+    private static JComboBox<Category> categoriesCombobox(UIDataManager data) {
+        var comboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getCategoryListModel()));
         comboBox.setRenderer(new CategoryComboboxRenderer());
         CategoryComboboxRenderer.setCategoryComboboxColor(comboBox);
         comboBox.addActionListener(e -> CategoryComboboxRenderer.setCategoryComboboxColor(comboBox));

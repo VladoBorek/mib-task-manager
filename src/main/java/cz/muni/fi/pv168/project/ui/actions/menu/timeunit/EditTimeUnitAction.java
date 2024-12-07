@@ -2,7 +2,7 @@ package cz.muni.fi.pv168.project.ui.actions.menu.timeunit;
 
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
 public class EditTimeUnitAction extends EntityBaseAction {
     private final JComboBox<TimeUnit> comboBox;
 
-    public EditTimeUnitAction(DataManager data, JComboBox<TimeUnit> comboBox) {
+    public EditTimeUnitAction(UIDataManager data, JComboBox<TimeUnit> comboBox) {
         super("Edit TimeUnit", Icons.MANAGE_ICON, data);
         this.comboBox = comboBox;
     }
@@ -40,7 +40,7 @@ public class EditTimeUnitAction extends EntityBaseAction {
             timeunit.setShortName(newTimeUnit.getShortName());
         });
         try {
-            data.getTimeUnits().update(timeunit);
+            data.getTimeUnitListModel().update(timeunit);
         } catch (ValidationException e) {
             PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
         }

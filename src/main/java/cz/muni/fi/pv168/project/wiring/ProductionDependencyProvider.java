@@ -5,7 +5,7 @@ import cz.muni.fi.pv168.project.storage.sql.db.DatabaseManager;
 /**
  * @author Vladimir Borek
  */
-public class ProductionDependencyProvider extends CommonDependecnyProvider {
+public class ProductionDependencyProvider extends CommonDependencyProvider {
     public ProductionDependencyProvider() {
         super(createDatabaseManager());
     }

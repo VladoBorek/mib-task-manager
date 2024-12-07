@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.timeunit;
 
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -17,7 +17,7 @@ import java.util.Objects;
 public class DeleteTimeUnitAction extends EntityBaseAction {
     private final JComboBox<TimeUnit> comboBox;
 
-    public DeleteTimeUnitAction(DataManager data, JComboBox<TimeUnit> comboBox) {
+    public DeleteTimeUnitAction(UIDataManager data, JComboBox<TimeUnit> comboBox) {
         super("Delete TimeUnit", Icons.DELETE_ICON, data);
         this.comboBox = comboBox;
     }
@@ -38,8 +38,7 @@ public class DeleteTimeUnitAction extends EntityBaseAction {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        data.getTimeUnits().remove(timeUnit);
+        data.getTimeUnitListModel().remove(timeUnit);
         comboBox.setSelectedItem(null);
     }
 }

@@ -6,7 +6,7 @@ import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.business.service.validation.common.NotNegativeIntegerValidator;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.InspectTaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.task.LogTimeDialog;
@@ -18,11 +18,11 @@ import java.util.List;
 
 
 public class LogTimeAction extends AbstractAction {
-    private final DataManager data;
+    private final UIDataManager data;
     private final InspectTaskDialog inspectTaskDialog;
     private final Task task;
 
-    public LogTimeAction(DataManager data, InspectTaskDialog inspectTaskDialog, Task task) {
+    public LogTimeAction(UIDataManager data, InspectTaskDialog inspectTaskDialog, Task task) {
         this.data = data;
         this.inspectTaskDialog = inspectTaskDialog;
         this.task = task;

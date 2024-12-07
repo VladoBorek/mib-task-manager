@@ -4,7 +4,7 @@ import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.AddTaskDialog;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class EditTaskAction extends EntityBaseAction {
 
-    public EditTaskAction(DataManager data) {
+    public EditTaskAction(UIDataManager data) {
         super("Edit Task", Icons.MANAGE_ICON, data);
     }
 

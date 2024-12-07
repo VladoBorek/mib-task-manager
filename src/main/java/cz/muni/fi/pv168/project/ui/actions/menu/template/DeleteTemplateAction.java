@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.template;
 
 import cz.muni.fi.pv168.project.business.model.Template;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
@@ -17,12 +17,12 @@ import java.util.Comparator;
 public class DeleteTemplateAction extends EntityBaseAction {
     JComboBox<Template> comboBox;
 
-    public DeleteTemplateAction(DataManager data, JComboBox<Template> comboBox) {
+    public DeleteTemplateAction(UIDataManager data, JComboBox<Template> comboBox) {
         super("Delete Template", Icons.DELETE_ICON, data);
         this.comboBox = comboBox;
     }
 
-    public DeleteTemplateAction(DataManager data) {
+    public DeleteTemplateAction(UIDataManager data) {
         this(data, null);
     }
 

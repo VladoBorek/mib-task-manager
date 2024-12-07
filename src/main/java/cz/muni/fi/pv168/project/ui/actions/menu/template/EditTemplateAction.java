@@ -2,7 +2,7 @@ package cz.muni.fi.pv168.project.ui.actions.menu.template;
 
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
@@ -18,12 +18,12 @@ import java.awt.event.ActionEvent;
 public class EditTemplateAction extends EntityBaseAction {
     private final JComboBox<Template> comboBox;
 
-    public EditTemplateAction(DataManager data, JComboBox<Template> comboBox) {
+    public EditTemplateAction(UIDataManager data, JComboBox<Template> comboBox) {
         super("Edit Template", Icons.MANAGE_ICON, data);
         this.comboBox = comboBox;
     }
 
-    public EditTemplateAction(DataManager data) {
+    public EditTemplateAction(UIDataManager data) {
         this(data, null);
     }
 

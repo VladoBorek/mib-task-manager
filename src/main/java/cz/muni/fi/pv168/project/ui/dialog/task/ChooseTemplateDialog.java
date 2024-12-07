@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.project.ui.dialog.task;
 
 import cz.muni.fi.pv168.project.business.model.Template;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.AddTaskAction;
 
 import javax.swing.*;
@@ -13,7 +13,7 @@ import static cz.muni.fi.pv168.project.ui.utils.UIElements.createDialogClosingBu
 
 public class ChooseTemplateDialog extends JDialog {
 
-    public ChooseTemplateDialog(JFrame parent, DataManager data) {
+    public ChooseTemplateDialog(JFrame parent, UIDataManager data) {
         super(parent, "Choose a template", true);
         setLayout(new BorderLayout());
 
@@ -25,8 +25,8 @@ public class ChooseTemplateDialog extends JDialog {
         finalizeDialogSetup(parent);
     }
 
-    private JComboBox<Template> setupComboBox(DataManager data) {
-        var comboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getTemplates().toArray(new Template[0])));
+    private JComboBox<Template> setupComboBox(UIDataManager data) {
+        var comboBox = new JComboBox<>(new DefaultComboBoxModel<>(data.getTemplateTableModel().getAllRows().toArray(new Template[0])));
         var emptyTemplate = new Template();
 
         comboBox.addItem(emptyTemplate);

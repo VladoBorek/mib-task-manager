@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.category;
 
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
@@ -14,7 +14,7 @@ import java.awt.event.ActionEvent;
 public class DeleteCategoryAction extends EntityBaseAction {
     private final JComboBox<Category> comboBox;
 
-    public DeleteCategoryAction(DataManager data, JComboBox<Category> comboBox) {
+    public DeleteCategoryAction(UIDataManager data, JComboBox<Category> comboBox) {
         super("Delete Category", Icons.DELETE_ICON, data);
         this.comboBox = comboBox;
     }
@@ -29,7 +29,7 @@ public class DeleteCategoryAction extends EntityBaseAction {
         if (category == null) {
             return;
         }
-        data.getCategories().remove(category);
+        data.getCategoryListModel().remove(category);
         comboBox.setSelectedItem(null);
     }
 }

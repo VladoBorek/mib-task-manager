@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.project.ui.dialog.task;
 
 import cz.muni.fi.pv168.project.business.model.Task;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.task.LogTimeAction;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.panels.panelFactories.InfoPanelFactory;
@@ -31,16 +31,16 @@ public class InspectTaskDialog extends EntityDialog<Task> {
     private final JLabel loggedTime = new JLabel();
     private final JLabel allocatedTime = new JLabel();
     private final JLabel date = new JLabel();
-    private final DataManager data;
+    private final UIDataManager data;
     private final LogTimeInfoTableModel model;
     private final JTable logTimeTable;
 
-    public InspectTaskDialog(Task task, DataManager data) {
+    public InspectTaskDialog(Task task, UIDataManager data) {
         super(550, 250);
 
         this.data = data;
         this.task = task;
-        this.model = new LogTimeInfoTableModel(data.getLogTimeInfoCrudService());
+        this.model = data.getLogTimeInfoTableModel();
         this.logTimeTable = createLogTimeInfoTable(this.model, this.task);
 
         setValues();
