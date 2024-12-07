@@ -24,7 +24,7 @@ public class InspectTaskAction extends EntityBaseAction {
         var selectedRows = data.getTaskTable().getSelectedRows();
         if (selectedRows.length != 1) {
             //throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
-            PopUp.infoDialog("To inspect task, please select only one (1) task.",
+            PopUp.infoDialog("To inspect task, please select exactly one (1) task.",
                             "Invalid selected rows",
                     JOptionPane.ERROR_MESSAGE);
             return;
