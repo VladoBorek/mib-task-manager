@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.wiring.ProductionDependencyProvider;
 import net.miginfocom.swing.MigLayout;
+import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,9 +58,12 @@ public class LoginWindow {
                     new ProductionDependencyProvider());
             mainWindow.show();
         } catch (Exception ex) {
-            // TODO
-            // showInitializationFailedDialog(ex);
-            throw new RuntimeException(ex);
+            Logger.error(ex);
+            PopUp.infoDialog(
+                    "Application initialization failed.\n" + ex.getMessage(),
+                    "Initialization Error",
+                    JOptionPane.ERROR_MESSAGE);
+
         }
         return true;
     }
@@ -68,27 +72,6 @@ public class LoginWindow {
         this.frame.setVisible(true);
     }
 
-//    private static void showInitializationFailedDialog(Exception ex) {
-//        EventQueue.invokeLater(() -> {
-//            ex.printStackTrace();
-//            Object[] options = {
-//                    new JButton(new QuitAction()),
-//                    new JButton(new NuclearQuitAction())
-//            };
-//            JOptionPane.showOptionDialog(
-//                    null,
-//                    "Application initialization failed.\nWhat do you want to do?",
-//                    "Initialization Error",
-//                    JOptionPane.DEFAULT_OPTION,
-//                    JOptionPane.ERROR_MESSAGE,
-//                    null,
-//                    options,
-//                    options[0]
-//            );
-//        });
-//    }
-
-    // TODO het
     private JPanel createTitlePanel() {
         JPanel titlePanel = new JPanel();
 
