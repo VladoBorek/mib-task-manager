@@ -53,8 +53,7 @@ public class EditTaskAction extends EntityBaseAction {
                 }
         );
 
-        // TODO: umh..
-        ((StatisticsTableModel) data.getStatisticsTable().getModel()).refreshStatistics();
+        data.getStatisticsTableModel().refreshStatistics();
     }
 
     private void updateTask(Task oldT, Task newT) {

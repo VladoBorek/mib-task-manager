@@ -38,7 +38,7 @@ public class LogTimeAction extends AbstractAction {
                 task.setLoggedTime(task.getLoggedTime() + newTimeInBaseUnits);
             });
 
-            ((StatisticsTableModel) data.getStatisticsTable().getModel()).refreshStatistics();
+            data.getStatisticsTableModel().refreshStatistics();
             inspectTaskDialog.updateLoggedTime();
 
         } catch (ValidationException exception) {

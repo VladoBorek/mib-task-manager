@@ -31,7 +31,6 @@ public class DeleteTaskAction extends EntityBaseAction {
                 .sorted(Comparator.reverseOrder())
                 .forEach(taskTableModelTableModel::deleteRow);
 
-        // TODO: umh..
-        ((StatisticsTableModel) data.getStatisticsTable().getModel()).refreshStatistics();
+        data.getStatisticsTableModel().refreshStatistics();
     }
 }

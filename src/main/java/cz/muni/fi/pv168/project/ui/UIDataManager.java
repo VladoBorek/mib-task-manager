@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.ui.model.abstracts.BaseListModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.LogTimeInfoTableModel;
+import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.wiring.DependencyProvider;
@@ -71,16 +72,16 @@ public class UIDataManager {
         return templateTable;
     }
 
-    public JTable getStatisticsTable() {
-        return statisticsTable;
-    }
-
     public TaskTableModel getTaskTableModel() {
         return (TaskTableModel) getTaskTable().getModel();
     }
 
     public TemplateTableModel getTemplateTableModel() {
         return (TemplateTableModel) getTemplateTable().getModel();
+    }
+
+    public StatisticsTableModel getStatisticsTableModel() {
+        return (StatisticsTableModel) statisticsTable.getModel();
     }
 
     public BaseListModel<TimeUnit> getTimeUnitListModel() {

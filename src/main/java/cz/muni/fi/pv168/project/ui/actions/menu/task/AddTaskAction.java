@@ -51,6 +51,6 @@ public class AddTaskAction extends EntityBaseAction {
             }
         });
 
-        ((StatisticsTableModel) data.getStatisticsTable().getModel()).refreshStatistics();
+        data.getStatisticsTableModel().refreshStatistics();
     }
 }
