@@ -29,17 +29,17 @@ public abstract class BaseTableModel<T extends Entity> extends AbstractTableMode
     }
 
 
-    public void updateRow(T task) throws ValidationException {
-        crudService.update(task).intoException();
-        int rowIndex = items.indexOf(task);
+    public void updateRow(T item) throws ValidationException {
+        crudService.update(item).intoException();
+        int rowIndex = items.indexOf(item);
         fireTableRowsUpdated(rowIndex, rowIndex);
     }
 
 
-    public void addRow(T task) throws ValidationException {
+    public void addRow(T item) throws ValidationException {
         int newRowIndex = items.size();
-        crudService.create(task).intoException();
-        items.add(task);
+        crudService.create(item).intoException();
+        items.add(item);
         fireTableRowsInserted(newRowIndex, newRowIndex);
     }
 
