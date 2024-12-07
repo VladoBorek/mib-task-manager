@@ -42,7 +42,7 @@ public class AddTimeUnitAction extends EntityBaseAction {
                 return;
             }
             if (comboBox != null) {
-                comboBox.setSelectedItem(newTimeUnit);;
+                comboBox.setSelectedItem(newTimeUnit);
             }
         });
     }
