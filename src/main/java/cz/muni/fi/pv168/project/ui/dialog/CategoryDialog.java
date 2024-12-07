@@ -4,6 +4,7 @@ import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.service.validation.CategoryValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
+import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -67,6 +68,7 @@ public class CategoryDialog extends EntityDialog<Category> {
         Validator<Category> categoryValidator = new CategoryValidator();
         var validation = categoryValidator.validate(new Category(null, nameField.getText(), selectedColor));
         if (!validation.isValid()) {
+            Logger.error("Category failed Validation " + validation.getValidationErrors());
             PopUp.infoDialog(
                     validation.getValidationErrors(),
                     "Input error",

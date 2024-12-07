@@ -7,6 +7,7 @@ import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -38,11 +39,22 @@ public class AddTimeUnitAction extends EntityBaseAction {
             try {
                 data.getTimeUnitListModel().add(newTimeUnit);
             } catch (ValidationException exception) {
-                PopUp.infoDialog(exception.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+                Logger.error("Time unit was not added: " + exception.getValidationErrors());
+                PopUp.infoDialog(
+                        exception.getValidationErrors(),
+                        "Input error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            Logger.info("Added new Time unit (id=" + newTimeUnit.getId() +",name=" + newTimeUnit.getName() + ")");
+
             if (comboBox != null) {
                 comboBox.setSelectedItem(newTimeUnit);
+            } else {
+                PopUp.infoDialog(
+                        "Time Unit" + newTimeUnit.getName() + " was added",
+                        "New time unit added",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         });
     }

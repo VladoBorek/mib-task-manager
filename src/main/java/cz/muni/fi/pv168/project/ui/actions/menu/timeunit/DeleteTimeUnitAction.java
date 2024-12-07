@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.util.Constants;
+import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -32,6 +33,7 @@ public class DeleteTimeUnitAction extends EntityBaseAction {
         assert timeUnit != null;
 
         if (Objects.equals(timeUnit.getName(), Constants.BASE_TIME_UNIT)) {
+            Logger.info("User tried to delete Base Time Unit.");
             PopUp.infoDialog(
                     "You cannot delete " + Constants.BASE_TIME_UNIT + " Time Unit!",
                     "Forbidden action",
@@ -42,6 +44,7 @@ public class DeleteTimeUnitAction extends EntityBaseAction {
         if (data.getTaskTableModel().getAllRows().stream().anyMatch(task -> task.getTimeUnit().equals(timeUnit))||
             data.getTemplateTableModel().getAllRows().stream().anyMatch(template -> template.getTimeUnit().equals(timeUnit)))
         {
+            Logger.info("User tried to delete " + timeUnit + " which is currently in use.");
             PopUp.infoDialog(
                     "You can't delete this time unit, it is currently in use.",
                     "Action blocked",

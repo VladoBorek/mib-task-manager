@@ -46,6 +46,7 @@ public class LoginWindow {
 
     private boolean login() {
         if (usernameField.getText().isEmpty()) {
+            Logger.error("Application user did not fill all login information");
             PopUp.infoDialog(
                     "Please fill all login information.",
                     "Missing credentials",
@@ -56,9 +57,10 @@ public class LoginWindow {
             MainWindow mainWindow = new MainWindow(
                     new User(usernameField.getText(), (long) idField.getValue()),
                     new ProductionDependencyProvider());
+            Logger.info("Logged as " + usernameField.getText() + "with ID: " + (long) idField.getValue());
             mainWindow.show();
         } catch (Exception ex) {
-            Logger.error(ex);
+            Logger.error("Fatal application error" + ex.getMessage());
             PopUp.infoDialog(
                     "Application initialization failed.\n" + ex.getMessage(),
                     "Initialization Error",

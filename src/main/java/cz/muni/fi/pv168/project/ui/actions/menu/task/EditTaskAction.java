@@ -7,8 +7,8 @@ import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.AddTaskDialog;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -31,7 +31,7 @@ public class EditTaskAction extends EntityBaseAction {
     private void editTask() {
         var selectedRows = data.getTaskTable().getSelectedRows();
         if (selectedRows.length != 1) {
-            //throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
+            Logger.error("User tried to edit more than one (1) task.");
             PopUp.infoDialog("To edit task, please select exactly one (1) task.",
                     "Invalid selected rows",
                     JOptionPane.ERROR_MESSAGE);
@@ -48,11 +48,15 @@ public class EditTaskAction extends EntityBaseAction {
                     try {
                         taskTableModel.updateRow(task);
                     } catch (ValidationException exception) {
-                        PopUp.infoDialog(exception.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+                        Logger.error("Edit of Task (id=" + task.getId() +",name=" + task.getName() + ") has failed." + exception.getMessage());
+                        PopUp.infoDialog(
+                                exception.getValidationErrors(),
+                                "Input error",
+                                JOptionPane.ERROR_MESSAGE);
                     }
                 }
         );
-
+        Logger.info("Edited Task (id=" + task.getId() +",name=" + task.getName() + ")");
         data.getStatisticsTableModel().refreshStatistics();
     }
 
@@ -81,8 +85,14 @@ public class EditTaskAction extends EntityBaseAction {
                 logTimeTableModel.updateRow(taskLog);
 
             } catch (ValidationException exception) {
-                PopUp.infoDialog(exception.getValidationErrors(), "Error validating time logs", JOptionPane.ERROR_MESSAGE);
+                Logger.error("Transfer of Task log (id=" + taskLog.getId() +  ") has failed." + exception.getMessage());
+                PopUp.infoDialog(
+                        exception.getValidationErrors(),
+                        "Error validating time logs",
+                        JOptionPane.ERROR_MESSAGE);
             }
+            Logger.info("Transferred time log (id=" + taskLog.getId() +",userName=" + taskLog.getUsername() + ") to Task ");
+
         });
     }
 

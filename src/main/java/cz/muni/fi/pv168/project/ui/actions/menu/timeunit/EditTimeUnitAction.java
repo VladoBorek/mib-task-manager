@@ -7,6 +7,7 @@ import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -42,11 +43,15 @@ public class EditTimeUnitAction extends EntityBaseAction {
         try {
             data.getTimeUnitListModel().update(timeunit);
         } catch (ValidationException e) {
-            PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+            Logger.error("Edit of TimeUnit (id=" + timeunit.getId() +",name=" + timeunit.getName() + ") has failed." + e.getMessage());
+            PopUp.infoDialog(
+                    e.getValidationErrors(),
+                    "Input error",
+                    JOptionPane.ERROR_MESSAGE);
         }
+        Logger.info("Edited TimeUnit(id=" + timeunit.getId() +",name=" + timeunit.getName() + ")");
 
         comboBox.setSelectedIndex(0);
-
         data.getTemplateTableModel().refresh();
         data.getTaskTableModel().refresh();
     }

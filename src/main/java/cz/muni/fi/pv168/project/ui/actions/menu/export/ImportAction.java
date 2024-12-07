@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.util.ActionType;
 import cz.muni.fi.pv168.project.util.Filter;
+import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -53,13 +54,16 @@ public class ImportAction extends AbstractAction {
                 importService.importData(importFile.getAbsolutePath(), importOption, deleteData);
 
             } catch (BatchOperationException ex){
-                PopUp.infoDialog("Import has failed:\n" + ex.getMessage() + "\nNo items were imported.",
+                Logger.error("Import of " + importFile.getAbsolutePath() + " has failed.");
+                PopUp.infoDialog(
+                        "Import has failed:\n" + ex.getMessage() + "\nNo items were imported.",
                         "Import status",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-            PopUp.infoDialog("Import has successfully finished.",
+            Logger.info("Import of " + importFile.getAbsolutePath() + " has finished.");
+            PopUp.infoDialog(
+                    "Import has successfully finished.",
                     "Import status",
                     JOptionPane.INFORMATION_MESSAGE);
             callback.run();

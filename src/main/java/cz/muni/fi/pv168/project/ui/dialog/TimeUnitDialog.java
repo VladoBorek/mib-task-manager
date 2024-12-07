@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.project.business.service.validation.TimeUnitValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.util.Constants;
+import org.tinylog.Logger;
 
 import javax.swing.*;
 
@@ -52,6 +53,7 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
         var validation = timeUnitValidator.validate(newTimeUnit);
         if (!validation.isValid()) {
+            Logger.error("TimeUnit failed Validation " + validation.getValidationErrors());
             PopUp.infoDialog(
                     validation.getValidationErrors(),
                     "Input error",
