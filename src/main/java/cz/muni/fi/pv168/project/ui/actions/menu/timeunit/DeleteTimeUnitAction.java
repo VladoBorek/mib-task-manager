@@ -38,6 +38,17 @@ public class DeleteTimeUnitAction extends EntityBaseAction {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
+
+        if (data.getTaskTableModel().getAllRows().stream().anyMatch(task -> task.getTimeUnit().equals(timeUnit))||
+            data.getTemplateTableModel().getAllRows().stream().anyMatch(template -> template.getTimeUnit().equals(timeUnit)))
+        {
+            PopUp.infoDialog(
+                    "You can't delete this time unit, it is currently in use.",
+                    "Action blocked",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         data.getTimeUnitListModel().remove(timeUnit);
         comboBox.setSelectedItem(null);
     }
