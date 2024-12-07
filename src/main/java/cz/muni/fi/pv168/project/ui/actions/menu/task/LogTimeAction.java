@@ -3,7 +3,6 @@ package cz.muni.fi.pv168.project.ui.actions.menu.task;
 import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.User;
-import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.business.service.validation.common.NotNegativeIntegerValidator;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
