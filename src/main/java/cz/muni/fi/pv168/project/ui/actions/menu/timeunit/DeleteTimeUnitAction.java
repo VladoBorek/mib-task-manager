@@ -29,7 +29,9 @@ public class DeleteTimeUnitAction extends EntityBaseAction {
 
     private void deleteTimeUnit() {
         var timeUnit = (TimeUnit) comboBox.getSelectedItem();
-        assert timeUnit != null;
+        if (timeUnit == null) {
+            return;
+        }
 
         if (timeUnit.equals(Constants.BASE_TIME_UNIT)) {
             PopUp.infoDialog(

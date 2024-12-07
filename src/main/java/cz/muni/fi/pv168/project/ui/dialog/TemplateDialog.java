@@ -11,6 +11,7 @@ import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 import cz.muni.fi.pv168.project.ui.model.panels.panelFactories.InfoPanelFactory;
 import cz.muni.fi.pv168.project.ui.model.panels.panelFactories.TimePanelFactory;
+import cz.muni.fi.pv168.project.util.Constants;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -43,6 +44,8 @@ public class TemplateDialog extends EntityDialog<Template> {
 
         if (template != null) {
             setValues();
+        } else {
+            timeUnitComboBox.setSelectedItem(Constants.BASE_TIME_UNIT);
         }
     }
 

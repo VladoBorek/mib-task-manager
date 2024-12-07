@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS "Task" (
       `id` BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
       `status` VARCHAR(50) NOT NULL,
       `description` TEXT NOT NULL,
-      `categoryId` BIGINT REFERENCES "Category"(`id`),
+      `categoryId` BIGINT NOT NULL REFERENCES "Category"(`id`),
       `customer` VARCHAR(150),
       `name` VARCHAR(150) NOT NULL,
       `assignedTo` VARCHAR(150),
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS "Template" (
       `taskName` VARCHAR(255) NOT NULL,
       `assignedTo` VARCHAR(255),
       `allocatedTime` BIGINT NOT NULL,
-      `timeUnitId` BIGINT NOT NULL REFERENCES "TimeUnit"(`id`)
+      `timeUnitId` BIGINT REFERENCES "TimeUnit"(`id`)
 );
 
 --

@@ -36,15 +36,6 @@ public class DatabaseManager {
         return new DatabaseManager(connectionString);
     }
 
-    public static DatabaseManager createTestInstance() {
-        String connectionString = "jdbc:h2:mem:%s;%s".formatted(PROJECT_NAME, DB_PROPERTIES_STRING);
-        var databaseManager = new DatabaseManager(connectionString);
-        databaseManager.initSchema();
-        databaseManager.initData("test");
-
-        return databaseManager;
-    }
-
     public ConnectionHandler getConnectionHandler() {
         try {
             return new ConnectionHandlerImpl(dataSource.getConnection());
