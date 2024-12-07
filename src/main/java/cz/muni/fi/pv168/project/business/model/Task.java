@@ -26,20 +26,32 @@ public class Task extends TaskBase {
                 0, template.getAllocatedTime(), template.getTimeUnit(), null);
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
     public void setStatus(Status status) {
         this.status = status;
     }
 
-    public Integer getLoggedTime() {
-        return loggedTime;
+    public void setCustomer(String customer) {
+        this.customer = customer;
     }
 
     public void setLoggedTime(Integer loggedTime) {
         this.loggedTime = loggedTime;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public String getCustomer() {
+        return customer;
+    }
+
+    public Integer getLoggedTime() {
+        return loggedTime;
     }
 
     public Integer getConvertedLoggedTime() {
@@ -50,31 +62,14 @@ public class Task extends TaskBase {
         return getConvertedLoggedTime().toString() + " " + getTimeUnit().getShortName();
     }
 
-    public void setConvertedLoggedTime(Integer loggedTime) {
-        this.loggedTime = loggedTime * getTimeUnit().getRate();
-    }
-
-    public LocalDate getDueDate() {
-        return dueDate;
-    }
-
-    public String getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(String customer) {
-        this.customer = customer;
-    }
-
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    // TODO: Vague name
-    public Float getPercentage() {
+    public Float getTaskCompletionPercentage() {
         if (loggedTime == 0) {
             return 0.0F;
         }
         return ((float) getLoggedTime() / (float) getAllocatedTime()) * 100;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 }

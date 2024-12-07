@@ -20,7 +20,7 @@ public class TaskTableModel extends BaseTableModel<Task> implements EntityTableM
             Column.readonly("Assigned to", String.class, Task::getAssignedTo),
             Column.readonly("Logged time", String.class, Task::getConvertedLoggedTimeString),
             Column.readonly("Allocated time", String.class, Task::getConvertedAllocatedTimeString),
-            Column.readonly("% done", Float.class, Task::getPercentage),
+            Column.readonly("% done", Float.class, Task::getTaskCompletionPercentage),
             Column.readonly("Due date", LocalDate.class, Task::getDueDate)
     );
 

@@ -34,56 +34,43 @@ public abstract class TaskBase extends Entity {
         this.assignedTo = assignedTo;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public Integer getAllocatedTime() {
-        return allocatedTime;
-    }
-
     public void setAllocatedTime(Integer allocatedTime) {
         this.allocatedTime = allocatedTime;
     }
-
-    public TimeUnit getTimeUnit() {
-        return timeUnit;
+    public void setConvertedAllocatedTime(Integer allocatedTime) {
+        this.allocatedTime = allocatedTime * timeUnit.getRate();
     }
 
     public void setTimeUnit(TimeUnit timeUnit) {
         this.timeUnit = timeUnit;
     }
 
-    public String getAllocatedTimeString() {
-        return getAllocatedTime().toString() + " " + timeUnit.getShortName();
-    }
-
     public void setDescription(String newDescription) {
         this.description = newDescription;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getAssignedTo() {
-        return assignedTo;
-    }
-
     public void setAssignedTo(String assignedTo) {
         this.assignedTo = assignedTo;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getAllocatedTime() {
+        return allocatedTime;
     }
 
     public Integer getConvertedAllocatedTime() {
@@ -94,7 +81,15 @@ public abstract class TaskBase extends Entity {
         return getConvertedAllocatedTime().toString() + " " + timeUnit.getShortName();
     }
 
-    public void setConvertedAllocatedTime(Integer allocatedTime) {
-        this.allocatedTime = allocatedTime * timeUnit.getRate();
+    public TimeUnit getTimeUnit() {
+        return timeUnit;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getAssignedTo() {
+        return assignedTo;
     }
 }
