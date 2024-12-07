@@ -2,7 +2,6 @@ package cz.muni.fi.pv168.project.ui.actions.menu.task;
 
 import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import java.awt.event.ActionEvent;
