@@ -2,7 +2,7 @@ package cz.muni.fi.pv168.project.ui.actions.menu.template;
 
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
@@ -18,12 +18,12 @@ import java.awt.event.ActionEvent;
 public class EditTemplateAction extends EntityBaseAction {
     private final JComboBox<Template> comboBox;
 
-    public EditTemplateAction(DataManager data, JComboBox<Template> comboBox) {
+    public EditTemplateAction(UIDataManager data, JComboBox<Template> comboBox) {
         super("Edit Template", Icons.MANAGE_ICON, data);
         this.comboBox = comboBox;
     }
 
-    public EditTemplateAction(DataManager data) {
+    public EditTemplateAction(UIDataManager data) {
         this(data, null);
     }
 
@@ -44,7 +44,11 @@ public class EditTemplateAction extends EntityBaseAction {
         } else {
             var selectedRows = data.getTemplateTable().getSelectedRows();
             if (selectedRows.length != 1) {
-                throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
+                //throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
+                PopUp.infoDialog("To edit template, please select exactly one (1) template.",
+                        "Invalid selected rows",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
             int model = data.getTemplateTable().convertRowIndexToModel(selectedRows[0]);

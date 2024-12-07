@@ -58,7 +58,7 @@ public class MainWindow {
     public static final Color BUTTON_COLOR = new Color(220, 220, 220);
 
     private final JFrame frame;
-    private final DataManager data;
+    private final UIDataManager data;
     private final DependencyProvider dependencyProvider;
 
     private JCheckBox filterToDo;
@@ -74,10 +74,9 @@ public class MainWindow {
      * Initializes the main frame, sets the background color, size, and adds the menu bar and filter bar.
      */
     public MainWindow(User loggedUser, DependencyProvider dependencyProvider) {
-        data = new DataManager(loggedUser);
         frame = createFrame();
-
         this.dependencyProvider = dependencyProvider;
+        this.data = new UIDataManager(loggedUser, dependencyProvider);
 
         var taskTable = createTaskTable(dependencyProvider.getTaskCrudService());
         taskTable.setComponentPopupMenu(createTaskTablePopupMenu());
@@ -87,10 +86,6 @@ public class MainWindow {
 
         data.setTaskTable(taskTable);
         data.setTemplateTable(templateTable);
-        // TODO data a dependency provider je vlastne to iste
-        data.setCategories(dependencyProvider.getCategoryCrudService());
-        data.setTimeUnits(dependencyProvider.getTimeUnitCrudService());
-        data.setLogInfo(dependencyProvider.getLogTimeInfoCrudService());
 
         var statisticsTable = createStatisticsTable();
         data.setStatisticsTable(statisticsTable);
@@ -213,9 +208,6 @@ public class MainWindow {
 
         var categoryColumn = table.getColumnModel().getColumn(2);
         categoryColumn.setCellRenderer(new CategoryCellRenderer());
-
-        data.setTaskTableModel(tableModel);
-
         return table;
     }
 
@@ -224,7 +216,7 @@ public class MainWindow {
      *
      * @return Toolbar with an Add New button and filters
      */
-    private JToolBar createTaskToolBar(JTable taskTable, DataManager data) {
+    private JToolBar createTaskToolBar(JTable taskTable, UIDataManager data) {
         var rowSorter = new TableRowSorter<>((TaskTableModel) taskTable.getModel());
         var taskTableFilter = new TaskTableFilter(rowSorter, data);
         taskTable.setRowSorter(rowSorter);
@@ -236,7 +228,7 @@ public class MainWindow {
         filterBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
         var statusPanel = createStatusCheckboxesPanel(taskTableFilter);
-        var categoryComboBox = createTaskCategoryFilter(taskTableFilter, data.getCategories());
+        var categoryComboBox = createTaskCategoryFilter(taskTableFilter, data.getCategoryListModel());
         JPanel categoryPanel = createCategoryPanel(categoryComboBox);
         var filterDatePanel = createDateFilterPanel(taskTableFilter);
 
@@ -264,7 +256,7 @@ public class MainWindow {
         return filterBar;
     }
 
-    private JToolBar createTemplateToolBar(JTable templateTable, DataManager data) {
+    private JToolBar createTemplateToolBar(JTable templateTable, UIDataManager data) {
         var rowSorter = new TableRowSorter<>((TemplateTableModel) templateTable.getModel());
         var templateTableFilter = new TemplateTableFilter(rowSorter);
         templateTable.setRowSorter(rowSorter);
@@ -274,7 +266,7 @@ public class MainWindow {
         filterBar.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         filterBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
-        var categoryComboBox = createTemplateCategoryFilter(templateTableFilter, data.getCategories());
+        var categoryComboBox = createTemplateCategoryFilter(templateTableFilter, data.getCategoryListModel());
         JPanel categoryPanel = createCategoryPanel(categoryComboBox);
 
         JButton newButton = createButton("New ", Icons.ADD_ICON,
@@ -452,8 +444,8 @@ public class MainWindow {
 
     private void refresh() {
         data.getTaskTableModel().refresh();
-        data.getCategories().refresh();
-        data.getTimeUnits().refresh();
+        data.getCategoryListModel().refresh();
+        data.getTimeUnitListModel().refresh();
         data.getTemplateTableModel().refresh();
     }
 }

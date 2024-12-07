@@ -8,7 +8,7 @@ import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
@@ -28,7 +28,7 @@ import static cz.muni.fi.pv168.project.ui.utils.UIElements.*;
  */
 public class AddTaskDialog extends EntityDialog<Task> {
     private final Task task;
-    private final DataManager data;
+    private final UIDataManager data;
     private final JTextField taskNameField = new JTextField();
     private final JTextField customerField = new JTextField();
     private final JTextArea descriptionArea = new JTextArea();
@@ -40,12 +40,12 @@ public class AddTaskDialog extends EntityDialog<Task> {
     private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
     private final DatePicker datePicker = new DatePicker();
 
-    public AddTaskDialog(Task task, DataManager data) {
+    public AddTaskDialog(Task task, UIDataManager data) {
         this.task = task;
         this.data = data;
 
-        this.timeUnitsComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits()));
-        this.categoryComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getCategories()));
+        this.timeUnitsComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnitListModel()));
+        this.categoryComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getCategoryListModel()));
 
         datePicker.setDateToToday();
 

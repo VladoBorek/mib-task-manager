@@ -3,7 +3,7 @@ package cz.muni.fi.pv168.project.ui.dialog.task;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 
@@ -20,8 +20,8 @@ public class LogTimeDialog extends EntityDialog<Integer> {
     private final JIntegerTextField timeField = new JIntegerTextField();
     private final JComboBox<TimeUnit> timeUnitComboBox;
 
-    public LogTimeDialog(DataManager data, Task task) {
-        timeUnitComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnits()));
+    public LogTimeDialog(UIDataManager data, Task task) {
+        timeUnitComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnitListModel()));
         timeUnitComboBox.setSelectedItem(task.getTimeUnit());
         add("Time", timeField);
         add("Time Unit", timeUnitComboBox);

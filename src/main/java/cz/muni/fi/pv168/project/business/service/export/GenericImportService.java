@@ -60,11 +60,18 @@ public class GenericImportService implements ImportService {
                 null, timeUnitCrudService.findAll(),
                 logTimeInfoCrudService.findAll());
         try {
-            var batch = getImporter(filePath).importBatch(filePath, type, currentBatch);
-            batch.tasks().forEach(this::createTask);
+            var importBatch = getImporter(filePath).importBatch(filePath, type, currentBatch);
+            var filteredCategories = importBatch.categories().stream().filter(category -> !currentBatch.categories().contains(category)).toList();
+            var filteredTemplates = importBatch.templates().stream().filter(template -> !currentBatch.templates().contains(template)).toList();
+            var filteredTimeUnits = importBatch.timeUnits().stream().filter(timeUnit -> !currentBatch.timeUnits().contains(timeUnit)).toList();
+            var filteredLogTimeInfos = importBatch.logTimeInfos().stream().filter(logTimeInfo -> !currentBatch.logTimeInfos().contains(logTimeInfo)).toList();
+            //We allow duplicate tasks to be imported
+            //var filteredTasks = importBatch.categories().stream().filter(category -> currentBatch.categories().contains(category)).toList();
+            var batch = new Batch(importBatch.tasks(), filteredCategories, filteredTemplates, filteredTimeUnits, filteredLogTimeInfos);
             batch.categories().forEach(this::createCategory);
             batch.templates().forEach(this::createTemplate);
             batch.timeUnits().forEach(this::createTimeUnit);
+            batch.tasks().forEach(this::createTask);
             batch.logTimeInfos().forEach(this::createLogTimeInfo);
         } catch (DataManipulationException dmex){
             throw new BatchOperationException("Import failed because of:\n" + dmex.getMessage());

@@ -2,7 +2,7 @@ package cz.muni.fi.pv168.project.ui.actions.menu.category;
 
 import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
-import cz.muni.fi.pv168.project.ui.DataManager;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
 public class EditCategoryAction extends EntityBaseAction {
     private final JComboBox<Category> comboBox;
 
-    public EditCategoryAction(DataManager data, JComboBox<Category> comboBox) {
+    public EditCategoryAction(UIDataManager data, JComboBox<Category> comboBox) {
         super("Edit Category", Icons.MANAGE_ICON, data);
         this.comboBox = comboBox;
     }
@@ -38,7 +38,7 @@ public class EditCategoryAction extends EntityBaseAction {
             category.setColor(newCat.getColor());
         });
         try {
-            data.getCategories().update(category);
+            data.getCategoryListModel().update(category);
         } catch (ValidationException exception) {
             PopUp.infoDialog(exception.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
         }
