@@ -7,7 +7,7 @@ import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
-import org.tinylog.Logger;
+import cz.muni.fi.pv168.project.util.Constants;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -31,6 +31,14 @@ public class EditTimeUnitAction extends EntityBaseAction {
     private void editTimeUnit() {
         var timeunit = (TimeUnit) comboBox.getSelectedItem();
         if (timeunit == null) {
+            return;
+        }
+
+        if (timeunit.equals(Constants.BASE_TIME_UNIT)) {
+            PopUp.infoDialog(
+                    "You cannot edit Base TimeUnit",
+                    "Forbidden action",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 

@@ -2,6 +2,8 @@ package cz.muni.fi.pv168.project.ui;
 
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.User;
+import cz.muni.fi.pv168.project.ui.actions.menu.db.NuclearQuitAction;
+import cz.muni.fi.pv168.project.ui.actions.menu.db.QuitAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.wiring.ProductionDependencyProvider;
@@ -60,14 +62,7 @@ public class LoginWindow {
             Logger.info("Logged as " + usernameField.getText() + "with ID: " + (long) idField.getValue());
             mainWindow.show();
         } catch (Exception ex) {
-            //TODO
-            // showInitializationFailedDialog(ex);
-            Logger.error("Fatal application error" + ex.getMessage());
-            PopUp.infoDialog(
-                    "Application initialization failed.\n" + ex.getMessage(),
-                    "Initialization Error",
-                    JOptionPane.ERROR_MESSAGE);
-
+             showInitializationFailedDialog(ex);
         }
         return true;
     }
@@ -76,25 +71,25 @@ public class LoginWindow {
         this.frame.setVisible(true);
     }
 
-//    private static void showInitializationFailedDialog(Exception ex) {
-//        EventQueue.invokeLater(() -> {
-//            ex.printStackTrace();
-//            Object[] options = {
-//                    new JButton(new QuitAction()),
-//                    new JButton(new NuclearQuitAction())
-//            };
-//            JOptionPane.showOptionDialog(
-//                    null,
-//                    "Application initialization failed.\nWhat do you want to do?",
-//                    "Initialization Error",
-//                    JOptionPane.DEFAULT_OPTION,
-//                    JOptionPane.ERROR_MESSAGE,
-//                    null,
-//                    options,
-//                    options[0]
-//            );
-//        });
-//    }
+    private static void showInitializationFailedDialog(Exception ex) {
+        EventQueue.invokeLater(() -> {
+            ex.printStackTrace();
+            Object[] options = {
+                    new JButton(new QuitAction()),
+                    new JButton(new NuclearQuitAction())
+            };
+            JOptionPane.showOptionDialog(
+                    null,
+                    "Application initialization failed.\nWhat do you want to do?",
+                    "Initialization Error",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.ERROR_MESSAGE,
+                    null,
+                    options,
+                    options[0]
+            );
+        });
+    }
 
     // TODO het
 

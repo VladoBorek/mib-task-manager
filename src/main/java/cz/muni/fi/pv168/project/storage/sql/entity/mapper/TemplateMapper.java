@@ -8,6 +8,7 @@ import cz.muni.fi.pv168.project.storage.sql.dao.DataStorageException;
 import cz.muni.fi.pv168.project.storage.sql.entity.CategoryEntity;
 import cz.muni.fi.pv168.project.storage.sql.entity.TemplateEntity;
 import cz.muni.fi.pv168.project.storage.sql.entity.TimeUnitEntity;
+import cz.muni.fi.pv168.project.util.Constants;
 
 /**
  * Mapper from the {@link TemplateEntity} to {@link Template}.
@@ -37,11 +38,16 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
                 .map(categoryMapper::mapToBusiness)
                 .orElseThrow(() -> new DataStorageException("Category not found, id: " +
                         dbTemplate.categoryId()));
-        var timeUnit = timeUnitDao
-                .findById(dbTemplate.timeUnitId())
-                .map(timeUnitMapper::mapToBusiness)
-                .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
-                        dbTemplate.timeUnitId()));
+        TimeUnit timeUnit;
+        if (dbTemplate.timeUnitId() == null) {
+            timeUnit = Constants.BASE_TIME_UNIT;
+        } else {
+            timeUnit = timeUnitDao
+                    .findById(dbTemplate.timeUnitId())
+                    .map(timeUnitMapper::mapToBusiness)
+                    .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
+                            dbTemplate.timeUnitId()));
+        }
 
         return new Template(
                 dbTemplate.id(),
@@ -61,10 +67,16 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
                 .findById(businessTemplate.getCategory().getId())
                 .orElseThrow(() -> new DataStorageException("Category not found, id: " +
                         businessTemplate.getCategory().getId()));
-        var timeUnitEntity = timeUnitDao
-                .findById(businessTemplate.getTimeUnit().getId())
-                .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
-                        businessTemplate.getTimeUnit().getId()));
+        Long timeUnitId;
+        if (businessTemplate.getTimeUnit().equals(Constants.BASE_TIME_UNIT)) {
+            timeUnitId = null;
+        } else {
+            var timeUnitEntity = timeUnitDao
+                    .findById(businessTemplate.getTimeUnit().getId())
+                    .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
+                            businessTemplate.getTimeUnit().getId()));
+            timeUnitId = timeUnitEntity.id();
+        }
 
         return new TemplateEntity(
                 businessTemplate.getId(),
@@ -74,7 +86,7 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
                 businessTemplate.getName(),
                 businessTemplate.getAssignedTo(),
                 businessTemplate.getAllocatedTime(),
-                timeUnitEntity.id()
+                timeUnitId
         );
     }
 
@@ -84,10 +96,16 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
                 .findById(businessTemplate.getCategory().getId())
                 .orElseThrow(() -> new DataStorageException("Category not found, id: " +
                         businessTemplate.getCategory().getId()));
-        var timeUnitEntity = timeUnitDao
-                .findById(businessTemplate.getTimeUnit().getId())
-                .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
-                        businessTemplate.getTimeUnit().getId()));
+        Long timeUnitId;
+        if (businessTemplate.getTimeUnit().equals(Constants.BASE_TIME_UNIT)) {
+            timeUnitId = null;
+        } else {
+            var timeUnitEntity = timeUnitDao
+                    .findById(businessTemplate.getTimeUnit().getId())
+                    .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
+                            businessTemplate.getTimeUnit().getId()));
+            timeUnitId = timeUnitEntity.id();
+        }
 
         return new TemplateEntity(
                 dbId,
@@ -97,7 +115,7 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
                 businessTemplate.getName(),
                 businessTemplate.getAssignedTo(),
                 businessTemplate.getAllocatedTime(),
-                timeUnitEntity.id()
+                timeUnitId
         );
     }
 }

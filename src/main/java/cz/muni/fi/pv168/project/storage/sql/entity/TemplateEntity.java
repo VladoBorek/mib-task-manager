@@ -12,22 +12,22 @@ import java.util.Objects;
 public record TemplateEntity(
         Long id,
         String description,
-        long categoryId,
+        Long categoryId,
         String templateName,
         String taskName,
         String assignedTo,
         Integer allocatedTime,
-        long timeUnitId
+        Long timeUnitId
 ) {
     public TemplateEntity(
             Long id,
             String description,
-            long categoryId,
+            Long categoryId,
             String templateName,
             String taskName,
             String assignedTo,
             Integer allocatedTime,
-            long timeUnitId) {
+            Long timeUnitId) {
         this.id = id;
         this.description = description;
         this.categoryId = categoryId;
@@ -36,16 +36,5 @@ public record TemplateEntity(
         this.assignedTo = Objects.requireNonNull(assignedTo, "assignedTo must not be null");
         this.allocatedTime = Objects.requireNonNull(allocatedTime, "allocatedTime must not be null");
         this.timeUnitId = timeUnitId;
-    }
-
-    public TemplateEntity(
-            String description,
-            long categoryId,
-            String templateName,
-            String taskName,
-            String assignedTo,
-            Integer allocatedTime,
-            long timeUnitId) {
-        this(null, description, categoryId, templateName, taskName, assignedTo, allocatedTime, timeUnitId);
     }
 }
