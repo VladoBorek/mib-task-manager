@@ -62,7 +62,8 @@ public class LoginWindow {
             Logger.info("Logged as " + usernameField.getText() + "with ID: " + (long) idField.getValue());
             mainWindow.show();
         } catch (Exception ex) {
-             showInitializationFailedDialog(ex);
+            Logger.error("Fatal application error" + ex);
+            showInitializationFailedDialog(ex);
         }
         return true;
     }
