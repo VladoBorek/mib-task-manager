@@ -31,9 +31,9 @@ public class DeleteTimeUnitAction extends EntityBaseAction {
         var timeUnit = (TimeUnit) comboBox.getSelectedItem();
         assert timeUnit != null;
 
-        if (Objects.equals(timeUnit.getName(), Constants.BASE_TIME_UNIT)) {
+        if (timeUnit.equals(Constants.BASE_TIME_UNIT)) {
             PopUp.infoDialog(
-                    "You cannot delete " + Constants.BASE_TIME_UNIT + " Time Unit!",
+                    "You cannot delete " + Constants.BASE_TIME_UNIT_NAME + " Time Unit!",
                     "Forbidden action",
                     JOptionPane.ERROR_MESSAGE);
             return;

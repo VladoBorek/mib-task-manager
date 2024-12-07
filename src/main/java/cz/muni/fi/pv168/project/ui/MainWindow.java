@@ -87,7 +87,7 @@ public class MainWindow {
 
         data.setTaskTable(taskTable);
         data.setTemplateTable(templateTable);
-        // TODO Bruh
+        // TODO data a dependency provider je vlastne to iste
         data.setCategories(dependencyProvider.getCategoryCrudService());
         data.setTimeUnits(dependencyProvider.getTimeUnitCrudService());
         data.setLogInfo(dependencyProvider.getLogTimeInfoCrudService());
