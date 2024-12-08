@@ -92,8 +92,6 @@ public class LoginWindow {
         });
     }
 
-    // TODO het
-
     private JPanel createTitlePanel() {
         JPanel titlePanel = new JPanel();
 
