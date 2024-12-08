@@ -91,6 +91,8 @@ public class AddTaskDialog extends EntityDialog<Task> {
 
     @Override
     public Task getEntity() {
+        var timeunit = (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem());
+
         Validator<Task> taskValidator = new TaskValidator();
         var newTask = new Task(
                 null, (Status) statusComboBox.getSelectedItem(),
@@ -99,9 +101,9 @@ public class AddTaskDialog extends EntityDialog<Task> {
                 customerField.getText(),
                 taskNameField.getText(),
                 assignedToName.getText(),
-                loggedTimeField.getValue(),
-                allocatedTimeField.getValue(),
-                (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem()),
+                loggedTimeField.getValue() * timeunit.getRate(),
+                allocatedTimeField.getValue() * timeunit.getRate(),
+                timeunit,
                 datePicker.getDate());
         var validation = taskValidator.validate(newTask);
 
