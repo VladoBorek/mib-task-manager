@@ -447,5 +447,6 @@ public class MainWindow {
         data.getCategoryListModel().refresh();
         data.getTimeUnitListModel().refresh();
         data.getTemplateTableModel().refresh();
+        data.getLogTimeInfoTableModel().refresh();
     }
 }
