@@ -101,8 +101,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
                 assignedToName.getText(),
                 loggedTimeField.getValue(),
                 allocatedTimeField.getValue(),
-                (TimeUnit) timeUnitsComboBox.getSelectedItem(),
-//                (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem()),
+                (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem()),
                 datePicker.getDate());
         var validation = taskValidator.validate(newTask);
 

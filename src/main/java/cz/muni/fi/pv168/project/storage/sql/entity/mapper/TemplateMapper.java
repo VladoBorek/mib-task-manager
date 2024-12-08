@@ -62,7 +62,8 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
     @Override
     public TemplateEntity mapExistingEntityToDatabase(Template businessTemplate, Long dbId) {
         var categoryEntity = MapperUtils.getCategoryEntityById(categoryDao,
-                businessTemplate.getCategory(), e -> ((Template) e).getCategory().getId());
+                businessTemplate, e -> ((Template) e).getCategory().getId());
+
         Long timeUnitId;
         if (businessTemplate.getTimeUnit().equals(Constants.BASE_TIME_UNIT)) {
             timeUnitId = null;
