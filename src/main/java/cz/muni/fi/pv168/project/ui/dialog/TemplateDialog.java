@@ -75,7 +75,7 @@ public class TemplateDialog extends EntityDialog<Template> {
         categoryComboBox.setSelectedItem(template.getCategory());
         assignedToField.setText(template.getAssignedTo());
         descriptionArea.setText(template.getDescription());
-        allocatedTimeField.setValue(template.getAllocatedTime());
+        allocatedTimeField.setValue(template.getConvertedAllocatedTime());
         timeUnitComboBox.setSelectedItem(template.getTimeUnit());
     }
 

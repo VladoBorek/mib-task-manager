@@ -59,10 +59,10 @@ public class LoginWindow {
             MainWindow mainWindow = new MainWindow(
                     new User(usernameField.getText(), (long) idField.getValue()),
                     new ProductionDependencyProvider());
-            Logger.info("Logged as " + usernameField.getText() + "with ID: " + (long) idField.getValue());
+            Logger.info("Logged as " + usernameField.getText() + " with ID: " + (long) idField.getValue());
             mainWindow.show();
         } catch (Exception ex) {
-            Logger.error("Fatal application error" + ex);
+            Logger.error("Fatal application error " + ex);
             showInitializationFailedDialog(ex);
         }
         return true;
@@ -91,8 +91,6 @@ public class LoginWindow {
             );
         });
     }
-
-    // TODO het
 
     private JPanel createTitlePanel() {
         JPanel titlePanel = new JPanel();

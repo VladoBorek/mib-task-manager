@@ -49,13 +49,13 @@ public class AddTemplateAction extends EntityBaseAction {
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            Logger.info("Added new Template (id=" + newTemplate.getId() +",name=" + newTemplate.getName() + ")");
+            Logger.info("Added new Template (id=" + newTemplate.getId() + ",name=" + newTemplate.getName() + ")");
 
             if (comboBox != null) {
                 comboBox.setSelectedItem(newTemplate);
             } else {
                 PopUp.infoDialog(
-                        "Template" + newTemplate.getName() + " was added",
+                        "Template " + newTemplate.getName() + " was added",
                         "New template added",
                         JOptionPane.INFORMATION_MESSAGE);
             }

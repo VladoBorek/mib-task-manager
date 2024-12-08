@@ -170,7 +170,6 @@ public class TemplateDao implements DataAccessObject<TemplateEntity> {
             }
 
             statement.setLong(8, entity.id());
-            statement.executeUpdate();
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated == 0) {

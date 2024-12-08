@@ -20,6 +20,7 @@ import java.util.function.Supplier;
 public class CategoryDao implements DataAccessObject<CategoryEntity> {
 
     private final Supplier<ConnectionHandler> connections;
+
     public CategoryDao(Supplier<ConnectionHandler> connections) {
         this.connections = connections;
     }
@@ -130,7 +131,6 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
             statement.setString(1, entity.name());
             statement.setInt(2, entity.color());
             statement.setLong(3, entity.id());
-            statement.executeUpdate();
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated == 0) {

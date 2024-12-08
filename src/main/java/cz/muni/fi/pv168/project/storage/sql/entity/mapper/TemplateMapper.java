@@ -11,6 +11,7 @@ import cz.muni.fi.pv168.project.util.Constants;
 
 /**
  * Mapper from the {@link TemplateEntity} to {@link Template}.
+ *
  * @author Maroš Pavlík
  */
 public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
@@ -69,7 +70,7 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
             timeUnitId = null;
         } else {
             var timeUnitEntity = MapperUtils.getTimeUnitEntityById(timeUnitDao,
-                    businessTemplate.getTimeUnit(), e -> ((Template) e).getTimeUnit().getId());
+                    businessTemplate, e -> ((Template) e).getTimeUnit().getId());
             timeUnitId = timeUnitEntity.id();
         }
 
