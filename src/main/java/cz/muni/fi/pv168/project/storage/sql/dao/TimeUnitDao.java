@@ -19,6 +19,7 @@ import java.util.function.Supplier;
  */
 public class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
     private final Supplier<ConnectionHandler> connections;
+
     public TimeUnitDao(Supplier<ConnectionHandler> connections) {
         this.connections = connections;
     }
@@ -136,8 +137,6 @@ public class TimeUnitDao implements DataAccessObject<TimeUnitEntity> {
             statement.setString(2, entity.shortName());
             statement.setInt(3, entity.rate());
             statement.setLong(4, entity.id());
-
-            statement.executeUpdate();
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated == 0) {

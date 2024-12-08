@@ -20,6 +20,7 @@ import java.util.function.Supplier;
 public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
 
     private final Supplier<ConnectionHandler> connections;
+
     public LogTimeInfoDao(Supplier<ConnectionHandler> connections) {
         this.connections = connections;
     }
@@ -141,8 +142,6 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
             statement.setLong(3, entity.userId());
             statement.setLong(4, entity.taskId());
             statement.setLong(5, entity.id());
-
-            statement.executeUpdate();
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated == 0) {

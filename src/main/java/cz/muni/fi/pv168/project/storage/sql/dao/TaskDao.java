@@ -193,7 +193,6 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
 
             statement.setDate(10, Date.valueOf(entity.dueDate()));
             statement.setLong(11, entity.id());
-            statement.executeUpdate();
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated == 0) {
@@ -256,7 +255,7 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
                 resultSet.getInt("allocatedTime"),
                 (Long) resultSet.getObject("timeUnitId"),
                 resultSet.getDate("dueDate").toLocalDate()
-                );
+        );
     }
 }
 
