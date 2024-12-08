@@ -26,9 +26,8 @@ public class DeleteTaskAction extends EntityBaseAction {
         var logModel = data.getLogTimeInfoTableModel();
         var rows = data.getTaskTable().getSelectedRows();
 
-
-        for (int i = 0; i < logModel.getRowCount(); i++) {
-            for (var row: rows) {
+        for (var row: rows) {
+            for (int i = 0; i < logModel.getRowCount(); i++) {
                 var task = data.getTaskTableModel().getEntity(row);
                 if (logModel.getValueAt(i, 0).equals(task.getId())){
                     logModel.deleteRow(i);
