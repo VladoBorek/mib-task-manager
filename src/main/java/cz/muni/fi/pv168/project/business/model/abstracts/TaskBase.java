@@ -23,12 +23,7 @@ public abstract class TaskBase extends Entity {
         super(id);
         this.category = category;
         this.name = name;
-        if (timeUnit == null) {
-            this.allocatedTime = allocatedTime;
-        }
-        else {
-            this.allocatedTime = allocatedTime * timeUnit.getRate();
-        }
+        this.allocatedTime = allocatedTime;
         this.timeUnit = timeUnit;
         this.description = description;
         this.assignedTo = assignedTo;
