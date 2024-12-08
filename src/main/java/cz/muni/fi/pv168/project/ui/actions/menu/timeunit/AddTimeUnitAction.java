@@ -46,13 +46,13 @@ public class AddTimeUnitAction extends EntityBaseAction {
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            Logger.info("Added new Time unit (id=" + newTimeUnit.getId() +",name=" + newTimeUnit.getName() + ")");
+            Logger.info("Added new Time unit (id=" + newTimeUnit.getId() + ",name=" + newTimeUnit.getName() + ")");
 
             if (comboBox != null) {
                 comboBox.setSelectedItem(newTimeUnit);
             } else {
                 PopUp.infoDialog(
-                        "Time Unit" + newTimeUnit.getName() + " was added",
+                        "Time Unit " + newTimeUnit.getName() + " was added",
                         "New time unit added",
                         JOptionPane.INFORMATION_MESSAGE);
             }
