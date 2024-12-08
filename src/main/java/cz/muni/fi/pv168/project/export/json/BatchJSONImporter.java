@@ -66,8 +66,8 @@ public class BatchJSONImporter implements BatchImporter {
         } catch (DataManipulationException e) {
             throw new DataManipulationException("Failed to import items\n" + e.getMessage());
         } catch (Exception e) {
-        throw new DataManipulationException("Failed to process items\n" + e.getMessage());
-    }
+            throw new DataManipulationException("Failed to process items\n" + e.getMessage());
+        }
     }
 
     /**
@@ -109,8 +109,7 @@ public class BatchJSONImporter implements BatchImporter {
                 }
                 addChar = true;
             }
-            if (!addChar && !(line.contains("{") || line.contains("}") ||
-                line.contains("[") || line.contains("]"))){
+            if (!addChar && !(line.contains("{") || line.contains("}") || line.contains("[") || line.contains("]"))){
                 throw new DataManipulationException("Line in file not in required format, line index (starting with 0) " + lineIndex);
             }
             lineIndex++;
