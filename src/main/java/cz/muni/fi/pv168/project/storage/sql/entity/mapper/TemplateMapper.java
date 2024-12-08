@@ -70,7 +70,7 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
             timeUnitId = null;
         } else {
             var timeUnitEntity = MapperUtils.getTimeUnitEntityById(timeUnitDao,
-                    businessTemplate.getTimeUnit(), e -> ((Template) e).getTimeUnit().getId());
+                    businessTemplate, e -> ((Template) e).getTimeUnit().getId());
             timeUnitId = timeUnitEntity.id();
         }
 
