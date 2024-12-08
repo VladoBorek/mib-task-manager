@@ -41,7 +41,7 @@ public abstract class TaskBase extends Entity {
         this.allocatedTime = allocatedTime;
     }
     public void setConvertedAllocatedTime(Integer allocatedTime) {
-        this.allocatedTime = allocatedTime * timeUnit.getRate();
+        this.allocatedTime = allocatedTime;
     }
 
     public void setTimeUnit(TimeUnit timeUnit) {
