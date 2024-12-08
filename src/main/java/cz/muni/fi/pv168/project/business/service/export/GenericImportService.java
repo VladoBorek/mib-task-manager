@@ -5,6 +5,7 @@ import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
+import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.business.service.export.batch.Batch;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchImporter;
@@ -14,7 +15,10 @@ import cz.muni.fi.pv168.project.business.service.export.format.FormatMapping;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.util.ActionType;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Generic synchronous implementation of the {@link ImportService}.
@@ -46,6 +50,7 @@ public class GenericImportService implements ImportService {
 
     @Override
     public void importData(String filePath, ActionType type, boolean deleteData) {
+
         if (deleteData) {
             switch (type) {
                 case TASK -> {  logTimeInfoCrudService.deleteAll();
@@ -69,11 +74,16 @@ public class GenericImportService implements ImportService {
             var filteredLogTimeInfos = importBatch.logTimeInfos().stream().filter(logTimeInfo -> !currentBatch.logTimeInfos().contains(logTimeInfo)).toList();
             var filteredTasks = importBatch.tasks().stream().filter(task -> !currentBatch.tasks().contains(task)).toList();
 
+            var firstOGID = filteredTasks.get(0).getId();
+
             filteredCategories.forEach(this::createCategory);
             filteredTemplates.forEach(this::createTemplate);
             filteredTimeUnits.forEach(this::createTimeUnit);
             filteredTasks.forEach(this::createTask);
-            filteredLogTimeInfos.forEach(this::createLogTimeInfo);
+
+            ArrayList<LogTimeInfo> filteredLogs = updateLogTaskIDs(filteredLogTimeInfos, filteredTasks, firstOGID);
+
+            filteredLogs.forEach(this::createLogTimeInfo);
         } catch (DataManipulationException dmex){
             throw new BatchOperationException("Import failed because of:\n" + dmex.getMessage());
         } catch (ValidationException vex){
@@ -81,9 +91,28 @@ public class GenericImportService implements ImportService {
         }
     }
 
+    private ArrayList<LogTimeInfo> updateLogTaskIDs(List<LogTimeInfo> filteredLogTimeInfos, List<Task> filteredTasks, Long firstOGID) {
+        AtomicLong lastID = new AtomicLong(0L);
+        taskCrudService.findAll().stream().forEach(task -> {
+            if (task.getId() > lastID.get()) {
+                lastID.set(task.getId());
+            }
+        });
+
+        var firstID = taskCrudService.findAll().get(taskCrudService.findAll().size() - filteredTasks.size()).getId();
+        var offset = firstID - firstOGID;
+
+        var filteredLogs = new ArrayList<LogTimeInfo>();
+        filteredLogTimeInfos.forEach(log -> filteredLogs.add(new LogTimeInfo(log.getLoggedTime(),
+                new User(log.getUsername(), log.getUserId()),
+                log.getTaskID() + offset)));
+        return filteredLogs;
+    }
+
     private void createTask(Task task) {
         taskCrudService.create(task)
                 .intoException();
+        System.out.println(task.getId());
     }
 
     private void createCategory(Category category) {

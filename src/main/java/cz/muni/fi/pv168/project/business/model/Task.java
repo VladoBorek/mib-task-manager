@@ -18,12 +18,7 @@ public class Task extends TaskBase {
         this.status = status;
         this.customer = customer;
 
-        if (timeUnit == null) {
-            this.loggedTime = loggedTime;
-        }
-        else {
-            this.loggedTime = loggedTime * timeUnit.getRate();
-        }
+        this.loggedTime = loggedTime;
         this.dueDate = dueDate;
     }
 

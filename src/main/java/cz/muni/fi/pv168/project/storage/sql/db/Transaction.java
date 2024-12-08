@@ -1,12 +1,10 @@
 package cz.muni.fi.pv168.project.storage.sql.db;
+import java.io.Closeable;
 
 /**
  * @author Vladimir Borek
  * Transaction handling
  */
-
-import java.io.Closeable;
-
 public interface Transaction extends Closeable {
 
     /**

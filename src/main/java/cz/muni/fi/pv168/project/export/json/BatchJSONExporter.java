@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -168,14 +169,14 @@ public class BatchJSONExporter implements BatchExporter {
      * @return String in JSON item format of all Work logs associated with {@link Task}.id
      */
     private String createTaskLogTimeInfos(Collection<LogTimeInfo> workLogs, Long taskID){
-        var countWorkLogs = workLogs.stream().filter(log -> log.getTaskID() == taskID).count();
+        var countWorkLogs = workLogs.stream().filter(log -> Objects.equals(log.getTaskID(), taskID)).count();
         StringBuilder stringBuilder = new StringBuilder(createJSONLine("work_logs_count", countWorkLogs));
         if (countWorkLogs != 0){
             stringBuilder.append(",\n");
         }
         int index = 0;
         for (var log: workLogs) {
-            if (log.getTaskID() == taskID) {
+            if (log.getTaskID().equals(taskID)) {
                 if (index != 0){
                     stringBuilder.append(",\n");
                 }
