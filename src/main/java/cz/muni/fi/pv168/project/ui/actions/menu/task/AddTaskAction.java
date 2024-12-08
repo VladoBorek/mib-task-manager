@@ -7,9 +7,9 @@ import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.AddTaskDialog;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -47,10 +47,16 @@ public class AddTaskAction extends EntityBaseAction {
             try {
                 taskTableModel.addRow(newTask);
             } catch (ValidationException e) {
-                PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+                Logger.error("Task was not added: " + e.getMessage());
+                PopUp.infoDialog(
+                        e.getValidationErrors(),
+                        "Input error",
+                        JOptionPane.ERROR_MESSAGE);
             }
+            Logger.info("Added new Task (id=" + newTask.getId() +",name=" + newTask.getName() + ")");
         });
 
-        ((StatisticsTableModel) data.getStatisticsTable().getModel()).refreshStatistics();
+
+        data.getStatisticsTableModel().refreshStatistics();
     }
 }

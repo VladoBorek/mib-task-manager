@@ -9,7 +9,7 @@ import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.InspectTaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.task.LogTimeDialog;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
+import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -38,12 +38,18 @@ public class LogTimeAction extends AbstractAction {
                 task.setLoggedTime(task.getLoggedTime() + newTimeInBaseUnits);
             });
 
-            ((StatisticsTableModel) data.getStatisticsTable().getModel()).refreshStatistics();
+            data.getStatisticsTableModel().refreshStatistics();
             inspectTaskDialog.updateLoggedTime();
 
         } catch (ValidationException exception) {
-            PopUp.infoDialog(exception.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+            Logger.error("Logging of time for Task (id=" + task.getId() +",name=" + task.getName() + ") has failed." + exception.getMessage());
+            PopUp.infoDialog(
+                    exception.getValidationErrors(),
+                    "Input error",
+                    JOptionPane.ERROR_MESSAGE);
         }
+        Logger.info("Logged time for Task (id=" + task.getId() +",name=" + task.getName() + ") has failed.");
+
     }
 
     private void validateInput(Integer newTimeInBaseUnits) {

@@ -184,7 +184,8 @@ public class BatchJSONImporter implements BatchImporter {
         for (int i = 0; i < workLogCount; i++) {
             parseWorkLog(workLogs, values, i, taskIDOffset);
         }
-        return new Task(null,
+        return new Task(
+                Long.parseLong((String) values.get("id")),
                 Status.valueOf((String) values.get("status")),
                 (String) values.get("description"),
                 category,
@@ -337,10 +338,11 @@ public class BatchJSONImporter implements BatchImporter {
                                      Integer loggedTime,
                                      User user,
                                      Long taskID,
-                                     int taskIDOffset)
+                                     int taskIDOffset,
+                                     String importedToString)
     {
         LogTimeInfo logTimeInfo = new LogTimeInfo(loggedTime, user, taskID + taskIDOffset);
-        return workLogs.computeIfAbsent(logTimeInfo.toString(), log -> logTimeInfo);
+        return workLogs.computeIfAbsent(importedToString, log -> logTimeInfo);
     }
 
     /**
@@ -371,7 +373,8 @@ public class BatchJSONImporter implements BatchImporter {
                 Integer.parseInt((String) values.get("work_log_logged_time" + stringOrder)),
                 user,
                 Long.parseLong((String) values.get("work_log_task_id" + stringOrder)),
-                taskIDOffset
+                taskIDOffset,
+                values.toString()
         );
     }
 

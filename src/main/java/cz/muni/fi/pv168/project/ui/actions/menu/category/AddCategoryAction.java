@@ -7,6 +7,7 @@ import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -38,12 +39,24 @@ public class AddCategoryAction extends EntityBaseAction {
             try {
                 data.getCategoryListModel().add(newCategory);
             } catch (ValidationException e) {
-                PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+                Logger.error("Category was not added: " + e.getValidationErrors());
+                PopUp.infoDialog(
+                        e.getValidationErrors(),
+                        "Input error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
+            Logger.info("Added new Category(id=" + newCategory.getId() +",name=" + newCategory.getName() + ")");
+
             if (comboBox != null) {
                 comboBox.setSelectedItem(newCategory);
+            }
+            else {
+                PopUp.infoDialog(
+                        "Category" + newCategory.getName() + " was added",
+                        "New category added",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         });
 

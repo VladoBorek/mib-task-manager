@@ -8,6 +8,7 @@ import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -41,12 +42,22 @@ public class AddTemplateAction extends EntityBaseAction {
             try {
                 templateTableModel.addRow(newTemplate);
             } catch (ValidationException exception) {
-                PopUp.infoDialog(exception.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+                Logger.error("Template was not added: " + exception.getMessage());
+                PopUp.infoDialog(
+                        exception.getValidationErrors(),
+                        "Input error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            Logger.info("Added new Template (id=" + newTemplate.getId() +",name=" + newTemplate.getName() + ")");
 
             if (comboBox != null) {
                 comboBox.setSelectedItem(newTemplate);
+            } else {
+                PopUp.infoDialog(
+                        "Template" + newTemplate.getName() + " was added",
+                        "New template added",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         });
     }

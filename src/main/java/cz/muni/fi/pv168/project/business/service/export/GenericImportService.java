@@ -48,7 +48,8 @@ public class GenericImportService implements ImportService {
     public void importData(String filePath, ActionType type, boolean deleteData) {
         if (deleteData) {
             switch (type) {
-                case TASK -> taskCrudService.deleteAll();
+                case TASK -> {  logTimeInfoCrudService.deleteAll();
+                                taskCrudService.deleteAll();}
                 case CATEGORY -> categoryCrudService.deleteAll();
                 case TEMPLATE -> templateCrudService.deleteAll();
                 case TIME_UNIT -> timeUnitCrudService.deleteAll();
@@ -61,18 +62,18 @@ public class GenericImportService implements ImportService {
                 logTimeInfoCrudService.findAll());
         try {
             var importBatch = getImporter(filePath).importBatch(filePath, type, currentBatch);
+
             var filteredCategories = importBatch.categories().stream().filter(category -> !currentBatch.categories().contains(category)).toList();
             var filteredTemplates = importBatch.templates().stream().filter(template -> !currentBatch.templates().contains(template)).toList();
             var filteredTimeUnits = importBatch.timeUnits().stream().filter(timeUnit -> !currentBatch.timeUnits().contains(timeUnit)).toList();
             var filteredLogTimeInfos = importBatch.logTimeInfos().stream().filter(logTimeInfo -> !currentBatch.logTimeInfos().contains(logTimeInfo)).toList();
-            //We allow duplicate tasks to be imported
-            //var filteredTasks = importBatch.categories().stream().filter(category -> currentBatch.categories().contains(category)).toList();
-            var batch = new Batch(importBatch.tasks(), filteredCategories, filteredTemplates, filteredTimeUnits, filteredLogTimeInfos);
-            batch.categories().forEach(this::createCategory);
-            batch.templates().forEach(this::createTemplate);
-            batch.timeUnits().forEach(this::createTimeUnit);
-            batch.tasks().forEach(this::createTask);
-            batch.logTimeInfos().forEach(this::createLogTimeInfo);
+            var filteredTasks = importBatch.tasks().stream().filter(task -> !currentBatch.tasks().contains(task)).toList();
+
+            filteredCategories.forEach(this::createCategory);
+            filteredTemplates.forEach(this::createTemplate);
+            filteredTimeUnits.forEach(this::createTimeUnit);
+            filteredTasks.forEach(this::createTask);
+            filteredLogTimeInfos.forEach(this::createLogTimeInfo);
         } catch (DataManipulationException dmex){
             throw new BatchOperationException("Import failed because of:\n" + dmex.getMessage());
         } catch (ValidationException vex){

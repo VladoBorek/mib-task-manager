@@ -8,6 +8,7 @@ import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.wiring.ProductionDependencyProvider;
 import net.miginfocom.swing.MigLayout;
+import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,6 +48,7 @@ public class LoginWindow {
 
     private boolean login() {
         if (usernameField.getText().isEmpty()) {
+            Logger.error("Application user did not fill all login information");
             PopUp.infoDialog(
                     "Please fill all login information.",
                     "Missing credentials",
@@ -57,9 +59,11 @@ public class LoginWindow {
             MainWindow mainWindow = new MainWindow(
                     new User(usernameField.getText(), (long) idField.getValue()),
                     new ProductionDependencyProvider());
+            Logger.info("Logged as " + usernameField.getText() + "with ID: " + (long) idField.getValue());
             mainWindow.show();
         } catch (Exception ex) {
-             showInitializationFailedDialog(ex);
+            Logger.error("Fatal application error" + ex);
+            showInitializationFailedDialog(ex);
         }
         return true;
     }
@@ -89,6 +93,7 @@ public class LoginWindow {
     }
 
     // TODO het
+
     private JPanel createTitlePanel() {
         JPanel titlePanel = new JPanel();
 

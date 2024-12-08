@@ -2,7 +2,6 @@ package cz.muni.fi.pv168.project.ui.actions.menu.task;
 
 import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
-import cz.muni.fi.pv168.project.ui.model.storagemodels.StatisticsTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import java.awt.event.ActionEvent;
@@ -24,6 +23,19 @@ public class DeleteTaskAction extends EntityBaseAction {
     }
 
     private void deleteTask() {
+        var logModel = data.getLogTimeInfoTableModel();
+        var rows = data.getTaskTable().getSelectedRows();
+
+        for (int i = 0; i < logModel.getRowCount(); i++) {
+            for (var row: rows) {
+                var task = data.getTaskTableModel().getEntity(row);
+                if (logModel.getValueAt(i, 0) == task.getId()){
+                    logModel.deleteRow(i);
+                    i = 0;
+                }
+            }
+        }
+
         var taskTableModelTableModel = data.getTaskTableModel();
         Arrays.stream(data.getTaskTable().getSelectedRows())
                 .map(data.getTaskTable()::convertRowIndexToModel)
@@ -31,7 +43,6 @@ public class DeleteTaskAction extends EntityBaseAction {
                 .sorted(Comparator.reverseOrder())
                 .forEach(taskTableModelTableModel::deleteRow);
 
-        // TODO: umh..
-        ((StatisticsTableModel) data.getStatisticsTable().getModel()).refreshStatistics();
+        data.getStatisticsTableModel().refreshStatistics();
     }
 }

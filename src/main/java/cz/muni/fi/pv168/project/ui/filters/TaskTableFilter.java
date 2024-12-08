@@ -68,7 +68,7 @@ public final class TaskTableFilter {
 
         private TaskCompoundMatcher(TableRowSorter<TaskTableModel> rowSorter, UIDataManager data) {
             this.rowSorter = rowSorter;
-            this.statisticsTableModel = (StatisticsTableModel) data.getStatisticsTable().getModel();
+            this.statisticsTableModel = data.getStatisticsTableModel();
         }
 
         private void setCategoryMatcher(EntityMatcher<Task> categoryMatcher) {

@@ -8,6 +8,7 @@ import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -44,7 +45,7 @@ public class EditTemplateAction extends EntityBaseAction {
         } else {
             var selectedRows = data.getTemplateTable().getSelectedRows();
             if (selectedRows.length != 1) {
-                //throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
+                Logger.error("User tried to edit more than one (1) template.");
                 PopUp.infoDialog("To edit template, please select exactly one (1) template.",
                         "Invalid selected rows",
                         JOptionPane.ERROR_MESSAGE);
@@ -61,10 +62,15 @@ public class EditTemplateAction extends EntityBaseAction {
                     try {
                         templateTableModel.updateRow(template);
                     } catch (ValidationException e){
-                        PopUp.infoDialog(e.getValidationErrors(), "Input error", JOptionPane.ERROR_MESSAGE);
+                        Logger.error("Edit of Template (id=" + template.getId() +",name=" + template.getName() + ") has failed." + e.getMessage());
+                        PopUp.infoDialog(
+                                e.getValidationErrors(),
+                                "Input error",
+                                JOptionPane.ERROR_MESSAGE);
                     }
                 }
         );
+        Logger.info("Edited Template(id=" + template.getId() +",name=" + template.getName() + ")");
     }
 
     private static void updateTemplate(Template oldT, Template newT) {
