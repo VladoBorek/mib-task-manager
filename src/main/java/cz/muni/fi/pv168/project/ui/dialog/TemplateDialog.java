@@ -17,6 +17,7 @@ import org.tinylog.Logger;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.Objects;
 
 import static cz.muni.fi.pv168.project.ui.utils.UIElements.*;
 
@@ -84,7 +85,7 @@ public class TemplateDialog extends EntityDialog<Template> {
         var newTemplate = new Template(null, taskNameField.getText(),
                 (Category) categoryComboBox.getSelectedItem(),
                 allocatedTimeField.getValue(),
-                (TimeUnit) timeUnitComboBox.getSelectedItem(),
+                (TimeUnit) Objects.requireNonNull(timeUnitComboBox.getSelectedItem()),
                 templateNameField.getText(),
                 descriptionArea.getText(),
                 assignedToField.getText());
