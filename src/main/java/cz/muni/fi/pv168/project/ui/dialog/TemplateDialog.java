@@ -81,11 +81,13 @@ public class TemplateDialog extends EntityDialog<Template> {
 
     @Override
     public Template getEntity() {
+        var timeunit = (TimeUnit) Objects.requireNonNull(timeUnitComboBox.getSelectedItem());
+
         Validator<Template> templateValidator = new TemplateValidator();
         var newTemplate = new Template(null, taskNameField.getText(),
                 (Category) categoryComboBox.getSelectedItem(),
-                allocatedTimeField.getValue(),
-                (TimeUnit) Objects.requireNonNull(timeUnitComboBox.getSelectedItem()),
+                allocatedTimeField.getValue() * timeunit.getRate(),
+                timeunit,
                 templateNameField.getText(),
                 descriptionArea.getText(),
                 assignedToField.getText());
