@@ -32,7 +32,7 @@ public class InspectTaskDialog extends EntityDialog<Task> {
     private final JLabel allocatedTime = new JLabel();
     private final JLabel date = new JLabel();
     private final UIDataManager data;
-    private final LogTimeInfoTableModel model;
+    private final LogTimeInfoTableModel logTimeInfoTableModel;
     private final JTable logTimeTable;
 
     public InspectTaskDialog(Task task, UIDataManager data) {
@@ -40,8 +40,8 @@ public class InspectTaskDialog extends EntityDialog<Task> {
 
         this.data = data;
         this.task = task;
-        this.model = data.getLogTimeInfoTableModel();
-        this.logTimeTable = createLogTimeInfoTable(this.model, this.task);
+        this.logTimeInfoTableModel = data.getLogTimeInfoTableModel();
+        this.logTimeTable = createLogTimeInfoTable(this.logTimeInfoTableModel, this.task);
 
         setValues();
         FormatFields();
@@ -147,7 +147,7 @@ public class InspectTaskDialog extends EntityDialog<Task> {
 
     public void updateLoggedTime() {
         loggedTime.setText(task.getConvertedLoggedTimeString());
-        model.refresh();
+        logTimeInfoTableModel.refresh();
     }
 
     @Override
