@@ -74,16 +74,19 @@ public class GenericImportService implements ImportService {
             var filteredLogTimeInfos = importBatch.logTimeInfos().stream().filter(logTimeInfo -> !currentBatch.logTimeInfos().contains(logTimeInfo)).toList();
             var filteredTasks = importBatch.tasks().stream().filter(task -> !currentBatch.tasks().contains(task)).toList();
 
-            var firstOGID = filteredTasks.get(0).getId();
+            var taskImportFirstID = 0L;
+            if (type == ActionType.TASK){
+                taskImportFirstID = filteredTasks.get(0).getId();
+            }
 
             filteredCategories.forEach(this::createCategory);
             filteredTemplates.forEach(this::createTemplate);
             filteredTimeUnits.forEach(this::createTimeUnit);
             filteredTasks.forEach(this::createTask);
 
-            ArrayList<LogTimeInfo> filteredLogs = updateLogTaskIDs(filteredLogTimeInfos, filteredTasks, firstOGID);
+            filteredLogTimeInfos = updateLogTaskIDs(filteredLogTimeInfos, filteredTasks, taskImportFirstID);
 
-            filteredLogs.forEach(this::createLogTimeInfo);
+            filteredLogTimeInfos.forEach(this::createLogTimeInfo);
         } catch (DataManipulationException dmex){
             throw new BatchOperationException("Import failed because of:\n" + dmex.getMessage());
         } catch (ValidationException vex){
@@ -91,16 +94,19 @@ public class GenericImportService implements ImportService {
         }
     }
 
-    private ArrayList<LogTimeInfo> updateLogTaskIDs(List<LogTimeInfo> filteredLogTimeInfos, List<Task> filteredTasks, Long firstOGID) {
+    private ArrayList<LogTimeInfo> updateLogTaskIDs(List<LogTimeInfo> filteredLogTimeInfos, List<Task> filteredTasks, Long taskImportFirstID) {
+        if (filteredTasks.size() == 0){
+            return new ArrayList<LogTimeInfo>(filteredLogTimeInfos);
+        }
         AtomicLong lastID = new AtomicLong(0L);
-        taskCrudService.findAll().stream().forEach(task -> {
+        taskCrudService.findAll().forEach(task -> {
             if (task.getId() > lastID.get()) {
                 lastID.set(task.getId());
             }
         });
 
         var firstID = taskCrudService.findAll().get(taskCrudService.findAll().size() - filteredTasks.size()).getId();
-        var offset = firstID - firstOGID;
+        var offset = firstID - taskImportFirstID;
 
         var filteredLogs = new ArrayList<LogTimeInfo>();
         filteredLogTimeInfos.forEach(log -> filteredLogs.add(new LogTimeInfo(log.getLoggedTime(),
