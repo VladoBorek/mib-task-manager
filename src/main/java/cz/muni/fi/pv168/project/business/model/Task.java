@@ -17,8 +17,7 @@ public class Task extends TaskBase {
         super(id, category, name, allocatedTime, timeUnit, description, assignedTo);
         this.status = status;
         this.customer = customer;
-
-        this.loggedTime = loggedTime * timeUnit.getRate();
+        this.loggedTime = loggedTime;
         this.dueDate = dueDate;
     }
 
