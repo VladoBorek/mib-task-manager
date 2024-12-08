@@ -39,9 +39,9 @@ public class TemplateSqlRepository implements Repository<Template> {
 
     @Override
     public void update(Template entity) {
-        TemplateEntity existingCategory = templateDao.findById(entity.getId())
+        TemplateEntity existingEntity = templateDao.findById(entity.getId())
                 .orElseThrow(() -> new DataStorageException("Template not found, id: " + entity.getId()));
-        TemplateEntity updatedEntity = templateMapper.mapExistingEntityToDatabase(entity, existingCategory.id());
+        TemplateEntity updatedEntity = templateMapper.mapExistingEntityToDatabase(entity, existingEntity.id());
 
         templateDao.update(updatedEntity);
     }

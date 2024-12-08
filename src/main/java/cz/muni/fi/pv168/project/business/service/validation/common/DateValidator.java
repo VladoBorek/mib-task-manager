@@ -16,8 +16,6 @@ public class DateValidator extends PropertyValidator<LocalDate> {
         ValidationResult result = new ValidationResult();
         if (date == null) {
             result.add(getName() + " must not be null.");
-        } else if (date.isBefore(LocalDate.now())) {
-            result.add(getName() + " must not be in the past.");
         }
         return result;
     }

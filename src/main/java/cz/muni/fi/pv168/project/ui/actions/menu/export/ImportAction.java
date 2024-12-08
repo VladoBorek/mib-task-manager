@@ -50,6 +50,13 @@ public class ImportAction extends AbstractAction {
                         "Import status",
                         JOptionPane.ERROR_MESSAGE);
                 return;
+            } catch (Exception exception){
+                Logger.error("Failed to store data." + exception.getMessage());
+                PopUp.infoDialog(
+                        "Import has failed:\n" + exception.getMessage() + "\nNo items were imported.",
+                        "Import status",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
             }
             Logger.info("Import of " + importFile.getAbsolutePath() + " has finished. Original data overwritten: " + deleteData);
             PopUp.infoDialog(
