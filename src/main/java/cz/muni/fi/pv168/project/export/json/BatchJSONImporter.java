@@ -52,7 +52,7 @@ public class BatchJSONImporter implements BatchImporter {
             for (var item : imported) {
                 switch (type) {
                     case TASK ->
-                            tasks.put(item.toString(),parseTask(categories, timeUnits, workLogs,item, (long) currentData.tasks().size()));
+                            tasks.put(item.toString(),parseTask(categories, timeUnits, workLogs,item));
                     case CATEGORY -> categories.put(item.toString(), parseCategory(categories, item));
                     case TEMPLATE ->
                             templates.put(item.toString(),parseTemplate(templates, categories, timeUnits, item));
@@ -162,14 +162,12 @@ public class BatchJSONImporter implements BatchImporter {
      * @param timeUnits    Map of {@link TimeUnit} from this import
      * @param workLogs     Map of {@link LogTimeInfo} from this import
      * @param values       Values for the parsing Task
-     * @param newTaskIDIndex new task ID, so new {@link LogTimeInfo} is paired with correct Task
      * @return {@link Task} with provided values
      */
     private Task parseTask(HashMap<String, Category> categories,
                            HashMap<String, TimeUnit> timeUnits,
                            HashMap<String, LogTimeInfo> workLogs,
-                           HashMap<String, Object> values,
-                           Long newTaskIDIndex) {
+                           HashMap<String, Object> values) {
         var category = parseCategory(categories,
                 (String) values.get("category_name"),
                 Integer.parseInt((String) values.get("category_color")));
@@ -180,9 +178,8 @@ public class BatchJSONImporter implements BatchImporter {
                 Integer.parseInt((String) values.get("time_unit_rate")));
 
         var workLogCount = Integer.parseInt((String) values.get("work_logs_count"));
-        newTaskIDIndex += Long.parseLong((String) values.get("id"));
         for (int i = 0; i < workLogCount; i++) {
-            parseWorkLog(workLogs, values, i, newTaskIDIndex);
+            parseWorkLog(workLogs, values, i);
         }
         return new Task(
                 Long.parseLong((String) values.get("id")),
@@ -349,13 +346,11 @@ public class BatchJSONImporter implements BatchImporter {
      * @param workLogs     Map of {@link LogTimeInfo} from this import
      * @param values       Map containing values for the time unit
      * @param order        order of LogTimeInfo when exporting inside of {@link #parseTask}
-     * @param taskID       ID of associated new {@link Task}
      * @return new {@link TimeUnit} with the provided values
      */
     private LogTimeInfo parseWorkLog(HashMap<String, LogTimeInfo> workLogs,
                                      HashMap<String, Object> values,
-                                     Integer order,
-                                     Long taskID)
+                                     Integer order)
     {
         String stringOrder;
         if (order == null){
@@ -366,13 +361,10 @@ public class BatchJSONImporter implements BatchImporter {
         User user = new User(
                 (String) values.get("work_log_user_name" + stringOrder),
                 Long.parseLong((String) values.get("work_log_user_id" + stringOrder)));
-        if (taskID == null) {
-            taskID = Long.parseLong((String) values.get("work_log_task_id" + stringOrder));
-        }
         return parseWorkLog(workLogs,
                 Integer.parseInt((String) values.get("work_log_logged_time" + stringOrder)),
                 user,
-                taskID,
+                Long.parseLong((String) values.get("work_log_task_id" + stringOrder)),
                 values.toString()
         );
     }
@@ -389,8 +381,7 @@ public class BatchJSONImporter implements BatchImporter {
     {
         return parseWorkLog(workLogs,
                 values,
-                null,
-                Long.parseLong((String) values.get("work_log_task_id"))
+                null
         );
     }
 
