@@ -34,13 +34,15 @@ public class TaskMapper implements EntityMapper<TaskEntity, Task>{
 
     @Override
     public Task mapToBusiness(TaskEntity entity) {
-        var category = MapperUtils.getCategoryById(categoryDao, entity, categoryMapper);
+        var category = MapperUtils.getCategoryById(categoryDao,
+                entity, categoryMapper, e -> ((TaskEntity) e).categoryId());
 
         TimeUnit timeUnit;
         if (entity.timeUnitId() == null) {
             timeUnit = Constants.BASE_TIME_UNIT;
         } else {
-            timeUnit = MapperUtils.getTimeUnitById(timeUnitDao, entity, timeUnitMapper);
+            timeUnit = MapperUtils.getTimeUnitById(timeUnitDao,
+                    entity, timeUnitMapper, e -> ((TaskEntity) e).timeUnitId());
         }
 
         return new Task(
@@ -60,41 +62,20 @@ public class TaskMapper implements EntityMapper<TaskEntity, Task>{
 
     @Override
     public TaskEntity mapNewEntityToDatabase(Task entity) {
-        var categoryEntity = MapperUtils.getCategoryEntityById(categoryDao, entity);
-
-        Long timeUnitId;
-        if (entity.getTimeUnit().equals(Constants.BASE_TIME_UNIT)) {
-            timeUnitId = null;
-        } else {
-            var timeUnitEntity = MapperUtils.getTimeUnitEntityById(timeUnitDao, entity);
-            timeUnitId = timeUnitEntity.id();
-        }
-
-        return new TaskEntity(
-                entity.getId(),
-                entity.getStatus(),
-                entity.getDescription(),
-                categoryEntity.id(),
-                entity.getCustomer(),
-                entity.getName(),
-                entity.getAssignedTo(),
-                entity.getLoggedTime(),
-                entity.getAllocatedTime(),
-                timeUnitId,
-                entity.getDueDate()
-        );
+        return mapExistingEntityToDatabase(entity, entity.getId());
     }
 
-    // TODO: duplication
     @Override
     public TaskEntity mapExistingEntityToDatabase(Task entity, Long dbId) {
-        var categoryEntity = MapperUtils.getCategoryEntityById(categoryDao, entity);
+        var categoryEntity = MapperUtils.getCategoryEntityById(categoryDao,
+                entity, e -> ((Task) e).getCategory().getId());
 
         Long timeUnitId;
         if (entity.getTimeUnit().equals(Constants.BASE_TIME_UNIT)) {
             timeUnitId = null;
         } else {
-            var timeUnitEntity = MapperUtils.getTimeUnitEntityById(timeUnitDao, entity);
+            var timeUnitEntity = MapperUtils.getTimeUnitEntityById(timeUnitDao,
+                    entity, e -> ((Task) e).getTimeUnit().getId());
             timeUnitId = timeUnitEntity.id();
         }
 

@@ -33,20 +33,14 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
 
     @Override
     public Template mapToBusiness(TemplateEntity dbTemplate) {
-        var category = categoryDao
-                .findById(dbTemplate.categoryId())
-                .map(categoryMapper::mapToBusiness)
-                .orElseThrow(() -> new DataStorageException("Category not found, id: " +
-                        dbTemplate.categoryId()));
+        var category = MapperUtils.getCategoryById(categoryDao,
+                dbTemplate, categoryMapper, e -> ((TemplateEntity) e).categoryId());
         TimeUnit timeUnit;
         if (dbTemplate.timeUnitId() == null) {
             timeUnit = Constants.BASE_TIME_UNIT;
         } else {
-            timeUnit = timeUnitDao
-                    .findById(dbTemplate.timeUnitId())
-                    .map(timeUnitMapper::mapToBusiness)
-                    .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
-                            dbTemplate.timeUnitId()));
+            timeUnit = MapperUtils.getTimeUnitById(timeUnitDao,
+                    dbTemplate, timeUnitMapper, e -> ((TemplateEntity) e).timeUnitId());
         }
 
         return new Template(
@@ -63,47 +57,19 @@ public class TemplateMapper implements EntityMapper<TemplateEntity, Template> {
 
     @Override
     public TemplateEntity mapNewEntityToDatabase(Template businessTemplate) {
-        var categoryEntity = categoryDao
-                .findById(businessTemplate.getCategory().getId())
-                .orElseThrow(() -> new DataStorageException("Category not found, id: " +
-                        businessTemplate.getCategory().getId()));
-        Long timeUnitId;
-        if (businessTemplate.getTimeUnit().equals(Constants.BASE_TIME_UNIT)) {
-            timeUnitId = null;
-        } else {
-            var timeUnitEntity = timeUnitDao
-                    .findById(businessTemplate.getTimeUnit().getId())
-                    .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
-                            businessTemplate.getTimeUnit().getId()));
-            timeUnitId = timeUnitEntity.id();
-        }
-
-        return new TemplateEntity(
-                businessTemplate.getId(),
-                businessTemplate.getDescription(),
-                categoryEntity.id(),
-                businessTemplate.getTemplateName(),
-                businessTemplate.getName(),
-                businessTemplate.getAssignedTo(),
-                businessTemplate.getAllocatedTime(),
-                timeUnitId
-        );
+        return mapExistingEntityToDatabase(businessTemplate, businessTemplate.getId());
     }
 
     @Override
     public TemplateEntity mapExistingEntityToDatabase(Template businessTemplate, Long dbId) {
-        var categoryEntity = categoryDao
-                .findById(businessTemplate.getCategory().getId())
-                .orElseThrow(() -> new DataStorageException("Category not found, id: " +
-                        businessTemplate.getCategory().getId()));
+        var categoryEntity = MapperUtils.getCategoryEntityById(categoryDao,
+                businessTemplate.getCategory(), e -> ((Template) e).getCategory().getId());
         Long timeUnitId;
         if (businessTemplate.getTimeUnit().equals(Constants.BASE_TIME_UNIT)) {
             timeUnitId = null;
         } else {
-            var timeUnitEntity = timeUnitDao
-                    .findById(businessTemplate.getTimeUnit().getId())
-                    .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
-                            businessTemplate.getTimeUnit().getId()));
+            var timeUnitEntity = MapperUtils.getTimeUnitEntityById(timeUnitDao,
+                    businessTemplate.getTimeUnit(), e -> ((Template) e).getTimeUnit().getId());
             timeUnitId = timeUnitEntity.id();
         }
 
