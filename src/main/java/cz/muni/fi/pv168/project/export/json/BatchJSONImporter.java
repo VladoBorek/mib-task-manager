@@ -41,8 +41,9 @@ public class BatchJSONImporter implements BatchImporter {
         var timeUnits = new HashMap<String, TimeUnit>();
         var workLogs = new HashMap<String, LogTimeInfo>();
 
-        currentData.categories().forEach(category -> categories.put(category.getName(), category));
-        currentData.timeUnits().forEach(timeUnit -> timeUnits.put(timeUnit.getName(), timeUnit));
+        currentData.categories().forEach(category -> categories.put(category.toString(), category));
+        currentData.templates().forEach(template -> templates.put(template.toString(), template));
+        currentData.timeUnits().forEach(timeUnit -> timeUnits.put(timeUnit.toString(), timeUnit));
         currentData.logTimeInfos().forEach(workLog -> workLogs.put(workLog.toString(), workLog));
 
         try (var reader = Files.newBufferedReader(Path.of(filePath))) {
@@ -51,13 +52,26 @@ public class BatchJSONImporter implements BatchImporter {
 
             for (var item : imported) {
                 switch (type) {
-                    case TASK ->
-                            tasks.put(item.toString(),parseTask(categories, timeUnits, workLogs,item));
-                    case CATEGORY -> categories.put(item.toString(), parseCategory(categories, item));
-                    case TEMPLATE ->
-                            templates.put(item.toString(),parseTemplate(templates, categories, timeUnits, item));
-                    case TIME_UNIT -> timeUnits.put(item.toString(),parseTimeUnit(timeUnits, item));
-                    case WORK_LOG -> workLogs.put(item.toString(),parseWorkLog(workLogs, item));
+                    case TASK ->{
+                        var task = parseTask(categories, timeUnits, workLogs,item);
+                        tasks.put(task.toString(), task);
+                    }
+                    case CATEGORY -> {
+                        var category = parseCategory(categories, item);
+                        categories.put(category.toString(), category);
+                    }
+                    case TEMPLATE ->{
+                        var template = parseTemplate(templates, categories, timeUnits, item);
+                        templates.put(template.toString(), template);
+                    }
+                    case TIME_UNIT -> {
+                        var timeUnit = parseTimeUnit(timeUnits, item);
+                        timeUnits.put(timeUnit.toString(), timeUnit);
+                    }
+                    case WORK_LOG -> {
+                        var workLog = parseWorkLog(workLogs, item);
+                        workLogs.put(workLog.toString(),workLog);
+                    }
                 }
             }
             return new Batch(tasks.values(), categories.values(), templates.values(), timeUnits.values(), workLogs.values());
@@ -206,7 +220,8 @@ public class BatchJSONImporter implements BatchImporter {
      */
     private Category parseCategory(HashMap<String, Category> categories,
                                    String name, Integer color) {
-        return categories.computeIfAbsent(name, category -> new Category(null, name, new Color(color)));
+        var categoryNew = new Category(null, name, new Color(color));
+        return categories.computeIfAbsent(categoryNew.toString(), category -> categoryNew);
     }
 
     /**
@@ -244,16 +259,16 @@ public class BatchJSONImporter implements BatchImporter {
                                    Integer allocated_time,
                                    String description,
                                    String assignedTo) {
-        return templates.computeIfAbsent(templateName,
-                template -> new Template(null,
-                        taskName,
-                        category,
-                        allocated_time,
-                        timeUnit,
-                        templateName,
-                        description,
-                        assignedTo
-                ));
+        var templateNew = new Template(null,
+                    taskName,
+                    category,
+                    allocated_time,
+                    timeUnit,
+                    templateName,
+                    description,
+                    assignedTo
+        );
+        return templates.computeIfAbsent(templateNew.toString(), template -> templateNew);
     }
 
     /**
@@ -301,8 +316,9 @@ public class BatchJSONImporter implements BatchImporter {
      */
     private TimeUnit parseTimeUnit(HashMap<String, TimeUnit> timeUnits,
                                    String name, String shortName, Integer rate) {
-        return timeUnits.computeIfAbsent(name,
-                timeUnit -> new TimeUnit(null, name, shortName, rate));
+
+        var timeUnitNew = new TimeUnit(null, name, shortName, rate);
+        return timeUnits.computeIfAbsent(timeUnitNew.toString(), timeUnit -> timeUnitNew);
     }
 
     /**
@@ -328,16 +344,15 @@ public class BatchJSONImporter implements BatchImporter {
      * @param loggedTime       value of logged time
      * @param user             {@link User} user associated with the {@link LogTimeInfo}
      * @param taskID           ID of associated new {@link Task}
-     * @param importedToString string for key in workLogs HashMap
      * @return new {@link TimeUnit} with the provided values
      */
     private LogTimeInfo parseWorkLog(HashMap<String, LogTimeInfo> workLogs,
                                      Integer loggedTime,
                                      User user,
-                                     Long taskID,
-                                     String importedToString)
+                                     Long taskID)
     {
-        return workLogs.computeIfAbsent(importedToString, log -> new LogTimeInfo(loggedTime, user, taskID));
+        var workLogNew = new LogTimeInfo(loggedTime, user, taskID);
+        return workLogs.computeIfAbsent(workLogNew.toString(), log -> workLogNew);
     }
 
     /**
@@ -364,8 +379,7 @@ public class BatchJSONImporter implements BatchImporter {
         return parseWorkLog(workLogs,
                 Integer.parseInt((String) values.get("work_log_logged_time" + stringOrder)),
                 user,
-                Long.parseLong((String) values.get("work_log_task_id" + stringOrder)),
-                values.toString()
+                Long.parseLong((String) values.get("work_log_task_id" + stringOrder))
         );
     }
 
