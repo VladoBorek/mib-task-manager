@@ -84,7 +84,9 @@ public class GenericImportService implements ImportService {
             filteredTemplates.forEach(this::createTemplate);
             filteredTimeUnits.forEach(this::createTimeUnit);
             filteredTasks.forEach(this::createTask);
-            updateLogTaskIDs(filteredLogTimeInfos, filteredTasks, taskImportFirstID).forEach(this::createLogTimeInfo);
+
+            var updatedLogs = updateLogTaskIDs(filteredLogTimeInfos, filteredTasks, taskImportFirstID);
+            updatedLogs.forEach(this::createLogTimeInfo);
         } catch (DataManipulationException dmex){
             throw new BatchOperationException("Import failed because of:\n" + dmex.getMessage());
         } catch (ValidationException vex){
@@ -113,7 +115,6 @@ public class GenericImportService implements ImportService {
     private void createTask(Task task) {
         taskCrudService.create(task)
                 .intoException();
-        System.out.println(task.getId());
     }
 
     private void createCategory(Category category) {
