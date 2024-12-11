@@ -27,7 +27,10 @@ public class ImportAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        boolean deleteData = getDataOverride();
+        int deleteData = getDataOverride();
+        if(deleteData == -1){
+            return;
+        }
 
         var fileChooser = new JFileChooser();
         importService.getFormats().forEach(f -> fileChooser.setFileFilter(new Filter(f)));
@@ -37,7 +40,7 @@ public class ImportAction extends AbstractAction {
 
             try {
 
-                importService.importData(importFile.getAbsolutePath(), deleteData);
+                importService.importData(importFile.getAbsolutePath(), deleteData == 0);
 
             } catch (BatchOperationException ex){
                 Logger.error("Import of " + importFile.getAbsolutePath() + " has failed.");
@@ -63,8 +66,8 @@ public class ImportAction extends AbstractAction {
         }
     }
 
-    private static boolean getDataOverride(){
-        return 0 == PopUp.optionDialog("Do you want to override existing items or add new ones?",
+    private static int getDataOverride(){
+        return PopUp.optionDialog("Do you want to override existing items or add new ones?",
                 "Import Options",
                 new String[]{"Override", "Add"});
     }
