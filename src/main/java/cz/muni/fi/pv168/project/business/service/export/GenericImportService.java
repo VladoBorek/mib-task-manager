@@ -50,8 +50,8 @@ public class GenericImportService implements ImportService {
         if (deleteData) {
             logTimeInfoCrudService.deleteAll();
             taskCrudService.deleteAll();
-            categoryCrudService.deleteAll();
             templateCrudService.deleteAll();
+            categoryCrudService.deleteAll();
             timeUnitCrudService.deleteAll();
         }
         var currentBatch = new Batch(
@@ -70,8 +70,8 @@ public class GenericImportService implements ImportService {
             var filteredTasks = importBatch.tasks().stream().filter(task -> !currentBatch.tasks().contains(task)).toList();
 
             filteredCategories.forEach(this::createCategory);
-            filteredTemplates.forEach(this::createTemplate);
             filteredTimeUnits.forEach(this::createTimeUnit);
+            filteredTemplates.forEach(this::createTemplate);
             filteredTasks.forEach(this::createTask);
 
         } catch (DataManipulationException dmex){
