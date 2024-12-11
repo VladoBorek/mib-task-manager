@@ -122,7 +122,7 @@ public class JSONObjectParsers {
                 description,
                 assignedTo
         );
-        return templates.computeIfAbsent(templateNew.toString(), template -> templateNew);
+        return templates.computeIfAbsent(templateNew.getTemplateName(), template -> templateNew);
     }
 
     /**
@@ -136,7 +136,7 @@ public class JSONObjectParsers {
     private static Category parseCategory(HashMap<String, Category> categories,
                                    String name, Integer color) {
         var categoryNew = new Category(null, name, new Color(color));
-        return categories.computeIfAbsent(categoryNew.toString(), category -> categoryNew);
+        return categories.computeIfAbsent(categoryNew.getName(), category -> categoryNew);
     }
 
     /**
@@ -152,7 +152,7 @@ public class JSONObjectParsers {
                                    String name, String shortName, Integer rate) {
 
         var timeUnitNew = new TimeUnit(null, name, shortName, rate);
-        return timeUnits.computeIfAbsent(timeUnitNew.toString(), timeUnit -> timeUnitNew);
+        return timeUnits.computeIfAbsent(timeUnitNew.getName(), timeUnit -> timeUnitNew);
     }
 
     /**

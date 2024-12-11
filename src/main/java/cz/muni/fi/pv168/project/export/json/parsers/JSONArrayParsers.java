@@ -28,7 +28,7 @@ public class JSONArrayParsers {
                                  HashMap<String, TimeUnit> timeUnits){
         for (int i = 0; i < templateArray.length(); i++) {
             var template = JSONObjectParsers.parseTemplate(templates, categories, timeUnits, templateArray.getJSONObject(i));
-            templates.put(template.getName(), template);
+            templates.put(template.getTemplateName(), template);
         }
     }
 
