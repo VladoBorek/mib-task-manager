@@ -50,10 +50,6 @@ public class ExportAction extends AbstractAction {
                 return;
             }
             Logger.info("Export  has finished" + exportFilePath);
-            PopUp.infoDialog(
-                    "Export has successfully finished.",
-                    "Export status",
-                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }
