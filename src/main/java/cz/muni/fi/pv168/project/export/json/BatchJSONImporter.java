@@ -10,7 +10,6 @@ import cz.muni.fi.pv168.project.business.service.export.batch.Batch;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchImporter;
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
 import cz.muni.fi.pv168.project.export.json.parsers.JSONArrayParsers;
-import cz.muni.fi.pv168.project.util.ActionType;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -27,10 +26,9 @@ import java.util.List;
 public class BatchJSONImporter implements BatchImporter {
 
     private static final Format FORMAT = new Format("JSON", List.of("json"));
-    private static final String TAB = "    ";
 
     @Override
-    public Batch importBatch(String filePath, ActionType type, Batch currentData) {
+    public Batch importBatch(String filePath, Batch currentData) {
         var tasks = new HashMap<String, Task>();
         var categories = new HashMap<String, Category>();
         var templates = new HashMap<String, Template>();

@@ -12,7 +12,6 @@ import cz.muni.fi.pv168.project.business.service.export.batch.BatchExporter;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
 import cz.muni.fi.pv168.project.business.service.export.format.FormatMapping;
-import cz.muni.fi.pv168.project.util.ActionType;
 
 import java.util.Collection;
 
@@ -51,14 +50,14 @@ public class GenericExportService implements ExportService {
     }
 
     @Override
-    public void exportData(String filePath, ActionType type) {
+    public void exportData(String filePath) {
         var exporter = getExporter(filePath);
         var batch = new Batch(taskCrudService.findAll(),
                 categoryCrudService.findAll(),
                 templateCrudService.findAll(),
                 timeUnitCrudService.findAll(),
                 logTimeInfoCrudService.findAll());
-        exporter.exportBatch(batch, filePath, type);
+        exporter.exportBatch(batch, filePath);
     }
 
     private BatchExporter getExporter(String filePath) {

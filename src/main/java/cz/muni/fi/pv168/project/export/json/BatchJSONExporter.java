@@ -5,7 +5,6 @@ import cz.muni.fi.pv168.project.business.service.export.batch.Batch;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchExporter;
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
 import cz.muni.fi.pv168.project.export.json.exporters.JSONExporters;
-import cz.muni.fi.pv168.project.util.ActionType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -26,7 +25,7 @@ import java.util.function.Function;
 public class BatchJSONExporter implements BatchExporter {
     private static final Format FORMAT = new Format("JSON", List.of("json"));
     @Override
-    public void exportBatch(Batch batch, String filePath, ActionType type) {
+    public void exportBatch(Batch batch, String filePath) {
 
         try (var writer = Files.newBufferedWriter(Path.of(filePath), StandardCharsets.UTF_8)) {
             var exportObject = new JSONObject();

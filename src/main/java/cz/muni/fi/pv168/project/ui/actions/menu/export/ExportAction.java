@@ -2,7 +2,6 @@ package cz.muni.fi.pv168.project.ui.actions.menu.export;
 
 import cz.muni.fi.pv168.project.business.service.export.ExportService;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
-import cz.muni.fi.pv168.project.util.ActionType;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.util.Filter;
@@ -24,15 +23,6 @@ public class ExportAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var userChoice = PopUp.optionDialog(
-                "Select items to export",
-                "Export Options",
-                new String[]{"Tasks", "Categories", "Template","Time Units", "Work Logs"});
-        if (userChoice < 0 || userChoice > 4) {
-            return;
-        }
-
-        ActionType exportOption = ActionType.values()[userChoice];
 
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Specify a file to save");
@@ -46,17 +36,17 @@ public class ExportAction extends AbstractAction {
             }
             try {
 
-                exportService.exportData(exportFilePath, exportOption);
+                exportService.exportData(exportFilePath);
 
             } catch (BatchOperationException ex){
-                Logger.error("Export of " + exportOption.name() + "S has failed.");
+                Logger.error("Export has failed.");
                 PopUp.infoDialog(
                         "Export has failed:\n" + ex.getMessage(),
                         "Export status",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            Logger.info("Export of" + exportOption.name() + "S has finished" + exportFilePath);
+            Logger.info("Export  has finished" + exportFilePath);
             PopUp.infoDialog(
                     "Export has successfully finished.",
                     "Export status",

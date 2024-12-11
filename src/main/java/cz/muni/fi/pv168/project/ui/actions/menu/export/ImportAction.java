@@ -4,7 +4,6 @@ import cz.muni.fi.pv168.project.business.service.export.ImportService;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
-import cz.muni.fi.pv168.project.util.ActionType;
 import cz.muni.fi.pv168.project.util.Filter;
 import org.tinylog.Logger;
 
@@ -28,9 +27,6 @@ public class ImportAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var importOption = getItemsToExport();
-        if (importOption == null) return;
-
         boolean deleteData = getDataOverride();
 
         var fileChooser = new JFileChooser();
@@ -41,7 +37,7 @@ public class ImportAction extends AbstractAction {
 
             try {
 
-                importService.importData(importFile.getAbsolutePath(), importOption, deleteData);
+                importService.importData(importFile.getAbsolutePath(), deleteData);
 
             } catch (BatchOperationException ex){
                 Logger.error("Import of " + importFile.getAbsolutePath() + " has failed.");
@@ -65,17 +61,6 @@ public class ImportAction extends AbstractAction {
                     JOptionPane.INFORMATION_MESSAGE);
             callback.run();
         }
-    }
-
-    private static ActionType getItemsToExport() {
-        var userChoice = PopUp.optionDialog(
-                "Select items to import",
-                "Import Options",
-                new String[]{"Tasks", "Categories", "Template","Time Units", "Work Logs"});
-        if (userChoice < 0 || userChoice > 4) {
-            return null;
-        }
-        return ActionType.values()[userChoice];
     }
 
     private static boolean getDataOverride(){

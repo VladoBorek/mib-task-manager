@@ -3,7 +3,6 @@ package cz.muni.fi.pv168.project.storage.sql;
 import cz.muni.fi.pv168.project.business.service.export.ImportService;
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
 import cz.muni.fi.pv168.project.storage.sql.db.TransactionExecutor;
-import cz.muni.fi.pv168.project.util.ActionType;
 
 import java.util.Collection;
 
@@ -21,8 +20,8 @@ public class TransactionalImportService implements ImportService {
     }
 
     @Override
-    public void importData(String filePath, ActionType type, boolean deleteData) {
-        transactionExecutor.executeInTransaction(() -> importService.importData(filePath, type, deleteData));
+    public void importData(String filePath, boolean deleteData) {
+        transactionExecutor.executeInTransaction(() -> importService.importData(filePath, deleteData));
     }
 
     @Override

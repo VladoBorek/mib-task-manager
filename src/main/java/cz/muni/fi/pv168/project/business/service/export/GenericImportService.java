@@ -13,11 +13,8 @@ import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationExce
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
 import cz.muni.fi.pv168.project.business.service.export.format.FormatMapping;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
-import cz.muni.fi.pv168.project.util.ActionType;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Generic synchronous implementation of the {@link ImportService}.
@@ -48,17 +45,14 @@ public class GenericImportService implements ImportService {
     }
 
     @Override
-    public void importData(String filePath, ActionType type, boolean deleteData) {
+    public void importData(String filePath, boolean deleteData) {
 
         if (deleteData) {
-            switch (type) {
-                case TASK -> {  logTimeInfoCrudService.deleteAll();
-                                taskCrudService.deleteAll();}
-                case CATEGORY -> categoryCrudService.deleteAll();
-                case TEMPLATE -> templateCrudService.deleteAll();
-                case TIME_UNIT -> timeUnitCrudService.deleteAll();
-                case WORK_LOG -> logTimeInfoCrudService.deleteAll();
-            }
+            logTimeInfoCrudService.deleteAll();
+            taskCrudService.deleteAll();
+            categoryCrudService.deleteAll();
+            templateCrudService.deleteAll();
+            timeUnitCrudService.deleteAll();
         }
         var currentBatch = new Batch(
                 taskCrudService.findAll(),
@@ -67,26 +61,19 @@ public class GenericImportService implements ImportService {
                 timeUnitCrudService.findAll(),
                 logTimeInfoCrudService.findAll());
         try {
-            var importBatch = getImporter(filePath).importBatch(filePath, type, currentBatch);
+
+            var importBatch = getImporter(filePath).importBatch(filePath, currentBatch);
 
             var filteredCategories = importBatch.categories().stream().filter(category -> !currentBatch.categories().contains(category)).toList();
             var filteredTemplates = importBatch.templates().stream().filter(template -> !currentBatch.templates().contains(template)).toList();
             var filteredTimeUnits = importBatch.timeUnits().stream().filter(timeUnit -> !currentBatch.timeUnits().contains(timeUnit)).toList();
-            var filteredLogTimeInfos = importBatch.logTimeInfos().stream().filter(logTimeInfo -> !currentBatch.logTimeInfos().contains(logTimeInfo)).toList();
             var filteredTasks = importBatch.tasks().stream().filter(task -> !currentBatch.tasks().contains(task)).toList();
-
-            var taskImportFirstID = 0L;
-            if (type == ActionType.TASK){
-                taskImportFirstID = filteredTasks.get(0).getId();
-            }
 
             filteredCategories.forEach(this::createCategory);
             filteredTemplates.forEach(this::createTemplate);
             filteredTimeUnits.forEach(this::createTimeUnit);
             filteredTasks.forEach(this::createTask);
 
-            var updatedLogs = updateLogTaskIDs(filteredLogTimeInfos, filteredTasks, taskImportFirstID);
-            updatedLogs.forEach(this::createLogTimeInfo);
         } catch (DataManipulationException dmex){
             throw new BatchOperationException("Import failed because of:\n" + dmex.getMessage());
         } catch (ValidationException vex){
@@ -94,27 +81,10 @@ public class GenericImportService implements ImportService {
         }
     }
 
-    private List<LogTimeInfo> updateLogTaskIDs(List<LogTimeInfo> filteredLogTimeInfos, List<Task> filteredTasks, Long taskImportFirstID) {
-        if (filteredTasks.size() == 0){
-            return filteredLogTimeInfos;
-        }
-
-        var firstID = taskCrudService.findAll().get(taskCrudService.findAll().size() - filteredTasks.size()).getId();
-        var offset = firstID - taskImportFirstID;
-
-        var updatedLogs = new ArrayList<LogTimeInfo>();
-        filteredLogTimeInfos.forEach(log -> updatedLogs.add(
-                new LogTimeInfo(
-                        log.getLoggedTime(),
-                        new User(log.getUsername(),
-                        log.getUserId()),
-                        log.getTaskID() + offset)));
-        return updatedLogs;
-    }
-
     private void createTask(Task task) {
         taskCrudService.create(task)
                 .intoException();
+        //TODO when workLogs will become List in task, add createLogTimeInfo with task/id
     }
 
     private void createCategory(Category category) {
