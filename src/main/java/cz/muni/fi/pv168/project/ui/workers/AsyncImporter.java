@@ -1,9 +1,7 @@
 package cz.muni.fi.pv168.project.ui.workers;
 
-import cz.muni.fi.pv168.project.business.service.export.ExportService;
 import cz.muni.fi.pv168.project.business.service.export.ImportService;
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
-import cz.muni.fi.pv168.project.ui.actions.menu.export.Exporter;
 import cz.muni.fi.pv168.project.ui.actions.menu.export.Importer;
 
 import javax.swing.SwingWorker;

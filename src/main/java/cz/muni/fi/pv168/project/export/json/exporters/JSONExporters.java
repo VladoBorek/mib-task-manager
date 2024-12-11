@@ -25,6 +25,7 @@ public class JSONExporters {
         object.put("due_date", task.getDueDate());
         object.put("category", categoryObject(task.getCategory()));
         object.put("time_unit", timeUnitObject(task.getTimeUnit()));
+        //TODO when Task has list of WorkLogs, add their export
         //object.put("work_logs", workLogsArray(task.getWorkLogs()));
         return object;
     }

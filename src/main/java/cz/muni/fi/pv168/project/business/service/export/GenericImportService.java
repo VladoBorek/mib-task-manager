@@ -5,7 +5,6 @@ import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
-import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.business.service.export.batch.Batch;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchImporter;

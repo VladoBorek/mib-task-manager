@@ -23,7 +23,7 @@ public class JSONObjectParsers {
 
         var timeUnit = parseTimeUnit(timeUnits,
                 object.getJSONObject("time_unit"));
-
+        //TODO when Task has list of WorkLogs, add their import
         return new Task(
                 object.getLong("id"),
                 Status.valueOf(object.getString("status")),
