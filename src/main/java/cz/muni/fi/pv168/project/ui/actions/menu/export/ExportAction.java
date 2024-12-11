@@ -4,6 +4,7 @@ import cz.muni.fi.pv168.project.business.service.export.ExportService;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.ui.workers.AsyncExporter;
 import cz.muni.fi.pv168.project.util.Filter;
 import org.tinylog.Logger;
 
@@ -14,11 +15,13 @@ import java.awt.event.ActionEvent;
  * @author Nikol Otáhalů
  */
 public class ExportAction extends AbstractAction {
-    private final ExportService exportService;
+    private final Exporter exporter;
 
     public ExportAction(ExportService exportService){
         super("Export application data", Icons.EXPORT_ICON);
-        this.exportService = exportService;
+        this.exporter = new AsyncExporter(exportService,
+                () -> JOptionPane.showMessageDialog(
+                        null, "Export has successfully finished."));
     }
 
     @Override
@@ -26,7 +29,7 @@ public class ExportAction extends AbstractAction {
 
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Specify a file to save");
-        exportService.getFormats().forEach(f -> fileChooser.setFileFilter(new Filter(f)));
+        exporter.getFormats().forEach(f -> fileChooser.setFileFilter(new Filter(f)));
         int dialogResult = fileChooser.showSaveDialog(null);
         if (dialogResult == JFileChooser.APPROVE_OPTION) {
             String exportFilePath = fileChooser.getSelectedFile().getAbsolutePath();
@@ -36,7 +39,7 @@ public class ExportAction extends AbstractAction {
             }
             try {
 
-                exportService.exportData(exportFilePath);
+                exporter.exportData(exportFilePath);
 
             } catch (BatchOperationException ex){
                 Logger.error("Export has failed.");
