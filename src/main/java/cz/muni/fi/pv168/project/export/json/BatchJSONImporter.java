@@ -61,10 +61,8 @@ public class BatchJSONImporter implements BatchImporter {
             return new Batch(tasks.values(), categories.values(), templates.values(), timeUnits.values(), workLogs.values());
         } catch (IOException e) {
             throw new DataManipulationException("Unable to read file\n" + e.getMessage());
-        } catch (DataManipulationException e) {
-            throw new DataManipulationException("Failed to import items\n" + e.getMessage());
         } catch (Exception e) {
-            throw new DataManipulationException("Failed to process items\n" + e.getMessage());
+            throw new DataManipulationException("Failed to import items\n" + e.getMessage());
         }
     }
 
