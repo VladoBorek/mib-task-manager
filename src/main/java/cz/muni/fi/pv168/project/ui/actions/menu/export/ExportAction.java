@@ -9,7 +9,9 @@ import cz.muni.fi.pv168.project.util.Filter;
 import org.tinylog.Logger;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 /**
  * @author Nikol Otáhalů
@@ -29,7 +31,8 @@ public class ExportAction extends AbstractAction {
 
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Specify a file to save");
-        exporter.getFormats().forEach(f -> fileChooser.setFileFilter(new Filter(f)));
+        exporter.getFormats().forEach(f -> fileChooser.addChoosableFileFilter(new Filter(f)));
+
         int dialogResult = fileChooser.showSaveDialog(null);
         if (dialogResult == JFileChooser.APPROVE_OPTION) {
             String exportFilePath = fileChooser.getSelectedFile().getAbsolutePath();

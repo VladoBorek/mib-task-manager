@@ -32,7 +32,7 @@ public class ImportAction extends AbstractAction {
         }
 
         var fileChooser = new JFileChooser();
-        importer.getFormats().forEach(f -> fileChooser.setFileFilter(new Filter(f)));
+        importer.getFormats().forEach(f -> fileChooser.addChoosableFileFilter(new Filter(f)));
         int dialogResult = fileChooser.showOpenDialog(null);
         if (dialogResult == JFileChooser.APPROVE_OPTION) {
             File importFile = fileChooser.getSelectedFile();
