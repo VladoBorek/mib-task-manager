@@ -15,7 +15,7 @@ public class TransactionManagerImpl implements TransactionManager {
     }
 
     @Override
-    public Transaction beginTransaction() {
+    public synchronized Transaction beginTransaction() {
         if (hasActiveTransaction()) {
             throw new TransactionException("Transaction already started");
         }
@@ -29,12 +29,12 @@ public class TransactionManagerImpl implements TransactionManager {
     }
 
     @Override
-    public ConnectionHandler getConnectionHandler() {
+    public synchronized ConnectionHandler getConnectionHandler() {
         return transaction.connection();
     }
 
     @Override
-    public boolean hasActiveTransaction() {
+    public synchronized boolean hasActiveTransaction() {
         return transaction != null && !transaction.isClosed();
     }
 }
