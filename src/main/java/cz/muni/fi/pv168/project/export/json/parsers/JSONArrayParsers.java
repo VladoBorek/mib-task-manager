@@ -7,7 +7,9 @@ import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import org.json.JSONArray;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class JSONArrayParsers {
@@ -46,5 +48,15 @@ public class JSONArrayParsers {
             var timeUnit = JSONObjectParsers.parseTimeUnit(timeUnits, timeUnitArray.getJSONObject(i));
             timeUnits.put(timeUnit.getName(), timeUnit);
         }
+    }
+
+    public static List<LogTimeInfo> importWorkLogs(JSONArray workLogArray,
+                                                   Task task){
+        var workLogList = new ArrayList<LogTimeInfo>();
+        for (int i = 0; i < workLogArray.length(); i++) {
+            var workLog = JSONObjectParsers.parseWorkLog(workLogArray.getJSONObject(i), task);
+            workLogList.add(workLog);
+        }
+        return workLogList;
     }
 }

@@ -23,8 +23,8 @@ public class JSONObjectParsers {
 
         var timeUnit = parseTimeUnit(timeUnits,
                 object.getJSONObject("time_unit"));
-        //TODO when Task has list of WorkLogs, add their import
-        return new Task(
+
+        var task =  new Task(
                 object.getLong("id"),
                 Status.valueOf(object.getString("status")),
                 object.getString("description"),
@@ -37,6 +37,11 @@ public class JSONObjectParsers {
                 timeUnit,
                 LocalDate.parse(object.getString("due_date"))
         );
+
+        //TODO uncomment this when task supports storing List of WorkLogs
+        //var workLogList = JSONArrayParsers.importWorkLogs(object.getJSONArray("work_logs"), task);
+        //task.setWorkLogs(workLogList);
+        return task;
     }
 
     public static Template parseTemplate(HashMap<String, Template> templates,
@@ -78,16 +83,16 @@ public class JSONObjectParsers {
         );
     }
 
-    public static LogTimeInfo parseWorkLog(HashMap<String, LogTimeInfo> workLogs,
-                                           JSONObject object){
+    public static LogTimeInfo parseWorkLog(JSONObject object,
+                                           Task task){
         User user = new User(
                 object.getString("work_log_user_name"),
                 object.getLong("work_log_user_id")
         );
-        return parseWorkLog(workLogs,
+        return parseWorkLog(
                 object.getInt("work_log_logged_time"),
                 user,
-                object.getLong("work_log_task_id")
+                task
         );
     }
 
@@ -158,18 +163,17 @@ public class JSONObjectParsers {
     /**
      * Parse  {@link LogTimeInfo} from provided values
      *
-     * @param workLogs         Map of {@link LogTimeInfo} from this import
      * @param loggedTime       value of logged time
      * @param user             {@link User} user associated with the {@link LogTimeInfo}
-     * @param taskID           ID of associated new {@link Task}
+     * @param task             {@link Task} associated with the {@link LogTimeInfo}
      * @return new {@link TimeUnit} with the provided values
      */
-    private static LogTimeInfo parseWorkLog(HashMap<String, LogTimeInfo> workLogs,
-                                     Integer loggedTime,
-                                     User user,
-                                     Long taskID)
+    private static LogTimeInfo parseWorkLog(Integer loggedTime,
+                                            User user,
+                                            Task task)
     {
-        var workLogNew = new LogTimeInfo(loggedTime, user, taskID);
-        return workLogs.computeIfAbsent(workLogNew.toString(), log -> workLogNew);
+        //TODO remove the .getID() call from Task, when LogTimeInfo will take Task instead of ID
+        //return new LogTimeInfo(loggedTime, user, task);
+        return new LogTimeInfo(loggedTime, user, task.getId());
     }
 }
