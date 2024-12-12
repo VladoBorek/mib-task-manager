@@ -33,12 +33,10 @@ public class BatchJSONImporter implements BatchImporter {
         var categories = new HashMap<String, Category>();
         var templates = new HashMap<String, Template>();
         var timeUnits = new HashMap<String, TimeUnit>();
-        var workLogs = new HashMap<String, LogTimeInfo>();
 
         currentData.categories().forEach(category -> categories.put(category.getName(), category));
         currentData.templates().forEach(template -> templates.put(template.getTemplateName(), template));
         currentData.timeUnits().forEach(timeUnit -> timeUnits.put(timeUnit.getName(), timeUnit));
-        currentData.logTimeInfos().forEach(workLog -> workLogs.put(workLog.toString(), workLog));
 
         try (var reader = Files.newBufferedReader(Path.of(filePath))) {
             StringBuilder jsonContent = new StringBuilder();
@@ -56,9 +54,9 @@ public class BatchJSONImporter implements BatchImporter {
             JSONArrayParsers.importCategoryArray(categoryArray, categories);
             JSONArrayParsers.importTimeUnitArray(timeUnitArray, timeUnits);
             JSONArrayParsers.importTemplateArray(templateArray, templates, categories, timeUnits);
-            JSONArrayParsers.importTaskArray(tasksArray, tasks, categories, timeUnits, workLogs);
+            JSONArrayParsers.importTaskArray(tasksArray, tasks, categories, timeUnits);
 
-            return new Batch(tasks.values(), categories.values(), templates.values(), timeUnits.values(), workLogs.values());
+            return new Batch(tasks.values(), categories.values(), templates.values(), timeUnits.values());
         } catch (IOException e) {
             throw new DataManipulationException("Unable to read file\n" + e.getMessage());
         } catch (Exception e) {

@@ -24,7 +24,6 @@ public class GenericExportService implements ExportService {
     private final CrudService<Category> categoryCrudService;
     private final CrudService<Template> templateCrudService;
     private final CrudService<TimeUnit> timeUnitCrudService;
-    private final CrudService<LogTimeInfo> logTimeInfoCrudService;
 
     private final FormatMapping<BatchExporter> exporters;
 
@@ -33,14 +32,12 @@ public class GenericExportService implements ExportService {
             CrudService<Category> categoryCrudService,
             CrudService<Template> templateCrudService,
             CrudService<TimeUnit> timeUnitCrudService,
-            CrudService<LogTimeInfo> logTimeInfoCrudService,
             Collection<BatchExporter> exporters
     ) {
         this.taskCrudService = taskCrudService;
         this.categoryCrudService = categoryCrudService;
         this.templateCrudService = templateCrudService;
         this.timeUnitCrudService = timeUnitCrudService;
-        this.logTimeInfoCrudService = logTimeInfoCrudService;
         this.exporters = new FormatMapping<>(exporters);
     }
 
@@ -55,8 +52,7 @@ public class GenericExportService implements ExportService {
         var batch = new Batch(taskCrudService.findAll(),
                 categoryCrudService.findAll(),
                 templateCrudService.findAll(),
-                timeUnitCrudService.findAll(),
-                logTimeInfoCrudService.findAll());
+                timeUnitCrudService.findAll());
         exporter.exportBatch(batch, filePath);
     }
 

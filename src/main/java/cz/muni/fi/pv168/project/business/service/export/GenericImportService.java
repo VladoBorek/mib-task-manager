@@ -57,8 +57,7 @@ public class GenericImportService implements ImportService {
                 taskCrudService.findAll(),
                 categoryCrudService.findAll(),
                 templateCrudService.findAll(),
-                timeUnitCrudService.findAll(),
-                logTimeInfoCrudService.findAll());
+                timeUnitCrudService.findAll());
         try {
 
             var importBatch = getImporter(filePath).importBatch(filePath, currentBatch);
@@ -83,7 +82,8 @@ public class GenericImportService implements ImportService {
     private void createTask(Task task) {
         taskCrudService.create(task)
                 .intoException();
-        //TODO when workLogs will become List in task, add createLogTimeInfo with task/id
+        //TODO uncomment this when workLogs will become List in task, imports the workLogs
+        //task.getWorkLogs().forEach(workLog -> createLogTimeInfo(workLog));
     }
 
     private void createCategory(Category category) {

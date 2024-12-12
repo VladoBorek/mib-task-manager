@@ -16,10 +16,9 @@ public class JSONArrayParsers {
     public static void importTaskArray(JSONArray taskArray,
                                  HashMap<String, Task> tasks,
                                  HashMap<String, Category> categories,
-                                 HashMap<String, TimeUnit> timeUnits,
-                                 HashMap<String, LogTimeInfo> workLogs){
+                                 HashMap<String, TimeUnit> timeUnits){
         for (int i = 0; i < taskArray.length(); i++) {
-            var task = JSONObjectParsers.parseTask(categories, timeUnits, workLogs, taskArray.getJSONObject(i));
+            var task = JSONObjectParsers.parseTask(categories, timeUnits, taskArray.getJSONObject(i));
             tasks.put(task.toString(), task);
         }
     }

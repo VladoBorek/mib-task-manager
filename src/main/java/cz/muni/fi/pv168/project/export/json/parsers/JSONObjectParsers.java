@@ -16,7 +16,6 @@ import java.util.HashMap;
 public class JSONObjectParsers {
     public static Task parseTask(HashMap<String, Category> categories,
                                  HashMap<String, TimeUnit> timeUnits,
-                                 HashMap<String, LogTimeInfo> workLogs,
                                  JSONObject object){
         var category = parseCategory(categories,
                 object.getJSONObject("category"));
