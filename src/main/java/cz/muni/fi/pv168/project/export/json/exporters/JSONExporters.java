@@ -7,7 +7,10 @@ import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class JSONExporters {
 
@@ -25,7 +28,7 @@ public class JSONExporters {
         object.put("due_date", task.getDueDate());
         object.put("category", categoryObject(task.getCategory()));
         object.put("time_unit", timeUnitObject(task.getTimeUnit()));
-        //TODO when Task has list of WorkLogs, add their export
+        //TODO uncomment this when Task has list of WorkLogs, to include worLogs export
         //object.put("work_logs", workLogsArray(task.getWorkLogs()));
         return object;
     }
@@ -64,4 +67,11 @@ public class JSONExporters {
         object.put("work_log_logged_time", workLog.getLoggedTime());
         return object;
     }
+
+    public static JSONArray workLogArray(List<LogTimeInfo> workLogs){
+        var array = new JSONArray();
+        workLogs.forEach(workLog -> array.put(workLogObject(workLog)));
+        return array;
+    }
+
 }
