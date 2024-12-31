@@ -3,7 +3,7 @@ package cz.muni.fi.pv168.project.business.model.abstracts;
 import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 
-public abstract class TaskBase extends Entity {
+public abstract class WorkItem extends Entity {
     private Category category;
     private String name;
 
@@ -13,7 +13,7 @@ public abstract class TaskBase extends Entity {
     private String description;
     private String assignedTo;
 
-    public TaskBase(Long id,
+    public WorkItem(Long id,
                     Category category,
                     String name,
                     Integer allocatedTime,

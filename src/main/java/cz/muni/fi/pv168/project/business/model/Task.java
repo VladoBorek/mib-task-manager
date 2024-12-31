@@ -1,10 +1,10 @@
 package cz.muni.fi.pv168.project.business.model;
 
-import cz.muni.fi.pv168.project.business.model.abstracts.TaskBase;
+import cz.muni.fi.pv168.project.business.model.abstracts.WorkItem;
 
 import java.time.LocalDate;
 
-public class Task extends TaskBase {
+public class Task extends WorkItem {
     private Status status;
     private String customer;
 
