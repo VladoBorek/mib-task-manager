@@ -111,7 +111,7 @@ public class CommonDependencyProvider implements DependencyProvider {
 
         // SETUP IMPORT EXPORT SERVICES
         this.exportService = new GenericExportService(taskCrudService, categoryCrudService, templateCrudService,
-                timeUnitCrudService, logTimeInfoCrudService, List.of(new BatchJSONExporter()));
+                timeUnitCrudService, List.of(new BatchJSONExporter()));
         var genericImportService = new GenericImportService(taskCrudService, categoryCrudService, templateCrudService,
                 timeUnitCrudService, logTimeInfoCrudService, List.of(new BatchJSONImporter()));
         this.importService = new TransactionalImportService(genericImportService, transactionExecutor);

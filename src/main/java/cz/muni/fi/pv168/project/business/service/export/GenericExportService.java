@@ -12,7 +12,6 @@ import cz.muni.fi.pv168.project.business.service.export.batch.BatchExporter;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
 import cz.muni.fi.pv168.project.business.service.export.format.FormatMapping;
-import cz.muni.fi.pv168.project.util.ActionType;
 
 import java.util.Collection;
 
@@ -25,7 +24,6 @@ public class GenericExportService implements ExportService {
     private final CrudService<Category> categoryCrudService;
     private final CrudService<Template> templateCrudService;
     private final CrudService<TimeUnit> timeUnitCrudService;
-    private final CrudService<LogTimeInfo> logTimeInfoCrudService;
 
     private final FormatMapping<BatchExporter> exporters;
 
@@ -34,14 +32,12 @@ public class GenericExportService implements ExportService {
             CrudService<Category> categoryCrudService,
             CrudService<Template> templateCrudService,
             CrudService<TimeUnit> timeUnitCrudService,
-            CrudService<LogTimeInfo> logTimeInfoCrudService,
             Collection<BatchExporter> exporters
     ) {
         this.taskCrudService = taskCrudService;
         this.categoryCrudService = categoryCrudService;
         this.templateCrudService = templateCrudService;
         this.timeUnitCrudService = timeUnitCrudService;
-        this.logTimeInfoCrudService = logTimeInfoCrudService;
         this.exporters = new FormatMapping<>(exporters);
     }
 
@@ -51,14 +47,13 @@ public class GenericExportService implements ExportService {
     }
 
     @Override
-    public void exportData(String filePath, ActionType type) {
+    public void exportData(String filePath) {
         var exporter = getExporter(filePath);
         var batch = new Batch(taskCrudService.findAll(),
                 categoryCrudService.findAll(),
                 templateCrudService.findAll(),
-                timeUnitCrudService.findAll(),
-                logTimeInfoCrudService.findAll());
-        exporter.exportBatch(batch, filePath, type);
+                timeUnitCrudService.findAll());
+        exporter.exportBatch(batch, filePath);
     }
 
     private BatchExporter getExporter(String filePath) {

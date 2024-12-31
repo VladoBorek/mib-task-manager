@@ -2,41 +2,37 @@ package cz.muni.fi.pv168.project.ui.actions.menu.export;
 
 import cz.muni.fi.pv168.project.business.service.export.ExportService;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
-import cz.muni.fi.pv168.project.util.ActionType;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.ui.workers.AsyncExporter;
 import cz.muni.fi.pv168.project.util.Filter;
 import org.tinylog.Logger;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 /**
  * @author Nikol Otáhalů
  */
 public class ExportAction extends AbstractAction {
-    private final ExportService exportService;
+    private final Exporter exporter;
 
     public ExportAction(ExportService exportService){
         super("Export application data", Icons.EXPORT_ICON);
-        this.exportService = exportService;
+        this.exporter = new AsyncExporter(exportService,
+                () -> JOptionPane.showMessageDialog(
+                        null, "Export has successfully finished."));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var userChoice = PopUp.optionDialog(
-                "Select items to export",
-                "Export Options",
-                new String[]{"Tasks", "Categories", "Template","Time Units", "Work Logs"});
-        if (userChoice < 0 || userChoice > 4) {
-            return;
-        }
-
-        ActionType exportOption = ActionType.values()[userChoice];
 
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Specify a file to save");
-        exportService.getFormats().forEach(f -> fileChooser.setFileFilter(new Filter(f)));
+        exporter.getFormats().forEach(f -> fileChooser.addChoosableFileFilter(new Filter(f)));
+
         int dialogResult = fileChooser.showSaveDialog(null);
         if (dialogResult == JFileChooser.APPROVE_OPTION) {
             String exportFilePath = fileChooser.getSelectedFile().getAbsolutePath();
@@ -46,21 +42,17 @@ public class ExportAction extends AbstractAction {
             }
             try {
 
-                exportService.exportData(exportFilePath, exportOption);
+                exporter.exportData(exportFilePath);
 
             } catch (BatchOperationException ex){
-                Logger.error("Export of " + exportOption.name() + "S has failed.");
+                Logger.error("Export has failed.");
                 PopUp.infoDialog(
                         "Export has failed:\n" + ex.getMessage(),
                         "Export status",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            Logger.info("Export of" + exportOption.name() + "S has finished" + exportFilePath);
-            PopUp.infoDialog(
-                    "Export has successfully finished.",
-                    "Export status",
-                    JOptionPane.INFORMATION_MESSAGE);
+            Logger.info("Export  has finished" + exportFilePath);
         }
     }
 }

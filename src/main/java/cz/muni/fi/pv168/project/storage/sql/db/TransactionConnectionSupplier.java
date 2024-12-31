@@ -17,8 +17,10 @@ public class TransactionConnectionSupplier implements Supplier<ConnectionHandler
 
     @Override
     public ConnectionHandler get() {
-        if (transactionManager.hasActiveTransaction()) {
-            return transactionManager.getConnectionHandler();
+        synchronized (transactionManager) {
+            if (transactionManager.hasActiveTransaction()) {
+                return transactionManager.getConnectionHandler();
+            }
         }
 
         return databaseManager.getConnectionHandler();

@@ -4,7 +4,7 @@ import cz.muni.fi.pv168.project.business.service.export.ImportService;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
-import cz.muni.fi.pv168.project.util.ActionType;
+import cz.muni.fi.pv168.project.ui.workers.AsyncImporter;
 import cz.muni.fi.pv168.project.util.Filter;
 import org.tinylog.Logger;
 
@@ -16,32 +16,30 @@ import java.io.File;
  * @author Nikol Otáhalů
  */
 public class ImportAction extends AbstractAction {
-    private final ImportService importService;
-    private final Runnable callback;
+    private final Importer importer;
 
     public ImportAction(ImportService importService, Runnable callback) {
         super("Import application data", Icons.IMPORT_ICON);
-        this.importService = importService;
-        this.callback = callback;
+        this.importer = new AsyncImporter(importService, callback);
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var importOption = getItemsToExport();
-        if (importOption == null) return;
-
-        boolean deleteData = getDataOverride();
+        int deleteData = getDataOverride();
+        if(deleteData == -1){
+            return;
+        }
 
         var fileChooser = new JFileChooser();
-        importService.getFormats().forEach(f -> fileChooser.setFileFilter(new Filter(f)));
+        importer.getFormats().forEach(f -> fileChooser.addChoosableFileFilter(new Filter(f)));
         int dialogResult = fileChooser.showOpenDialog(null);
         if (dialogResult == JFileChooser.APPROVE_OPTION) {
             File importFile = fileChooser.getSelectedFile();
 
             try {
 
-                importService.importData(importFile.getAbsolutePath(), importOption, deleteData);
+                importer.importData(importFile.getAbsolutePath(), deleteData == 0);
 
             } catch (BatchOperationException ex){
                 Logger.error("Import of " + importFile.getAbsolutePath() + " has failed.");
@@ -63,23 +61,11 @@ public class ImportAction extends AbstractAction {
                     "Import has successfully finished.",
                     "Import status",
                     JOptionPane.INFORMATION_MESSAGE);
-            callback.run();
         }
     }
 
-    private static ActionType getItemsToExport() {
-        var userChoice = PopUp.optionDialog(
-                "Select items to import",
-                "Import Options",
-                new String[]{"Tasks", "Categories", "Template","Time Units", "Work Logs"});
-        if (userChoice < 0 || userChoice > 4) {
-            return null;
-        }
-        return ActionType.values()[userChoice];
-    }
-
-    private static boolean getDataOverride(){
-        return 0 == PopUp.optionDialog("Do you want to override existing items or add new ones?",
+    private static int getDataOverride(){
+        return PopUp.optionDialog("Do you want to override existing items or add new ones?",
                 "Import Options",
                 new String[]{"Override", "Add"});
     }

@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project.business.service.export;
+package cz.muni.fi.pv168.project.ui.actions.menu.export;
 
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
@@ -8,7 +8,7 @@ import java.util.Collection;
 /**
  * Generic mechanism, allowing to import data from a file.
  */
-public interface ImportService {
+public interface Importer {
 
     /**
      * Imports data from a file.
