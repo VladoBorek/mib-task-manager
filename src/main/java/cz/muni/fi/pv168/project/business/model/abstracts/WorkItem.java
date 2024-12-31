@@ -41,7 +41,7 @@ public abstract class WorkItem extends Entity {
         this.allocatedTime = allocatedTime;
     }
     public void setConvertedAllocatedTime(Integer allocatedTime) {
-        this.allocatedTime = allocatedTime;
+        this.allocatedTime = allocatedTime * timeUnit.getRate();
     }
 
     public void setTimeUnit(TimeUnit timeUnit) {

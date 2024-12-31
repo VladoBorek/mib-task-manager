@@ -76,8 +76,10 @@ public class EditTemplateAction extends EntityBaseAction {
     private static void updateTemplate(Template oldT, Template newT) {
         oldT.setTemplateName(newT.getTemplateName());
         oldT.setName(newT.getName());
+
+        var alocTime = newT.getConvertedAllocatedTime();
         oldT.setTimeUnit(newT.getTimeUnit());
+        oldT.setConvertedAllocatedTime(alocTime);
         oldT.setCategory(newT.getCategory());
-        oldT.setAllocatedTime(newT.getAllocatedTime());
     }
 }

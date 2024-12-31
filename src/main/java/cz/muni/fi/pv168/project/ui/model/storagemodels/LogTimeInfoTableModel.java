@@ -15,7 +15,7 @@ public class LogTimeInfoTableModel extends BaseTableModel<LogTimeInfo> {
             Column.readonly("ID TASK", Long.class, LogTimeInfo::getTaskID),
             Column.readonly("ID", Long.class, LogTimeInfo::getUserId),
             Column.readonly("Name", String.class, LogTimeInfo::getUsername),
-            Column.readonly("Logged Time", Integer.class, LogTimeInfo::getLoggedTime)
+            Column.readonly("Logged Time", Double.class, LogTimeInfo::getLoggedTime)
     );
 
     public LogTimeInfoTableModel(CrudService<LogTimeInfo> crudService) {

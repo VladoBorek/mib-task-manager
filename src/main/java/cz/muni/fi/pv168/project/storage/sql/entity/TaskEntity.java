@@ -18,7 +18,7 @@ public record TaskEntity(
         String customer,
         String name,
         String assignedTo,
-        Integer loggedTime,
+        Double loggedTime,
         Integer allocatedTime,
         Long timeUnitId,
         LocalDate dueDate
@@ -31,7 +31,7 @@ public record TaskEntity(
             String customer,
             String name,
             String assignedTo,
-            Integer loggedTime,
+            Double loggedTime,
             Integer allocatedTime,
             Long timeUnitId,
             LocalDate dueDate) {
@@ -46,21 +46,5 @@ public record TaskEntity(
         this.allocatedTime = Objects.requireNonNull(allocatedTime, "allocatedTime must not be null");
         this.timeUnitId = timeUnitId;
         this.dueDate = Objects.requireNonNull(dueDate, "dueDate must not be null");
-    }
-
-    public TaskEntity(
-            Status status,
-            String description,
-            Long categoryId,
-            String customer,
-            String name,
-            String assignedTo,
-            Integer loggedTime,
-            Integer allocatedTime,
-            Long timeUnitId,
-            LocalDate dueDate) {
-        this(null, status, description, categoryId, customer, name, assignedTo,
-                loggedTime, allocatedTime, timeUnitId, dueDate
-        );
     }
 }

@@ -31,7 +31,7 @@ public class JSONObjectParsers {
                 object.getString("customer"),
                 object.getString("task_name"),
                 object.getString("assigned_to"),
-                object.getInt("logged_time"),
+                object.getDouble("logged_time"),
                 object.getInt("allocated_time"),
                 timeUnit,
                 LocalDate.parse(object.getString("due_date"))
@@ -89,7 +89,7 @@ public class JSONObjectParsers {
                 object.getLong("work_log_user_id")
         );
         return parseWorkLog(
-                object.getInt("work_log_logged_time"),
+                object.getDouble("work_log_logged_time"),
                 user,
                 task
         );
@@ -167,7 +167,7 @@ public class JSONObjectParsers {
      * @param task             {@link Task} associated with the {@link LogTimeInfo}
      * @return new {@link TimeUnit} with the provided values
      */
-    private static LogTimeInfo parseWorkLog(Integer loggedTime,
+    private static LogTimeInfo parseWorkLog(Double loggedTime,
                                             User user,
                                             Task task)
     {

@@ -8,14 +8,14 @@ import java.util.Objects;
  */
 public record LogTimeInfoEntity(
         Long id,
-        Integer loggedTime,
+        Double loggedTime,
         String userName,
         Long userId,
         Long taskId
 ) {
     public LogTimeInfoEntity(
             Long id,
-            Integer loggedTime,
+            Double loggedTime,
             String userName,
             Long userId,
             Long taskId) {
@@ -27,7 +27,7 @@ public record LogTimeInfoEntity(
     }
 
     public LogTimeInfoEntity(
-            Integer loggedTime,
+            Double loggedTime,
             String userName,
             Long userId,
             Long taskId) {

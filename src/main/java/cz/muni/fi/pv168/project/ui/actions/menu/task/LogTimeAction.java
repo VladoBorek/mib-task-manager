@@ -4,7 +4,7 @@ import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
-import cz.muni.fi.pv168.project.business.service.validation.common.NotNegativeIntegerValidator;
+import cz.muni.fi.pv168.project.business.service.validation.common.NotNegativeDoubleValidator;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.InspectTaskDialog;
@@ -52,12 +52,12 @@ public class LogTimeAction extends AbstractAction {
 
     }
 
-    private void validateInput(Integer newTimeInBaseUnits) {
-        var validator = new NotNegativeIntegerValidator("Logged Time");
+    private void validateInput(Double newTimeInBaseUnits) {
+        var validator = new NotNegativeDoubleValidator("Logged Time");
         validator.validate(newTimeInBaseUnits).intoException();
     }
 
-    private void handleTimeLogsUpdate(Integer newTimeInBaseUnits) {
+    private void handleTimeLogsUpdate(Double newTimeInBaseUnits) {
         var newTimeInTaskUnits = newTimeInBaseUnits / task.getTimeUnit().getRate();
         var currentUser = data.getLoggedUser();
         var logTimeTableModel = data.getLogTimeInfoTableModel();
