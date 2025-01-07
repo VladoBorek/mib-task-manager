@@ -66,9 +66,11 @@ public class EditTaskAction extends EntityBaseAction {
         oldT.setAssignedTo(newT.getAssignedTo());
         oldT.setCategory(newT.getCategory());
         oldT.setStatus(newT.getStatus());
-        oldT.setConvertedAllocatedTime(newT.getConvertedAllocatedTime());
-        oldT.setDueDate(newT.getDueDate());
+
+        var alocTime = newT.getConvertedAllocatedTime();
         oldT.setTimeUnit(newT.getTimeUnit());
+        oldT.setConvertedAllocatedTime(alocTime);
+        oldT.setDueDate(newT.getDueDate());
         oldT.setDescription(newT.getDescription());
 
         updateTaskLogs(oldT, newT);

@@ -1,8 +1,8 @@
 package cz.muni.fi.pv168.project.business.model;
 
-import cz.muni.fi.pv168.project.business.model.abstracts.TaskBase;
+import cz.muni.fi.pv168.project.business.model.abstracts.WorkItem;
 
-public class Template extends TaskBase {
+public class Template extends WorkItem {
     private String templateName;
 
     public Template(Long id,

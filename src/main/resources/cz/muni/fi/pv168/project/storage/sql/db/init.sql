@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS "Task" (
       `customer` VARCHAR(150),
       `name` VARCHAR(150) NOT NULL,
       `assignedTo` VARCHAR(150),
-      `loggedTime` BIGINT NOT NULL,
+      `loggedTime` DECIMAL(255, 4) NOT NULL,
       `allocatedTime` BIGINT NOT NULL,
       `timeUnitId` BIGINT REFERENCES "TimeUnit"(`id`),
       `dueDate` DATE
@@ -53,8 +53,8 @@ CREATE TABLE IF NOT EXISTS "Template" (
 --
 CREATE TABLE IF NOT EXISTS "LogTimeInfo" (
       `id` BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-      `loggedTime` BIGINT NOT NULL,
+      `loggedTime` DECIMAL(255, 4) NOT NULL,
       `userName` VARCHAR(255) NOT NULL,
       `userId` BIGINT NOT NULL,
       `taskId` BIGINT NOT NULL REFERENCES "Task"(`id`)
-    );
+);

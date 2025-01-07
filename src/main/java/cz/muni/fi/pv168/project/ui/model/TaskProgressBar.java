@@ -22,12 +22,17 @@ public class TaskProgressBar extends JProgressBar implements TableCellRenderer {
             int progress = Math.round((Float) value);
             setValue(progress);
             setString(String.join(" ", String.valueOf(progress), "%"));
+            if (progress >= 100) {
+                setForeground(Color.RED);
+            } else {
+                setForeground(table.getForeground());
+            }
         } else {
             setValue(0);
+            setForeground(table.getForeground());
         }
 
         setBackground(table.getBackground());
-        setForeground(table.getForeground());
 
         return this;
     }

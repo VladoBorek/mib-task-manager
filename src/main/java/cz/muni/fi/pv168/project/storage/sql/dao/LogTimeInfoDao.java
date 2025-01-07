@@ -40,7 +40,7 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
                 var connection = connections.get();
                 var statement = connection.use().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
-            statement.setInt(1, entity.loggedTime());
+            statement.setDouble(1, entity.loggedTime());
             statement.setString(2, entity.userName());
             statement.setLong(3, entity.userId());
             statement.setLong(4, entity.taskId());
@@ -137,7 +137,7 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
                 var connection = connections.get();
                 var statement = connection.use().prepareStatement(sql)
         ) {
-            statement.setInt(1, entity.loggedTime());
+            statement.setDouble(1, entity.loggedTime());
             statement.setString(2, entity.userName());
             statement.setLong(3, entity.userId());
             statement.setLong(4, entity.taskId());
@@ -194,7 +194,7 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
     private static LogTimeInfoEntity logTimeInfoFromResultSet(ResultSet resultSet) throws SQLException {
         return new LogTimeInfoEntity(
                 resultSet.getLong("id"),
-                resultSet.getInt("loggedTime"),
+                resultSet.getDouble("loggedTime"),
                 resultSet.getString("userName"),
                 resultSet.getLong("userId"),
                 resultSet.getLong("taskId"));

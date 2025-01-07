@@ -1,19 +1,20 @@
 package cz.muni.fi.pv168.project.business.model;
 
-import cz.muni.fi.pv168.project.business.model.abstracts.TaskBase;
+import cz.muni.fi.pv168.project.business.model.abstracts.WorkItem;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class Task extends TaskBase {
+public class Task extends WorkItem {
     private Status status;
     private String customer;
 
     // In the base time unit
-    private Integer loggedTime;
+    private Double loggedTime;
     private LocalDate dueDate;
 
     public Task(Long id, Status status, String description, Category category, String customer, String name,
-                String assignedTo, Integer loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
+                String assignedTo, Double loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
         super(id, category, name, allocatedTime, timeUnit, description, assignedTo);
         this.status = status;
         this.customer = customer;
@@ -23,7 +24,7 @@ public class Task extends TaskBase {
 
     public Task(Template template) {
         this(null, Status.TO_DO, template.getDescription(), template.getCategory(), "", template.getName(), template.getAssignedTo(),
-                0, template.getAllocatedTime(), template.getTimeUnit(), null);
+                0d, template.getAllocatedTime(), template.getTimeUnit(), null);
     }
 
     public void setStatus(Status status) {
@@ -34,7 +35,7 @@ public class Task extends TaskBase {
         this.customer = customer;
     }
 
-    public void setLoggedTime(Integer loggedTime) {
+    public void setLoggedTime(Double loggedTime) {
         this.loggedTime = loggedTime;
     }
 
@@ -50,11 +51,11 @@ public class Task extends TaskBase {
         return customer;
     }
 
-    public Integer getLoggedTime() {
+    public Double getLoggedTime() {
         return loggedTime;
     }
 
-    public Integer getConvertedLoggedTime() {
+    public Double getConvertedLoggedTime() {
         return loggedTime / getTimeUnit().getRate();
     }
 
@@ -62,11 +63,11 @@ public class Task extends TaskBase {
         return getConvertedLoggedTime().toString() + " " + getTimeUnit().getShortName();
     }
 
-    public Float getTaskCompletionPercentage() {
+    public float getTaskCompletionPercentage() {
         if (loggedTime == 0) {
             return 0.0F;
         }
-        return ((float) getLoggedTime() / (float) getAllocatedTime()) * 100;
+        return (float) ((getLoggedTime() / getAllocatedTime()) * 100);
     }
 
     public LocalDate getDueDate() {

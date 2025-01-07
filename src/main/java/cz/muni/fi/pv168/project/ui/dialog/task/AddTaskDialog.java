@@ -37,7 +37,6 @@ public class AddTaskDialog extends EntityDialog<Task> {
     private final JComboBox<Status> statusComboBox = new JComboBox<>(Status.values());
     private final JComboBox<Category> categoryComboBox;
     private final JComboBox<TimeUnit> timeUnitsComboBox;
-    private final JIntegerTextField loggedTimeField = new JIntegerTextField();
     private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
     private final DatePicker datePicker = new DatePicker();
 
@@ -83,7 +82,6 @@ public class AddTaskDialog extends EntityDialog<Task> {
         assignedToName.setText(task.getAssignedTo());
         categoryComboBox.setSelectedItem(task.getCategory());
         statusComboBox.setSelectedItem(task.getStatus());
-        loggedTimeField.setValue(task.getConvertedLoggedTime());
         allocatedTimeField.setValue(task.getConvertedAllocatedTime());
         datePicker.setDate(task.getDueDate());
         timeUnitsComboBox.setSelectedItem(task.getTimeUnit());
@@ -101,7 +99,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
                 customerField.getText(),
                 taskNameField.getText(),
                 assignedToName.getText(),
-                loggedTimeField.getValue() * timeunit.getRate(),
+                0d,
                 allocatedTimeField.getValue() * timeunit.getRate(),
                 timeunit,
                 datePicker.getDate());
