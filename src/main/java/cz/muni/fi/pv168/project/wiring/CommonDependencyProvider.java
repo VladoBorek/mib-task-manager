@@ -8,6 +8,8 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.repository.Repository;
 import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
+import cz.muni.fi.pv168.project.business.service.entity.CategoryService;
+import cz.muni.fi.pv168.project.business.service.entity.TimeUnitService;
 import cz.muni.fi.pv168.project.business.service.export.ExportService;
 import cz.muni.fi.pv168.project.business.service.export.GenericExportService;
 import cz.muni.fi.pv168.project.business.service.export.GenericImportService;
@@ -138,6 +140,16 @@ public class CommonDependencyProvider implements DependencyProvider {
     }
 
     @Override
+    public TimeUnitService getTimeUnitService() {
+        return new TimeUnitService(getTaskRepository(), getTemplateRepository());
+    }
+
+    @Override
+    public CategoryService getCategoryService() {
+        return new CategoryService(getTaskRepository(), getTemplateRepository());
+    }
+
+    @Override
     public Repository<Category> getCategoryRepository() {
         return this.categories;
     }
@@ -211,5 +223,5 @@ public class CommonDependencyProvider implements DependencyProvider {
     public Validator<TimeUnit> getTimeUnitValidator() {
         return this.timeUnitValidator;
     }
-    
+
 }

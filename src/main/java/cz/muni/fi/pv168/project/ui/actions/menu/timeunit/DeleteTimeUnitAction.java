@@ -10,7 +10,6 @@ import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.Objects;
 
 /**
  * @author Marcel Nadzam
@@ -42,9 +41,7 @@ public class DeleteTimeUnitAction extends EntityBaseAction {
             return;
         }
 
-        if (data.getTaskTableModel().getAllRows().stream().anyMatch(task -> task.getTimeUnit().equals(timeUnit))||
-            data.getTemplateTableModel().getAllRows().stream().anyMatch(template -> template.getTimeUnit().equals(timeUnit)))
-        {
+        if (data.getDependencyProvider().getTimeUnitService().isTimeUnitInUse(timeUnit)) {
             Logger.info("User tried to delete " + timeUnit + " which is currently in use.");
             PopUp.infoDialog(
                     "You can't delete this time unit, it is currently in use.",
