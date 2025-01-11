@@ -3,8 +3,8 @@ package cz.muni.fi.pv168.project.ui.utils;
 import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
-import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.MainWindow;
+import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.category.AddCategoryAction;
 import cz.muni.fi.pv168.project.ui.actions.menu.timeunit.AddTimeUnitAction;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.LogTimeInfoTableModel;
@@ -106,23 +106,25 @@ public class UIElements {
     }
 
     public static JPanel createDescriptionPanel(JTextArea descriptionArea, int width, int height) {
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+
+        JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
+
+        descriptionScrollPane.setPreferredSize(new Dimension(width, height));
+        descriptionScrollPane.setMinimumSize(new Dimension(width, height));
+        descriptionScrollPane.setMaximumSize(new Dimension(width, height));
+
         JPanel descriptionLabelPanel = new JPanel(new BorderLayout());
 
         JPanel titleDescriptionPanel = new JPanel(new BorderLayout());
         titleDescriptionPanel.add(new JLabel("Description:"));
 
         JPanel textDescriptionPanel = new JPanel(new BorderLayout());
-        textDescriptionPanel.add(descriptionArea);
+        textDescriptionPanel.add(descriptionScrollPane);
 
         descriptionLabelPanel.add(titleDescriptionPanel, BorderLayout.NORTH);
         descriptionLabelPanel.add(textDescriptionPanel, BorderLayout.CENTER);
-
-        descriptionArea.setPreferredSize(new Dimension(width, height));
-        descriptionArea.setMinimumSize(new Dimension(width, height));
-        descriptionArea.setMaximumSize(new Dimension(width, height));
-
-        descriptionArea.setLineWrap(true);
-        descriptionArea.setWrapStyleWord(true);
 
         return descriptionLabelPanel;
     }
