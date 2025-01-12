@@ -1,16 +1,17 @@
 package cz.muni.fi.pv168.project.ui.model.storagemodels;
 
 import cz.muni.fi.pv168.project.business.model.Statistic;
-import cz.muni.fi.pv168.project.business.service.Statistics.StatisticsService;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.model.statisticTableCell;
+import cz.muni.fi.pv168.project.ui.utils.StatisticsService;
 
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cz.muni.fi.pv168.project.business.service.Statistics.StatisticsService.formatLoggedAllocatedTime;
+import static cz.muni.fi.pv168.project.ui.utils.StatisticsService.formatLoggedAllocatedTime;
+
 
 /**
  * @author Vladimir Borek

@@ -1,4 +1,4 @@
-package cz.muni.fi.pv168.project.business.service.Statistics;
+package cz.muni.fi.pv168.project.ui.utils;
 
 import cz.muni.fi.pv168.project.business.model.Statistic;
 import cz.muni.fi.pv168.project.business.model.Status;
@@ -49,5 +49,5 @@ public class StatisticsService {
     public static String formatLoggedAllocatedTime(Statistic statistic) {
         return statistic.logged() + "/" + statistic.allocated() + " min";
     }
-
 }
+

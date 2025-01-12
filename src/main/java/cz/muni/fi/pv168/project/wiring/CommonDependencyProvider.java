@@ -86,13 +86,13 @@ public class CommonDependencyProvider implements DependencyProvider {
         var categoryMapper = new CategoryMapper();
         var categoryDao = new CategoryDao(transactionConnectionSupplier);
 
-        var logTimeInfoMapper = new LogTimeInfoMapper();
-        var logTimeInfoDao = new LogTimeInfoDao(transactionConnectionSupplier);
-
         var timeUnitMapper = new TimeUnitMapper();
         var timeUnitDao = new TimeUnitDao(transactionConnectionSupplier);
 
-        var taskMapper = new TaskMapper(categoryDao, categoryMapper, timeUnitDao, timeUnitMapper);
+        var logTimeInfoMapper = new LogTimeInfoMapper(timeUnitDao, timeUnitMapper);
+        var logTimeInfoDao = new LogTimeInfoDao(transactionConnectionSupplier);
+
+        var taskMapper = new TaskMapper(categoryDao, categoryMapper, timeUnitDao, timeUnitMapper, logTimeInfoDao, logTimeInfoMapper);
         var taskDao = new TaskDao(transactionConnectionSupplier);
 
         var templateMapper = new TemplateMapper(categoryDao, categoryMapper, timeUnitDao, timeUnitMapper);
