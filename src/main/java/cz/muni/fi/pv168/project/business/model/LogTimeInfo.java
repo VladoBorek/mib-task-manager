@@ -8,7 +8,7 @@ import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 public class LogTimeInfo extends Entity {
     private Double loggedTime;
     private final User user;
-    private final Long taskID;
+    private Long taskID;
 
     public LogTimeInfo(Double loggedTime, User user, Long taskID){
         super(null);
@@ -29,6 +29,9 @@ public class LogTimeInfo extends Entity {
     }
     public void setLoggedTime(Double newLoggedTime){
         this.loggedTime = newLoggedTime;
+    }
+    public void setTaskID(Long newTaskID) {
+        this.taskID = newTaskID;
     }
 
     public Long getTaskID() {

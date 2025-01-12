@@ -2,7 +2,6 @@ package cz.muni.fi.pv168.project.ui.actions.menu.task;
 
 import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
 import cz.muni.fi.pv168.project.business.model.Task;
-import cz.muni.fi.pv168.project.business.model.User;
 import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.business.service.validation.common.NotNegativeDoubleValidator;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
@@ -13,7 +12,6 @@ import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.List;
 
 
 public class LogTimeAction extends AbstractAction {
@@ -34,7 +32,7 @@ public class LogTimeAction extends AbstractAction {
         try {
             dialog.show(null, "Log Time").ifPresent(newTimeInBaseUnits -> {
                 validateInput(newTimeInBaseUnits);
-                handleTimeLogsUpdate(newTimeInBaseUnits);
+                addNewLog(newTimeInBaseUnits);
                 task.setLoggedTime(task.getLoggedTime() + newTimeInBaseUnits);
             });
 
@@ -57,17 +55,9 @@ public class LogTimeAction extends AbstractAction {
         validator.validate(newTimeInBaseUnits).intoException();
     }
 
-    private void handleTimeLogsUpdate(Double newTimeInBaseUnits) {
+    private void addNewLog(Double newTimeInBaseUnits) {
         var newTimeInTaskUnits = newTimeInBaseUnits / task.getTimeUnit().getRate();
-
         data.getLogTimeInfoTableModel().addRow(
                 new LogTimeInfo(newTimeInTaskUnits, data.getLoggedUser(), task.getId()));
-    }
-
-    private List<LogTimeInfo> findExistingLogs(User user) {
-        return data.getLogTimeInfoTableModel()
-                .getAllRows().stream()
-                .filter(log -> log.getUserId().equals(user.id()) && log.getTaskID().equals(task.getId()))
-                .toList();
     }
 }
