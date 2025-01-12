@@ -31,9 +31,7 @@ public class DeleteCategoryAction extends EntityBaseAction {
         if (category == null) {
             return;
         }
-        if (data.getTaskTableModel().getAllRows().stream().anyMatch(task -> task.getCategory().equals(category))||
-            data.getTemplateTableModel().getAllRows().stream().anyMatch(template -> template.getCategory().equals(category)))
-        {
+        if (data.getDependencyProvider().getCategoryService().isCategoryInUse(category)) {
             Logger.info("User tried to delete " + category + " which is currently in use.");
             PopUp.infoDialog(
                     "You can't delete this category, it is currently in use.",

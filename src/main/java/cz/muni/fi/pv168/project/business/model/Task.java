@@ -2,8 +2,9 @@ package cz.muni.fi.pv168.project.business.model;
 
 import cz.muni.fi.pv168.project.business.model.abstracts.WorkItem;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Task extends WorkItem {
     private Status status;
@@ -12,9 +13,10 @@ public class Task extends WorkItem {
     // In the base time unit
     private Double loggedTime;
     private LocalDate dueDate;
+    private final List<LogTimeInfo> logHistory = new ArrayList<>();
 
     public Task(Long id, Status status, String description, Category category, String customer, String name,
-                String assignedTo, Double loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
+                String assignedTo, Double loggedTime, Double allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
         super(id, category, name, allocatedTime, timeUnit, description, assignedTo);
         this.status = status;
         this.customer = customer;
@@ -72,5 +74,13 @@ public class Task extends WorkItem {
 
     public LocalDate getDueDate() {
         return dueDate;
+    }
+
+    public List<LogTimeInfo> getLogHistory() {
+        return logHistory;
+    }
+
+    public void addLog(LogTimeInfo log) {
+        logHistory.add(log);
     }
 }

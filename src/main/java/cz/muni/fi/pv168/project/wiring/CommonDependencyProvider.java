@@ -8,6 +8,8 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.repository.Repository;
 import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
+import cz.muni.fi.pv168.project.business.service.entity.CategoryService;
+import cz.muni.fi.pv168.project.business.service.entity.TimeUnitService;
 import cz.muni.fi.pv168.project.business.service.export.ExportService;
 import cz.muni.fi.pv168.project.business.service.export.GenericExportService;
 import cz.muni.fi.pv168.project.business.service.export.GenericImportService;
@@ -84,13 +86,13 @@ public class CommonDependencyProvider implements DependencyProvider {
         var categoryMapper = new CategoryMapper();
         var categoryDao = new CategoryDao(transactionConnectionSupplier);
 
-        var logTimeInfoMapper = new LogTimeInfoMapper();
-        var logTimeInfoDao = new LogTimeInfoDao(transactionConnectionSupplier);
-
         var timeUnitMapper = new TimeUnitMapper();
         var timeUnitDao = new TimeUnitDao(transactionConnectionSupplier);
 
-        var taskMapper = new TaskMapper(categoryDao, categoryMapper, timeUnitDao, timeUnitMapper);
+        var logTimeInfoMapper = new LogTimeInfoMapper(timeUnitDao, timeUnitMapper);
+        var logTimeInfoDao = new LogTimeInfoDao(transactionConnectionSupplier);
+
+        var taskMapper = new TaskMapper(categoryDao, categoryMapper, timeUnitDao, timeUnitMapper, logTimeInfoDao, logTimeInfoMapper);
         var taskDao = new TaskDao(transactionConnectionSupplier);
 
         var templateMapper = new TemplateMapper(categoryDao, categoryMapper, timeUnitDao, timeUnitMapper);
@@ -135,6 +137,16 @@ public class CommonDependencyProvider implements DependencyProvider {
     @Override
     public ExportService getExportService() {
         return this.exportService;
+    }
+
+    @Override
+    public TimeUnitService getTimeUnitService() {
+        return new TimeUnitService(getTaskRepository(), getTemplateRepository());
+    }
+
+    @Override
+    public CategoryService getCategoryService() {
+        return new CategoryService(getTaskRepository(), getTemplateRepository());
     }
 
     @Override
@@ -211,5 +223,5 @@ public class CommonDependencyProvider implements DependencyProvider {
     public Validator<TimeUnit> getTimeUnitValidator() {
         return this.timeUnitValidator;
     }
-    
+
 }

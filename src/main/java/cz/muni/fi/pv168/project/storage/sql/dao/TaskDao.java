@@ -252,7 +252,7 @@ public class TaskDao implements DataAccessObject<TaskEntity> {
                 resultSet.getString("name"),
                 resultSet.getString("assignedTo"),
                 resultSet.getDouble("loggedTime"),
-                resultSet.getInt("allocatedTime"),
+                resultSet.getDouble("allocatedTime"),
                 (Long) resultSet.getObject("timeUnitId"),
                 resultSet.getDate("dueDate").toLocalDate()
         );

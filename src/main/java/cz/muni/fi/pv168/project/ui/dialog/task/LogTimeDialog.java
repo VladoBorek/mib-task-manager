@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.project.ui.dialog.task;
 
+import com.github.lgooddatepicker.zinternaltools.Pair;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
@@ -16,9 +17,9 @@ import java.util.Objects;
  * Dialog that will open when clicking on manage Time units button.
  * It offers the user to select which time unit to edit or delete.
  */
-public class LogTimeDialog extends EntityDialog<Double> {
+public class LogTimeDialog extends EntityDialog<Pair<Double, TimeUnit>> {
 
-    private final JFormattedTextField  timeField;
+    private final JFormattedTextField timeField;
     private final JComboBox<TimeUnit> timeUnitComboBox;
 
     public LogTimeDialog(UIDataManager data, Task task) {
@@ -36,9 +37,16 @@ public class LogTimeDialog extends EntityDialog<Double> {
     }
 
 
+    //    @Override
+//    public Double getEntity() {
+//        double time = ((Number) timeField.getValue()).doubleValue();
+//        return time * ((TimeUnit) Objects.requireNonNull(timeUnitComboBox.getSelectedItem())).getRate();
+//    }
     @Override
-    public Double getEntity() {
+    public Pair<Double, TimeUnit> getEntity() {
         double time = ((Number) timeField.getValue()).doubleValue();
-        return time * ((TimeUnit) Objects.requireNonNull(timeUnitComboBox.getSelectedItem())).getRate();
+        TimeUnit selectedUnit = (TimeUnit) Objects.requireNonNull(timeUnitComboBox.getSelectedItem());
+        return new Pair<>(time, selectedUnit);
     }
+
 }

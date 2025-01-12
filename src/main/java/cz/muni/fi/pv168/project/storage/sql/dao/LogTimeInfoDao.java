@@ -2,6 +2,7 @@ package cz.muni.fi.pv168.project.storage.sql.dao;
 
 import cz.muni.fi.pv168.project.storage.sql.db.ConnectionHandler;
 import cz.muni.fi.pv168.project.storage.sql.entity.LogTimeInfoEntity;
+import cz.muni.fi.pv168.project.util.Constants;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,9 +33,10 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
                     loggedTime,
                     userName,
                     userId,
-                    taskId
+                    taskId,
+                    timeUnitId
                 )
-                VALUES (?, ?, ?, ?);
+                VALUES (?, ?, ?, ?, ?);
                 """;
         try (
                 var connection = connections.get();
@@ -44,22 +46,21 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
             statement.setString(2, entity.userName());
             statement.setLong(3, entity.userId());
             statement.setLong(4, entity.taskId());
+            if (entity.timeUnitId() == null || entity.timeUnitId().equals(Constants.BASE_TIME_UNIT_ID)) {
+                statement.setNull(5, java.sql.Types.BIGINT);
+            } else {
+                statement.setLong(5, entity.timeUnitId());
+            }
 
             statement.executeUpdate();
 
             try (var keyResultSet = statement.getGeneratedKeys()) {
-                long logTimeInfoId;
-
                 if (keyResultSet.next()) {
-                    logTimeInfoId = keyResultSet.getLong(1);
+                    System.out.println("Generated ID: " + keyResultSet.getLong(1));
+                    return findById(keyResultSet.getLong(1)).orElseThrow();
                 } else {
                     throw new DataStorageException("Failed to fetch generated key for: " + entity);
                 }
-                if (keyResultSet.next()) {
-                    throw new DataStorageException("Multiple keys returned for: " + entity);
-                }
-
-                return findById(logTimeInfoId).orElseThrow();
             }
         } catch (SQLException ex) {
             throw new DataStorageException("Failed to store: " + entity, ex);
@@ -73,22 +74,20 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
                     loggedTime,
                     userName,
                     userId,
-                    taskId
+                    taskId,
+                    timeUnitId
                 FROM LogTimeInfo
                 """;
         try (
                 var connection = connections.get();
                 var statement = connection.use().prepareStatement(sql)
         ) {
-
             List<LogTimeInfoEntity> logTimeInfos = new ArrayList<>();
             try (var resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    var logTimeInfo = logTimeInfoFromResultSet(resultSet);
-                    logTimeInfos.add(logTimeInfo);
+                    logTimeInfos.add(logTimeInfoFromResultSet(resultSet));
                 }
             }
-
             return logTimeInfos;
         } catch (SQLException ex) {
             throw new DataStorageException("Failed to load all LogTimeInfos", ex);
@@ -102,7 +101,8 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
                     loggedTime,
                     userName,
                     userId,
-                    taskId
+                    taskId,
+                    timeUnitId
                 FROM LogTimeInfo
                 WHERE id = ?
                 """;
@@ -115,12 +115,24 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
             if (resultSet.next()) {
                 return Optional.of(logTimeInfoFromResultSet(resultSet));
             } else {
-                // logTimeInfo not found
                 return Optional.empty();
             }
         } catch (SQLException ex) {
             throw new DataStorageException("Failed to load LogTimeInfo by id", ex);
         }
+    }
+
+    private LogTimeInfoEntity logTimeInfoFromResultSet(ResultSet resultSet) throws SQLException {
+        Long timeUnitId = resultSet.getObject("timeUnitId", Long.class);
+
+        return new LogTimeInfoEntity(
+                resultSet.getLong("id"),
+                resultSet.getDouble("loggedTime"),
+                resultSet.getString("userName"),
+                resultSet.getLong("userId"),
+                resultSet.getLong("taskId"),
+                timeUnitId
+        );
     }
 
     @Override
@@ -130,7 +142,8 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
                 SET loggedTime = ?,
                     userName = ?,
                     userId = ?,
-                    taskId = ?
+                    taskId = ?,
+                    timeUnitId = ?
                 WHERE id = ?
                 """;
         try (
@@ -141,15 +154,16 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
             statement.setString(2, entity.userName());
             statement.setLong(3, entity.userId());
             statement.setLong(4, entity.taskId());
-            statement.setLong(5, entity.id());
+            if (entity.timeUnitId() == null || entity.timeUnitId().equals(Constants.BASE_TIME_UNIT_ID)) {
+                statement.setNull(5, java.sql.Types.BIGINT);
+            } else {
+                statement.setLong(5, entity.timeUnitId());
+            }
+            statement.setLong(6, entity.id());
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated == 0) {
                 throw new DataStorageException("LogTimeInfo not found, id: " + entity.id());
-            }
-            if (rowsUpdated > 1) {
-                throw new DataStorageException("More then 1 LogTimeInfo (rows=%d) has been updated: %s"
-                        .formatted(rowsUpdated, entity));
             }
             return entity;
         } catch (SQLException ex) {
@@ -169,10 +183,6 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
             if (rowsUpdated == 0) {
                 throw new DataStorageException("LogTimeInfo not found, id: " + id);
             }
-            if (rowsUpdated > 1) {
-                throw new DataStorageException("More then 1 LogTimeInfo (rows=%d) has been deleted: %s"
-                        .formatted(rowsUpdated, id));
-            }
         } catch (SQLException ex) {
             throw new DataStorageException("Failed to delete LogTimeInfo, id: " + id, ex);
         }
@@ -189,14 +199,5 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
         } catch (SQLException ex) {
             throw new DataStorageException("Failed to delete all LogTimeInfos", ex);
         }
-    }
-
-    private static LogTimeInfoEntity logTimeInfoFromResultSet(ResultSet resultSet) throws SQLException {
-        return new LogTimeInfoEntity(
-                resultSet.getLong("id"),
-                resultSet.getDouble("loggedTime"),
-                resultSet.getString("userName"),
-                resultSet.getLong("userId"),
-                resultSet.getLong("taskId"));
     }
 }

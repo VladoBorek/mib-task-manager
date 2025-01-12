@@ -8,7 +8,7 @@ public class Template extends WorkItem {
     public Template(Long id,
                     String name,
                     Category category,
-                    Integer allocatedTime,
+                    Double allocatedTime,
                     TimeUnit timeUnit,
                     String templateName,
                     String description,
@@ -16,9 +16,9 @@ public class Template extends WorkItem {
         super(id, category, name, allocatedTime, timeUnit, description, assignedTo);
         this.templateName = templateName;
     }
-    
+
     public Template() {
-        this(null, null, null, -1, null,
+        this(null, null, null, -1.0, null,
                 "<Don't use a template>", null, null);
     }
 

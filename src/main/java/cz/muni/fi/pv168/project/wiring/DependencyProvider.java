@@ -7,6 +7,8 @@ import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.repository.Repository;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
+import cz.muni.fi.pv168.project.business.service.entity.CategoryService;
+import cz.muni.fi.pv168.project.business.service.entity.TimeUnitService;
 import cz.muni.fi.pv168.project.business.service.export.ExportService;
 import cz.muni.fi.pv168.project.business.service.export.ImportService;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
@@ -25,6 +27,10 @@ public interface DependencyProvider {
     ImportService getImportService();
 
     ExportService getExportService();
+
+    TimeUnitService getTimeUnitService();
+
+    CategoryService getCategoryService();
 
     // --- Repositories ---
     Repository<Category> getCategoryRepository();

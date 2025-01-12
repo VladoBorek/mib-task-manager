@@ -14,6 +14,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.text.DecimalFormat;
 
 import static cz.muni.fi.pv168.project.ui.utils.UIElements.createButton;
 import static cz.muni.fi.pv168.project.ui.utils.UIElements.createLogTimeInfoTable;
@@ -34,6 +35,8 @@ public class InspectTaskDialog extends EntityDialog<Task> {
     private final UIDataManager data;
     private final LogTimeInfoTableModel logTimeInfoTableModel;
     private final JTable logTimeTable;
+
+    public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
 
     public InspectTaskDialog(Task task, UIDataManager data) {
         super(550, 250);
@@ -140,13 +143,19 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         assignedTo.setText(task.getAssignedTo());
         category.setText(task.getCategory().getName());
         status.setText(task.getStatus().toString());
-        loggedTime.setText(task.getConvertedLoggedTimeString());
-        allocatedTime.setText(task.getConvertedAllocatedTimeString());
+//        loggedTime.setText(task.getConvertedLoggedTimeString());
+//        allocatedTime.setText(task.getConvertedAllocatedTimeString());
+
+        allocatedTime.setText(DECIMAL_FORMAT.format(task.getConvertedAllocatedTime()) + " " + task.getTimeUnit().getShortName());
+        loggedTime.setText(DECIMAL_FORMAT.format(task.getConvertedLoggedTime()) + " " + task.getTimeUnit().getShortName());
+
+
         date.setText(task.getDueDate().toString());
     }
 
     public void updateLoggedTime() {
-        loggedTime.setText(task.getConvertedLoggedTimeString());
+        //loggedTime.setText(task.getConvertedLoggedTimeString());
+        loggedTime.setText(DECIMAL_FORMAT.format(task.getConvertedLoggedTime()) + " " + task.getTimeUnit().getShortName());
         logTimeInfoTableModel.refresh();
     }
 
