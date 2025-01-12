@@ -1,6 +1,8 @@
 package cz.muni.fi.pv168.project.ui.utils;
 
-import cz.muni.fi.pv168.project.business.model.Statistic;
+import cz.muni.fi.pv168.project.business.model.Statistics.Statistic;
+import cz.muni.fi.pv168.project.business.model.Statistics.Statistics;
+import cz.muni.fi.pv168.project.business.model.Statistics.TimeStatistic;
 import cz.muni.fi.pv168.project.business.model.Status;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
@@ -12,15 +14,16 @@ import java.time.LocalDate;
  * @author Vladimir Borek
  */
 public class StatisticsService {
-    public static Statistic calculateGlobalStatistics(TaskTableModel taskTableModel) {
+
+    public static Statistics calculateGlobalStatistics(TaskTableModel taskTableModel) {
         return calculateStatistics(taskTableModel, null);
     }
 
-    public static Statistic calculateFilteredStatistics(TaskTableModel taskTableModel, TableRowSorter<TaskTableModel> sorter) {
+    public static Statistics calculateFilteredStatistics(TaskTableModel taskTableModel, TableRowSorter<TaskTableModel> sorter) {
         return calculateStatistics(taskTableModel, sorter);
     }
 
-    private static Statistic calculateStatistics(TaskTableModel taskTableModel, TableRowSorter<TaskTableModel> sorter) {
+    private static Statistics calculateStatistics(TaskTableModel taskTableModel, TableRowSorter<TaskTableModel> sorter) {
         int total = (sorter == null) ? taskTableModel.getRowCount() : sorter.getViewRowCount();
         int completed = 0, inProgress = 0, overdue = 0, logged = 0, allocated = 0;
 
@@ -43,11 +46,14 @@ public class StatisticsService {
             }
         }
 
-        return new Statistic(total, completed, overdue, inProgress, logged, allocated);
-    }
+        return new Statistics(
+                new Statistic(total),
+                new Statistic(completed),
+                new Statistic(inProgress),
+                new Statistic(overdue),
+                new TimeStatistic(logged, allocated)
+        );
 
-    public static String formatLoggedAllocatedTime(Statistic statistic) {
-        return statistic.logged() + "/" + statistic.allocated() + " min";
     }
 }
 

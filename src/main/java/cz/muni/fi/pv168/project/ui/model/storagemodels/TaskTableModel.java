@@ -11,6 +11,8 @@ import cz.muni.fi.pv168.project.ui.model.abstracts.EntityTableModel;
 import java.time.LocalDate;
 import java.util.List;
 
+import static cz.muni.fi.pv168.project.ui.dialog.task.InspectTaskDialog.DECIMAL_FORMAT;
+
 public class TaskTableModel extends BaseTableModel<Task> implements EntityTableModel<Task> {
     private final List<Column<Task, ?>> columns = List.of(
             Column.readonly("Task Name", String.class, Task::getName),
@@ -18,8 +20,8 @@ public class TaskTableModel extends BaseTableModel<Task> implements EntityTableM
             Column.readonly("Category", Category.class, Task::getCategory),
             Column.readonly("Customer", String.class, Task::getCustomer),
             Column.readonly("Assigned to", String.class, Task::getAssignedTo),
-            Column.readonly("Logged time", String.class, Task::getConvertedLoggedTimeString),
-            Column.readonly("Allocated time", String.class, Task::getConvertedAllocatedTimeString),
+            Column.readonly("Logged time", String.class, task -> DECIMAL_FORMAT.format(task.getConvertedLoggedTime()) + " " + task.getTimeUnit().getShortName()),
+            Column.readonly("Allocated time", String.class, task -> DECIMAL_FORMAT.format(task.getConvertedAllocatedTime()) + " " + task.getTimeUnit().getShortName()),
             Column.readonly("% done", Float.class, Task::getTaskCompletionPercentage),
             Column.readonly("Due date", LocalDate.class, Task::getDueDate)
     );
