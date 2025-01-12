@@ -27,7 +27,7 @@ public class ExceptionHandler {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        Logger.info(runnable.toString() + "has successfully finished.");
+        Logger.info(runnable.toString() + " has successfully finished.");
         if (success != null){
             PopUp.infoDialog(
                     success,

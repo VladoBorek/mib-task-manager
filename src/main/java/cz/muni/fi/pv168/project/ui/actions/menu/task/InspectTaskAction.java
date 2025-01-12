@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.InspectTaskDialog;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 import org.tinylog.Logger;
 
 import javax.swing.*;
@@ -36,20 +37,14 @@ public class InspectTaskAction extends EntityBaseAction {
 
         var tDialog = new InspectTaskDialog(task, data);
         tDialog.show(data.getTaskTable(), "Inspect Task").ifPresent( inspectedTask -> {
-            try {
-                taskTableModel.updateRow(inspectedTask);
-            } catch (ValidationException exception) {
-                Logger.error("Time log of Task (id=" + task.getId() +",name=" + task.getName() + ") has failed." + exception.getMessage());
-
-                PopUp.infoDialog(
-                        exception.getValidationErrors(),
-                        "Input error",
-                        JOptionPane.ERROR_MESSAGE);
+                    ExceptionHandler.exceptionPopUpHandler(
+                            () -> taskTableModel.updateRow(inspectedTask),
+                            "Input error",
+                            null,
+                            null
+                    );
             }
-        }
         );
-        Logger.info("Time log of Task (id=" + task.getId() +",name=" + task.getName() + ") was added.");
-
     }
 }
 

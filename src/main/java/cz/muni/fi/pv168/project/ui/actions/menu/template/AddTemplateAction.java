@@ -8,6 +8,7 @@ import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 import org.tinylog.Logger;
 
 import javax.swing.*;
@@ -39,17 +40,13 @@ public class AddTemplateAction extends EntityBaseAction {
         TemplateDialog dialog = new TemplateDialog(data, null);
 
         dialog.show(data.getTaskTable(), "Add new Template").ifPresent(newTemplate -> {
-            try {
-                templateTableModel.addRow(newTemplate);
-            } catch (ValidationException exception) {
-                Logger.error("Template was not added: " + exception.getMessage());
-                PopUp.infoDialog(
-                        exception.getValidationErrors(),
-                        "Input error",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            Logger.info("Added new Template (id=" + newTemplate.getId() + ",name=" + newTemplate.getName() + ")");
+
+            ExceptionHandler.exceptionPopUpHandler(
+                    () -> templateTableModel.addRow(newTemplate),
+                    "Input error",
+                    null,
+                    null
+            );
 
             if (comboBox != null) {
                 comboBox.setSelectedItem(newTemplate);

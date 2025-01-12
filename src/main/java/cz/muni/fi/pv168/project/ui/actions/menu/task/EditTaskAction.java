@@ -8,6 +8,7 @@ import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.AddTaskDialog;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 import org.tinylog.Logger;
 
 import javax.swing.*;
@@ -45,18 +46,14 @@ public class EditTaskAction extends EntityBaseAction {
         var tDialog = new AddTaskDialog(task, data);
         tDialog.show(data.getTaskTable(), "Edit Task").ifPresent(newTask -> {
                     updateTask(task, newTask);
-                    try {
-                        taskTableModel.updateRow(task);
-                    } catch (ValidationException exception) {
-                        Logger.error("Edit of Task (id=" + task.getId() +",name=" + task.getName() + ") has failed." + exception.getMessage());
-                        PopUp.infoDialog(
-                                exception.getValidationErrors(),
-                                "Input error",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
+                    ExceptionHandler.exceptionPopUpHandler(
+                        () -> taskTableModel.updateRow(task),
+                        "Input error",
+                        "Successfully saved changes.",
+                        "Edit was not successful."
+                    );
                 }
         );
-        Logger.info("Edited Task (id=" + task.getId() +",name=" + task.getName() + ")");
         data.getStatisticsTableModel().refreshStatistics();
     }
 

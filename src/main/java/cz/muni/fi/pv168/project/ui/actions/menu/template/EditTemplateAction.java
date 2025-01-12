@@ -8,6 +8,7 @@ import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TemplateDialog;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TemplateTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 import org.tinylog.Logger;
 
 import javax.swing.*;
@@ -59,15 +60,12 @@ public class EditTemplateAction extends EntityBaseAction {
         var templateDialog = new TemplateDialog(data, template);
         templateDialog.show(comboBox, "Edit Template").ifPresent(newTemplate -> {
                     updateTemplate(template, newTemplate);
-                    try {
-                        templateTableModel.updateRow(template);
-                    } catch (ValidationException e){
-                        Logger.error("Edit of Template (id=" + template.getId() +",name=" + template.getName() + ") has failed." + e.getMessage());
-                        PopUp.infoDialog(
-                                e.getValidationErrors(),
-                                "Input error",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
+                    ExceptionHandler.exceptionPopUpHandler(
+                            () -> templateTableModel.addRow(newTemplate),
+                            "Input error",
+                            null,
+                            null
+                    );
                 }
         );
         Logger.info("Edited Template(id=" + template.getId() +",name=" + template.getName() + ")");

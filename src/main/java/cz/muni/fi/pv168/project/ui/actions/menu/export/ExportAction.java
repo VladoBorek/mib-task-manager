@@ -4,6 +4,7 @@ import cz.muni.fi.pv168.project.business.service.export.ExportService;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 import cz.muni.fi.pv168.project.ui.workers.AsyncExporter;
 import cz.muni.fi.pv168.project.util.Filter;
 import org.tinylog.Logger;
@@ -40,19 +41,13 @@ public class ExportAction extends AbstractAction {
             if (filter instanceof Filter) {
                 exportFilePath = ((Filter) filter).decorate(exportFilePath);
             }
-            try {
-
-                exporter.exportData(exportFilePath);
-
-            } catch (BatchOperationException ex){
-                Logger.error("Export has failed.");
-                PopUp.infoDialog(
-                        "Export has failed:\n" + ex.getMessage(),
-                        "Export status",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            Logger.info("Export  has finished" + exportFilePath);
+            String finalExportFilePath = exportFilePath;
+            ExceptionHandler.exceptionPopUpHandler(
+                    () -> exporter.exportData(finalExportFilePath),
+                    "Export status",
+                    null,
+                    "Export has failed"
+            );
         }
     }
 }

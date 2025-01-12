@@ -4,6 +4,7 @@ import cz.muni.fi.pv168.project.business.service.export.ImportService;
 import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 import cz.muni.fi.pv168.project.ui.workers.AsyncImporter;
 import cz.muni.fi.pv168.project.util.Filter;
 import org.tinylog.Logger;
@@ -36,31 +37,12 @@ public class ImportAction extends AbstractAction {
         int dialogResult = fileChooser.showOpenDialog(null);
         if (dialogResult == JFileChooser.APPROVE_OPTION) {
             File importFile = fileChooser.getSelectedFile();
-
-            try {
-
-                importer.importData(importFile.getAbsolutePath(), deleteData == 0);
-
-            } catch (BatchOperationException ex){
-                Logger.error("Import of " + importFile.getAbsolutePath() + " has failed.");
-                PopUp.infoDialog(
-                        "Import has failed:\n" + ex.getMessage() + "\nNo items were imported.",
-                        "Import status",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            } catch (Exception exception){
-                Logger.error("Failed to store data." + exception.getMessage());
-                PopUp.infoDialog(
-                        "Import has failed:\n" + exception.getMessage() + "\nNo items were imported.",
-                        "Import status",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            Logger.info("Import of " + importFile.getAbsolutePath() + " has finished. Original data overwritten: " + deleteData);
-            PopUp.infoDialog(
-                    "Import has successfully finished.",
+            ExceptionHandler.exceptionPopUpHandler(
+                    () -> importer.importData(importFile.getAbsolutePath(), deleteData == 0),
                     "Import status",
-                    JOptionPane.INFORMATION_MESSAGE);
+                    "Import of " + importFile.getAbsolutePath() + " has finished. Data overwritten : "  + (deleteData == 0),
+                    "Import of " + importFile.getAbsolutePath() + " has failed."
+            );
         }
     }
 
