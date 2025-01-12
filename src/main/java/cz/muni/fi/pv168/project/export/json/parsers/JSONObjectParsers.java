@@ -37,9 +37,8 @@ public class JSONObjectParsers {
                 LocalDate.parse(object.getString("due_date"))
         );
 
-        //TODO uncomment this when task supports storing List of WorkLogs
-        //var workLogList = JSONArrayParsers.importWorkLogs(object.getJSONArray("work_logs"), task);
-        //task.setWorkLogs(workLogList);
+        var workLogList = JSONArrayParsers.importWorkLogs(object.getJSONArray("work_logs"), task, timeUnits);
+        workLogList.forEach(task::addLog);
         return task;
     }
 
@@ -82,16 +81,20 @@ public class JSONObjectParsers {
         );
     }
 
-    public static LogTimeInfo parseWorkLog(JSONObject object,
-                                           Task task) {
+    public static LogTimeInfo parseWorkLog(HashMap<String, TimeUnit> timeUnits,
+                                           Task task,
+                                           JSONObject object) {
         User user = new User(
                 object.getString("work_log_user_name"),
                 object.getLong("work_log_user_id")
         );
+        var timeUnit = parseTimeUnit(timeUnits,
+                object.getJSONObject("time_unit"));
         return parseWorkLog(
                 object.getDouble("work_log_logged_time"),
                 user,
-                task
+                task,
+                timeUnit
         );
     }
 
@@ -169,9 +172,8 @@ public class JSONObjectParsers {
      */
     private static LogTimeInfo parseWorkLog(Double loggedTime,
                                             User user,
-                                            Task task) {
-        //TODO remove the .getID() call from Task, when LogTimeInfo will take Task instead of ID
-        //return new LogTimeInfo(loggedTime, user, task);
-        return new LogTimeInfo(loggedTime, user, task.getId(), task.getTimeUnit());
+                                            Task task,
+                                            TimeUnit timeUnit) {
+        return new LogTimeInfo(loggedTime, user, task.getId(), timeUnit);
     }
 }

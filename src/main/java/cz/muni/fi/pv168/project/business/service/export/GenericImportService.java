@@ -82,8 +82,7 @@ public class GenericImportService implements ImportService {
     private void createTask(Task task) {
         taskCrudService.create(task)
                 .intoException();
-        //TODO uncomment this when workLogs will become List in task, imports the workLogs
-        //task.getWorkLogs().forEach(workLog -> createLogTimeInfo(workLog, task));
+        task.getLogHistory().forEach(workLog -> createLogTimeInfo(workLog, task));
     }
 
     private void createCategory(Category category) {

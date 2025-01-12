@@ -28,8 +28,7 @@ public class JSONExporters {
         object.put("due_date", task.getDueDate());
         object.put("category", categoryObject(task.getCategory()));
         object.put("time_unit", timeUnitObject(task.getTimeUnit()));
-        //TODO uncomment this when Task has list of WorkLogs, to include worLogs export
-        //object.put("work_logs", workLogsArray(task.getWorkLogs()));
+        object.put("work_logs", workLogArray(task.getLogHistory()));
         return object;
     }
     public static JSONObject categoryObject(Entity entity){
@@ -65,6 +64,7 @@ public class JSONExporters {
         object.put("work_log_user_name", workLog.getUsername());
         object.put("work_log_user_id", workLog.getUserId());
         object.put("work_log_logged_time", workLog.getLoggedTime());
+        object.put("time_unit", timeUnitObject(workLog.getTimeUnit()));
         return object;
     }
 

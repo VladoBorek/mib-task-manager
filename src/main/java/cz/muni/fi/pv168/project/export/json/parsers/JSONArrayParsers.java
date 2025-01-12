@@ -50,10 +50,11 @@ public class JSONArrayParsers {
     }
 
     public static List<LogTimeInfo> importWorkLogs(JSONArray workLogArray,
-                                                   Task task){
+                                                   Task task,
+                                                   HashMap<String, TimeUnit> timeUnits){
         var workLogList = new ArrayList<LogTimeInfo>();
         for (int i = 0; i < workLogArray.length(); i++) {
-            var workLog = JSONObjectParsers.parseWorkLog(workLogArray.getJSONObject(i), task);
+            var workLog = JSONObjectParsers.parseWorkLog(timeUnits, task, workLogArray.getJSONObject(i));
             workLogList.add(workLog);
         }
         return workLogList;
