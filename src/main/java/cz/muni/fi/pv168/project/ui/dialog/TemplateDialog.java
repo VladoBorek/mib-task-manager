@@ -10,6 +10,7 @@ import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 import cz.muni.fi.pv168.project.ui.model.panels.panelFactories.InfoPanelFactory;
 import cz.muni.fi.pv168.project.ui.model.panels.panelFactories.TimePanelFactory;
+import cz.muni.fi.pv168.project.ui.utils.UIElements;
 import cz.muni.fi.pv168.project.util.Constants;
 import org.tinylog.Logger;
 
@@ -31,7 +32,8 @@ public class TemplateDialog extends EntityDialog<Template> {
     private final UIDataManager data;
     private final JComboBox<Category> categoryComboBox;
     private final JComboBox<TimeUnit> timeUnitComboBox;
-    private final JTextField allocatedTimeField = new JTextField();
+    private final JFormattedTextField allocatedTimeField = UIElements.createDecimalFormattedTextField();
+    ;
     private final Template template;
 
     public TemplateDialog(UIDataManager data, Template template) {
@@ -83,7 +85,7 @@ public class TemplateDialog extends EntityDialog<Template> {
         var timeunit = (TimeUnit) Objects.requireNonNull(timeUnitComboBox.getSelectedItem());
         double allocatedTime = Double.parseDouble(allocatedTimeField.getText());
 
-        Validator<Template> templateValidator = new TemplateValidator();
+        Validator<Template> templateValidator = new TemplateValidator(data.getDependencyProvider());
         var newTemplate = new Template(null, taskNameField.getText(),
                 (Category) categoryComboBox.getSelectedItem(),
                 allocatedTime * timeunit.getRate(),

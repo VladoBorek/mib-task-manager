@@ -21,10 +21,10 @@ public class TaskValidator implements Validator<Task> {
                         Task::getAssignedTo, new StringLengthValidator(1, 25, "AssignedTo")),
                 Validator.extracting(
                         Task::getDueDate, new DateValidator()),
-                Validator.extracting(
-                        Task::getCategory, new CategoryValidator()),
-                Validator.extracting(
-                        Task::getTimeUnit, new TimeUnitValidator()),
+//                Validator.extracting(
+//                        Task::getCategory, new CategoryValidator()),
+//                Validator.extracting(
+//                        Task::getTimeUnit, new TimeUnitValidator()),
                 Validator.extracting(
                         Task::getAllocatedTime, new NotNegativeDoubleValidator("AllocatedTime")
                 )

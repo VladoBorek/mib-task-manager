@@ -9,6 +9,7 @@ import cz.muni.fi.pv168.project.business.repository.Repository;
 import cz.muni.fi.pv168.project.business.service.crud.BaseCrudService;
 import cz.muni.fi.pv168.project.business.service.crud.CrudService;
 import cz.muni.fi.pv168.project.business.service.entity.CategoryService;
+import cz.muni.fi.pv168.project.business.service.entity.TemplateService;
 import cz.muni.fi.pv168.project.business.service.entity.TimeUnitService;
 import cz.muni.fi.pv168.project.business.service.export.ExportService;
 import cz.muni.fi.pv168.project.business.service.export.GenericExportService;
@@ -68,11 +69,11 @@ public class CommonDependencyProvider implements DependencyProvider {
     private final CrudService<Template> templateCrudService;
     private final CrudService<TimeUnit> timeUnitCrudService;
 
-    private final Validator<Category> categoryValidator = new CategoryValidator();
+    private final Validator<Category> categoryValidator = new CategoryValidator(this);
     private final Validator<LogTimeInfo> logTimeInfoValidator = new LogTimeInfoValidator();
     private final Validator<Task> taskValidator = new TaskValidator();
-    private final Validator<Template> templateValidator = new TemplateValidator();
-    private final Validator<TimeUnit> timeUnitValidator = new TimeUnitValidator();
+    private final Validator<Template> templateValidator = new TemplateValidator(this);
+    private final Validator<TimeUnit> timeUnitValidator = new TimeUnitValidator(this);
 
 
     CommonDependencyProvider(DatabaseManager databaseManager) {
@@ -141,12 +142,17 @@ public class CommonDependencyProvider implements DependencyProvider {
 
     @Override
     public TimeUnitService getTimeUnitService() {
-        return new TimeUnitService(getTaskRepository(), getTemplateRepository());
+        return new TimeUnitService(this);
     }
 
     @Override
     public CategoryService getCategoryService() {
-        return new CategoryService(getTaskRepository(), getTemplateRepository());
+        return new CategoryService(this);
+    }
+
+    @Override
+    public TemplateService getTemplateService() {
+        return new TemplateService(this);
     }
 
     @Override

@@ -46,7 +46,6 @@ public class DeleteTaskAction extends EntityBaseAction {
         for (int i = 0; i < logModel.getRowCount(); i++) {
             if (logModel.getValueAt(i, 0).equals(taskId)) {
                 logModel.deleteRow(i);
-                System.out.println("DELETED");
                 i = -1;
             }
         }

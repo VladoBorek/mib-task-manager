@@ -13,6 +13,7 @@ import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
 import cz.muni.fi.pv168.project.ui.model.panels.panelFactories.InfoPanelFactory;
 import cz.muni.fi.pv168.project.ui.model.panels.panelFactories.TimePanelFactory;
+import cz.muni.fi.pv168.project.ui.utils.UIElements;
 import cz.muni.fi.pv168.project.util.Constants;
 import org.tinylog.Logger;
 
@@ -36,7 +37,8 @@ public class AddTaskDialog extends EntityDialog<Task> {
     private final JComboBox<Status> statusComboBox = new JComboBox<>(Status.values());
     private final JComboBox<Category> categoryComboBox;
     private final JComboBox<TimeUnit> timeUnitsComboBox;
-    private final JTextField allocatedTimeField = new JTextField();
+    private final JFormattedTextField allocatedTimeField = UIElements.createDecimalFormattedTextField();
+    ;
     private final DatePicker datePicker = new DatePicker();
 
     public AddTaskDialog(Task task, UIDataManager data) {

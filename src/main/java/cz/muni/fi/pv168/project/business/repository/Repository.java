@@ -45,4 +45,5 @@ public interface Repository<T extends Entity> {
     public default void setInitEntities(Collection<T> initEntities) {
         initEntities.forEach(this::create);
     }
+
 }

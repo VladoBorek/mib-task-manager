@@ -30,35 +30,31 @@ public class AddCategoryAction extends EntityBaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        addCategory();
-    }
-
-    private void addCategory() {
-        var dialog = new CategoryDialog();
+        var dialog = new CategoryDialog(data.getDependencyProvider());
         dialog.show(null, "Add a new Category").ifPresent(newCategory -> {
             try {
                 data.getCategoryListModel().add(newCategory);
-            } catch (ValidationException e) {
-                Logger.error("Category was not added: " + e.getValidationErrors());
+            } catch (ValidationException exception) {
+                Logger.error("Category was not added: " + exception.getValidationErrors());
                 PopUp.infoDialog(
-                        e.getValidationErrors(),
+                        exception.getValidationErrors(),
                         "Input error",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            Logger.info("Added new Category(id=" + newCategory.getId() +",name=" + newCategory.getName() + ")");
+            Logger.info("Added new Category(id=" + newCategory.getId() + ",name=" + newCategory.getName() + ")");
 
             if (comboBox != null) {
                 comboBox.setSelectedItem(newCategory);
-            }
-            else {
+            } else {
                 PopUp.infoDialog(
                         "Category" + newCategory.getName() + " was added",
                         "New category added",
                         JOptionPane.INFORMATION_MESSAGE);
             }
         });
-
     }
+
+
 }

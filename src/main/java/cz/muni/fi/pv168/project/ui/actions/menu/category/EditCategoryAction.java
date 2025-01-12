@@ -33,7 +33,7 @@ public class EditCategoryAction extends EntityBaseAction {
         if (category == null) {
             return;
         }
-        var cDialog = new CategoryDialog(category);
+        var cDialog = new CategoryDialog(category, data.getDependencyProvider());
         cDialog.show(comboBox, "Edit Category").ifPresent(newCat -> {
             category.setName(newCat.getName());
             category.setColor(newCat.getColor());
@@ -41,13 +41,13 @@ public class EditCategoryAction extends EntityBaseAction {
         try {
             data.getCategoryListModel().update(category);
         } catch (ValidationException exception) {
-            Logger.error("Edit of Category (id=" + category.getId() +",name=" + category.getName() + ") has failed." + exception.getMessage());
+            Logger.error("Edit of Category (id=" + category.getId() + ",name=" + category.getName() + ") has failed." + exception.getMessage());
             PopUp.infoDialog(
                     exception.getValidationErrors(),
                     "Input error",
                     JOptionPane.ERROR_MESSAGE);
         }
-        Logger.info("Edited Category(id=" + category.getId() +",name=" + category.getName() + ")");
+        Logger.info("Edited Category(id=" + category.getId() + ",name=" + category.getName() + ")");
 
         comboBox.setSelectedIndex(0);
         data.getTemplateTableModel().refresh();

@@ -43,7 +43,7 @@ public class EditTimeUnitAction extends EntityBaseAction {
             return;
         }
 
-        var timeUnitDialog = new TimeUnitDialog(timeunit);
+        var timeUnitDialog = new TimeUnitDialog(timeunit, data.getDependencyProvider());
         timeUnitDialog.show(comboBox, "Edit Time Unit").ifPresent(newTimeUnit -> {
             timeunit.setName(newTimeUnit.getName());
             timeunit.setRate(newTimeUnit.getRate());
@@ -52,13 +52,13 @@ public class EditTimeUnitAction extends EntityBaseAction {
         try {
             data.getTimeUnitListModel().update(timeunit);
         } catch (ValidationException e) {
-            Logger.error("Edit of TimeUnit (id=" + timeunit.getId() +",name=" + timeunit.getName() + ") has failed." + e.getMessage());
+            Logger.error("Edit of TimeUnit (id=" + timeunit.getId() + ",name=" + timeunit.getName() + ") has failed." + e.getMessage());
             PopUp.infoDialog(
                     e.getValidationErrors(),
                     "Input error",
                     JOptionPane.ERROR_MESSAGE);
         }
-        Logger.info("Edited TimeUnit(id=" + timeunit.getId() +",name=" + timeunit.getName() + ")");
+        Logger.info("Edited TimeUnit(id=" + timeunit.getId() + ",name=" + timeunit.getName() + ")");
 
         comboBox.setSelectedIndex(0);
         data.getTemplateTableModel().refresh();

@@ -9,7 +9,7 @@ import javax.swing.*;
  * @author Vladimir Borek
  */
 public class TimePanelFactory {
-    public static ManageTaskTemplateTimePanel createPanel(JTextField allocatedTimeField, JPanel timeUnitPanel) {
+    public static ManageTaskTemplateTimePanel createPanel(JFormattedTextField allocatedTimeField, JPanel timeUnitPanel) {
         return new ManageTaskTemplateTimePanel(allocatedTimeField, timeUnitPanel);
     }
 

@@ -34,7 +34,7 @@ public class AddTimeUnitAction extends EntityBaseAction {
     }
 
     private void addTimeUnit() {
-        var dialog = new TimeUnitDialog();
+        var dialog = new TimeUnitDialog(data.getDependencyProvider());
         dialog.show(null, "Add new time unit").ifPresent(newTimeUnit -> {
             try {
                 data.getTimeUnitListModel().add(newTimeUnit);
