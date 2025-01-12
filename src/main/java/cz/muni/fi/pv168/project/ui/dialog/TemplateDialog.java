@@ -1,6 +1,5 @@
 package cz.muni.fi.pv168.project.ui.dialog;
 
-import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
@@ -32,7 +31,7 @@ public class TemplateDialog extends EntityDialog<Template> {
     private final UIDataManager data;
     private final JComboBox<Category> categoryComboBox;
     private final JComboBox<TimeUnit> timeUnitComboBox;
-    private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
+    private final JTextField allocatedTimeField = new JTextField();
     private final Template template;
 
     public TemplateDialog(UIDataManager data, Template template) {
@@ -75,18 +74,19 @@ public class TemplateDialog extends EntityDialog<Template> {
         categoryComboBox.setSelectedItem(template.getCategory());
         assignedToField.setText(template.getAssignedTo());
         descriptionArea.setText(template.getDescription());
-        allocatedTimeField.setValue(template.getConvertedAllocatedTime());
+        allocatedTimeField.setText(String.valueOf(template.getConvertedAllocatedTime()));
         timeUnitComboBox.setSelectedItem(template.getTimeUnit());
     }
 
     @Override
     public Template getEntity() {
         var timeunit = (TimeUnit) Objects.requireNonNull(timeUnitComboBox.getSelectedItem());
+        double allocatedTime = Double.parseDouble(allocatedTimeField.getText());
 
         Validator<Template> templateValidator = new TemplateValidator();
         var newTemplate = new Template(null, taskNameField.getText(),
                 (Category) categoryComboBox.getSelectedItem(),
-                allocatedTimeField.getValue() * timeunit.getRate(),
+                allocatedTime * timeunit.getRate(),
                 timeunit,
                 templateNameField.getText(),
                 descriptionArea.getText(),

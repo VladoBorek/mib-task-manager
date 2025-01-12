@@ -35,7 +35,7 @@ public class UIDataManager {
         setUp();
     }
 
-    public void setUp(){
+    public void setUp() {
         this.categoryListModel = new BaseListModel<>(
                 new ArrayList<>(
                         dependencyProvider.getCategoryCrudService().findAll()),
@@ -48,6 +48,7 @@ public class UIDataManager {
         };
         this.logTimeInfoTableModel = new LogTimeInfoTableModel(dependencyProvider.getLogTimeInfoCrudService());
     }
+
     public User getLoggedUser() {
         return loggedUser;
     }
@@ -94,5 +95,9 @@ public class UIDataManager {
 
     public LogTimeInfoTableModel getLogTimeInfoTableModel() {
         return logTimeInfoTableModel;
+    }
+
+    public DependencyProvider getDependencyProvider() {
+        return dependencyProvider;
     }
 }

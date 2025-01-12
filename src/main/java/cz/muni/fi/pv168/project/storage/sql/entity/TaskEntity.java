@@ -7,6 +7,7 @@ import java.util.Objects;
 
 /**
  * Representation of Task entity in a SQL database.
+ *
  * @author Maroš Pavlík
  */
 public record TaskEntity(
@@ -19,7 +20,7 @@ public record TaskEntity(
         String name,
         String assignedTo,
         Double loggedTime,
-        Integer allocatedTime,
+        Double allocatedTime,
         Long timeUnitId,
         LocalDate dueDate
 ) {
@@ -32,7 +33,7 @@ public record TaskEntity(
             String name,
             String assignedTo,
             Double loggedTime,
-            Integer allocatedTime,
+            Double allocatedTime,
             Long timeUnitId,
             LocalDate dueDate) {
         this.id = id;

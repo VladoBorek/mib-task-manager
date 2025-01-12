@@ -1,26 +1,25 @@
 package cz.muni.fi.pv168.project.ui.model.storagemodels;
 
-import cz.muni.fi.pv168.project.business.model.Statistic;
-import cz.muni.fi.pv168.project.business.service.Statistics.StatisticsService;
+import cz.muni.fi.pv168.project.business.model.Statistics.Statistics;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
-import cz.muni.fi.pv168.project.ui.model.statisticTableCell;
+import cz.muni.fi.pv168.project.ui.model.statisticTableRow;
+import cz.muni.fi.pv168.project.ui.utils.StatisticsService;
 
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cz.muni.fi.pv168.project.business.service.Statistics.StatisticsService.formatLoggedAllocatedTime;
 
 /**
  * @author Vladimir Borek
  */
 public class StatisticsTableModel extends AbstractTableModel {
     private final String[] columnNames = {"Statistic Name", "Global Statistic", "Filtered Statistic"};
-    private final List<statisticTableCell> statisticsData = new ArrayList<>();
+    private final List<statisticTableRow> statisticsData = new ArrayList<>();
     private final UIDataManager data;
-    private Statistic globalStatistics;
-    private Statistic filteredStatistics;
+    private Statistics globalStatistics;
+    private Statistics filteredStatistics;
 
     public StatisticsTableModel(UIDataManager data) {
         this.data = data;
@@ -29,12 +28,11 @@ public class StatisticsTableModel extends AbstractTableModel {
 
     private void addStatisticsToTable() {
         statisticsData.clear();
-        statisticsData.add(new statisticTableCell("Total Tasks", globalStatistics.total(), filteredStatistics.total()));
-        statisticsData.add(new statisticTableCell("Completed Tasks", globalStatistics.completed(), filteredStatistics.completed()));
-        statisticsData.add(new statisticTableCell("Overdue Tasks", globalStatistics.overdue(), filteredStatistics.overdue()));
-        statisticsData.add(new statisticTableCell("Unfinished Tasks", globalStatistics.inProgress(), filteredStatistics.inProgress()));
-        statisticsData.add(new statisticTableCell("Logged Time / Allocated Time",
-                formatLoggedAllocatedTime(globalStatistics), formatLoggedAllocatedTime(filteredStatistics))
+        statisticsData.add(new statisticTableRow("Total Tasks", globalStatistics.total(), filteredStatistics.total()));
+        statisticsData.add(new statisticTableRow("Completed Tasks", globalStatistics.completed(), filteredStatistics.completed()));
+        statisticsData.add(new statisticTableRow("Overdue Tasks", globalStatistics.overdue(), filteredStatistics.overdue()));
+        statisticsData.add(new statisticTableRow("Unfinished Tasks", globalStatistics.inProgress(), filteredStatistics.inProgress()));
+        statisticsData.add(new statisticTableRow("Logged Time / Allocated Time", globalStatistics.logAlloc(), filteredStatistics.logAlloc())
         );
     }
 
@@ -50,11 +48,11 @@ public class StatisticsTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        statisticTableCell statistic = statisticsData.get(rowIndex);
+        statisticTableRow row = statisticsData.get(rowIndex);
         return switch (columnIndex) {
-            case 0 -> statistic.getName();
-            case 1 -> statistic.getGlobalStatistic();
-            case 2 -> statistic.getFilteredStatistic();
+            case 0 -> row.name();
+            case 1 -> row.globalStatistic();
+            case 2 -> row.filteredStatistic();
             default -> null;
         };
     }

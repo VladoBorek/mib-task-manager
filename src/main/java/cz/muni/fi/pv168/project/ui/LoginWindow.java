@@ -24,6 +24,7 @@ public class LoginWindow {
     private final JIntegerTextField idField;
 
     public LoginWindow() {
+
         this.frame = new JFrame("Login");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 450);

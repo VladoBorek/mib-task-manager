@@ -13,9 +13,10 @@ import java.util.List;
 public class LogTimeInfoTableModel extends BaseTableModel<LogTimeInfo> {
     private final List<Column<LogTimeInfo, ?>> columns = List.of(
             Column.readonly("ID TASK", Long.class, LogTimeInfo::getTaskID),
-            Column.readonly("ID", Long.class, LogTimeInfo::getUserId),
+            Column.readonly("ID", Long.class, LogTimeInfo::getId),
             Column.readonly("Name", String.class, LogTimeInfo::getUsername),
-            Column.readonly("Logged Time", Double.class, LogTimeInfo::getLoggedTime)
+            Column.readonly("Logged Time", Double.class, LogTimeInfo::getLoggedTime),
+            Column.readonly("Time Unit", String.class, log -> log.getTimeUnit().getShortName())
     );
 
     public LogTimeInfoTableModel(CrudService<LogTimeInfo> crudService) {

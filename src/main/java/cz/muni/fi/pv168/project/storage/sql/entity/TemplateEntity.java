@@ -4,6 +4,7 @@ import java.util.Objects;
 
 /**
  * Representation of Template entity in a SQL database.
+ *
  * @author Maroš Pavlík
  */
 public record TemplateEntity(
@@ -13,7 +14,7 @@ public record TemplateEntity(
         String templateName,
         String taskName,
         String assignedTo,
-        Integer allocatedTime,
+        Double allocatedTime,
         Long timeUnitId
 ) {
     public TemplateEntity(
@@ -23,7 +24,7 @@ public record TemplateEntity(
             String templateName,
             String taskName,
             String assignedTo,
-            Integer allocatedTime,
+            Double allocatedTime,
             Long timeUnitId) {
         this.id = id;
         this.description = description;
