@@ -59,17 +59,9 @@ public class LogTimeAction extends AbstractAction {
 
     private void handleTimeLogsUpdate(Double newTimeInBaseUnits) {
         var newTimeInTaskUnits = newTimeInBaseUnits / task.getTimeUnit().getRate();
-        var currentUser = data.getLoggedUser();
-        var logTimeTableModel = data.getLogTimeInfoTableModel();
-        var existingLogTimeInfos = findExistingLogs(currentUser);
 
-        if (existingLogTimeInfos.isEmpty()) {
-            logTimeTableModel.addRow(new LogTimeInfo(newTimeInTaskUnits, currentUser, task.getId()));
-        } else {
-            var existingLog = existingLogTimeInfos.get(0);
-            existingLog.setLoggedTime(existingLog.getLoggedTime() + newTimeInTaskUnits);
-            logTimeTableModel.updateRow(existingLog);
-        }
+        data.getLogTimeInfoTableModel().addRow(
+                new LogTimeInfo(newTimeInTaskUnits, data.getLoggedUser(), task.getId()));
     }
 
     private List<LogTimeInfo> findExistingLogs(User user) {
