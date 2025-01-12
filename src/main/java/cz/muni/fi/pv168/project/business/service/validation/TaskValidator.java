@@ -2,7 +2,7 @@ package cz.muni.fi.pv168.project.business.service.validation;
 
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.service.validation.common.DateValidator;
-import cz.muni.fi.pv168.project.business.service.validation.common.NotNegativeIntegerValidator;
+import cz.muni.fi.pv168.project.business.service.validation.common.NotNegativeDoubleValidator;
 import cz.muni.fi.pv168.project.business.service.validation.common.StringLengthValidator;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class TaskValidator implements Validator<Task> {
                 Validator.extracting(
                         Task::getTimeUnit, new TimeUnitValidator()),
                 Validator.extracting(
-                        Task::getAllocatedTime, new NotNegativeIntegerValidator("AllocatedTime")
+                        Task::getAllocatedTime, new NotNegativeDoubleValidator("AllocatedTime")
                 )
         );
 

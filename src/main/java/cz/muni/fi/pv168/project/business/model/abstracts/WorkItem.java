@@ -8,7 +8,7 @@ public abstract class WorkItem extends Entity {
     private String name;
 
     // In the base time unit
-    private Integer allocatedTime;
+    private Double allocatedTime;
     private TimeUnit timeUnit;
     private String description;
     private String assignedTo;
@@ -16,7 +16,7 @@ public abstract class WorkItem extends Entity {
     public WorkItem(Long id,
                     Category category,
                     String name,
-                    Integer allocatedTime,
+                    Double allocatedTime,
                     TimeUnit timeUnit,
                     String description,
                     String assignedTo) {
@@ -37,10 +37,11 @@ public abstract class WorkItem extends Entity {
         this.name = name;
     }
 
-    public void setAllocatedTime(Integer allocatedTime) {
+    public void setAllocatedTime(Double allocatedTime) {
         this.allocatedTime = allocatedTime;
     }
-    public void setConvertedAllocatedTime(Integer allocatedTime) {
+
+    public void setConvertedAllocatedTime(Double allocatedTime) {
         this.allocatedTime = allocatedTime * timeUnit.getRate();
     }
 
@@ -64,11 +65,11 @@ public abstract class WorkItem extends Entity {
         return name;
     }
 
-    public Integer getAllocatedTime() {
+    public Double getAllocatedTime() {
         return allocatedTime;
     }
 
-    public Integer getConvertedAllocatedTime() {
+    public Double getConvertedAllocatedTime() {
         return allocatedTime / timeUnit.getRate();
     }
 

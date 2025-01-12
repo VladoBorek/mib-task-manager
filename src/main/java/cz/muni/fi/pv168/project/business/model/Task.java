@@ -16,7 +16,7 @@ public class Task extends WorkItem {
     private final List<LogTimeInfo> logHistory = new ArrayList<>();
 
     public Task(Long id, Status status, String description, Category category, String customer, String name,
-                String assignedTo, Double loggedTime, Integer allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
+                String assignedTo, Double loggedTime, Double allocatedTime, TimeUnit timeUnit, LocalDate dueDate) {
         super(id, category, name, allocatedTime, timeUnit, description, assignedTo);
         this.status = status;
         this.customer = customer;

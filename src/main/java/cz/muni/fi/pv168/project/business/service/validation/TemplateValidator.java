@@ -1,7 +1,7 @@
 package cz.muni.fi.pv168.project.business.service.validation;
 
 import cz.muni.fi.pv168.project.business.model.Template;
-import cz.muni.fi.pv168.project.business.service.validation.common.NotNegativeIntegerValidator;
+import cz.muni.fi.pv168.project.business.service.validation.common.NotNegativeDoubleValidator;
 import cz.muni.fi.pv168.project.business.service.validation.common.StringLengthValidator;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class TemplateValidator implements Validator<Template> {
                 Validator.extracting(
                         Template::getTimeUnit, new TimeUnitValidator()),
                 Validator.extracting(
-                        Template::getAllocatedTime, new NotNegativeIntegerValidator("AllocatedTime")
+                        Template::getAllocatedTime, new NotNegativeDoubleValidator("AllocatedTime")
                 )
         );
 

@@ -32,7 +32,7 @@ public class JSONObjectParsers {
                 object.getString("task_name"),
                 object.getString("assigned_to"),
                 object.getDouble("logged_time"),
-                object.getInt("allocated_time"),
+                object.getDouble("allocated_time"),
                 timeUnit,
                 LocalDate.parse(object.getString("due_date"))
         );
@@ -59,7 +59,7 @@ public class JSONObjectParsers {
                 timeUnit,
                 object.getString("template_name"),
                 object.getString("template_task_name"),
-                object.getInt("template_allocated_time"),
+                object.getDouble("template_allocated_time"),
                 object.getString("template_description"),
                 object.getString("template_assigned_to")
         );
@@ -114,7 +114,7 @@ public class JSONObjectParsers {
                                           TimeUnit timeUnit,
                                           String templateName,
                                           String taskName,
-                                          Integer allocated_time,
+                                          Double allocated_time,
                                           String description,
                                           String assignedTo) {
         var templateNew = new Template(null,

@@ -48,7 +48,7 @@ public class TemplateDao implements DataAccessObject<TemplateEntity> {
             statement.setString(3, entity.templateName());
             statement.setString(4, entity.taskName());
             statement.setString(5, entity.assignedTo());
-            statement.setInt(6, entity.allocatedTime());
+            statement.setDouble(6, entity.allocatedTime());
             if (entity.timeUnitId() == null) {
                 statement.setNull(7, java.sql.Types.BIGINT);
             } else {
@@ -161,7 +161,7 @@ public class TemplateDao implements DataAccessObject<TemplateEntity> {
             statement.setString(3, entity.templateName());
             statement.setString(4, entity.taskName());
             statement.setString(5, entity.assignedTo());
-            statement.setInt(6, entity.allocatedTime());
+            statement.setDouble(6, entity.allocatedTime());
 
             if (entity.timeUnitId() == null) {
                 statement.setNull(7, java.sql.Types.BIGINT);
@@ -227,7 +227,7 @@ public class TemplateDao implements DataAccessObject<TemplateEntity> {
                 resultSet.getString("templateName"),
                 resultSet.getString("taskName"),
                 resultSet.getString("assignedTo"),
-                resultSet.getInt("allocatedTime"),
+                resultSet.getDouble("allocatedTime"),
                 (Long) resultSet.getObject("timeUnitId")
         );
     }

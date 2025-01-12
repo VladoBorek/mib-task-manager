@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS "Task"
     `name`          VARCHAR(150)    NOT NULL,
     `assignedTo`    VARCHAR(150),
     `loggedTime`    DECIMAL(255, 4) NOT NULL,
-    `allocatedTime` BIGINT          NOT NULL,
+    `allocatedTime` DECIMAL(255, 4) NOT NULL,
     `timeUnitId`    BIGINT REFERENCES "TimeUnit" (`id`),
     `dueDate`       DATE
 );
@@ -43,12 +43,12 @@ CREATE TABLE IF NOT EXISTS "Task"
 CREATE TABLE IF NOT EXISTS "Template"
 (
     `id`            BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    `description`   TEXT         NOT NULL,
-    `categoryId`    BIGINT       NOT NULL REFERENCES "Category" (`id`),
-    `templateName`  VARCHAR(255) NOT NULL UNIQUE,
-    `taskName`      VARCHAR(255) NOT NULL,
+    `description`   TEXT            NOT NULL,
+    `categoryId`    BIGINT          NOT NULL REFERENCES "Category" (`id`),
+    `templateName`  VARCHAR(255)    NOT NULL UNIQUE,
+    `taskName`      VARCHAR(255)    NOT NULL,
     `assignedTo`    VARCHAR(255),
-    `allocatedTime` BIGINT       NOT NULL,
+    `allocatedTime` DECIMAL(255, 4) NOT NULL,
     `timeUnitId`    BIGINT REFERENCES "TimeUnit" (`id`)
 );
 

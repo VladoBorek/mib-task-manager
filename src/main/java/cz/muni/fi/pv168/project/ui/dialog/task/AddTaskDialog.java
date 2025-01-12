@@ -1,7 +1,6 @@
 package cz.muni.fi.pv168.project.ui.dialog.task;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.Status;
 import cz.muni.fi.pv168.project.business.model.Task;
@@ -37,7 +36,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
     private final JComboBox<Status> statusComboBox = new JComboBox<>(Status.values());
     private final JComboBox<Category> categoryComboBox;
     private final JComboBox<TimeUnit> timeUnitsComboBox;
-    private final JIntegerTextField allocatedTimeField = new JIntegerTextField();
+    private final JTextField allocatedTimeField = new JTextField();
     private final DatePicker datePicker = new DatePicker();
 
     public AddTaskDialog(Task task, UIDataManager data) {
@@ -82,7 +81,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
         assignedToName.setText(task.getAssignedTo());
         categoryComboBox.setSelectedItem(task.getCategory());
         statusComboBox.setSelectedItem(task.getStatus());
-        allocatedTimeField.setValue(task.getConvertedAllocatedTime());
+        allocatedTimeField.setText(String.valueOf(task.getConvertedAllocatedTime()));
         datePicker.setDate(task.getDueDate());
         timeUnitsComboBox.setSelectedItem(task.getTimeUnit());
     }
@@ -90,6 +89,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
     @Override
     public Task getEntity() {
         var timeunit = (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem());
+        double allocatedTime = Double.parseDouble(allocatedTimeField.getText());
 
         Validator<Task> taskValidator = new TaskValidator();
         var newTask = new Task(
@@ -100,7 +100,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
                 taskNameField.getText(),
                 assignedToName.getText(),
                 0d,
-                allocatedTimeField.getValue() * timeunit.getRate(),
+                allocatedTime * timeunit.getRate(),
                 timeunit,
                 datePicker.getDate());
         var validation = taskValidator.validate(newTask);
