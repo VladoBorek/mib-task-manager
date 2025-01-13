@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.ui.renderers;
 
 import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.util.ColorService;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -16,8 +17,8 @@ public class CategoryCellRenderer extends DefaultTableCellRenderer {
         Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
         if (value instanceof Category category) {
-            cell.setBackground(category.getColor());
-            cell.setForeground(CategoryComboboxRenderer.getRightTextColor(category.getColor()));
+            cell.setBackground(ColorService.customColorToAWTColor(category.getColor()));
+            cell.setForeground(CategoryComboboxRenderer.getRightTextColor(ColorService.customColorToAWTColor(category.getColor())));
         }
         return cell;
     }

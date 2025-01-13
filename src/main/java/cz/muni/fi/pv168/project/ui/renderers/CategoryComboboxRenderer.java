@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168.project.ui.renderers;
 
 import cz.muni.fi.pv168.project.business.model.Category;
+import cz.muni.fi.pv168.project.util.ColorService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +17,8 @@ public class CategoryComboboxRenderer extends DefaultListCellRenderer {
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
         if (value instanceof Category category) {
-            label.setForeground(getRightTextColor(category.getColor()));
-            label.setBackground(category.getColor());
+            label.setForeground(getRightTextColor(ColorService.customColorToAWTColor(category.getColor())));
+            label.setBackground(ColorService.customColorToAWTColor(category.getColor()));
         }
         return label;
     }
@@ -27,8 +28,8 @@ public class CategoryComboboxRenderer extends DefaultListCellRenderer {
         if (category == null) {
             return;
         }
-        combobox.setForeground(getRightTextColor(category.getColor()));
-        combobox.setBackground(category.getColor());
+        combobox.setForeground(getRightTextColor(ColorService.customColorToAWTColor(category.getColor())));
+        combobox.setBackground(ColorService.customColorToAWTColor(category.getColor()));
     }
 
     public static Color getRightTextColor(Color backgroundColor) {

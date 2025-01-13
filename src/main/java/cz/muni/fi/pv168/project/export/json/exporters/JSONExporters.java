@@ -7,6 +7,7 @@ import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
+import cz.muni.fi.pv168.project.util.ColorService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -36,7 +37,7 @@ public class JSONExporters {
         var category = (Category) entity;
         var object = new JSONObject();
         object.put("category_name", category.getName());
-        object.put("category_color", category.getColor().getRGB());
+        object.put("category_color", ColorService.customColorToAWTColor(category.getColor()).getRGB());
         return object;
     }
 

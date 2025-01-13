@@ -50,7 +50,6 @@ public class AddTaskAction extends EntityBaseAction {
             );
         });
 
-
         data.getStatisticsTableModel().refreshStatistics();
     }
 }

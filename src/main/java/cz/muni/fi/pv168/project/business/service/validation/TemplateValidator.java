@@ -26,10 +26,6 @@ public class TemplateValidator implements Validator<Template> {
                         Template::getDescription, new StringLengthValidator(0, 500, "Description")),
                 Validator.extracting(
                         Template::getAssignedTo, new StringLengthValidator(1, 25, "AssignedTo")),
-//                Validator.extracting(
-//                        Template::getCategory, new CategoryValidator()),
-//                Validator.extracting(
-//                        Template::getTimeUnit, new TimeUnitValidator()),
                 Validator.extracting(
                         Template::getAllocatedTime, new NotNegativeDoubleValidator("AllocatedTime")
                 )

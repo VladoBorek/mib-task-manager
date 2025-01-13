@@ -21,14 +21,12 @@ public class Column<E, T> {
         this.valueSetter = valueSetter;
     }
 
-    // see Item 1: Consider static factory methods instead of constructors
     public static <E, T> Column<E, T> editable(String name, Class<T> columnClass, Function<E, T> valueGetter,
                                                BiConsumer<E, T> valueSetter) {
         return new Column<>(name, columnClass, valueGetter,
                 Objects.requireNonNull(valueSetter, "value setter cannot be null"));
     }
 
-    // see Item 1: Consider static factory methods instead of constructors
     public static <E, T> Column<E, T> readonly(String name, Class<T> columnClass, Function<E, T> valueGetter) {
         return new Column<>(name, columnClass, valueGetter, null);
     }
@@ -37,7 +35,7 @@ public class Column<E, T> {
         if (valueSetter == null) {
             throw new UnsupportedOperationException("Cannot set value in readonly column: '" + name + "'");
         }
-        valueSetter.accept(entity, columnType.cast(value)); // see Item 33: Consider type-safe heterogeneous containers
+        valueSetter.accept(entity, columnType.cast(value));
     }
 
     public T getValue(E entity) {
