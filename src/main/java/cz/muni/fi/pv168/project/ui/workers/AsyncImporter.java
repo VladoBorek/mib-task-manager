@@ -3,8 +3,9 @@ package cz.muni.fi.pv168.project.ui.workers;
 import cz.muni.fi.pv168.project.business.service.export.ImportService;
 import cz.muni.fi.pv168.project.business.service.export.format.Format;
 import cz.muni.fi.pv168.project.ui.actions.menu.export.Importer;
+import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 
-import javax.swing.SwingWorker;
+import javax.swing.*;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -31,7 +32,12 @@ public class AsyncImporter implements Importer {
         var asyncWorker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
-                importService.importData(filePath, deleteData);
+                ExceptionHandler.exceptionPopUpHandler(
+                        () -> importService.importData(filePath, deleteData),
+                        "Import status",
+                        "Import of" + filePath + "successfully finished.",
+                        "Import of " + filePath + " has failed."
+                );
                 return null;
             }
 
