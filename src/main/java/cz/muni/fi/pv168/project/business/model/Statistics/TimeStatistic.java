@@ -12,7 +12,7 @@ public class TimeStatistic extends Statistic {
         this.logged = logged;
         this.allocated = allocated;
     }
-    
+
     @Override
     public String toString() {
         return String.format("%.2f / %.2f min", logged, allocated);

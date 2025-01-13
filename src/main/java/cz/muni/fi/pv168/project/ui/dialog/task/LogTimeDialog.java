@@ -36,12 +36,6 @@ public class LogTimeDialog extends EntityDialog<Pair<Double, TimeUnit>> {
         setPanel();
     }
 
-
-    //    @Override
-//    public Double getEntity() {
-//        double time = ((Number) timeField.getValue()).doubleValue();
-//        return time * ((TimeUnit) Objects.requireNonNull(timeUnitComboBox.getSelectedItem())).getRate();
-//    }
     @Override
     public Pair<Double, TimeUnit> getEntity() {
         double time = ((Number) timeField.getValue()).doubleValue();

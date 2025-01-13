@@ -1,11 +1,11 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.task;
 
-import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.InspectTaskDialog;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 import org.tinylog.Logger;
 
 import javax.swing.*;
@@ -26,7 +26,7 @@ public class InspectTaskAction extends EntityBaseAction {
         if (selectedRows.length != 1) {
             Logger.error("User tried to inspect more than one (1) task.");
             PopUp.infoDialog("To inspect task, please select exactly one (1) task.",
-                            "Invalid selected rows",
+                    "Invalid selected rows",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -35,21 +35,15 @@ public class InspectTaskAction extends EntityBaseAction {
         var task = taskTableModel.getEntity(modelRow);
 
         var tDialog = new InspectTaskDialog(task, data);
-        tDialog.show(data.getTaskTable(), "Inspect Task").ifPresent( inspectedTask -> {
-            try {
-                taskTableModel.updateRow(inspectedTask);
-            } catch (ValidationException exception) {
-                Logger.error("Time log of Task (id=" + task.getId() +",name=" + task.getName() + ") has failed." + exception.getMessage());
-
-                PopUp.infoDialog(
-                        exception.getValidationErrors(),
-                        "Input error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        }
+        tDialog.show(data.getTaskTable(), "Inspect Task").ifPresent(inspectedTask -> {
+                    ExceptionHandler.exceptionPopUpHandler(
+                            () -> taskTableModel.updateRow(inspectedTask),
+                            "Input error",
+                            null,
+                            null
+                    );
+                }
         );
-        Logger.info("Time log of Task (id=" + task.getId() +",name=" + task.getName() + ") was added.");
-
     }
 }
 

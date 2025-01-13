@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.project.storage.sql.dao;
 import cz.muni.fi.pv168.project.storage.sql.db.ConnectionHandler;
 import cz.muni.fi.pv168.project.storage.sql.entity.LogTimeInfoEntity;
 import cz.muni.fi.pv168.project.util.Constants;
+import org.tinylog.Logger;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -56,7 +57,7 @@ public class LogTimeInfoDao implements DataAccessObject<LogTimeInfoEntity> {
 
             try (var keyResultSet = statement.getGeneratedKeys()) {
                 if (keyResultSet.next()) {
-                    System.out.println("Generated ID: " + keyResultSet.getLong(1));
+                    Logger.info("Generated ID: " + keyResultSet.getLong(1));
                     return findById(keyResultSet.getLong(1)).orElseThrow();
                 } else {
                     throw new DataStorageException("Failed to fetch generated key for: " + entity);

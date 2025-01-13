@@ -1,13 +1,12 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.timeunit;
 
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
-import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
-import org.tinylog.Logger;
+import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -36,18 +35,12 @@ public class AddTimeUnitAction extends EntityBaseAction {
     private void addTimeUnit() {
         var dialog = new TimeUnitDialog();
         dialog.show(null, "Add new time unit").ifPresent(newTimeUnit -> {
-            try {
-                data.getTimeUnitListModel().add(newTimeUnit);
-            } catch (ValidationException exception) {
-                Logger.error("Time unit was not added: " + exception.getValidationErrors());
-                PopUp.infoDialog(
-                        exception.getValidationErrors(),
-                        "Input error",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            Logger.info("Added new Time unit (id=" + newTimeUnit.getId() + ",name=" + newTimeUnit.getName() + ")");
-
+            ExceptionHandler.exceptionPopUpHandler(
+                    () -> data.getTimeUnitListModel().add(newTimeUnit),
+                    "Input error",
+                    null,
+                    null
+            );
             if (comboBox != null) {
                 comboBox.setSelectedItem(newTimeUnit);
             } else {

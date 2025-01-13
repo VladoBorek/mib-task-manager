@@ -23,16 +23,16 @@ public final class FormatMapping<T extends FileFormat> {
     public FormatMapping(Collection<T> fileFormats) {
         this.fileFormats = fileFormats;
         extensionMapping = fileFormats.stream()
-            .map(f -> f.getFormat().extensions().stream()
-                    .collect(Collectors.toMap(
-                            Function.identity(),
-                            e -> f
-                    )))
-            .flatMap(m -> m.entrySet().stream())
-            .collect(Collectors.toMap(
-                    Map.Entry::getKey,
-                    Map.Entry::getValue
-            ));
+                .map(f -> f.getFormat().extensions().stream()
+                        .collect(Collectors.toMap(
+                                Function.identity(),
+                                e -> f
+                        )))
+                .flatMap(m -> m.entrySet().stream())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue
+                ));
     }
 
     /**

@@ -42,7 +42,7 @@ public interface Repository<T extends Entity> {
 
     Optional<T> findById(Long id);
 
-    public default void setInitEntities(Collection<T> initEntities) {
+    default void setInitEntities(Collection<T> initEntities) {
         initEntities.forEach(this::create);
     }
 }

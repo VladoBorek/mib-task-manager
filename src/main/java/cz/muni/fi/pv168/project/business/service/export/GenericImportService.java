@@ -72,9 +72,9 @@ public class GenericImportService implements ImportService {
             filteredTemplates.forEach(this::createTemplate);
             filteredTasks.forEach(this::createTask);
 
-        } catch (DataManipulationException dmex){
+        } catch (DataManipulationException dmex) {
             throw new BatchOperationException("Import failed because of:\n" + dmex.getMessage());
-        } catch (ValidationException vex){
+        } catch (ValidationException vex) {
             throw new BatchOperationException("Some items you tried to import failed validations\n" + vex.getValidationErrors());
         }
     }
@@ -82,8 +82,7 @@ public class GenericImportService implements ImportService {
     private void createTask(Task task) {
         taskCrudService.create(task)
                 .intoException();
-        //TODO uncomment this when workLogs will become List in task, imports the workLogs
-        //task.getWorkLogs().forEach(workLog -> createLogTimeInfo(workLog));
+        task.getLogHistory().forEach(workLog -> createLogTimeInfo(workLog, task));
     }
 
     private void createCategory(Category category) {
@@ -101,7 +100,8 @@ public class GenericImportService implements ImportService {
                 .intoException();
     }
 
-    private void createLogTimeInfo(LogTimeInfo logTimeInfo) {
+    private void createLogTimeInfo(LogTimeInfo logTimeInfo, Task task) {
+        logTimeInfo.setTaskID(task.getId());
         logTimeInfoCrudService.create(logTimeInfo)
                 .intoException();
     }

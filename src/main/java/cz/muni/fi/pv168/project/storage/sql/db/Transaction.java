@@ -1,4 +1,5 @@
 package cz.muni.fi.pv168.project.storage.sql.db;
+
 import java.io.Closeable;
 
 /**

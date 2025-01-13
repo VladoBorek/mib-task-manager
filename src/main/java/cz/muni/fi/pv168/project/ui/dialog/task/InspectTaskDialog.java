@@ -143,8 +143,6 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         assignedTo.setText(task.getAssignedTo());
         category.setText(task.getCategory().getName());
         status.setText(task.getStatus().toString());
-//        loggedTime.setText(task.getConvertedLoggedTimeString());
-//        allocatedTime.setText(task.getConvertedAllocatedTimeString());
 
         allocatedTime.setText(DECIMAL_FORMAT.format(task.getConvertedAllocatedTime()) + " " + task.getTimeUnit().getShortName());
         loggedTime.setText(DECIMAL_FORMAT.format(task.getConvertedLoggedTime()) + " " + task.getTimeUnit().getShortName());
@@ -154,7 +152,6 @@ public class InspectTaskDialog extends EntityDialog<Task> {
     }
 
     public void updateLoggedTime() {
-        //loggedTime.setText(task.getConvertedLoggedTimeString());
         loggedTime.setText(DECIMAL_FORMAT.format(task.getConvertedLoggedTime()) + " " + task.getTimeUnit().getShortName());
         logTimeInfoTableModel.refresh();
     }
