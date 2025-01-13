@@ -3,7 +3,6 @@ package cz.muni.fi.pv168.project.ui.actions.menu.export;
 import cz.muni.fi.pv168.project.business.service.export.ImportService;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
-import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 import cz.muni.fi.pv168.project.ui.workers.AsyncImporter;
 import cz.muni.fi.pv168.project.util.Filter;
 
@@ -19,13 +18,7 @@ public class ImportAction extends AbstractAction {
 
     public ImportAction(ImportService importService, Runnable callback) {
         super("Import application data", Icons.IMPORT_ICON);
-        this.importer = new AsyncImporter(importService,
-                () -> {
-                    JOptionPane.showMessageDialog(
-                            null, "Import has successfully finished.");
-                    callback.run();
-                });
-
+        this.importer = new AsyncImporter(importService, callback);
     }
 
     @Override
@@ -40,12 +33,7 @@ public class ImportAction extends AbstractAction {
         int dialogResult = fileChooser.showOpenDialog(null);
         if (dialogResult == JFileChooser.APPROVE_OPTION) {
             File importFile = fileChooser.getSelectedFile();
-            ExceptionHandler.exceptionPopUpHandler(
-                    () -> importer.importData(importFile.getAbsolutePath(), deleteData == 0),
-                    "Import status",
-                    null,
-                    "Import of " + importFile.getAbsolutePath() + " has failed."
-            );
+            importer.importData(importFile.getAbsolutePath(), deleteData == 0);
         }
     }
 
