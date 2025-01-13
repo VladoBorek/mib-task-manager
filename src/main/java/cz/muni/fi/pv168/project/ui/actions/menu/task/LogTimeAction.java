@@ -10,6 +10,7 @@ import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.InspectTaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.task.LogTimeDialog;
+import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 import org.tinylog.Logger;
 
 import javax.swing.*;
@@ -30,25 +31,20 @@ public class LogTimeAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         var dialog = new LogTimeDialog(data, task);
+        ExceptionHandler.exceptionPopUpHandler(
+                () -> {
+                    dialog.show(null, "Log Time").ifPresent(timeAndUnit -> {
+                        validateInput(timeAndUnit.first);
+                        handleTimeLogsUpdate(timeAndUnit);
+                    });
 
-        try {
-            dialog.show(null, "Log Time").ifPresent(timeAndUnit -> {
-                validateInput(timeAndUnit.first);
-                handleTimeLogsUpdate(timeAndUnit);
-            });
-
-            data.getStatisticsTableModel().refreshStatistics();
-            inspectTaskDialog.updateLoggedTime();
-
-        } catch (ValidationException exception) {
-            Logger.error("Logging of time for Task (id=" + task.getId() + ",name=" + task.getName() + ") has failed." + exception.getMessage());
-            PopUp.infoDialog(
-                    exception.getValidationErrors(),
-                    "Input error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-        Logger.info("Logged time for Task (id=" + task.getId() + ",name=" + task.getName() + ") has failed.");
-
+                    data.getStatisticsTableModel().refreshStatistics();
+                    inspectTaskDialog.updateLoggedTime();
+                },
+                "Input error",
+                null,
+                null
+        );
     }
 
     private void validateInput(Double newTime) {
@@ -59,7 +55,6 @@ public class LogTimeAction extends AbstractAction {
     private void handleTimeLogsUpdate(Pair<Double, TimeUnit> timeAndUnit) {
         var newTimeInSelectedUnits = timeAndUnit.first;
         var selectedUnit = timeAndUnit.second;
-        //var newTimeInTaskUnits = newTimeInBaseUnits / task.getTimeUnit().getRate();
         var newTimeInBaseUnits = newTimeInSelectedUnits * selectedUnit.getRate();
 
 
@@ -72,12 +67,4 @@ public class LogTimeAction extends AbstractAction {
         logTimeTableModel.addRow(newLog);
         task.setLoggedTime(task.getLoggedTime() + newTimeInBaseUnits);
     }
-
-    //TODO: delete probably will become useless
-//    private List<LogTimeInfo> findExistingLogs(User user) {
-//        return data.getLogTimeInfoTableModel()
-//                .getAllRows().stream()
-//                .filter(log -> log.getUserId().equals(user.id()) && log.getTaskID().equals(task.getId()))
-//                .toList();
-//    }
 }
