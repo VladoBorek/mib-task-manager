@@ -2,6 +2,7 @@ package cz.muni.fi.pv168.project.storage.sql.dao;
 
 import cz.muni.fi.pv168.project.storage.sql.db.ConnectionHandler;
 import cz.muni.fi.pv168.project.storage.sql.entity.CategoryEntity;
+import org.tinylog.Logger;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -85,7 +86,7 @@ public class CategoryDao implements DataAccessObject<CategoryEntity> {
 
             return categories;
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            Logger.error(ex.getMessage());
             throw new DataStorageException("Failed to load all categories", ex);
         }
     }

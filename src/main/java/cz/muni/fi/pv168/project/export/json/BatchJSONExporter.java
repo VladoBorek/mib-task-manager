@@ -1,4 +1,5 @@
 package cz.muni.fi.pv168.project.export.json;
+
 import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
 import cz.muni.fi.pv168.project.business.service.export.DataManipulationException;
 import cz.muni.fi.pv168.project.business.service.export.batch.Batch;
@@ -24,6 +25,7 @@ import java.util.function.Function;
  */
 public class BatchJSONExporter implements BatchExporter {
     private static final Format FORMAT = new Format("JSON", List.of("json"));
+
     @Override
     public void exportBatch(Batch batch, String filePath) {
 
@@ -40,10 +42,11 @@ public class BatchJSONExporter implements BatchExporter {
             throw new DataManipulationException("Unable to write to file", exception);
         }
     }
+
     private JSONArray exportCollection(Collection<?> batchCollection,
-                                       Function<Entity, JSONObject> createObject){
+                                       Function<Entity, JSONObject> createObject) {
         var itemArray = new JSONArray();
-        for (var item: batchCollection) {
+        for (var item : batchCollection) {
             itemArray.put(createObject.apply((Entity) item));
         }
         return itemArray;

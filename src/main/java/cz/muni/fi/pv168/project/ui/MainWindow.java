@@ -112,7 +112,6 @@ public class MainWindow {
 
         frame.setLocationRelativeTo(null);
         frame.pack();
-        // This has to be here IDK why
         frame.setSize(1024, 768);
     }
 

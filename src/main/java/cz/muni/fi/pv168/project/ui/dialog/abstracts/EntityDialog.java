@@ -4,7 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Optional;
 
-import static javax.swing.JOptionPane.*;
+import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
+import static javax.swing.JOptionPane.OK_OPTION;
+import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 
 public abstract class EntityDialog<E> {
     private final JPanel panel = new JPanel();

@@ -17,10 +17,10 @@ public class DataStorageException extends RuntimeApplicationException {
     }
 
     public DataStorageException(String message, Throwable cause) {
-        this("Problem while interacting with database" , message, cause);
+        this("Problem while interacting with database", message, cause);
     }
 
     public DataStorageException(String userMessage, String message, Throwable cause) {
-        super(userMessage, "Storage error: " +  message, cause);
+        super(userMessage, "Storage error: " + message, cause);
     }
 }

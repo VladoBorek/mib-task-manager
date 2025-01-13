@@ -1,13 +1,12 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.category;
 
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
-import org.tinylog.Logger;
+import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -32,19 +31,12 @@ public class AddCategoryAction extends EntityBaseAction {
     public void actionPerformed(ActionEvent e) {
         var dialog = new CategoryDialog(data.getDependencyProvider());
         dialog.show(null, "Add a new Category").ifPresent(newCategory -> {
-            try {
-                data.getCategoryListModel().add(newCategory);
-            } catch (ValidationException exception) {
-                Logger.error("Category was not added: " + exception.getValidationErrors());
-                PopUp.infoDialog(
-                        exception.getValidationErrors(),
-                        "Input error",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            Logger.info("Added new Category(id=" + newCategory.getId() + ",name=" + newCategory.getName() + ")");
-
+            ExceptionHandler.exceptionPopUpHandler(
+                    () -> data.getCategoryListModel().add(newCategory),
+                    "Input error",
+                    null,
+                    ""
+            );
             if (comboBox != null) {
                 comboBox.setSelectedItem(newCategory);
             } else {

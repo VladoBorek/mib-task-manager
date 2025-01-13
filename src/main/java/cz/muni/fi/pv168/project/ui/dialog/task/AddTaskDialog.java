@@ -22,7 +22,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Objects;
 
-import static cz.muni.fi.pv168.project.ui.utils.UIElements.*;
+import static cz.muni.fi.pv168.project.ui.utils.UIElements.createDescriptionPanel;
+import static cz.muni.fi.pv168.project.ui.utils.UIElements.setupCategoryTwoPartPanel;
+import static cz.muni.fi.pv168.project.ui.utils.UIElements.setupTimeUnitTwoPartPanel;
 
 /**
  * Dialog for adding and editing tasks
@@ -56,6 +58,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
             setValues();
         } else {
             timeUnitsComboBox.setSelectedItem(Constants.BASE_TIME_UNIT);
+            allocatedTimeField.setText("0");
         }
     }
 
