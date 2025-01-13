@@ -9,6 +9,7 @@ import cz.muni.fi.pv168.project.ui.model.panels.panelFactories.TimePanelFactory;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.LogTimeInfoTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.ui.utils.UIElements;
+import cz.muni.fi.pv168.project.util.ColorService;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -117,7 +118,7 @@ public class InspectTaskDialog extends EntityDialog<Task> {
         customer.setBorder(labelBorder);
         assignedTo.setBorder(labelBorder);
         status.setBorder(labelBorder);
-        category.setBorder(BorderFactory.createLineBorder(task.getCategory().getColor(), 5));
+        category.setBorder(BorderFactory.createLineBorder(ColorService.customColorToAWTColor(task.getCategory().getColor()), 5));
         loggedTime.setBorder(labelBorder);
         allocatedTime.setBorder(labelBorder);
         date.setBorder(labelBorder);

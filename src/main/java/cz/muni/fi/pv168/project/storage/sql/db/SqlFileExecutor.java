@@ -47,7 +47,6 @@ public class SqlFileExecutor {
         }
     }
 
-    // so idk if we can use this but im leaving it here for now
     private void executeSQLFile(Connection connection, String fileName) {
         final String initSchemaSql = loadSQLFromResources(fileName);
 

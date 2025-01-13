@@ -42,12 +42,13 @@ public class EditTimeUnitAction extends EntityBaseAction {
             return;
         }
 
-        var timeUnitDialog = new TimeUnitDialog(timeunit);
+        var timeUnitDialog = new TimeUnitDialog(timeunit, data.getDependencyProvider());
         timeUnitDialog.show(comboBox, "Edit Time Unit").ifPresent(newTimeUnit -> {
             timeunit.setName(newTimeUnit.getName());
             timeunit.setRate(newTimeUnit.getRate());
             timeunit.setShortName(newTimeUnit.getShortName());
         });
+
         ExceptionHandler.exceptionPopUpHandler(
                 () -> data.getTimeUnitListModel().update(timeunit),
                 "Input error",

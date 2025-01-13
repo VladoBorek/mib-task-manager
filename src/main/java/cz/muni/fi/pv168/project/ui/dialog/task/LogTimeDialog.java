@@ -6,10 +6,9 @@ import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.ui.model.ComboBoxModelAdapter;
+import cz.muni.fi.pv168.project.ui.utils.UIElements;
 
 import javax.swing.*;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Objects;
 
 
@@ -23,13 +22,11 @@ public class LogTimeDialog extends EntityDialog<Pair<Double, TimeUnit>> {
     private final JComboBox<TimeUnit> timeUnitComboBox;
 
     public LogTimeDialog(UIDataManager data, Task task) {
-        NumberFormat format = new DecimalFormat("#.##");
-        format.setGroupingUsed(false);
-        timeField = new JFormattedTextField(format);
-        timeField.setValue(task.getLoggedTime() != null ? task.getLoggedTime() : 0.0);
+        timeField = UIElements.createDecimalFormattedTextField();
 
         timeUnitComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnitListModel()));
         timeUnitComboBox.setSelectedItem(task.getTimeUnit());
+
         add("Time", timeField);
         add("Time Unit", timeUnitComboBox);
 
@@ -42,5 +39,6 @@ public class LogTimeDialog extends EntityDialog<Pair<Double, TimeUnit>> {
         TimeUnit selectedUnit = (TimeUnit) Objects.requireNonNull(timeUnitComboBox.getSelectedItem());
         return new Pair<>(time, selectedUnit);
     }
+
 
 }

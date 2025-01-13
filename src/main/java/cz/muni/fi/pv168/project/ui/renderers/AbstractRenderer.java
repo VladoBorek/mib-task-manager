@@ -28,8 +28,10 @@ public abstract class AbstractRenderer<T> implements ListCellRenderer<T>, TableC
 
         // reset foreground color to default
         tableCellRenderer.setForeground(null);
+
         var label = (JLabel) tableCellRenderer.getTableCellRendererComponent(
                 table, value, isSelected, hasFocus, row, column);
+
         updateLabel(label, elementType.cast(value));
         return label;
     }
@@ -41,6 +43,7 @@ public abstract class AbstractRenderer<T> implements ListCellRenderer<T>, TableC
 
         var label = (JLabel) listCellRenderer.getListCellRendererComponent(
                 list, value, index, isSelected, cellHasFocus);
+
         updateLabel(label, value);
         return label;
     }

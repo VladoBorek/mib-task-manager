@@ -12,9 +12,16 @@ import cz.muni.fi.pv168.project.ui.renderers.CategoryComboboxRenderer;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 
 import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.NumberFormatter;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * @author Marcel Nadzam
@@ -174,4 +181,57 @@ public class UIElements {
                 new AddTimeUnitAction(data, timeUnitComboBox));
         return createTwoPartPanel(timeUnitComboBox, addTimeUnitButton);
     }
+
+    public static JFormattedTextField createDecimalFormattedTextField() {
+        NumberFormat format = new DecimalFormat("#.##");
+        format.setGroupingUsed(false);
+
+        NumberFormatter formatter = new NumberFormatter(format);
+        formatter.setAllowsInvalid(true);
+        formatter.setMinimum(0.0);
+        formatter.setValueClass(Double.class);
+
+        JFormattedTextField field = new JFormattedTextField(formatter);
+        field.setValue(0.0);
+        field.setHorizontalAlignment(SwingConstants.LEFT);
+
+        formatTextFieldBehavior(field);
+
+        return field;
+    }
+
+    static private void formatTextFieldBehavior(JFormattedTextField field) {
+        final StringBuffer buffer = new StringBuffer();
+
+        field.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e) {
+                buffer.setLength(0);
+                buffer.append(field.getText());
+            }
+        });
+
+        field.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+
+                if (!Character.isDigit(c) && c != '.' && c != KeyEvent.VK_BACK_SPACE) {
+                    e.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                }
+
+                if (c == '.' && field.getText().contains(".")) {
+                    e.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                }
+
+                buffer.setLength(0);
+                buffer.append(field.getText());
+            }
+        });
+    }
 }
+
+
+

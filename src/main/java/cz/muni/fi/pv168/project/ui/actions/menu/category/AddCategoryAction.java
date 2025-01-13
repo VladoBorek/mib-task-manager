@@ -29,11 +29,7 @@ public class AddCategoryAction extends EntityBaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        addCategory();
-    }
-
-    private void addCategory() {
-        var dialog = new CategoryDialog();
+        var dialog = new CategoryDialog(data.getDependencyProvider());
         dialog.show(null, "Add a new Category").ifPresent(newCategory -> {
             ExceptionHandler.exceptionPopUpHandler(
                     () -> data.getCategoryListModel().add(newCategory),
@@ -50,6 +46,7 @@ public class AddCategoryAction extends EntityBaseAction {
                         JOptionPane.INFORMATION_MESSAGE);
             }
         });
-
     }
+
+
 }

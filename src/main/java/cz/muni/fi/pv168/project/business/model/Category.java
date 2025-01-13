@@ -1,8 +1,8 @@
 package cz.muni.fi.pv168.project.business.model;
 
 import cz.muni.fi.pv168.project.business.model.abstracts.Entity;
+import cz.muni.fi.pv168.project.business.utils.CustomColor;
 
-import java.awt.*;
 import java.util.Objects;
 
 /**
@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public class Category extends Entity {
     private String name;
-    private Color color;
+    private CustomColor color;
 
     /**
      * Constructs a new Category object with a specified name and color.
@@ -18,7 +18,7 @@ public class Category extends Entity {
      * @param name  the name of the category.
      * @param color the color associated with the category.
      */
-    public Category(Long id, String name, Color color) {
+    public Category(Long id, String name, CustomColor color) {
         super(id);
         this.name = name;
         this.color = color;
@@ -32,11 +32,11 @@ public class Category extends Entity {
         this.name = name;
     }
 
-    public Color getColor() {
+    public CustomColor getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(CustomColor color) {
         this.color = color;
     }
 

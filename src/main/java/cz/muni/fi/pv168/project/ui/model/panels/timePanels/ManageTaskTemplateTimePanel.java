@@ -7,10 +7,10 @@ import java.awt.*;
  * @author Vladimir Borek
  */
 public class ManageTaskTemplateTimePanel extends JPanel {
-    private final JTextField allocatedTimeField;
+    private final JFormattedTextField allocatedTimeField;
     private final JPanel timeUnitPanel;
 
-    public ManageTaskTemplateTimePanel(JTextField allocatedTimeField, JPanel timeUnitPanel) {
+    public ManageTaskTemplateTimePanel(JFormattedTextField allocatedTimeField, JPanel timeUnitPanel) {
         this.allocatedTimeField = allocatedTimeField;
         this.timeUnitPanel = timeUnitPanel;
 
