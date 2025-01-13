@@ -37,7 +37,6 @@ public class AddTaskDialog extends EntityDialog<Task> {
     private final JComboBox<Category> categoryComboBox;
     private final JComboBox<TimeUnit> timeUnitsComboBox;
     private final JFormattedTextField allocatedTimeField = UIElements.createDecimalFormattedTextField();
-    ;
     private final DatePicker datePicker = new DatePicker();
 
     public AddTaskDialog(Task task, UIDataManager data) {

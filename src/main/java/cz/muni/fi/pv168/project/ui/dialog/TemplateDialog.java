@@ -32,7 +32,6 @@ public class TemplateDialog extends EntityDialog<Template> {
     private final JComboBox<Category> categoryComboBox;
     private final JComboBox<TimeUnit> timeUnitComboBox;
     private final JFormattedTextField allocatedTimeField = UIElements.createDecimalFormattedTextField();
-    ;
     private final Template template;
 
     public TemplateDialog(UIDataManager data, Template template) {
