@@ -5,6 +5,7 @@ import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.storage.sql.dao.DataAccessObject;
+import cz.muni.fi.pv168.project.storage.sql.dao.DataStorageException;
 import cz.muni.fi.pv168.project.storage.sql.entity.CategoryEntity;
 import cz.muni.fi.pv168.project.storage.sql.entity.LogTimeInfoEntity;
 import cz.muni.fi.pv168.project.storage.sql.entity.TaskEntity;
@@ -44,18 +45,26 @@ public class TaskMapper implements EntityMapper<TaskEntity, Task> {
 
     @Override
     public Task mapToBusiness(TaskEntity entity) {
-        var category = MapperUtils.getCategoryById(categoryDao,
-                entity, categoryMapper, e -> ((TaskEntity) e).categoryId());
+        var category = categoryDao
+                .findById(entity.categoryId())
+                .map(categoryMapper::mapToBusiness)
+                .orElseThrow(() -> new DataStorageException("Category not found, id: " +
+                        entity.categoryId()));
+
 
         TimeUnit timeUnit;
         if (entity.timeUnitId() == null) {
             timeUnit = Constants.BASE_TIME_UNIT;
         } else {
-            timeUnit = MapperUtils.getTimeUnitById(timeUnitDao,
-                    entity, timeUnitMapper, e -> ((TaskEntity) e).timeUnitId());
+            timeUnit = timeUnitDao
+                    .findById(entity.timeUnitId())
+                    .map(timeUnitMapper::mapToBusiness)
+                    .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
+                            entity.timeUnitId()));
         }
 
-        var newTask = new Task(
+
+            var newTask = new Task(
                 entity.id(),
                 entity.status(),
                 entity.description(),
@@ -90,19 +99,24 @@ public class TaskMapper implements EntityMapper<TaskEntity, Task> {
 
     @Override
     public TaskEntity mapExistingEntityToDatabase(Task entity, Long dbId) {
-        var categoryEntity = MapperUtils.getCategoryEntityById(categoryDao,
-                entity, e -> ((Task) e).getCategory().getId());
+        var categoryEntity = categoryDao
+                .findById(entity.getCategory().getId())
+                .orElseThrow(() -> new DataStorageException("Category not found, id: " +
+                        entity.getCategory().getId()));
+
 
         Long timeUnitId;
         if (entity.getTimeUnit().equals(Constants.BASE_TIME_UNIT)) {
             timeUnitId = null;
         } else {
-            var timeUnitEntity = MapperUtils.getTimeUnitEntityById(timeUnitDao,
-                    entity, e -> ((Task) e).getTimeUnit().getId());
+            var timeUnitEntity = timeUnitDao
+                    .findById(entity.getTimeUnit().getId())
+                    .orElseThrow(() -> new DataStorageException("Time Unit not found, id: " +
+                            entity.getTimeUnit().getId()));
             timeUnitId = timeUnitEntity.id();
         }
 
-        return new TaskEntity(
+            return new TaskEntity(
                 dbId,
                 entity.getStatus(),
                 entity.getDescription(),
