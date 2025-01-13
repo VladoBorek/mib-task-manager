@@ -31,12 +31,12 @@ public class EditCategoryAction extends EntityBaseAction {
         if (category == null) {
             return;
         }
-        var cDialog = new CategoryDialog(category);
+        var cDialog = new CategoryDialog(category, data.getDependencyProvider());
         cDialog.show(comboBox, "Edit Category").ifPresent(newCat -> {
             category.setName(newCat.getName());
             category.setColor(newCat.getColor());
         });
-
+        
         ExceptionHandler.exceptionPopUpHandler(
                 () -> data.getCategoryListModel().update(category),
                 "Input error",

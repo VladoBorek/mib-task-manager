@@ -6,6 +6,7 @@ import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
 import cz.muni.fi.pv168.project.business.model.User;
+import cz.muni.fi.pv168.project.util.ColorService;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -55,7 +56,7 @@ public class GenericParsers {
      */
     public static Category parseCategory(HashMap<String, Category> categories,
                                          String name, Integer color) {
-        var categoryNew = new Category(null, name, new Color(color));
+        var categoryNew = new Category(null, name, ColorService.customColorFromAWTColor(new Color(color)));
         return categories.computeIfAbsent(categoryNew.getName(), category -> categoryNew);
     }
 

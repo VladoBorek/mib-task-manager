@@ -1,9 +1,11 @@
 package cz.muni.fi.pv168.project.ui.dialog;
 
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.business.service.validation.CategoryValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
+import cz.muni.fi.pv168.project.business.utils.CustomColor;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
+import cz.muni.fi.pv168.project.util.ColorService;
+import cz.muni.fi.pv168.project.wiring.DependencyProvider;
 import org.tinylog.Logger;
 
 import javax.swing.*;
@@ -16,13 +18,15 @@ public class CategoryDialog extends EntityDialog<Category> {
 
     private final JTextField nameField = new JTextField();
     private final JPanel colorPreviewPanel = new JPanel();
-    private Color selectedColor = Color.lightGray;
+    private CustomColor selectedColor = ColorService.customColorFromAWTColor(Color.lightGray);
+    private final DependencyProvider provider;
 
-    public CategoryDialog() {
+    public CategoryDialog(DependencyProvider provider) {
+        this.provider = provider;
         nameField.setPreferredSize(new Dimension(200, 25));
 
         colorPreviewPanel.setPreferredSize(new Dimension(175, 25));
-        colorPreviewPanel.setBackground(selectedColor);
+        colorPreviewPanel.setBackground(ColorService.customColorToAWTColor(selectedColor));
         colorPreviewPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
         var colorPanel = new JPanel();
@@ -35,8 +39,8 @@ public class CategoryDialog extends EntityDialog<Category> {
         setPanel();
     }
 
-    public CategoryDialog(Category category) {
-        this();
+    public CategoryDialog(Category category, DependencyProvider provider) {
+        this(provider);
         nameField.setText(category.getName());
         setSelectedColor(category.getColor());
     }
@@ -49,24 +53,25 @@ public class CategoryDialog extends EntityDialog<Category> {
             var chosenColor = JColorChooser.showDialog(
                     colorPreviewPanel,
                     "Choose Category Color",
-                    selectedColor
+                    ColorService.customColorToAWTColor(selectedColor)
             );
             if (chosenColor != null) {
-                setSelectedColor(chosenColor);
+                setSelectedColor(ColorService.customColorFromAWTColor(chosenColor));
             }
         });
         return colorButton;
     }
 
-    private void setSelectedColor(Color color) {
+    private void setSelectedColor(CustomColor color) {
         selectedColor = color;
-        colorPreviewPanel.setBackground(color);
+        colorPreviewPanel.setBackground(ColorService.customColorToAWTColor(color));
     }
 
     @Override
     public Category getEntity() {
-        Validator<Category> categoryValidator = new CategoryValidator();
+        Validator<Category> categoryValidator = provider.getCategoryValidator();
         var validation = categoryValidator.validate(new Category(null, nameField.getText(), selectedColor));
+
         if (!validation.isValid()) {
             Logger.error("Category failed Validation " + validation.getValidationErrors());
             PopUp.infoDialog(
@@ -75,6 +80,17 @@ public class CategoryDialog extends EntityDialog<Category> {
                     JOptionPane.ERROR_MESSAGE);
             return null;
         }
+
+        if (provider.getCategoryService().isNameDuplicate(nameField.getText())) {
+            Logger.warn("User tried to create a category with a duplicate name: " + nameField.getText());
+            PopUp.infoDialog(
+                    "A category with this name already exists. Please choose a different name.",
+                    "Duplicate Name",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return null;
+        }
+
         return new Category(null, nameField.getText(), selectedColor);
     }
 }
