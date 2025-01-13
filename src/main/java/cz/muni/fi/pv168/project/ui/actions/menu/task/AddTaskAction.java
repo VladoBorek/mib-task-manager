@@ -9,6 +9,7 @@ import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.AddTaskDialog;
 import cz.muni.fi.pv168.project.ui.model.storagemodels.TaskTableModel;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
+import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 import org.tinylog.Logger;
 
 import javax.swing.*;
@@ -44,16 +45,12 @@ public class AddTaskAction extends EntityBaseAction {
         }
 
         dialog.show(data.getTaskTable(), "Add new Task").ifPresent(newTask -> {
-            try {
-                taskTableModel.addRow(newTask);
-            } catch (ValidationException e) {
-                Logger.error("Task was not added: " + e.getMessage());
-                PopUp.infoDialog(
-                        e.getValidationErrors(),
-                        "Input error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-            Logger.info("Added new Task (id=" + newTask.getId() +",name=" + newTask.getName() + ")");
+            ExceptionHandler.exceptionPopUpHandler(
+                    () -> taskTableModel.addRow(newTask),
+                    "Input error",
+                    null,
+                    "Edit was not successful."
+            );
         });
 
 
