@@ -9,14 +9,15 @@ import java.util.Objects;
 /**
  * @author Vladimir Borek
  */
-public class ConnectionHandlerImpl implements ConnectionHandler{
+public class ConnectionHandlerImpl implements ConnectionHandler {
     private final Connection connection;
 
     /**
      * Creates new handler over given connection
+     *
      * @param connection database connection
      */
-     ConnectionHandlerImpl(Connection connection) {
+    ConnectionHandlerImpl(Connection connection) {
         this.connection = Objects.requireNonNull(connection, "Missing connection object");
     }
 

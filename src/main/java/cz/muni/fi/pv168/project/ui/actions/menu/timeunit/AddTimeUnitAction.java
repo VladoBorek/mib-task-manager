@@ -1,14 +1,12 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.timeunit;
 
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
-import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.TimeUnitDialog;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
-import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

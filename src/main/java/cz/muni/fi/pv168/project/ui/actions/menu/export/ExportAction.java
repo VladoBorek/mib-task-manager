@@ -1,18 +1,13 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.export;
 
 import cz.muni.fi.pv168.project.business.service.export.ExportService;
-import cz.muni.fi.pv168.project.business.service.export.batch.BatchOperationException;
-import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
 import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 import cz.muni.fi.pv168.project.ui.workers.AsyncExporter;
 import cz.muni.fi.pv168.project.util.Filter;
-import org.tinylog.Logger;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
-import java.io.File;
 
 /**
  * @author Nikol Otáhalů
@@ -20,7 +15,7 @@ import java.io.File;
 public class ExportAction extends AbstractAction {
     private final Exporter exporter;
 
-    public ExportAction(ExportService exportService){
+    public ExportAction(ExportService exportService) {
         super("Export application data", Icons.EXPORT_ICON);
         this.exporter = new AsyncExporter(exportService,
                 () -> JOptionPane.showMessageDialog(

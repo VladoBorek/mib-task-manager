@@ -8,18 +8,18 @@ import javax.swing.*;
 
 public class ExceptionHandler {
 
-    public static void exceptionPopUpHandler(Runnable runnable, String title,String success, String failure){
+    public static void exceptionPopUpHandler(Runnable runnable, String title, String success, String failure) {
         try {
             runnable.run();
-        } catch (ValidationException e){
-            Logger.error(e.getMessage());
+        } catch (ValidationException e) {
+            Logger.error(e.getValidationErrors());
             PopUp.infoDialog(
                     e.getValidationErrors(),
                     title,
                     JOptionPane.ERROR_MESSAGE);
             return;
 
-        } catch (Exception e){
+        } catch (Exception e) {
             Logger.error(e.getMessage());
             PopUp.infoDialog(
                     failure + "\n" + e.getMessage(),
@@ -27,8 +27,8 @@ public class ExceptionHandler {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        Logger.info(runnable.toString() + " has successfully finished.");
-        if (success != null){
+        Logger.info(runnable + " has successfully finished.");
+        if (success != null) {
             PopUp.infoDialog(
                     success,
                     title,

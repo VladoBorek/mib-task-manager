@@ -72,9 +72,9 @@ public class GenericImportService implements ImportService {
             filteredTemplates.forEach(this::createTemplate);
             filteredTasks.forEach(this::createTask);
 
-        } catch (DataManipulationException dmex){
+        } catch (DataManipulationException dmex) {
             throw new BatchOperationException("Import failed because of:\n" + dmex.getMessage());
-        } catch (ValidationException vex){
+        } catch (ValidationException vex) {
             throw new BatchOperationException("Some items you tried to import failed validations\n" + vex.getValidationErrors());
         }
     }

@@ -29,7 +29,7 @@ public interface EntityMapper<E, M> {
      * Map existing business entity to database entity
      *
      * @param entity existing business entity
-     * @param dbId existing entity db id
+     * @param dbId   existing entity db id
      * @return database entity
      */
     E mapExistingEntityToDatabase(M entity, Long dbId);

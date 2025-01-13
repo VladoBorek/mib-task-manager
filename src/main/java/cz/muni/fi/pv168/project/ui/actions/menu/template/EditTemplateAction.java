@@ -1,7 +1,6 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.template;
 
 import cz.muni.fi.pv168.project.business.model.Template;
-import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
@@ -68,7 +67,6 @@ public class EditTemplateAction extends EntityBaseAction {
                     );
                 }
         );
-        Logger.info("Edited Template(id=" + template.getId() +",name=" + template.getName() + ")");
     }
 
     private static void updateTemplate(Template oldT, Template newT) {

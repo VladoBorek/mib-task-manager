@@ -1,13 +1,11 @@
 package cz.muni.fi.pv168.project.ui.actions.menu.category;
 
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.actions.menu.abstracts.EntityBaseAction;
 import cz.muni.fi.pv168.project.ui.dialog.CategoryDialog;
-import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
-import org.tinylog.Logger;
+import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -38,17 +36,13 @@ public class EditCategoryAction extends EntityBaseAction {
             category.setName(newCat.getName());
             category.setColor(newCat.getColor());
         });
-        try {
-            data.getCategoryListModel().update(category);
-        } catch (ValidationException exception) {
-            Logger.error("Edit of Category (id=" + category.getId() +",name=" + category.getName() + ") has failed." + exception.getMessage());
-            PopUp.infoDialog(
-                    exception.getValidationErrors(),
-                    "Input error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-        Logger.info("Edited Category(id=" + category.getId() +",name=" + category.getName() + ")");
 
+        ExceptionHandler.exceptionPopUpHandler(
+                () -> data.getCategoryListModel().update(category),
+                "Input error",
+                "Successfully saved changes.",
+                "Edit was not successful."
+        );
         comboBox.setSelectedIndex(0);
         data.getTemplateTableModel().refresh();
         data.getTaskTableModel().refresh();

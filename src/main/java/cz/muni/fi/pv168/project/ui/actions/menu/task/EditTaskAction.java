@@ -47,10 +47,10 @@ public class EditTaskAction extends EntityBaseAction {
         tDialog.show(data.getTaskTable(), "Edit Task").ifPresent(newTask -> {
                     updateTask(task, newTask);
                     ExceptionHandler.exceptionPopUpHandler(
-                        () -> taskTableModel.updateRow(task),
-                        "Input error",
-                        "Successfully saved changes.",
-                        "Edit was not successful."
+                            () -> taskTableModel.updateRow(task),
+                            "Input error",
+                            "Successfully saved changes.",
+                            "Edit was not successful."
                     );
                 }
         );
@@ -84,13 +84,13 @@ public class EditTaskAction extends EntityBaseAction {
                 logTimeTableModel.updateRow(taskLog);
 
             } catch (ValidationException exception) {
-                Logger.error("Transfer of Task log (id=" + taskLog.getId() +  ") has failed." + exception.getMessage());
+                Logger.error("Transfer of Task log (id=" + taskLog.getId() + ") has failed." + exception.getMessage());
                 PopUp.infoDialog(
                         exception.getValidationErrors(),
                         "Error validating time logs",
                         JOptionPane.ERROR_MESSAGE);
             }
-            Logger.info("Transferred time log (id=" + taskLog.getId() +",userName=" + taskLog.getUsername() + ") to Task ");
+            Logger.info("Transferred time log (id=" + taskLog.getId() + ",userName=" + taskLog.getUsername() + ") to Task ");
 
         });
     }

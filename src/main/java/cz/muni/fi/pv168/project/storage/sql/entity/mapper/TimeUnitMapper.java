@@ -7,9 +7,10 @@ import cz.muni.fi.pv168.project.util.Constants;
 
 /**
  * Mapper from the {@link TimeUnitEntity} to {@link TimeUnit}.
+ *
  * @author Maroš Pavlík
  */
-public class TimeUnitMapper implements EntityMapper<TimeUnitEntity, TimeUnit>{
+public class TimeUnitMapper implements EntityMapper<TimeUnitEntity, TimeUnit> {
     @Override
     public TimeUnit mapToBusiness(TimeUnitEntity dbTimeUnit) {
         if (dbTimeUnit == null) {

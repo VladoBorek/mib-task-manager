@@ -4,14 +4,11 @@ import com.github.lgooddatepicker.zinternaltools.Pair;
 import cz.muni.fi.pv168.project.business.model.LogTimeInfo;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
-import cz.muni.fi.pv168.project.business.service.validation.ValidationException;
 import cz.muni.fi.pv168.project.business.service.validation.common.NotNegativeDoubleValidator;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
-import cz.muni.fi.pv168.project.ui.dialog.PopUp;
 import cz.muni.fi.pv168.project.ui.dialog.task.InspectTaskDialog;
 import cz.muni.fi.pv168.project.ui.dialog.task.LogTimeDialog;
 import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
-import org.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

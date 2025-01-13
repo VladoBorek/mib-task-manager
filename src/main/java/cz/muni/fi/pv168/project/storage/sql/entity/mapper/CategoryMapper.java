@@ -7,9 +7,10 @@ import java.awt.*;
 
 /**
  * Mapper from the {@link CategoryEntity} to {@link Category}.
+ *
  * @author Maroš Pavlík
  */
-public class CategoryMapper implements EntityMapper<CategoryEntity, Category>{
+public class CategoryMapper implements EntityMapper<CategoryEntity, Category> {
     @Override
     public Category mapToBusiness(CategoryEntity dbCategory) {
         return new Category(

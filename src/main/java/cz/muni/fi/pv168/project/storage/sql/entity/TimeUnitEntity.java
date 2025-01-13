@@ -4,6 +4,7 @@ import java.util.Objects;
 
 /**
  * Representation of TimeUnit entity in a SQL database.
+ *
  * @author Maroš Pavlík
  */
 public record TimeUnitEntity(
