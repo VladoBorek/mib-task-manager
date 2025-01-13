@@ -54,6 +54,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
             setValues();
         } else {
             timeUnitsComboBox.setSelectedItem(Constants.BASE_TIME_UNIT);
+            allocatedTimeField.setText("0");
         }
     }
 
