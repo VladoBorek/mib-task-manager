@@ -1,7 +1,6 @@
 package cz.muni.fi.pv168.project.ui.dialog;
 
 import cz.muni.fi.pv168.project.business.model.Category;
-import cz.muni.fi.pv168.project.business.service.validation.CategoryValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.wiring.DependencyProvider;
@@ -68,8 +67,9 @@ public class CategoryDialog extends EntityDialog<Category> {
 
     @Override
     public Category getEntity() {
-        Validator<Category> categoryValidator = new CategoryValidator(provider);
+        Validator<Category> categoryValidator = provider.getCategoryValidator();
         var validation = categoryValidator.validate(new Category(null, nameField.getText(), selectedColor));
+
         if (!validation.isValid()) {
             Logger.error("Category failed Validation " + validation.getValidationErrors());
             PopUp.infoDialog(
@@ -88,6 +88,7 @@ public class CategoryDialog extends EntityDialog<Category> {
             );
             return null;
         }
+        
         return new Category(null, nameField.getText(), selectedColor);
     }
 }

@@ -5,7 +5,6 @@ import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.Status;
 import cz.muni.fi.pv168.project.business.model.Task;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
-import cz.muni.fi.pv168.project.business.service.validation.TaskValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.dialog.PopUp;
@@ -22,9 +21,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Objects;
 
-import static cz.muni.fi.pv168.project.ui.utils.UIElements.createDescriptionPanel;
-import static cz.muni.fi.pv168.project.ui.utils.UIElements.setupCategoryTwoPartPanel;
-import static cz.muni.fi.pv168.project.ui.utils.UIElements.setupTimeUnitTwoPartPanel;
+import static cz.muni.fi.pv168.project.ui.utils.UIElements.*;
 
 /**
  * Dialog for adding and editing tasks
@@ -95,8 +92,8 @@ public class AddTaskDialog extends EntityDialog<Task> {
     public Task getEntity() {
         var timeunit = (TimeUnit) Objects.requireNonNull(timeUnitsComboBox.getSelectedItem());
         double allocatedTime = Double.parseDouble(allocatedTimeField.getText());
+        Validator<Task> taskValidator = data.getDependencyProvider().getTaskValidator();
 
-        Validator<Task> taskValidator = new TaskValidator();
         var newTask = new Task(
                 null, (Status) statusComboBox.getSelectedItem(),
                 this.descriptionArea.getText(),
@@ -108,6 +105,7 @@ public class AddTaskDialog extends EntityDialog<Task> {
                 allocatedTime * timeunit.getRate(),
                 timeunit,
                 datePicker.getDate());
+
         var validation = taskValidator.validate(newTask);
 
         if (!validation.isValid()) {

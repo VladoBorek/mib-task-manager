@@ -2,7 +2,6 @@ package cz.muni.fi.pv168.project.ui.dialog;
 
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
-import cz.muni.fi.pv168.project.business.service.validation.TimeUnitValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
 import cz.muni.fi.pv168.project.util.Constants;
@@ -48,7 +47,8 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
 
     @Override
     public TimeUnit getEntity() {
-        Validator<TimeUnit> timeUnitValidator = new TimeUnitValidator(provider);
+        Validator<TimeUnit> timeUnitValidator = provider.getTimeUnitValidator();
+
         TimeUnit newTimeUnit = new TimeUnit(
                 null,
                 timeUnitNameField.getText(),
@@ -56,6 +56,7 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
                 conversionRateField.getValue());
 
         var validation = timeUnitValidator.validate(newTimeUnit);
+
         if (!validation.isValid()) {
             Logger.error("TimeUnit failed Validation " + validation.getValidationErrors());
             PopUp.infoDialog(
@@ -64,6 +65,7 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
                     JOptionPane.ERROR_MESSAGE);
             return null;
         }
+
         return newTimeUnit;
     }
 }

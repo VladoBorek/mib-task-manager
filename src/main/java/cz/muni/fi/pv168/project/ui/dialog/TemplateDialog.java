@@ -3,7 +3,6 @@ package cz.muni.fi.pv168.project.ui.dialog;
 import cz.muni.fi.pv168.project.business.model.Category;
 import cz.muni.fi.pv168.project.business.model.Template;
 import cz.muni.fi.pv168.project.business.model.TimeUnit;
-import cz.muni.fi.pv168.project.business.service.validation.TemplateValidator;
 import cz.muni.fi.pv168.project.business.service.validation.Validator;
 import cz.muni.fi.pv168.project.ui.UIDataManager;
 import cz.muni.fi.pv168.project.ui.dialog.abstracts.EntityDialog;
@@ -19,9 +18,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Objects;
 
-import static cz.muni.fi.pv168.project.ui.utils.UIElements.createDescriptionPanel;
-import static cz.muni.fi.pv168.project.ui.utils.UIElements.setupCategoryTwoPartPanel;
-import static cz.muni.fi.pv168.project.ui.utils.UIElements.setupTimeUnitTwoPartPanel;
+import static cz.muni.fi.pv168.project.ui.utils.UIElements.*;
 
 /**
  * Dialog for adding and editing templates
@@ -86,8 +83,8 @@ public class TemplateDialog extends EntityDialog<Template> {
     public Template getEntity() {
         var timeunit = (TimeUnit) Objects.requireNonNull(timeUnitComboBox.getSelectedItem());
         double allocatedTime = Double.parseDouble(allocatedTimeField.getText());
+        Validator<Template> templateValidator = data.getDependencyProvider().getTemplateValidator();
 
-        Validator<Template> templateValidator = new TemplateValidator(data.getDependencyProvider());
         var newTemplate = new Template(null, taskNameField.getText(),
                 (Category) categoryComboBox.getSelectedItem(),
                 allocatedTime * timeunit.getRate(),
@@ -97,6 +94,7 @@ public class TemplateDialog extends EntityDialog<Template> {
                 assignedToField.getText());
 
         var validation = templateValidator.validate(newTemplate);
+
         if (!validation.isValid()) {
             Logger.error("Template failed Validation " + validation.getValidationErrors());
             PopUp.infoDialog(

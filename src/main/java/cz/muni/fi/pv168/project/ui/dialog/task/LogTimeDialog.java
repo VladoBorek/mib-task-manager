@@ -23,11 +23,10 @@ public class LogTimeDialog extends EntityDialog<Pair<Double, TimeUnit>> {
 
     public LogTimeDialog(UIDataManager data, Task task) {
         timeField = UIElements.createDecimalFormattedTextField();
-        //timeField.setColumns(10);
-
 
         timeUnitComboBox = new JComboBox<>(new ComboBoxModelAdapter<>(data.getTimeUnitListModel()));
         timeUnitComboBox.setSelectedItem(task.getTimeUnit());
+
         add("Time", timeField);
         add("Time Unit", timeUnitComboBox);
 
