@@ -50,7 +50,7 @@ public class AddTemplateAction extends EntityBaseAction {
                 comboBox.setSelectedItem(newTemplate);
             } else {
                 PopUp.infoDialog(
-                        "Template " + newTemplate.getName() + " was added",
+                        "Template " + newTemplate.getTemplateName() + " was added",
                         "New template added",
                         JOptionPane.INFORMATION_MESSAGE);
             }

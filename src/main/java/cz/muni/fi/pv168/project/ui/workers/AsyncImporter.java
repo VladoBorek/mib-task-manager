@@ -33,9 +33,12 @@ public class AsyncImporter implements Importer {
             @Override
             protected Void doInBackground() {
                 ExceptionHandler.exceptionPopUpHandler(
-                        () -> importService.importData(filePath, deleteData),
+                        () -> {
+                            importService.importData(filePath, deleteData);
+                            onFinish.run();
+                        },
                         "Import status",
-                        "Import of" + filePath + "successfully finished.",
+                        "Import of " + filePath + " successfully finished.",
                         "Import of " + filePath + " has failed."
                 );
                 return null;
