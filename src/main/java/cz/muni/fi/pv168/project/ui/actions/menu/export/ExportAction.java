@@ -17,9 +17,7 @@ public class ExportAction extends AbstractAction {
 
     public ExportAction(ExportService exportService) {
         super("Export application data", Icons.EXPORT_ICON);
-        this.exporter = new AsyncExporter(exportService,
-                () -> JOptionPane.showMessageDialog(
-                        null, "Export has successfully finished."));
+        this.exporter = new AsyncExporter(exportService, null);
     }
 
     @Override
@@ -36,13 +34,7 @@ public class ExportAction extends AbstractAction {
             if (filter instanceof Filter) {
                 exportFilePath = ((Filter) filter).decorate(exportFilePath);
             }
-            String finalExportFilePath = exportFilePath;
-            ExceptionHandler.exceptionPopUpHandler(
-                    () -> exporter.exportData(finalExportFilePath),
-                    "Export status",
-                    null,
-                    "Export has failed"
-            );
+            exporter.exportData(exportFilePath);
         }
     }
 }
