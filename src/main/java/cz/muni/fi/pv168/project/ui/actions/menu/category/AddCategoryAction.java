@@ -41,7 +41,7 @@ public class AddCategoryAction extends EntityBaseAction {
                 comboBox.setSelectedItem(newCategory);
             } else {
                 PopUp.infoDialog(
-                        "Category" + newCategory.getName() + " was added",
+                        "Category " + newCategory.getName() + " was added",
                         "New category added",
                         JOptionPane.INFORMATION_MESSAGE);
             }
