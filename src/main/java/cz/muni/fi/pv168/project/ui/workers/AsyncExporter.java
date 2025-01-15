@@ -15,11 +15,9 @@ import java.util.Objects;
 public class AsyncExporter implements Exporter {
 
     private final ExportService exportService;
-    private final Runnable onFinish;
 
-    public AsyncExporter(ExportService exportService, Runnable onFinish) {
+    public AsyncExporter(ExportService exportService) {
         this.exportService = Objects.requireNonNull(exportService);
-        this.onFinish = onFinish;
     }
 
     @Override

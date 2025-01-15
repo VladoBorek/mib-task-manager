@@ -2,7 +2,6 @@ package cz.muni.fi.pv168.project.ui.actions.menu.export;
 
 import cz.muni.fi.pv168.project.business.service.export.ExportService;
 import cz.muni.fi.pv168.project.ui.resources.Icons;
-import cz.muni.fi.pv168.project.ui.utils.ExceptionHandler;
 import cz.muni.fi.pv168.project.ui.workers.AsyncExporter;
 import cz.muni.fi.pv168.project.util.Filter;
 
@@ -17,7 +16,7 @@ public class ExportAction extends AbstractAction {
 
     public ExportAction(ExportService exportService) {
         super("Export application data", Icons.EXPORT_ICON);
-        this.exporter = new AsyncExporter(exportService, null);
+        this.exporter = new AsyncExporter(exportService);
     }
 
     @Override
