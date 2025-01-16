@@ -36,7 +36,7 @@ public class TimeUnitValidator implements Validator<TimeUnit> {
             return validationResult;
         }
 
-        if (provider.getTimeUnitService().isNameDuplicate(unit.getName())) {
+        if (provider.getTimeUnitService().isNameDuplicate(unit)) {
             return ValidationResult.failed("Time unit name must be unique.");
         }
 

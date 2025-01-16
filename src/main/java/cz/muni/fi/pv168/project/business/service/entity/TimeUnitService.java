@@ -24,8 +24,8 @@ public class TimeUnitService {
         return usedInTasks || usedInTemplates;
     }
 
-    public boolean isNameDuplicate(String name) {
+    public boolean isNameDuplicate(TimeUnit timeUnit) {
         return provider.getTimeUnitRepository().findAll().stream()
-                .anyMatch(category -> category.getName().equalsIgnoreCase(name));
+                .anyMatch(tu -> tu.getName().equalsIgnoreCase(timeUnit.getName()) && !timeUnit.equals(tu));
     }
 }
