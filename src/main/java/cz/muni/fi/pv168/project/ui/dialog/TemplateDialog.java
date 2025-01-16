@@ -32,7 +32,7 @@ public class TemplateDialog extends EntityDialog<Template> {
     private final JComboBox<Category> categoryComboBox;
     private final JComboBox<TimeUnit> timeUnitComboBox;
     private final JFormattedTextField allocatedTimeField = UIElements.createDecimalFormattedTextField();
-    private final Template template;
+    private Template template;
 
     public TemplateDialog(UIDataManager data, Template template) {
         this.data = data;
@@ -83,27 +83,34 @@ public class TemplateDialog extends EntityDialog<Template> {
         var timeunit = (TimeUnit) Objects.requireNonNull(timeUnitComboBox.getSelectedItem());
         double allocatedTime = Double.parseDouble(allocatedTimeField.getText());
         Validator<Template> templateValidator = data.getDependencyProvider().getTemplateValidator();
-
-        var newTemplate = new Template(null, taskNameField.getText(),
-                (Category) categoryComboBox.getSelectedItem(),
-                allocatedTime * timeunit.getRate(),
-                timeunit,
-                templateNameField.getText(),
-                descriptionArea.getText(),
-                assignedToField.getText());
-
-        var validation = templateValidator.validate(newTemplate);
+        if (template != null) {
+            template.setTemplateName(templateNameField.getText());
+            template.setCategory((Category) categoryComboBox.getSelectedItem());
+            template.setTimeUnit(timeunit);
+            template.setAllocatedTime(allocatedTime * timeunit.getRate());
+            template.setDescription(descriptionArea.getText());
+            template.setAssignedTo(assignedToField.getText());
+            template.setName(taskNameField.getText());
+        } else {
+            template = new Template(null, taskNameField.getText(),
+                    (Category) categoryComboBox.getSelectedItem(),
+                    allocatedTime * timeunit.getRate(),
+                    timeunit,
+                    templateNameField.getText(),
+                    descriptionArea.getText(),
+                    assignedToField.getText());
+        }
+        var validation = templateValidator.validate(template);
 
         if (!validation.isValid()) {
             Logger.error("Template failed Validation " + validation.getValidationErrors());
             PopUp.infoDialog(
                     validation.getValidationErrors(),
-                    "Input error",
+                    "Input error dialog",
                     JOptionPane.ERROR_MESSAGE);
             return null;
         }
-
-        return newTemplate;
+        return template;
     }
 
 }

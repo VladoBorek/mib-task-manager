@@ -37,7 +37,7 @@ public class TemplateValidator implements Validator<Template> {
             return validationResult;
         }
 
-        if (provider.getTemplateService().isNameDuplicate(template.getTemplateName())) {
+        if (provider.getTemplateService().isNameDuplicate(template)) {
             return ValidationResult.failed("Template name must be unique.");
         }
 

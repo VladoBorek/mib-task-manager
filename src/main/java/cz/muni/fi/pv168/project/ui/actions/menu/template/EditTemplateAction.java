@@ -60,7 +60,7 @@ public class EditTemplateAction extends EntityBaseAction {
         templateDialog.show(comboBox, "Edit Template").ifPresent(newTemplate -> {
                     updateTemplate(template, newTemplate);
                     ExceptionHandler.exceptionPopUpHandler(
-                            () -> templateTableModel.addRow(newTemplate),
+                            () -> templateTableModel.updateRow(newTemplate),
                             "Input error",
                             null,
                             null

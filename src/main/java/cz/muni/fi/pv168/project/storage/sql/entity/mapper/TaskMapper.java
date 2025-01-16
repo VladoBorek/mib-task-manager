@@ -64,7 +64,7 @@ public class TaskMapper implements EntityMapper<TaskEntity, Task> {
         }
 
 
-            var newTask = new Task(
+        var newTask = new Task(
                 entity.id(),
                 entity.status(),
                 entity.description(),
@@ -116,7 +116,7 @@ public class TaskMapper implements EntityMapper<TaskEntity, Task> {
             timeUnitId = timeUnitEntity.id();
         }
 
-            return new TaskEntity(
+        return new TaskEntity(
                 dbId,
                 entity.getStatus(),
                 entity.getDescription(),
