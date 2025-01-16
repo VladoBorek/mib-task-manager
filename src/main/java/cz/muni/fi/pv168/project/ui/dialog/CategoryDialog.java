@@ -75,8 +75,7 @@ public class CategoryDialog extends EntityDialog<Category> {
         Validator<Category> categoryValidator = provider.getCategoryValidator();
         var category = new Category(null, nameField.getText(), selectedColor);
 
-        if (existingCategory != null)
-        {
+        if (existingCategory != null) {
             category = existingCategory;
         }
 

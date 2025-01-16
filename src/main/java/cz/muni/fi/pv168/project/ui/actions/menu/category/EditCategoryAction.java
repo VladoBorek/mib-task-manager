@@ -36,7 +36,7 @@ public class EditCategoryAction extends EntityBaseAction {
             category.setName(newCat.getName());
             category.setColor(newCat.getColor());
         });
-        
+
         ExceptionHandler.exceptionPopUpHandler(
                 () -> data.getCategoryListModel().update(category),
                 "Input error",
