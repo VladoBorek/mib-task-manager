@@ -21,7 +21,7 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
     private final JIntegerTextField conversionRateField = new JIntegerTextField();
 
     private TimeUnit existingTimeUnit = null;
-
+    private TimeUnit newTimeUnit = new TimeUnit(null, null, null, null);
     public TimeUnitDialog(DependencyProvider provider) {
         this.provider = provider;
         conversionRateField.setValue(1);
@@ -36,6 +36,7 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
         shortNameField.setText(unit.getShortName());
         conversionRateField.setValue(unit.getRate());
         existingTimeUnit = unit;
+        newTimeUnit = unit;
         addTimeUnitFields();
         setPanel();
     }
@@ -50,15 +51,13 @@ public class TimeUnitDialog extends EntityDialog<TimeUnit> {
     @Override
     public TimeUnit getEntity() {
         Validator<TimeUnit> timeUnitValidator = provider.getTimeUnitValidator();
-
-        TimeUnit newTimeUnit = new TimeUnit(
-                null,
-                timeUnitNameField.getText(),
-                shortNameField.getText(),
-                conversionRateField.getValue());
         if (existingTimeUnit != null) {
             newTimeUnit = existingTimeUnit;
         }
+        newTimeUnit.setName(timeUnitNameField.getText());
+        newTimeUnit.setShortName(shortNameField.getText());
+        newTimeUnit.setRate(conversionRateField.getValue());
+
         var validation = timeUnitValidator.validate(newTimeUnit);
 
         if (!validation.isValid()) {
