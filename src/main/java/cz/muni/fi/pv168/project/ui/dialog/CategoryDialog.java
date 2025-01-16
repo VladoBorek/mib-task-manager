@@ -22,6 +22,7 @@ public class CategoryDialog extends EntityDialog<Category> {
     private final DependencyProvider provider;
 
     private Category existingCategory = null;
+    private Category category = new Category(null, null, null);
 
     public CategoryDialog(DependencyProvider provider) {
         this.provider = provider;
@@ -46,6 +47,7 @@ public class CategoryDialog extends EntityDialog<Category> {
         nameField.setText(category.getName());
         setSelectedColor(category.getColor());
         this.existingCategory = category;
+        this.category = category;
     }
 
     private JButton setUpColorButton() {
@@ -73,10 +75,12 @@ public class CategoryDialog extends EntityDialog<Category> {
     @Override
     public Category getEntity() {
         Validator<Category> categoryValidator = provider.getCategoryValidator();
-        var category = new Category(null, nameField.getText(), selectedColor);
 
-        if (existingCategory != null) {
+        if (existingCategory == null) {
             category = existingCategory;
+        } else {
+            category.setName(nameField.getText());
+            category.setColor(selectedColor);
         }
 
         var validation = categoryValidator.validate(category);
