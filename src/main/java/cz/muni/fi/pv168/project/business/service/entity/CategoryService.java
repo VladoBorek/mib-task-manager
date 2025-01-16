@@ -23,9 +23,9 @@ public class CategoryService {
         return usedInTasks || usedInTemplates;
     }
 
-    public boolean isNameDuplicate(String name) {
+    public boolean isNameDuplicate(Category category) {
         return provider.getCategoryRepository().findAll().stream()
-                .anyMatch(category -> category.getName().equalsIgnoreCase(name));
+                .anyMatch(cat -> cat.getName().equalsIgnoreCase(category.getName()) && !cat.equals(category));
     }
 
 }

@@ -21,6 +21,8 @@ public class CategoryDialog extends EntityDialog<Category> {
     private CustomColor selectedColor = ColorService.customColorFromAWTColor(Color.lightGray);
     private final DependencyProvider provider;
 
+    private Category existingCategory = null;
+
     public CategoryDialog(DependencyProvider provider) {
         this.provider = provider;
         nameField.setPreferredSize(new Dimension(200, 25));
@@ -43,6 +45,7 @@ public class CategoryDialog extends EntityDialog<Category> {
         this(provider);
         nameField.setText(category.getName());
         setSelectedColor(category.getColor());
+        this.existingCategory = category;
     }
 
     private JButton setUpColorButton() {
@@ -70,7 +73,14 @@ public class CategoryDialog extends EntityDialog<Category> {
     @Override
     public Category getEntity() {
         Validator<Category> categoryValidator = provider.getCategoryValidator();
-        var validation = categoryValidator.validate(new Category(null, nameField.getText(), selectedColor));
+        var category = new Category(null, nameField.getText(), selectedColor);
+
+        if (existingCategory != null)
+        {
+            category = existingCategory;
+        }
+
+        var validation = categoryValidator.validate(category);
 
         if (!validation.isValid()) {
             Logger.error("Category failed Validation " + validation.getValidationErrors());
@@ -81,7 +91,7 @@ public class CategoryDialog extends EntityDialog<Category> {
             return null;
         }
 
-        if (provider.getCategoryService().isNameDuplicate(nameField.getText())) {
+        if (provider.getCategoryService().isNameDuplicate(category)) {
             Logger.warn("User tried to create a category with a duplicate name: " + nameField.getText());
             PopUp.infoDialog(
                     "A category with this name already exists. Please choose a different name.",
@@ -91,6 +101,6 @@ public class CategoryDialog extends EntityDialog<Category> {
             return null;
         }
 
-        return new Category(null, nameField.getText(), selectedColor);
+        return category;
     }
 }
