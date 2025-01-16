@@ -31,7 +31,7 @@ public class CategoryValidator implements Validator<Category> {
             return validationResult;
         }
 
-        if (provider.getCategoryService().isNameDuplicate(category.getName())) {
+        if (provider.getCategoryService().isNameDuplicate(category)) {
             return ValidationResult.failed("Category name must be unique.");
         }
 
