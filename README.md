@@ -2,6 +2,8 @@
 MIB Task Manager is a Java-SWING-based desktop application developed as part of a team project.
 The application is used for managing tasks, logging work time, and monitoring activity.
 
+<img width="1919" height="1199" alt="image" src="https://github.com/user-attachments/assets/fbe76685-7142-42c1-ac17-5d536eac0d61" />
+
 ### Members
 | Role           | Person                                                 |
 |----------------|--------------------------------------------------------|
