@@ -1,5 +1,5 @@
 # PV168 Project: MIB-Task-Manager
-MIB Task Manager is a Java-based desktop application developed as part of a team project.
+MIB Task Manager is a Java-SWING-based desktop application developed as part of a team project.
 The application is used for managing tasks, logging work time, and monitoring activity.
 
 ### Members
