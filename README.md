@@ -20,7 +20,7 @@ As team leader, I was mainly responsible for:
 - Leading a team
 - Assigning, coordinating, and organizing work across members
 - Implementing the portion of database backend (repositories, DAOs, transactions, and connection management)
-- Refactoring and modularizing dialog windows and validation logic
+- Dialog windows and validation logic
 - Implementing statistics and time logging features
 - I had a part in ensuring consistency and integration across UI, logic, and persistence layers
 
